@@ -15,14 +15,14 @@ public final class FujiCamera: @unchecked Sendable {
     public private(set) var cameraName: String = ""
     public private(set) var objectCount: Int = 0
     public private(set) var isConnected = false
+    /// Known after `connect()`.
+    public private(set) var profile = CameraProfile(model: "")
 
     private var cmd: TCPSocket?
     private var eventSocket: TCPSocket?
     private var videoSocket: TCPSocket?
     private var transaction: UInt32 = 0
     private var cameraState: UInt32?
-    private var remoteVersion: UInt32?
-    private var remoteImageViewVersion: UInt32?
     private let queue = DispatchQueue(label: "fujikit.camera")
 
     public init(host: String = "192.168.0.1", interface: String? = nil, clientName: String = "FujiImport",
@@ -95,11 +95,12 @@ public final class FujiCamera: @unchecked Sendable {
             }
         }
 
-        let getObjectVersion = try propU32(PTP.FujiProp.getObjectVersion)
-        remoteImageViewVersion = try propU32(PTP.FujiProp.remoteGetObjectVersion)
-        let imageGetVersion = try propU32(PTP.FujiProp.imageGetVersion)
-        remoteVersion = try propU32(PTP.FujiProp.remoteVersion)
-        log("Versions: getObject=\(hex(getObjectVersion)) remoteGetObject=\(hex(remoteImageViewVersion)) imageGet=\(hex(imageGetVersion)) remote=\(hex(remoteVersion)) state=\(hex(cameraState))")
+        profile = CameraProfile(model: cameraName,
+                                getObjectVersion: try propU32(PTP.FujiProp.getObjectVersion),
+                                remoteImageViewVersion: try propU32(PTP.FujiProp.remoteGetObjectVersion),
+                                imageGetVersion: try propU32(PTP.FujiProp.imageGetVersion),
+                                remoteVersion: try propU32(PTP.FujiProp.remoteVersion))
+        log("Camera profile: \(profile.summary), state \(hex(cameraState))")
 
         try configureInitialMode()
 
@@ -110,7 +111,7 @@ public final class FujiCamera: @unchecked Sendable {
         try configureVersion()
         _ = try? prop(PTP.FujiProp.storageID)
 
-        if remoteVersion != nil && cameraState == PTP.CameraState.remoteAccess {
+        if profile.hasRemoteMode && cameraState == PTP.CameraState.remoteAccess {
             // libfuji: entering and leaving liveview once during setup is needed, otherwise the camera stops responding.
             log("Configuring remote mode")
             let openCaptureTransaction = transaction
@@ -161,7 +162,7 @@ public final class FujiCamera: @unchecked Sendable {
     /// Returns the embedded JPEG thumbnail, or nil if the camera has none for this object.
     public func thumbnail(_ handle: UInt32) throws -> Data? {
         // libfuji: GetThumb blocks forever on newer cameras unless GetObjectInfo is called first.
-        if let remoteVersion, remoteVersion > 0x20006 {
+        if profile.thumbnailNeedsObjectInfo {
             _ = try? objectInfo(handle)
         }
         let r = try transact(PTP.Op.getThumb, [handle], allowFailure: true)
@@ -230,7 +231,7 @@ public final class FujiCamera: @unchecked Sendable {
 
     private func configureInitialMode() throws {
         let mode: UInt16
-        if remoteVersion != nil || cameraState == PTP.CameraState.remoteAccess {
+        if profile.hasRemoteMode || cameraState == PTP.CameraState.remoteAccess {
             mode = PTP.ClientState.remoteMode
         } else if cameraState == PTP.CameraState.multipleTransfer {
             mode = PTP.ClientState.viewMultiple
@@ -250,7 +251,7 @@ public final class FujiCamera: @unchecked Sendable {
             if let v = try propU32(PTP.FujiProp.autoSaveVersion) {
                 try setProp(PTP.FujiProp.autoSaveVersion, u32: v)
             }
-        } else if remoteVersion == nil {
+        } else if !profile.hasRemoteMode {
             if let v = try propU32(PTP.FujiProp.getObjectVersion) {
                 try setProp(PTP.FujiProp.getObjectVersion, u32: v)
             }
@@ -261,14 +262,14 @@ public final class FujiCamera: @unchecked Sendable {
     }
 
     private func configureImageGallery() throws {
-        guard remoteImageViewVersion != nil else { return }
+        guard profile.remoteImageViewVersion != nil else { return }
         try pollEvents()
         try setProp(PTP.FujiProp.cameraState, u16: UInt16(PTP.CameraState.remoteAccess))
         try pollEvents()
         try pollEvents()
         try setProp(PTP.FujiProp.clientState, u16: PTP.ClientState.remoteImageView)
         try pollEvents()
-        remoteImageViewVersion = try propU32(PTP.FujiProp.remoteGetObjectVersion)
+        profile.remoteImageViewVersion = try propU32(PTP.FujiProp.remoteGetObjectVersion)
         // libfuji sets this to 5 for all cameras (X-S10 and X-H1 want at least 4).
         try setProp(PTP.FujiProp.remoteGetObjectVersion, u32: 5)
         try pollEvents()
