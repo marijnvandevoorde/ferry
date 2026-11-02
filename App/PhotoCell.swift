@@ -3,6 +3,7 @@ import SwiftUI
 struct PhotoCell: View {
     let item: PhotoItem
     let isSelected: Bool
+    var isFocused = false
     @State private var hovering = false
 
     var body: some View {
@@ -57,10 +58,27 @@ struct PhotoCell: View {
                 RoundedRectangle(cornerRadius: 8)
                     .strokeBorder(Color.accentColor, lineWidth: isSelected ? 3 : 0)
             }
+            .overlay {
+                // Keyboard focus, distinct from selection.
+                RoundedRectangle(cornerRadius: 10)
+                    .strokeBorder(Color.accentColor.opacity(0.6), style: StrokeStyle(lineWidth: 2, dash: [4, 3]))
+                    .padding(-4)
+                    .opacity(isFocused ? 1 : 0)
+            }
             .contentShape(Rectangle())
             .onHover { hovering = $0 }
             .help("\(item.info.filename)\n\(item.date.formatted(date: .abbreviated, time: .shortened))")
+            .accessibilityElement(children: .ignore)
+            .accessibilityLabel(accessibilityText)
+            .accessibilityAddTraits(isSelected ? [.isButton, .isSelected] : .isButton)
             .animation(.easeOut(duration: 0.15), value: isSelected)
             .animation(.easeOut(duration: 0.2), value: item.thumbnail != nil)
+    }
+
+    private var accessibilityText: String {
+        var parts = [item.info.isVideo ? "Video" : "Photo", item.info.filename,
+                     item.date.formatted(date: .abbreviated, time: .shortened)]
+        if item.imported { parts.append("imported") }
+        return parts.joined(separator: ", ")
     }
 }

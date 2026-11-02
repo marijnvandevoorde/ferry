@@ -36,9 +36,12 @@ struct GalleryView: View {
                 ForEach(sections, id: \.day) { section in
                     Section {
                         ForEach(section.items) { item in
-                            PhotoCell(item: item, isSelected: model.selection.contains(item.id))
+                            PhotoCell(item: item, isSelected: model.selection.contains(item.id),
+                                      isFocused: focusedItem?.id == item.id)
                                 .onTapGesture(count: 2) { preview(item) }
                                 .onTapGesture { toggle(item) }
+                                .accessibilityAction { toggle(item) }
+                                .accessibilityAction(named: "Preview") { preview(item) }
                         }
                     } header: {
                         SectionHeader(day: section.day, items: section.items)
@@ -53,6 +56,15 @@ struct GalleryView: View {
         .onKeyPress(.space) {
             guard let focusedItem else { return .ignored }
             preview(focusedItem)
+            return .handled
+        }
+        .onKeyPress(.return) {
+            guard let focusedItem else { return .ignored }
+            toggle(focusedItem)
+            return .handled
+        }
+        .onKeyPress(keys: [.leftArrow, .rightArrow, .upArrow, .downArrow]) { press in
+            moveFocus(by: press.key == .leftArrow || press.key == .upArrow ? -1 : 1)
             return .handled
         }
         .quickLookPreview($previewURL)
@@ -99,6 +111,16 @@ struct GalleryView: View {
         let n = model.items.count
         let new = model.newItems.count
         return "\(n) \(n == 1 ? "item" : "items") · \(new) not imported"
+    }
+
+    /// Arrow keys step through the photos in display order.
+    private func moveFocus(by offset: Int) {
+        let ordered = sections.flatMap(\.items)
+        guard !ordered.isEmpty else { return }
+        let current = focusedItem.flatMap { item in ordered.firstIndex { $0.id == item.id } }
+        let next = current.map { min(max($0 + offset, 0), ordered.count - 1) } ?? 0
+        focusedItem = ordered[next]
+        if previewURL != nil { preview(ordered[next]) }
     }
 
     private func preview(_ item: PhotoItem) {
