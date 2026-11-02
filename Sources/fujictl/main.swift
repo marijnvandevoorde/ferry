@@ -59,6 +59,17 @@ do {
             let info = try camera.objectInfo(handle)
             print(String(format: "%5d  %-14@ %@  %dx%d", handle, info.filename, info.captureDate, info.imageWidth, info.imageHeight))
         }
+    case "download" where camera.isSendingSelection:
+        guard args.count > 1 else { print(usage); exit(2) }
+        let dir = URL(fileURLWithPath: args[1])
+        try FileManager.default.createDirectory(at: dir, withIntermediateDirectories: true)
+        print("Receiving the images selected on the camera")
+        while let info = try camera.nextSelectedImage() {
+            let url = dir.appendingPathComponent(info.filename)
+            try? FileManager.default.removeItem(at: url)
+            try camera.download(FujiCamera.selectedImageHandle, to: url)
+            print("\(info.filename) (\(info.compressedSize) bytes)")
+        }
     case "download", "thumbs":
         guard args.count > 1 else { print(usage); exit(2) }
         let dir = URL(fileURLWithPath: args[1])

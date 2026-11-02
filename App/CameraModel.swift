@@ -173,6 +173,10 @@ final class CameraModel {
     // MARK: - Session: listing, thumbnails, keep-alive
 
     private func runSession(_ camera: FujiCamera) async {
+        if camera.isSendingSelection {
+            await receiveSelection(camera)
+            return
+        }
         do {
             try await loadList(camera)
             if UserDefaults.standard.bool(forKey: Prefs.autoImport), !newItems.isEmpty {
@@ -259,6 +263,8 @@ final class CameraModel {
 
     func cancelImport() {
         importTask?.cancel()
+        // Receiving a selection from the camera runs as part of the session.
+        if importTask == nil { sessionTask?.cancel() }
     }
 
     private func startImport(_ batch: [PhotoItem]) {
@@ -268,47 +274,65 @@ final class CameraModel {
         importTask = Task { await runImport(batch, camera: camera) }
     }
 
-    private func runImport(_ batch: [PhotoItem], camera: FujiCamera) async {
-        defer { importProgress = nil }
-
+    /// Where imported files go, or nil (with `lastError` set) when Photos access was denied.
+    private func photosTarget() async -> PhotosTarget? {
         let useAlbum = UserDefaults.standard.bool(forKey: Prefs.useAlbum)
         let access = await PhotoImporter.requestAccess(needsAlbum: useAlbum)
         guard access != .denied else {
             lastError = "Fuji Import needs access to Photos. Allow it in System Settings → Privacy & Security → Photos."
-            return
+            return nil
         }
         var album: PHAssetCollection?
         if useAlbum, access == .full {
             let name = UserDefaults.standard.string(forKey: Prefs.albumName) ?? "Fujifilm"
             album = try? await PhotoImporter.album(named: name.isEmpty ? "Fujifilm" : name)
         }
+        return PhotosTarget(album: album)
+    }
 
+    private struct PhotosTarget {
+        var album: PHAssetCollection?
+    }
+
+    /// Downloads one object, imports it into Photos and records it. Returns the imported item's info.
+    private func importObject(_ handle: UInt32, filename: String, camera: FujiCamera, target: PhotosTarget,
+                              thumbnail: Bool = false, skipIfImported: Bool = false) async throws -> (ObjectInfo, NSImage?) {
         let tmpDir = FileManager.default.temporaryDirectory.appendingPathComponent("FujiImport", isDirectory: true)
         try? FileManager.default.createDirectory(at: tmpDir, withIntermediateDirectories: true)
+        let file = tmpDir.appendingPathComponent(UUID().uuidString + "-" + filename)
+        defer { try? FileManager.default.removeItem(at: file) }
+
+        let info = try await camera.run { cam in
+            try cam.download(handle, to: file) { done, total in
+                let fraction = total > 0 ? Double(done) / Double(total) : 0
+                Task { @MainActor [weak self] in self?.importProgress?.fraction = fraction }
+            }
+        }
+        // Use what was actually downloaded, in case handles shifted since listing.
+        let key = ImportHistory.key(camera: cameraName, info: info)
+        let image = thumbnail ? NSImage(contentsOf: file) : nil
+        if !(skipIfImported && history.contains(key)) {
+            try await PhotoImporter.importFile(file, originalFilename: info.filename, isVideo: info.isVideo, album: target.album)
+            history.insert(key)
+        }
+        if let i = items.firstIndex(where: { $0.id == key }) { items[i].imported = true }
+        selection.remove(key)
+        return (info, image)
+    }
+
+    private func runImport(_ batch: [PhotoItem], camera: FujiCamera) async {
+        defer { importProgress = nil }
+        guard let target = await photosTarget() else { return }
 
         var imported = 0
         var failed: [String] = []
         for (index, item) in batch.enumerated() {
             if Task.isCancelled { break }
             importProgress = ImportProgress(index: index + 1, total: batch.count, filename: item.info.filename, fraction: 0)
-            let file = tmpDir.appendingPathComponent(UUID().uuidString + "-" + item.info.filename)
-            let handle = item.handle
             do {
-                let info = try await camera.run { cam in
-                    try cam.download(handle, to: file) { done, total in
-                        let fraction = total > 0 ? Double(done) / Double(total) : 0
-                        Task { @MainActor [weak self] in self?.importProgress?.fraction = fraction }
-                    }
-                }
-                try await PhotoImporter.importFile(file, originalFilename: info.filename, isVideo: info.isVideo, album: album)
-                // Use what was actually downloaded, in case handles shifted since listing.
-                let key = ImportHistory.key(camera: cameraName, info: info)
-                history.insert(key)
-                if let i = items.firstIndex(where: { $0.id == key }) { items[i].imported = true }
-                selection.remove(key)
+                _ = try await importObject(item.handle, filename: item.info.filename, camera: camera, target: target)
                 imported += 1
             } catch let error as FujiError {
-                try? FileManager.default.removeItem(at: file)
                 switch error {
                 case .disconnected, .timeout, .io:
                     connectionLost(error)
@@ -318,7 +342,6 @@ final class CameraModel {
                     appendLog("Failed to import \(item.info.filename): \(error.localizedDescription)")
                 }
             } catch {
-                try? FileManager.default.removeItem(at: file)
                 failed.append(item.info.filename)
                 appendLog("Failed to import \(item.info.filename): \(error.localizedDescription)")
             }
@@ -328,6 +351,40 @@ final class CameraModel {
         if Task.isCancelled { summary += " (cancelled)" }
         if !failed.isEmpty { summary += ". \(failed.count) failed: \(failed.prefix(3).joined(separator: ", "))" }
         importSummary = summary
+    }
+
+    /// The user picked images on the camera and chose to send them: import each one as the camera offers it.
+    private func receiveSelection(_ camera: FujiCamera) async {
+        appendLog("Receiving images selected on the camera")
+        importProgress = ImportProgress(index: 0, total: 0, filename: "", fraction: 0)
+        var received = 0
+        var failure: String?
+        if let target = await photosTarget() {
+            while !Task.isCancelled {
+                do {
+                    guard let info = try await camera.run({ try $0.nextSelectedImage() }) else { break }
+                    importProgress = ImportProgress(index: received + 1, total: 0, filename: info.filename, fraction: 0)
+                    let (imported, image) = try await importObject(FujiCamera.selectedImageHandle, filename: info.filename,
+                                                                   camera: camera, target: target, thumbnail: true,
+                                                                   skipIfImported: true)
+                    let key = ImportHistory.key(camera: cameraName, info: imported)
+                    if !items.contains(where: { $0.id == key }) {
+                        items.insert(PhotoItem(id: key, handle: FujiCamera.selectedImageHandle, info: imported,
+                                               thumbnail: image, imported: true), at: 0)
+                        received += 1
+                    }
+                } catch {
+                    appendLog("Receiving failed: \(error.localizedDescription)")
+                    failure = error.localizedDescription
+                    break
+                }
+            }
+        }
+        importProgress = nil
+        // The camera ends this mode itself; keep showing what arrived until the user disconnects.
+        self.camera = nil
+        Task.detached { camera.disconnect() }
+        importSummary = "Received \(received) \(received == 1 ? "item" : "items") from the camera" + (failure.map { ". Stopped: \($0)" } ?? "")
     }
 
     func forgetHistory() {

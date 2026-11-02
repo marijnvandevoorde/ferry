@@ -140,10 +140,18 @@ private struct ImportBar: View {
             HStack(spacing: 14) {
                 if let p = model.importProgress {
                     VStack(alignment: .leading, spacing: 4) {
-                        Text("Importing \(p.filename) — \(p.index) of \(p.total)")
-                            .font(.callout)
-                            .lineLimit(1)
-                        ProgressView(value: (Double(p.index - 1) + p.fraction) / Double(max(p.total, 1)))
+                        if p.total == 0 {
+                            // Selection sent from the camera: the total isn't known up front.
+                            Text(p.index == 0 ? "Waiting for the camera to send images…" : "Receiving \(p.filename) — \(p.index)")
+                                .font(.callout)
+                                .lineLimit(1)
+                            ProgressView(value: p.fraction)
+                        } else {
+                            Text("Importing \(p.filename) — \(p.index) of \(p.total)")
+                                .font(.callout)
+                                .lineLimit(1)
+                            ProgressView(value: (Double(p.index - 1) + p.fraction) / Double(max(p.total, 1)))
+                        }
                     }
                     Button("Stop") { model.cancelImport() }
                 } else {

@@ -23,6 +23,8 @@ public final class FujiCamera: @unchecked Sendable {
     private var videoSocket: TCPSocket?
     private var transaction: UInt32 = 0
     private var cameraState: UInt32?
+    /// Set when the camera announces an image in selection mode.
+    private var selectionOffered = false
     private let queue = DispatchQueue(label: "fujikit.camera")
 
     public init(host: String = "192.168.0.1", interface: String? = nil, clientName: String = "FujiImport",
@@ -104,8 +106,10 @@ public final class FujiCamera: @unchecked Sendable {
 
         try configureInitialMode()
 
-        if cameraState == PTP.CameraState.multipleTransfer {
-            throw FujiError.protocolError("The camera is in 'send selected images' mode. Use 'Wireless Communication' on the camera instead.")
+        if isSendingSelection {
+            // libfuji skips the rest of the setup in this mode.
+            log("Ready: the camera is sending images selected on the camera")
+            return
         }
 
         try configureVersion()
@@ -148,6 +152,34 @@ public final class FujiCamera: @unchecked Sendable {
     }
 
     // MARK: - Browsing and downloading
+
+    /// True when the user chose images on the camera and started sending them, instead of browsing from the computer.
+    /// The camera then offers one image at a time; use `nextSelectedImage(after:)` instead of `objectHandles`.
+    public var isSendingSelection: Bool { cameraState == PTP.CameraState.multipleTransfer }
+
+    /// The handle the camera uses for the image it is currently sending in selection mode.
+    public static let selectedImageHandle: UInt32 = 1
+
+    /// In selection mode the camera announces each image by re-sending camera state 1, and offers it as handle 1.
+    /// Returns the next image's info, or nil once the camera stops offering images or ends the transfer.
+    public func nextSelectedImage(timeout: TimeInterval = 15) throws -> ObjectInfo? {
+        do {
+            let deadline = Date().addingTimeInterval(timeout)
+            while !selectionOffered {
+                guard Date() < deadline else {
+                    log("The camera has no more images to send")
+                    return nil
+                }
+                Thread.sleep(forTimeInterval: 0.2)
+                try pollEvents()
+            }
+            selectionOffered = false
+            return try objectInfo(Self.selectedImageHandle)
+        } catch FujiError.disconnected {
+            log("The camera ended the transfer")
+            return nil
+        }
+    }
 
     /// Fuji doesn't support GetObjectHandles over Wi-Fi; objects are numbered 1...count.
     public var objectHandles: [UInt32] {
@@ -200,8 +232,14 @@ public final class FujiCamera: @unchecked Sendable {
             result = .failure(error)
         }
 
-        try pollEvents()
-        try setProp(PTP.FujiProp.enableCorrectFileSize, u16: 0)
+        do {
+            try pollEvents()
+            try setProp(PTP.FujiProp.enableCorrectFileSize, u16: 0)
+        } catch {
+            // The file is complete; in selection mode the camera may hang up right after the last one.
+            guard case .success = result else { throw error }
+            log("After download: \(error.localizedDescription)")
+        }
         return try result.get()
     }
 
@@ -218,6 +256,7 @@ public final class FujiCamera: @unchecked Sendable {
             case PTP.FujiProp.cameraState:
                 if cameraState != value { log("Camera state -> \(value)") }
                 cameraState = value
+                if value == PTP.CameraState.multipleTransfer { selectionOffered = true }
             case PTP.FujiProp.objectCount:
                 if objectCount != Int(value) { log("Object count -> \(value)") }
                 objectCount = Int(value)
@@ -231,10 +270,10 @@ public final class FujiCamera: @unchecked Sendable {
 
     private func configureInitialMode() throws {
         let mode: UInt16
-        if profile.hasRemoteMode || cameraState == PTP.CameraState.remoteAccess {
-            mode = PTP.ClientState.remoteMode
-        } else if cameraState == PTP.CameraState.multipleTransfer {
+        if cameraState == PTP.CameraState.multipleTransfer {
             mode = PTP.ClientState.viewMultiple
+        } else if profile.hasRemoteMode || cameraState == PTP.CameraState.remoteAccess {
+            mode = PTP.ClientState.remoteMode
         } else if cameraState == PTP.CameraState.pcAutoSave {
             mode = PTP.ClientState.oldRemote
         } else {
