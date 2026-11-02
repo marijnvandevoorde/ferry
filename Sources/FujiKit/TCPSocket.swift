@@ -55,6 +55,13 @@ final class TCPSocket {
         readTimeout = 10
     }
 
+    /// Wraps an accepted connection.
+    init(fd: Int32) {
+        self.fd = fd
+        var one: Int32 = 1
+        setsockopt(fd, SOL_SOCKET, SO_NOSIGPIPE, &one, socklen_t(MemoryLayout<Int32>.size))
+    }
+
     deinit { close() }
 
     var readTimeout: TimeInterval = 10 {
@@ -102,6 +109,20 @@ final class TCPSocket {
             }
         }
         return data
+    }
+
+    /// Reads one message of a text protocol (whatever arrives in one go, up to 4 KB).
+    func readAvailable() throws -> String {
+        guard fd >= 0 else { throw FujiError.disconnected }
+        var buf = [UInt8](repeating: 0, count: 4096)
+        while true {
+            let n = Darwin.recv(fd, &buf, buf.count, 0)
+            if n > 0 { return String(decoding: buf[0..<n], as: UTF8.self) }
+            if n == 0 { throw FujiError.disconnected }
+            if errno == EINTR { continue }
+            if errno == EAGAIN || errno == EWOULDBLOCK { throw FujiError.timeout }
+            throw FujiError.io("recv: \(String(cString: strerror(errno)))")
+        }
     }
 
     /// Reads and discards whatever is available without blocking (used for the liveview socket).

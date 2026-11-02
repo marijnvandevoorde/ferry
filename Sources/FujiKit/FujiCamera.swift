@@ -113,6 +113,10 @@ public final class FujiCamera: @unchecked Sendable {
         }
 
         try configureVersion()
+        if isAutoSave {
+            // libfuji: in PC AutoSave mode the correct file size is enabled once, not per download.
+            try setProp(PTP.FujiProp.enableCorrectFileSize, u16: 1, timeout: 30)
+        }
         _ = try? prop(PTP.FujiProp.storageID)
 
         if profile.hasRemoteMode && cameraState == PTP.CameraState.remoteAccess {
@@ -152,6 +156,9 @@ public final class FujiCamera: @unchecked Sendable {
     }
 
     // MARK: - Browsing and downloading
+
+    /// True when the camera connected through PC AutoSave (see `AutoSaveListener`).
+    public var isAutoSave: Bool { cameraState == PTP.CameraState.pcAutoSave }
 
     /// True when the user chose images on the camera and started sending them, instead of browsing from the computer.
     /// The camera then offers one image at a time; use `nextSelectedImage(after:)` instead of `objectHandles`.
@@ -205,9 +212,12 @@ public final class FujiCamera: @unchecked Sendable {
     /// Downloads an object to `destination`. Returns the object's info.
     @discardableResult
     public func download(_ handle: UInt32, to destination: URL, progress: (Int64, Int64) -> Void = { _, _ in }) throws -> ObjectInfo {
-        try pollEvents()
-        // Without this the camera reports a fake 100kb size in ObjectInfo.
-        try setProp(PTP.FujiProp.enableCorrectFileSize, u16: 1, timeout: 30)
+        let perDownloadSetup = !isAutoSave
+        if perDownloadSetup {
+            try pollEvents()
+            // Without this the camera reports a fake 100kb size in ObjectInfo.
+            try setProp(PTP.FujiProp.enableCorrectFileSize, u16: 1, timeout: 30)
+        }
 
         var result: Result<ObjectInfo, Error>
         do {
@@ -233,8 +243,10 @@ public final class FujiCamera: @unchecked Sendable {
         }
 
         do {
-            try pollEvents()
-            try setProp(PTP.FujiProp.enableCorrectFileSize, u16: 0)
+            if perDownloadSetup {
+                try pollEvents()
+                try setProp(PTP.FujiProp.enableCorrectFileSize, u16: 0)
+            }
         } catch {
             // The file is complete; in selection mode the camera may hang up right after the last one.
             guard case .success = result else { throw error }
