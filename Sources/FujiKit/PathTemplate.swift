@@ -53,7 +53,7 @@ public struct PathTemplate: Sendable, Equatable {
     }
 
     /// Token values must not add path separators or other characters that are awkward in filenames.
-    static func sanitize(_ value: String) -> String {
+    public static func sanitize(_ value: String) -> String {
         String(value.map { "/\\:".contains($0) ? "-" : $0 })
     }
 

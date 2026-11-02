@@ -1,8 +1,12 @@
+import QuickLook
 import SwiftUI
 
 struct GalleryView: View {
     @Environment(CameraModel.self) private var model
     @State private var filter = Filter.all
+    /// The item last clicked; space previews it.
+    @State private var focusedItem: PhotoItem?
+    @State private var previewURL: URL?
 
     enum Filter: String, CaseIterable, Identifiable {
         case all = "All", new = "Not Imported"
@@ -33,6 +37,7 @@ struct GalleryView: View {
                     Section {
                         ForEach(section.items) { item in
                             PhotoCell(item: item, isSelected: model.selection.contains(item.id))
+                                .onTapGesture(count: 2) { preview(item) }
                                 .onTapGesture { toggle(item) }
                         }
                     } header: {
@@ -43,6 +48,14 @@ struct GalleryView: View {
             .padding(.horizontal, 16)
             .padding(.bottom, 16)
         }
+        .focusable()
+        .focusEffectDisabled()
+        .onKeyPress(.space) {
+            guard let focusedItem else { return .ignored }
+            preview(focusedItem)
+            return .handled
+        }
+        .quickLookPreview($previewURL)
         .safeAreaInset(edge: .top, spacing: 0) {
             if model.showResizeNotice { ResizeNotice() }
         }
@@ -88,7 +101,13 @@ struct GalleryView: View {
         return "\(n) \(n == 1 ? "item" : "items") · \(new) not imported"
     }
 
+    private func preview(_ item: PhotoItem) {
+        focusedItem = item
+        Task { previewURL = await model.previewFile(for: item) }
+    }
+
     private func toggle(_ item: PhotoItem) {
+        focusedItem = item
         if model.selection.contains(item.id) {
             model.selection.remove(item.id)
         } else {

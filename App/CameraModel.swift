@@ -185,6 +185,7 @@ final class CameraModel {
     }
 
     private func resetSession() {
+        try? FileManager.default.removeItem(at: FileManager.default.temporaryDirectory.appendingPathComponent("Previews"))
         items = []
         selection = []
         listProgress = (0, 0)
@@ -453,6 +454,26 @@ final class CameraModel {
     func dismissResizeNotice(forever: Bool) {
         showResizeNotice = false
         if forever { UserDefaults.standard.set(true, forKey: Prefs.hideResizeNotice) }
+    }
+
+    /// Downloads `item` into a cache for Quick Look, once per session. Doesn't count as an import.
+    func previewFile(for item: PhotoItem) async -> URL? {
+        guard let camera, !item.info.isVideo else { return nil }
+        let dir = FileManager.default.temporaryDirectory.appendingPathComponent("Previews", isDirectory: true)
+        let file = dir.appendingPathComponent(PathTemplate.sanitize(item.id) + "." + (item.info.filename as NSString).pathExtension)
+        if FileManager.default.fileExists(atPath: file.path) { return file }
+        try? FileManager.default.createDirectory(at: dir, withIntermediateDirectories: true)
+        let partial = dir.appendingPathComponent(UUID().uuidString)
+        do {
+            let handle = item.handle
+            try await camera.run { try $0.download(handle, to: partial) }
+            try FileManager.default.moveItem(at: partial, to: file)
+            return file
+        } catch {
+            try? FileManager.default.removeItem(at: partial)
+            appendLog("Preview of \(item.info.filename) failed: \(error.localizedDescription)")
+            return nil
+        }
     }
 
     func forgetHistory() {
