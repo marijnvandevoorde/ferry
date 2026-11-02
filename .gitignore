@@ -4,3 +4,4 @@ FujiImport.xcodeproj/
 App/Info.plist
 xcuserdata/
 .DS_Store
+App/FujiImport.entitlements
