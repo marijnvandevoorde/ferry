@@ -3,6 +3,8 @@
 import Darwin
 #elseif canImport(Glibc)
 import Glibc
+#elseif os(Windows)
+import WinSDK
 #endif
 import XCTest
 
@@ -69,8 +71,7 @@ final class AutoSaveTests: XCTestCase {
             defer { Sys.close(notifyServer) }
             Self.sendUDP("DISCOVER \(target) HTTP/1.1\r\nMX:3\r\nHOST:192.168.1.255:|\r\nDSCADDR:127.0.0.1\r\nSERVICE:PCAUTOSAVE/1.0\r\n",
                          port: discoverPort)
-            let client = accept(notifyServer, nil, nil)
-            let notify = TCPSocket(fd: client)
+            let notify = TCPSocket(handle: Sys.accept(notifyServer))
             guard let message = try? notify.readAvailable() else { return }
             result.importer = AutoSaveListener.parse(message)["IMPORTER"] ?? ""
             try? notify.write(Data("HTTP/1.1 200 OK\r\n".utf8))
@@ -83,26 +84,22 @@ final class AutoSaveTests: XCTestCase {
         return result
     }
 
-    private static func listen(port: UInt16) -> Int32 {
-        let fd = socket(AF_INET, Sys.stream, 0)
-        var yes: Int32 = 1
-        setsockopt(fd, SOL_SOCKET, SO_REUSEADDR, &yes, socklen_t(MemoryLayout<Int32>.size))
-        var addr = Sys.sockaddrIPv4(port: port, address: inet_addr("127.0.0.1"))
-        _ = withUnsafePointer(to: &addr) {
-            $0.withMemoryRebound(to: sockaddr.self, capacity: 1) { Sys.bind(fd, $0, socklen_t(MemoryLayout<sockaddr_in>.size)) }
-        }
-        _ = Sys.listen(fd, 1)
+    private static func listen(port: UInt16) -> Sys.Handle {
+        let fd = Sys.tcpSocket()
+        Sys.setReuseAddress(fd)
+        _ = Sys.bind(fd, to: Sys.ipv4("127.0.0.1", port: port)!)
+        _ = Sys.listen(fd, backlog: 1)
         return fd
     }
 
     private static func sendUDP(_ message: String, port: UInt16) {
-        let fd = socket(AF_INET, Sys.datagram, 0)
+        let fd = Sys.udpSocket()
         defer { Sys.close(fd) }
-        var addr = Sys.sockaddrIPv4(port: port, address: inet_addr("127.0.0.1"))
+        var addr = Sys.ipv4("127.0.0.1", port: port)!
         let bytes = Array(message.utf8)
         _ = withUnsafePointer(to: &addr) {
             $0.withMemoryRebound(to: sockaddr.self, capacity: 1) {
-                sendto(fd, bytes, bytes.count, 0, $0, socklen_t(MemoryLayout<sockaddr_in>.size))
+                sendto(fd, bytes, .init(bytes.count), 0, $0, .init(MemoryLayout<sockaddr_in>.size))
             }
         }
     }

@@ -1,8 +1,3 @@
-#if canImport(Darwin)
-import Darwin
-#elseif canImport(Glibc)
-import Glibc
-#endif
 import Foundation
 
 /// Fuji's *PC AutoSave*: the camera joins the home network and sends photos to a registered computer.
@@ -31,8 +26,8 @@ public final class AutoSaveListener: @unchecked Sendable {
     public let clientName: String
     public var log: (String) -> Void
     let ports: Ports
-    private var registerSocket: Int32 = -1
-    private var connectSocket: Int32 = -1
+    private var registerSocket = Sys.invalid
+    private var connectSocket = Sys.invalid
 
     /// `clientName` is shown on the camera; it is reduced to characters the camera's parser accepts.
     public init(clientName: String, ports: Ports = Ports(), log: @escaping (String) -> Void = { _ in }) {
@@ -51,31 +46,26 @@ public final class AutoSaveListener: @unchecked Sendable {
 
     /// Opens the UDP ports the camera broadcasts to.
     public func start() throws {
-        if registerSocket < 0 { registerSocket = try Self.udpSocket(port: ports.register) }
-        if connectSocket < 0 { connectSocket = try Self.udpSocket(port: ports.connect) }
+        if !Sys.isValid(registerSocket) { registerSocket = try Self.udpSocket(port: ports.register) }
+        if !Sys.isValid(connectSocket) { connectSocket = try Self.udpSocket(port: ports.connect) }
     }
 
     public func stop() {
-        if registerSocket >= 0 { Sys.close(registerSocket) }
-        if connectSocket >= 0 { Sys.close(connectSocket) }
-        registerSocket = -1
-        connectSocket = -1
+        if Sys.isValid(registerSocket) { Sys.close(registerSocket) }
+        if Sys.isValid(connectSocket) { Sys.close(connectSocket) }
+        registerSocket = Sys.invalid
+        connectSocket = Sys.invalid
     }
 
     /// Waits up to `timeout` for a camera; returns nil when none showed up.
     public func waitForCamera(timeout: TimeInterval) throws -> Event? {
         try start()
-        var fds = [pollfd(fd: registerSocket, events: Int16(POLLIN), revents: 0),
-                   pollfd(fd: connectSocket, events: Int16(POLLIN), revents: 0)]
-        let n = poll(&fds, 2, Int32(timeout * 1000))
-        guard n > 0 else {
-            if n < 0 && errno != EINTR { throw FujiError.io("poll: \(String(cString: strerror(errno)))") }
-            return nil
-        }
-        let isRegister = fds[0].revents & Int16(POLLIN) != 0
+        let ready = Sys.wait([registerSocket, connectSocket], timeout: timeout)
+        guard !ready.isEmpty else { return nil }
+        let isRegister = ready[0]
         let fd = isRegister ? registerSocket : connectSocket
         var buffer = [UInt8](repeating: 0, count: 1024)
-        let len = recv(fd, &buffer, buffer.count, 0)
+        let len = buffer.withUnsafeMutableBytes { Sys.receive(fd, $0.baseAddress!, $0.count) }
         guard len > 0 else { return nil }
         let greeting = String(decoding: buffer[0..<len], as: UTF8.self)
         log("AutoSave: \(isRegister ? "registration" : "import") request from the camera")
@@ -111,11 +101,10 @@ public final class AutoSaveListener: @unchecked Sendable {
             throw FujiError.protocolError("the camera rejected NOTIFY: \(ack)")
         }
 
-        var pfd = pollfd(fd: server, events: Int16(POLLIN), revents: 0)
-        guard poll(&pfd, 1, 30_000) > 0 else { throw FujiError.timeout }
-        let client = accept(server, nil, nil)
-        guard client >= 0 else { throw FujiError.io("accept: \(String(cString: strerror(errno)))") }
-        let invite = TCPSocket(fd: client)
+        guard !Sys.wait([server], timeout: 30).isEmpty else { throw FujiError.timeout }
+        let client = Sys.accept(server)
+        guard Sys.isValid(client) else { throw FujiError.io("accept: \(Sys.describe(Sys.lastError()))") }
+        let invite = TCPSocket(handle: client)
         defer { invite.close() }
         invite.readTimeout = 10
         let request = Self.parse(try invite.readAvailable())
@@ -150,36 +139,30 @@ public final class AutoSaveListener: @unchecked Sendable {
         return fields
     }
 
-    private static func udpSocket(port: UInt16) throws -> Int32 {
-        let fd = socket(AF_INET, Sys.datagram, 0)
-        guard fd >= 0 else { throw FujiError.io("socket: \(String(cString: strerror(errno)))") }
-        var yes: Int32 = 1
-        setsockopt(fd, SOL_SOCKET, SO_REUSEADDR, &yes, socklen_t(MemoryLayout<Int32>.size))
-        setsockopt(fd, SOL_SOCKET, SO_REUSEPORT, &yes, socklen_t(MemoryLayout<Int32>.size))
+    private static func udpSocket(port: UInt16) throws -> Sys.Handle {
+        let fd = Sys.udpSocket()
+        guard Sys.isValid(fd) else { throw FujiError.io("socket: \(Sys.describe(Sys.lastError()))") }
+        Sys.setReuseAddress(fd, port: true)
         try bindAny(fd, port: port)
         return fd
     }
 
-    private static func tcpListener(port: UInt16) throws -> Int32 {
-        let fd = socket(AF_INET, Sys.stream, 0)
-        guard fd >= 0 else { throw FujiError.io("socket: \(String(cString: strerror(errno)))") }
-        var yes: Int32 = 1
-        setsockopt(fd, SOL_SOCKET, SO_REUSEADDR, &yes, socklen_t(MemoryLayout<Int32>.size))
+    private static func tcpListener(port: UInt16) throws -> Sys.Handle {
+        let fd = Sys.tcpSocket()
+        guard Sys.isValid(fd) else { throw FujiError.io("socket: \(Sys.describe(Sys.lastError()))") }
+        Sys.setReuseAddress(fd)
         try bindAny(fd, port: port)
-        guard Sys.listen(fd, 2) == 0 else {
+        guard Sys.listen(fd, backlog: 2) else {
+            let message = Sys.describe(Sys.lastError())
             Sys.close(fd)
-            throw FujiError.io("listen on \(port): \(String(cString: strerror(errno)))")
+            throw FujiError.io("listen on \(port): \(message)")
         }
         return fd
     }
 
-    private static func bindAny(_ fd: Int32, port: UInt16) throws {
-        var addr = Sys.sockaddrIPv4(port: port, address: in_addr_t(0))
-        let rc = withUnsafePointer(to: &addr) {
-            $0.withMemoryRebound(to: sockaddr.self, capacity: 1) { Sys.bind(fd, $0, socklen_t(MemoryLayout<sockaddr_in>.size)) }
-        }
-        guard rc == 0 else {
-            let message = String(cString: strerror(errno))
+    private static func bindAny(_ fd: Sys.Handle, port: UInt16) throws {
+        guard Sys.bind(fd, to: Sys.anyIPv4(port: port)) else {
+            let message = Sys.describe(Sys.lastError())
             Sys.close(fd)
             throw FujiError.io("port \(port) is in use (\(message)). Is Fujifilm's PC AutoSave app running?")
         }

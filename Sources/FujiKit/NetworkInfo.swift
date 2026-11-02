@@ -1,6 +1,8 @@
 import Foundation
 #if canImport(SystemConfiguration)
 import SystemConfiguration
+#elseif os(Windows)
+import WinSDK
 #endif
 
 /// Finds the Wi-Fi interface and its router. When joined to a camera's network, the router is the camera.
@@ -24,6 +26,62 @@ public enum NetworkInfo {
             return dict["Router"] as? String
         }
         return nil
+    }
+    #elseif os(Windows)
+    /// Friendly name of the first Wi-Fi adapter, e.g. "Wi-Fi".
+    public static var wifiInterface: String? {
+        adapters().first { $0.isWifi }?.name
+    }
+
+    /// IPv4 gateway of the adapter called `interface`.
+    public static func router(for interface: String) -> String? {
+        adapters().first { $0.name == interface }?.gateway
+    }
+
+    private struct Adapter {
+        var name: String
+        var isWifi: Bool
+        var gateway: String?
+    }
+
+    private static func adapters() -> [Adapter] {
+        var size: ULONG = 16_384
+        var buffer = [UInt8](repeating: 0, count: Int(size))
+        let flags = ULONG(GAA_FLAG_INCLUDE_GATEWAYS)
+        var rc = buffer.withUnsafeMutableBytes {
+            GetAdaptersAddresses(ULONG(AF_INET), flags, nil, $0.baseAddress!.assumingMemoryBound(to: IP_ADAPTER_ADDRESSES.self), &size)
+        }
+        if rc == ERROR_BUFFER_OVERFLOW {
+            buffer = [UInt8](repeating: 0, count: Int(size))
+            rc = buffer.withUnsafeMutableBytes {
+                GetAdaptersAddresses(ULONG(AF_INET), flags, nil, $0.baseAddress!.assumingMemoryBound(to: IP_ADAPTER_ADDRESSES.self), &size)
+            }
+        }
+        guard rc == ERROR_SUCCESS else { return [] }
+        var result: [Adapter] = []
+        buffer.withUnsafeMutableBytes { raw in
+            var next: UnsafeMutablePointer<IP_ADAPTER_ADDRESSES>? = raw.baseAddress!.assumingMemoryBound(to: IP_ADAPTER_ADDRESSES.self)
+            while let adapter = next {
+                let name = adapter.pointee.FriendlyName.map { String(decodingCString: $0, as: UTF16.self) } ?? ""
+                var gateway: String?
+                if let first = adapter.pointee.FirstGatewayAddress, let sa = first.pointee.Address.lpSockaddr,
+                   sa.pointee.sa_family == ADDRESS_FAMILY(AF_INET) {
+                    let address = sa.withMemoryRebound(to: sockaddr_in.self, capacity: 1) { $0.pointee.sin_addr }
+                    gateway = ipv4String(address)
+                }
+                // IF_TYPE_IEEE80211
+                result.append(Adapter(name: name, isWifi: adapter.pointee.IfType == 71, gateway: gateway))
+                next = adapter.pointee.Next
+            }
+        }
+        return result
+    }
+
+    private static func ipv4String(_ address: in_addr) -> String {
+        var a = address
+        var chars = [CChar](repeating: 0, count: 16)
+        _ = inet_ntop(AF_INET, &a, &chars, chars.count)
+        return String(cString: chars)
     }
     #else
     /// Name of the first wireless interface, e.g. "wlan0".

@@ -25,10 +25,11 @@ public enum FujiError: Error, LocalizedError, Equatable {
 
     /// The connection to the camera is gone; reconnecting may help.
     public var isConnectionLoss: Bool {
-        switch self {
-        case .disconnected, .timeout, .io: return true
-        default: return false
-        }
+        // Written with `if case`: the Swift 6.0 compiler for Windows crashes on the equivalent switch.
+        if case .disconnected = self { return true }
+        if case .timeout = self { return true }
+        if case .io = self { return true }
+        return false
     }
 }
 
