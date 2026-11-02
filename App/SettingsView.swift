@@ -1,4 +1,5 @@
 import FujiKit
+import ServiceManagement
 import SwiftUI
 
 struct SettingsView: View {
@@ -13,6 +14,8 @@ struct SettingsView: View {
     @AppStorage(Prefs.renameFiles) private var renameFiles = false
     @AppStorage(Prefs.fileTemplate) private var fileTemplate = "{yyyy-MM-dd}_{original}"
     @AppStorage(Prefs.backupEnabled) private var backupEnabled = false
+    @AppStorage(Prefs.skipVideos) private var skipVideos = false
+    @State private var launchAtLogin = SMAppService.mainApp.status == .enabled
     @State private var folder = FolderBookmark.url(for: Prefs.folderBookmark)
     @State private var backupFolder = FolderBookmark.url(for: Prefs.backupBookmark)
     @State private var confirmForget = false
@@ -30,6 +33,15 @@ struct SettingsView: View {
                 TextField("Camera address", text: $host, prompt: Text("Automatic (Wi-Fi router)"))
                 Toggle("Connect automatically when the camera is found", isOn: $autoConnect)
                 Toggle("Import new photos automatically after connecting", isOn: $autoImport)
+                Toggle("Leave videos out of “Import New”", isOn: $skipVideos)
+                Toggle("Open Fuji Import at login", isOn: $launchAtLogin)
+                    .onChange(of: launchAtLogin) { _, enabled in
+                        do {
+                            if enabled { try SMAppService.mainApp.register() } else { try SMAppService.mainApp.unregister() }
+                        } catch {
+                            launchAtLogin = SMAppService.mainApp.status == .enabled
+                        }
+                    }
             }
             Section {
                 Picker("Import to", selection: $destination) {

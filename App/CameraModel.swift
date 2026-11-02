@@ -38,6 +38,7 @@ enum Prefs {
     static let fileTemplate = "fileTemplate"
     static let backupEnabled = "backupEnabled"
     static let backupBookmark = "backupBookmark"
+    static let skipVideos = "skipVideos"
 
     static func register() {
         UserDefaults.standard.register(defaults: [
@@ -51,6 +52,7 @@ enum Prefs {
             renameFiles: false,
             fileTemplate: "{yyyy-MM-dd}_{original}",
             backupEnabled: false,
+            skipVideos: false,
         ])
     }
 }
@@ -89,6 +91,11 @@ final class CameraModel {
     private var thumbnailCache: [String: NSImage] = [:]
 
     var newItems: [PhotoItem] { items.filter { !$0.imported } }
+    /// What "Import New" imports: new items, without videos if the user chose to skip them.
+    var itemsToImport: [PhotoItem] {
+        let skipVideos = UserDefaults.standard.bool(forKey: Prefs.skipVideos)
+        return newItems.filter { !(skipVideos && $0.info.isVideo) }
+    }
     var isImporting: Bool { importProgress != nil }
 
     init() {
@@ -202,7 +209,7 @@ final class CameraModel {
         }
         do {
             try await loadList(camera)
-            if UserDefaults.standard.bool(forKey: Prefs.autoImport), !newItems.isEmpty {
+            if UserDefaults.standard.bool(forKey: Prefs.autoImport), !itemsToImport.isEmpty {
                 importNew()
             }
             try await loadThumbnails(camera)
@@ -277,7 +284,7 @@ final class CameraModel {
     // MARK: - Importing
 
     func importNew() {
-        startImport(newItems)
+        startImport(itemsToImport)
     }
 
     func importSelected() {
@@ -341,6 +348,8 @@ final class CameraModel {
 
     private func runImport(_ batch: [PhotoItem], camera: FujiCamera) async {
         defer { importProgress = nil }
+        let activity = keepAwake()
+        defer { ProcessInfo.processInfo.endActivity(activity) }
         guard let destinations = await prepareDestinations() else { return }
 
         var imported = 0
@@ -375,6 +384,8 @@ final class CameraModel {
     /// The user picked images on the camera and chose to send them: import each one as the camera offers it.
     private func receiveSelection(_ camera: FujiCamera) async {
         appendLog("Receiving images selected on the camera")
+        let activity = keepAwake()
+        defer { ProcessInfo.processInfo.endActivity(activity) }
         importProgress = ImportProgress(index: 0, total: 0, filename: "", fraction: 0)
         var received = 0
         var failure: String?
@@ -404,6 +415,12 @@ final class CameraModel {
         self.camera = nil
         Task.detached { camera.disconnect() }
         importSummary = "Received \(received) \(received == 1 ? "item" : "items") from the camera" + (failure.map { ". Stopped: \($0)" } ?? "")
+    }
+
+    /// Keeps the Mac from sleeping while an import runs; the Wi-Fi connection would drop.
+    private func keepAwake() -> NSObjectProtocol {
+        ProcessInfo.processInfo.beginActivity(options: [.userInitiated, .idleSystemSleepDisabled],
+                                              reason: "Importing photos from the camera")
     }
 
     /// With "Resize image for smartphone" on, Fuji cameras send ~3 MP JPEGs (2048 px on the long side) over Wi-Fi.

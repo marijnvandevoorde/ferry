@@ -198,11 +198,11 @@ private struct ImportBar: View {
                     Button {
                         model.importNew()
                     } label: {
-                        Text(model.newItems.isEmpty ? "No New Items" : "Import \(model.newItems.count) New")
+                        Text(model.itemsToImport.isEmpty ? "No New Items" : "Import \(model.itemsToImport.count) New")
                             .frame(minWidth: 120)
                     }
                     .buttonStyle(.borderedProminent)
-                    .disabled(model.newItems.isEmpty || model.isListing)
+                    .disabled(model.itemsToImport.isEmpty || model.isListing)
                     .keyboardShortcut(.defaultAction)
                 }
             }
