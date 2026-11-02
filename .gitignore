@@ -1,0 +1,6 @@
+.build/
+.swiftpm/
+FujiImport.xcodeproj/
+App/Info.plist
+xcuserdata/
+.DS_Store
