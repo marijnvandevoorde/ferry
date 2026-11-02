@@ -23,7 +23,7 @@ options:
                        tokens: {yyyy} {MM} {dd} {HH} {mm} {ss} {camera} {original}
   --all                import everything, not only photos that weren't imported before
   --skip-videos        leave out videos
-  --protocol fuji|ptpip   camera protocol (default: try Fuji's, then standard PTP/IP for Canon, Nikon, …)
+  --protocol NAME      fuji, ptpip (Canon, Nikon, …), olympus or ricoh (default: try each in turn)
   --immich URL         also upload imports to this Immich server (API key in $IMMICH_API_KEY)
   --immich-album NAME  add Immich uploads to this album
   --history FILE       import history file (default: \(ImportHistory.defaultURL.path))

@@ -27,6 +27,7 @@ Over Wi-Fi the camera only offers JPEGs (no RAF files).
 | X-A2, X30, X-F10, X-T2, X-T4, X-T30, X-S10, X-H1, GFX100 II | not yet | ✅ |
 | X-T5, X-S20, X100VI and other cameras that pair over Bluetooth | ❌ planned | |
 | Canon EOS R, 90D, 5D Mark III, Rebel SL2, PowerShot G7 X III (standard PTP/IP) | not yet | ✅ |
+| Olympus / OM System (OI.Share), Ricoh GR II / III | not yet | mock API only |
 
 "Emulator" means the protocol works against [vcam](https://github.com/petabyt/vcam)'s model of that camera.
 Tried it with your camera? Please [file a camera report](https://github.com/marijnvandevoorde/fuji-import/issues/new?template=camera-report.yml),

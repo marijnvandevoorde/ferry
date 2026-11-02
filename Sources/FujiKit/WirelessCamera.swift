@@ -46,6 +46,10 @@ public enum CameraProtocol: String, Sendable, CaseIterable {
     case fuji
     /// Standard PTP/IP on port 15740 (Canon, Nikon, Sony and others).
     case ptpip
+    /// Olympus and OM System (OI.Share HTTP API).
+    case olympus
+    /// Ricoh GR II / III (HTTP API).
+    case ricoh
 
     /// Connects with each protocol in turn and returns the first camera that accepts. A protocol is skipped only
     /// when nothing listens on its port, so no camera gets a throwaway connection (some accept just one).
@@ -68,6 +72,8 @@ public enum CameraProtocol: String, Sendable, CaseIterable {
         switch self {
         case .fuji: FujiCamera(host: host, interface: interface, clientName: clientName, log: log)
         case .ptpip: PTPIPCamera(host: host, interface: interface, clientName: clientName, log: log)
+        case .olympus: OlympusCamera(host: host, log: log)
+        case .ricoh: RicohCamera(host: host, log: log)
         }
     }
 }
