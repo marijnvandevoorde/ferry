@@ -16,6 +16,8 @@ struct SettingsView: View {
     @AppStorage(Prefs.backupEnabled) private var backupEnabled = false
     @AppStorage(Prefs.skipVideos) private var skipVideos = false
     @State private var launchAtLogin = SMAppService.mainApp.status == .enabled
+    @AppStorage(Prefs.showMenuBarIcon) private var showMenuBarIcon = true
+    @AppStorage(Prefs.hideDockIcon) private var hideDockIcon = false
     @State private var folder = FolderBookmark.url(for: Prefs.folderBookmark)
     @State private var backupFolder = FolderBookmark.url(for: Prefs.backupBookmark)
     @State private var confirmForget = false
@@ -42,6 +44,11 @@ struct SettingsView: View {
                             launchAtLogin = SMAppService.mainApp.status == .enabled
                         }
                     }
+                Toggle("Show in the menu bar", isOn: $showMenuBarIcon)
+                Toggle("Hide the Dock icon", isOn: $hideDockIcon)
+                    .disabled(!showMenuBarIcon)
+                    .onChange(of: hideDockIcon) { AppDelegate.applyDockIconPreference() }
+                    .onChange(of: showMenuBarIcon) { _, show in if !show { hideDockIcon = false } }
             }
             Section {
                 Picker("Import to", selection: $destination) {

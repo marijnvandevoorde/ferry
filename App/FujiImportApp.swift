@@ -2,10 +2,12 @@ import SwiftUI
 
 @main
 struct FujiImportApp: App {
+    @NSApplicationDelegateAdaptor(AppDelegate.self) private var appDelegate
     @State private var model = CameraModel()
+    @AppStorage(Prefs.showMenuBarIcon) private var showMenuBarIcon = true
 
     var body: some Scene {
-        WindowGroup("Fuji Import") {
+        WindowGroup("Fuji Import", id: "main") {
             ContentView()
                 .environment(model)
                 .frame(minWidth: 720, minHeight: 500)
@@ -22,6 +24,11 @@ struct FujiImportApp: App {
                 .environment(model)
         }
         .defaultSize(width: 700, height: 420)
+
+        MenuBarExtra("Fuji Import", systemImage: "camera.aperture", isInserted: $showMenuBarIcon) {
+            MenuBarContent()
+                .environment(model)
+        }
 
         Settings {
             SettingsView()

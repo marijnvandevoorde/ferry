@@ -39,6 +39,8 @@ enum Prefs {
     static let backupEnabled = "backupEnabled"
     static let backupBookmark = "backupBookmark"
     static let skipVideos = "skipVideos"
+    static let showMenuBarIcon = "showMenuBarIcon"
+    static let hideDockIcon = "hideDockIcon"
 
     static func register() {
         UserDefaults.standard.register(defaults: [
@@ -53,6 +55,8 @@ enum Prefs {
             fileTemplate: "{yyyy-MM-dd}_{original}",
             backupEnabled: false,
             skipVideos: false,
+            showMenuBarIcon: true,
+            hideDockIcon: false,
         ])
     }
 }
@@ -220,6 +224,9 @@ final class CameraModel {
                 startImport(resumable)
             } else if UserDefaults.standard.bool(forKey: Prefs.autoImport), !itemsToImport.isEmpty {
                 importNew()
+            } else if !itemsToImport.isEmpty {
+                let n = itemsToImport.count
+                Notifier.post(cameraName.isEmpty ? "Camera connected" : cameraName, "\(n) new \(n == 1 ? "item" : "items") to import")
             }
             try await loadThumbnails(camera)
 
@@ -394,6 +401,7 @@ final class CameraModel {
         if Task.isCancelled { summary += " (cancelled)" }
         if !failed.isEmpty { summary += ". \(failed.count) failed: \(failed.prefix(3).joined(separator: ", "))" }
         importSummary = summary
+        Notifier.post("Import finished", summary)
     }
 
     /// The user picked images on the camera and chose to send them: import each one as the camera offers it.
@@ -430,6 +438,7 @@ final class CameraModel {
         self.camera = nil
         Task.detached { camera.disconnect() }
         importSummary = "Received \(received) \(received == 1 ? "item" : "items") from the camera" + (failure.map { ". Stopped: \($0)" } ?? "")
+        Notifier.post("Transfer finished", importSummary ?? "")
     }
 
     /// Keeps the Mac from sleeping while an import runs; the Wi-Fi connection would drop.
