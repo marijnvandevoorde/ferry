@@ -22,6 +22,14 @@ public enum FujiError: Error, LocalizedError, Equatable {
         case .cancelled: return "Cancelled"
         }
     }
+
+    /// The connection to the camera is gone; reconnecting may help.
+    public var isConnectionLoss: Bool {
+        switch self {
+        case .disconnected, .timeout, .io: return true
+        default: return false
+        }
+    }
 }
 
 /// PTP codes used by this client. Fuji-specific values come from libfuji (MIT, github.com/petabyt/libfuji).

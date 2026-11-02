@@ -89,6 +89,8 @@ final class CameraModel {
     private var importTask: Task<Void, Never>?
     private let history = ImportHistory()
     private var thumbnailCache: [String: NSImage] = [:]
+    /// Items of an import that the connection dropped in the middle of; resumed after reconnecting.
+    private var pendingImport: Set<String> = []
 
     var newItems: [PhotoItem] { items.filter { !$0.imported } }
     /// What "Import New" imports: new items, without videos if the user chose to skip them.
@@ -173,6 +175,7 @@ final class CameraModel {
     }
 
     func disconnect() {
+        pendingImport = []
         importTask?.cancel()
         sessionTask?.cancel()
         let camera = self.camera
@@ -209,7 +212,12 @@ final class CameraModel {
         }
         do {
             try await loadList(camera)
-            if UserDefaults.standard.bool(forKey: Prefs.autoImport), !itemsToImport.isEmpty {
+            let resumable = items.filter { pendingImport.contains($0.id) && !$0.imported }
+            pendingImport = []
+            if !resumable.isEmpty {
+                appendLog("Resuming the interrupted import (\(resumable.count) left)")
+                startImport(resumable)
+            } else if UserDefaults.standard.bool(forKey: Prefs.autoImport), !itemsToImport.isEmpty {
                 importNew()
             }
             try await loadThumbnails(camera)
@@ -292,6 +300,7 @@ final class CameraModel {
     }
 
     func cancelImport() {
+        pendingImport = []
         importTask?.cancel()
         // Receiving a selection from the camera runs as part of the session.
         if importTask == nil { sessionTask?.cancel() }
@@ -354,26 +363,31 @@ final class CameraModel {
 
         var imported = 0
         var failed: [String] = []
+        pendingImport = Set(batch.map(\.id))
         for (index, item) in batch.enumerated() {
             if Task.isCancelled { break }
             importProgress = ImportProgress(index: index + 1, total: batch.count, filename: item.info.filename, fraction: 0)
-            do {
-                _ = try await importObject(item.handle, filename: item.info.filename, camera: camera, destinations: destinations)
-                imported += 1
-            } catch let error as FujiError {
-                switch error {
-                case .disconnected, .timeout, .io:
+            // One retry for errors that aren't a lost connection.
+            for attempt in 1...2 {
+                do {
+                    _ = try await importObject(item.handle, filename: item.info.filename, camera: camera, destinations: destinations)
+                    imported += 1
+                    pendingImport.remove(item.id)
+                    break
+                } catch let error as FujiError where error.isConnectionLoss {
+                    // Keep `pendingImport`: the import continues after reconnecting.
                     connectionLost(error)
                     return
-                default:
-                    failed.append(item.info.filename)
+                } catch {
                     appendLog("Failed to import \(item.info.filename): \(error.localizedDescription)")
+                    if attempt == 2 {
+                        failed.append(item.info.filename)
+                        pendingImport.remove(item.id)
+                    }
                 }
-            } catch {
-                failed.append(item.info.filename)
-                appendLog("Failed to import \(item.info.filename): \(error.localizedDescription)")
             }
         }
+        pendingImport = []
 
         var summary = "Imported \(imported) \(imported == 1 ? "item" : "items") to \(destinations.last?.displayName ?? "Photos")"
         if Task.isCancelled { summary += " (cancelled)" }
