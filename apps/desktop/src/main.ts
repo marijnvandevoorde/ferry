@@ -3,6 +3,7 @@ import { join, pictureDir } from "@tauri-apps/api/path";
 import { listen } from "@tauri-apps/api/event";
 import { disable as disableAutostart, enable as enableAutostart, isEnabled as autostartEnabled } from "@tauri-apps/plugin-autostart";
 import { open } from "@tauri-apps/plugin-dialog";
+import { t, translatePage } from "./i18n";
 import { isPermissionGranted, requestPermission, sendNotification } from "@tauri-apps/plugin-notification";
 
 // Events from `fujictl serve` (see Sources/fujictl/Serve.swift).
@@ -58,7 +59,7 @@ function itemsToImport(): Item[] {
 function startImport(ids?: string[]) {
   if (!settings.folder) {
     openSettings();
-    showError("Choose a folder to import into first.");
+    showError(t("Choose a folder to import into first."));
     return;
   }
   state.importing = true;
@@ -99,9 +100,9 @@ listen<ServeEvent>("fujictl", ({ payload: e }) => {
         state.importing = false;
       }
       $("connect-subtitle").textContent =
-        e.phase === "connecting" ? `Talking to the camera at ${e.address ?? ""}…` :
-        e.phase === "waitingForApproval" ? "Press OK on the camera to allow this computer." :
-        "Looking for the camera on your Wi-Fi network…";
+        e.phase === "connecting" ? t("Talking to the camera at {address}…", { address: e.address ?? "" }) :
+        e.phase === "waitingForApproval" ? t("Press OK on the camera to allow this computer.") :
+        t("Looking for the camera on your Wi-Fi network…");
       break;
     }
     case "items": {
@@ -112,7 +113,7 @@ listen<ServeEvent>("fujictl", ({ payload: e }) => {
       const fresh = itemsToImport();
       if (firstList && fresh.length > 0) {
         if (settings.autoImport) startImport();
-        else notify(state.camera || "Camera connected", `${fresh.length} new ${fresh.length === 1 ? "item" : "items"} to import`);
+        else notify(state.camera || t("Camera connected"), t("{n} new items to import", { n: fresh.length }, fresh.length));
       }
       break;
     }
@@ -120,7 +121,7 @@ listen<ServeEvent>("fujictl", ({ payload: e }) => {
       state.thumbnails.set(e.id, convertFileSrc(e.path));
       break;
     case "progress":
-      $("status").textContent = `Importing ${e.filename} — ${e.index} of ${e.total}`;
+      $("status").textContent = t("Importing {file} — {index} of {total}", { file: e.filename, index: e.index, total: e.total });
       $<HTMLProgressElement>("progress").value = (e.index - 1 + e.fraction) / Math.max(e.total, 1);
       return; // no full re-render for progress
     case "imported": {
@@ -131,12 +132,12 @@ listen<ServeEvent>("fujictl", ({ payload: e }) => {
     }
     case "done": {
       state.importing = false;
-      let summary = `Imported ${e.imported} ${e.imported === 1 ? "item" : "items"}`;
-      if (e.cancelled) summary += " (stopped)";
-      if (e.failed.length) summary += `. ${e.failed.length} failed: ${e.failed.slice(0, 3).join(", ")}`;
+      let summary = t("Imported {n} items", { n: e.imported }, e.imported);
+      if (e.cancelled) summary += t(" (stopped)");
+      if (e.failed.length) summary += t(". {n} failed: {list}", { n: e.failed.length, list: e.failed.slice(0, 3).join(", ") });
       render();
       $("status").textContent = summary;
-      notify("Import finished", summary);
+      notify(t("Import finished"), summary);
       return;
     }
     case "error":
@@ -159,9 +160,9 @@ function render() {
   $("bar").hidden = !connected;
   $("disconnect").hidden = !connected;
   $("filter").hidden = !connected;
-  $("title").textContent = connected ? state.camera || "Camera" : "Fuji Import";
+  $("title").textContent = connected ? state.camera || t("Camera") : "Fuji Import";
   const newCount = state.items.filter((i) => !i.imported).length;
-  $("subtitle").textContent = connected ? `${state.items.length} items · ${newCount} not imported` : "";
+  $("subtitle").textContent = connected ? t("{n} items · {m} not imported", { n: state.items.length, m: newCount }) : "";
   $<HTMLButtonElement>("connect-now").disabled = state.phase !== "searching";
   if (!connected) return;
 
@@ -171,12 +172,12 @@ function render() {
   $("stop").hidden = !state.importing;
   const selected = $<HTMLButtonElement>("import-selected");
   selected.hidden = state.importing || state.selection.size === 0;
-  selected.textContent = `Import ${state.selection.size} Selected`;
+  selected.textContent = t("Import {n} Selected", { n: state.selection.size });
   const importNew = $<HTMLButtonElement>("import-new");
   importNew.hidden = state.importing;
   importNew.disabled = toImport.length === 0;
-  importNew.textContent = toImport.length ? `Import ${toImport.length} New` : "No New Items";
-  if (!state.importing && !state.lastError) $("status").textContent = settings.folder ? `Importing into ${settings.folder}` : "No import folder chosen";
+  importNew.textContent = toImport.length ? t("Import {n} New", { n: toImport.length }) : t("No New Items");
+  if (!state.importing && !state.lastError) $("status").textContent = settings.folder ? t("Importing into {folder}", { folder: settings.folder }) : t("No import folder chosen");
 
   // Gallery, grouped by day
   const filter = $<HTMLSelectElement>("filter").value;
@@ -188,24 +189,24 @@ function render() {
     empty.className = "muted";
     empty.style.textAlign = "center";
     empty.style.marginTop = "120px";
-    empty.textContent = filter === "new" ? "Everything is imported." : "No photos on the card.";
+    empty.textContent = filter === "new" ? t("Everything is imported.") : t("No photos on the card.");
     gallery.append(empty);
     return;
   }
   const days = new Map<string, Item[]>();
   for (const item of visible) {
-    const day = item.date ? new Date(item.date).toDateString() : "Unknown date";
+    const day = item.date ? new Date(item.date).toDateString() : "unknown";
     days.set(day, [...(days.get(day) ?? []), item]);
   }
   for (const [day, items] of days) {
     const header = document.createElement("div");
     header.className = "day";
     const label = document.createElement("span");
-    label.textContent = day === "Unknown date" ? day : new Date(day).toLocaleDateString(undefined, { weekday: "long", day: "numeric", month: "long", year: "numeric" });
+    label.textContent = day === "unknown" ? t("Unknown date") : new Date(day).toLocaleDateString(undefined, { weekday: "long", day: "numeric", month: "long", year: "numeric" });
     const all = items.every((i) => state.selection.has(i.id));
     const toggle = document.createElement("button");
     toggle.type = "button";
-    toggle.textContent = all ? "Deselect" : "Select";
+    toggle.textContent = all ? t("Deselect") : t("Select");
     toggle.onclick = () => {
       items.forEach((i) => (all ? state.selection.delete(i.id) : state.selection.add(i.id)));
       render();
@@ -219,7 +220,7 @@ function render() {
       cell.type = "button";
       cell.className = "cell" + (item.imported ? " imported" : "") + (state.selection.has(item.id) ? " selected" : "");
       cell.setAttribute("aria-pressed", String(state.selection.has(item.id)));
-      cell.setAttribute("aria-label", `${item.isVideo ? "Video" : "Photo"} ${item.filename}${item.imported ? ", imported" : ""}`);
+      cell.setAttribute("aria-label", `${item.isVideo ? t("Video") : t("Photo")} ${item.filename}${item.imported ? t(", imported") : ""}`);
       cell.title = `${item.filename}\n${item.date ? new Date(item.date).toLocaleString() : ""}`;
       const src = state.thumbnails.get(item.id);
       if (src) {
@@ -235,7 +236,7 @@ function render() {
       if (item.imported || item.isVideo) {
         const badge = document.createElement("span");
         badge.className = "badge";
-        badge.textContent = [item.imported ? "Imported" : "", item.isVideo ? "Video" : ""].filter(Boolean).join(" · ");
+        badge.textContent = [item.imported ? t("Imported") : "", item.isVideo ? t("Video") : ""].filter(Boolean).join(" · ");
         cell.append(badge);
       }
       cell.onclick = () => {
@@ -283,11 +284,11 @@ async function chooseFolder(title: string) {
   const folder = await open({ directory: true, title });
   if (typeof folder === "string") setFolder(folder);
 }
-$("choose-folder").onclick = () => chooseFolder("Choose where to put imported photos");
+$("choose-folder").onclick = () => chooseFolder(t("Choose where to put imported photos"));
 // Windows Photos/OneDrive (Windows) and Shotwell/GNOME Photos (Linux) index the Pictures folder.
 $("preset-pictures").onclick = async () => setFolder(await join(await pictureDir(), "Camera Imports"));
 $("preset-watched").onclick = async () => {
-  await chooseFolder("Choose the folder Lightroom, Photoshop Elements, digiKam or darktable watches");
+  await chooseFolder(t("Choose the folder Lightroom, Photoshop Elements, digiKam or darktable watches"));
   $<HTMLSelectElement>("folders").value = settings.folders = "";
 };
 $("folders").onchange = (e) => (settings.folders = (e.target as HTMLSelectElement).value);
@@ -303,4 +304,5 @@ $("immich-album").onchange = (e) => (settings.immichAlbum = (e.target as HTMLInp
 $("autostart").onchange = (e) => ((e.target as HTMLInputElement).checked ? enableAutostart() : disableAutostart());
 $("settings").addEventListener("close", render);
 
+translatePage();
 render();
