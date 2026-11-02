@@ -7,6 +7,10 @@ import WinSDK
 #endif
 import Foundation
 
+#if os(Windows)
+typealias sa_family_t = ADDRESS_FAMILY
+#endif
+
 /// The socket calls FujiKit needs, with the differences between macOS, Linux and Windows kept in one place.
 enum Sys {
     #if os(Windows)
