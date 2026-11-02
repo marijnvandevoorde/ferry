@@ -1,6 +1,6 @@
 # ADR 0001: How to build the Windows and Linux app
 
-**Status:** Proposed
+**Status:** Accepted
 **Date:** 2026-11-02
 **Issue:** #35
 
