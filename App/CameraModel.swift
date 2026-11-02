@@ -1,4 +1,5 @@
 import AppKit
+import ImageIO
 import FujiKit
 import Foundation
 import Observation
@@ -27,6 +28,7 @@ enum Prefs {
     static let autoImport = "autoImport"
     static let useAlbum = "useAlbum"
     static let albumName = "albumName"
+    static let hideResizeNotice = "hideResizeNotice"
 
     static func register() {
         UserDefaults.standard.register(defaults: [
@@ -60,6 +62,8 @@ final class CameraModel {
     private(set) var log: [String] = []
     /// Address the app is trying, for display.
     private(set) var cameraAddress = ""
+    /// The camera sent reduced-size JPEGs ("Resize image for smartphone" is on).
+    private(set) var showResizeNotice = false
     private var lastSearchFailure: String?
     var selection: Set<String> = []
 
@@ -311,6 +315,7 @@ final class CameraModel {
         // Use what was actually downloaded, in case handles shifted since listing.
         let key = ImportHistory.key(camera: cameraName, info: info)
         let image = thumbnail ? NSImage(contentsOf: file) : nil
+        if !info.isVideo { checkForResizedImage(file) }
         if !(skipIfImported && history.contains(key)) {
             try await PhotoImporter.importFile(file, originalFilename: info.filename, isVideo: info.isVideo, album: target.album)
             history.insert(key)
@@ -385,6 +390,24 @@ final class CameraModel {
         self.camera = nil
         Task.detached { camera.disconnect() }
         importSummary = "Received \(received) \(received == 1 ? "item" : "items") from the camera" + (failure.map { ". Stopped: \($0)" } ?? "")
+    }
+
+    /// With "Resize image for smartphone" on, Fuji cameras send ~3 MP JPEGs (2048 px on the long side) over Wi-Fi.
+    private func checkForResizedImage(_ file: URL) {
+        guard !showResizeNotice, !UserDefaults.standard.bool(forKey: Prefs.hideResizeNotice),
+              let source = CGImageSourceCreateWithURL(file as CFURL, nil),
+              let props = CGImageSourceCopyPropertiesAtIndex(source, 0, nil) as? [CFString: Any],
+              let width = props[kCGImagePropertyPixelWidth] as? Int,
+              let height = props[kCGImagePropertyPixelHeight] as? Int else { return }
+        if max(width, height) <= 2048 {
+            appendLog("Received a \(width)×\(height) image; the camera is probably resizing images for smartphones")
+            showResizeNotice = true
+        }
+    }
+
+    func dismissResizeNotice(forever: Bool) {
+        showResizeNotice = false
+        if forever { UserDefaults.standard.set(true, forKey: Prefs.hideResizeNotice) }
     }
 
     func forgetHistory() {

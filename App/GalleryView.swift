@@ -43,6 +43,9 @@ struct GalleryView: View {
             .padding(.horizontal, 16)
             .padding(.bottom, 16)
         }
+        .safeAreaInset(edge: .top, spacing: 0) {
+            if model.showResizeNotice { ResizeNotice() }
+        }
         .safeAreaInset(edge: .bottom, spacing: 0) {
             ImportBar()
         }
@@ -128,6 +131,38 @@ private struct SectionHeader: View {
         if Calendar.current.isDateInToday(day) { return "Today" }
         if Calendar.current.isDateInYesterday(day) { return "Yesterday" }
         return day.formatted(.dateTime.weekday(.wide).day().month(.wide).year())
+    }
+}
+
+private struct ResizeNotice: View {
+    @Environment(CameraModel.self) private var model
+
+    var body: some View {
+        HStack(alignment: .top, spacing: 12) {
+            Image(systemName: "photo.badge.exclamationmark")
+                .font(.title2)
+                .foregroundStyle(.orange)
+            VStack(alignment: .leading, spacing: 4) {
+                Text("The camera is sending smaller copies of your photos")
+                    .font(.headline)
+                Text("To get full-size photos, turn off **Resize Img for Smartphone** on the camera. It's under Set Up → Connection Setting → General Settings on most models.")
+                    .font(.callout)
+                    .foregroundStyle(.secondary)
+                    .fixedSize(horizontal: false, vertical: true)
+            }
+            Spacer()
+            Button("Don't Show Again") { model.dismissResizeNotice(forever: true) }
+            Button {
+                model.dismissResizeNotice(forever: false)
+            } label: {
+                Image(systemName: "xmark")
+            }
+            .buttonStyle(.borderless)
+            .help("Dismiss")
+        }
+        .padding(12)
+        .background(.bar)
+        .overlay(alignment: .bottom) { Divider() }
     }
 }
 
