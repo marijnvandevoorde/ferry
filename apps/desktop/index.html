@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Fuji Import</title>
+    <link rel="stylesheet" href="/src/style.css" />
+    <script type="module" src="/src/main.ts"></script>
+  </head>
+  <body>
+    <header>
+      <div>
+        <h1 id="title">Fuji Import</h1>
+        <p id="subtitle" class="muted"></p>
+      </div>
+      <nav>
+        <select id="filter" aria-label="Show">
+          <option value="all">All</option>
+          <option value="new">Not imported</option>
+        </select>
+        <button id="settings-button" type="button">Settings</button>
+        <button id="disconnect" type="button" hidden>Disconnect</button>
+      </nav>
+    </header>
+
+    <main>
+      <section id="connect">
+        <h2 id="connect-title">Connect your camera</h2>
+        <p id="connect-subtitle" class="muted">Looking for the camera on your Wi-Fi network…</p>
+        <ol>
+          <li>On the camera, press <b>Playback</b>, then choose <b>Wireless Communication</b>.</li>
+          <li>On this computer, join the camera's Wi-Fi network (named <b>FUJIFILM-…</b>).</li>
+          <li>Fuji Import connects automatically. Press <b>OK</b> on the camera if it asks.</li>
+        </ol>
+        <button id="connect-now" type="button">Connect</button>
+        <p id="error" class="error" role="alert" hidden></p>
+      </section>
+      <section id="gallery" hidden></section>
+    </main>
+
+    <footer id="bar" hidden>
+      <div id="status" class="muted"></div>
+      <progress id="progress" max="1" value="0" hidden></progress>
+      <span class="spacer"></span>
+      <button id="stop" type="button" hidden>Stop</button>
+      <button id="import-selected" type="button" hidden></button>
+      <button id="import-new" type="button" class="primary"></button>
+    </footer>
+
+    <dialog id="settings">
+      <form method="dialog">
+        <h2>Settings</h2>
+        <label>Import to <span class="row"><input id="folder" readonly placeholder="Choose a folder" /><button id="choose-folder" type="button">Choose…</button></span></label>
+        <label>Subfolders
+          <select id="folders">
+            <option value="{yyyy}/{yyyy-MM-dd}">Year / Date</option>
+            <option value="{yyyy-MM-dd}">Date</option>
+            <option value="{yyyy}/{MM}">Year / Month</option>
+            <option value="">No subfolders</option>
+          </select>
+        </label>
+        <label>Rename files (optional) <input id="rename" placeholder="{yyyy-MM-dd}_{original}" /></label>
+        <label class="check"><input id="auto-import" type="checkbox" /> Import new photos automatically after connecting</label>
+        <label class="check"><input id="skip-videos" type="checkbox" /> Leave videos out of “Import New”</label>
+        <label class="check"><input id="autostart" type="checkbox" /> Start at login</label>
+        <p class="muted small">Windows Photos and OneDrive pick up photos in your Pictures folder. For Lightroom Classic or
+          Photoshop Elements, choose a folder they watch. Tokens: {yyyy} {MM} {dd} {HH} {mm} {ss} {camera} {original}.</p>
+        <menu><button value="close" class="primary">Done</button></menu>
+      </form>
+    </dialog>
+  </body>
+</html>
