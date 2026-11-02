@@ -1,0 +1,83 @@
+name: Release
+
+# Push a tag like v0.2.0. Needs the secrets and variables described in docs/releasing.md.
+on:
+  push:
+    tags: ["v*"]
+
+jobs:
+  mac:
+    runs-on: macos-15
+    permissions:
+      contents: write
+    env:
+      TEAM_ID: ${{ vars.APPLE_TEAM_ID }}
+      ASC_KEY_ID: ${{ secrets.ASC_KEY_ID }}
+      ASC_ISSUER_ID: ${{ secrets.ASC_ISSUER_ID }}
+      VERSION: ${{ github.ref_name }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Prepare
+        run: |
+          brew install xcodegen
+          xcodegen generate
+          mkdir -p ~/private_keys
+          echo "${{ secrets.ASC_KEY_P8 }}" | base64 --decode > ~/private_keys/AuthKey_$ASC_KEY_ID.p8
+          echo "KEY_PATH=$HOME/private_keys/AuthKey_$ASC_KEY_ID.p8" >> $GITHUB_ENV
+          echo "MARKETING_VERSION=${VERSION#v}" >> $GITHUB_ENV
+
+      - name: Archive
+        run: |
+          xcodebuild archive -project FujiImport.xcodeproj -scheme FujiImport -configuration Release \
+            -archivePath build/FujiImport.xcarchive -destination 'generic/platform=macOS' \
+            -allowProvisioningUpdates -authenticationKeyPath "$KEY_PATH" \
+            -authenticationKeyID "$ASC_KEY_ID" -authenticationKeyIssuerID "$ASC_ISSUER_ID" \
+            DEVELOPMENT_TEAM="$TEAM_ID" CODE_SIGN_STYLE=Automatic CODE_SIGN_IDENTITY="Apple Development" \
+            MARKETING_VERSION="$MARKETING_VERSION" CURRENT_PROJECT_VERSION="${{ github.run_number }}"
+
+      - name: Export Developer ID build
+        run: |
+          cat > build/developer-id.plist <<EOF
+          <?xml version="1.0" encoding="UTF-8"?>
+          <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+          <plist version="1.0"><dict>
+            <key>method</key><string>developer-id</string>
+            <key>teamID</key><string>$TEAM_ID</string>
+            <key>signingStyle</key><string>automatic</string>
+          </dict></plist>
+          EOF
+          xcodebuild -exportArchive -archivePath build/FujiImport.xcarchive -exportPath build/developer-id \
+            -exportOptionsPlist build/developer-id.plist -allowProvisioningUpdates \
+            -authenticationKeyPath "$KEY_PATH" -authenticationKeyID "$ASC_KEY_ID" -authenticationKeyIssuerID "$ASC_ISSUER_ID"
+
+      - name: Notarize and package
+        run: |
+          APP="build/developer-id/Fuji Import.app"
+          DMG="build/FujiImport-$MARKETING_VERSION.dmg"
+          hdiutil create -volname "Fuji Import" -srcfolder "$APP" -ov -format UDZO "$DMG"
+          xcrun notarytool submit "$DMG" --key "$KEY_PATH" --key-id "$ASC_KEY_ID" --issuer "$ASC_ISSUER_ID" --wait
+          xcrun stapler staple "$DMG"
+          echo "DMG=$DMG" >> $GITHUB_ENV
+
+      - name: Publish GitHub release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh release create "$VERSION" "$DMG" --title "Fuji Import $MARKETING_VERSION" --generate-notes
+
+      - name: Upload to App Store Connect
+        if: vars.APP_STORE_UPLOAD == 'true'
+        run: |
+          cat > build/app-store.plist <<EOF
+          <?xml version="1.0" encoding="UTF-8"?>
+          <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+          <plist version="1.0"><dict>
+            <key>method</key><string>app-store-connect</string>
+            <key>destination</key><string>upload</string>
+            <key>teamID</key><string>$TEAM_ID</string>
+            <key>signingStyle</key><string>automatic</string>
+          </dict></plist>
+          EOF
+          xcodebuild -exportArchive -archivePath build/FujiImport.xcarchive -exportPath build/app-store \
+            -exportOptionsPlist build/app-store.plist -allowProvisioningUpdates \
+            -authenticationKeyPath "$KEY_PATH" -authenticationKeyID "$ASC_KEY_ID" -authenticationKeyIssuerID "$ASC_ISSUER_ID"
