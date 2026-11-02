@@ -1,4 +1,8 @@
+#if canImport(Darwin)
 import Darwin
+#elseif canImport(Glibc)
+import Glibc
+#endif
 import Foundation
 
 /// Minimal blocking TCP socket. Fuji's protocol is strictly request/response,
@@ -9,8 +13,10 @@ final class TCPSocket {
     /// `interface` pins the connection to one network interface (e.g. "en0"), so the camera is reached
     /// over Wi-Fi even when a VPN claims the route to its address.
     init(host: String, port: UInt16, interface: String? = nil, connectTimeout: TimeInterval) throws {
-        var hints = addrinfo(ai_flags: 0, ai_family: AF_INET, ai_socktype: SOCK_STREAM, ai_protocol: IPPROTO_TCP,
-                             ai_addrlen: 0, ai_canonname: nil, ai_addr: nil, ai_next: nil)
+        var hints = addrinfo()
+        hints.ai_family = AF_INET
+        hints.ai_socktype = Sys.stream
+        hints.ai_protocol = Int32(IPPROTO_TCP)
         var result: UnsafeMutablePointer<addrinfo>?
         let rc = getaddrinfo(host, String(port), &hints, &result)
         guard rc == 0, let info = result else {
@@ -22,11 +28,10 @@ final class TCPSocket {
         guard fd >= 0 else { throw FujiError.connectionFailed("socket(): \(String(cString: strerror(errno)))") }
 
         var one: Int32 = 1
-        setsockopt(fd, SOL_SOCKET, SO_NOSIGPIPE, &one, socklen_t(MemoryLayout<Int32>.size))
-        setsockopt(fd, IPPROTO_TCP, TCP_NODELAY, &one, socklen_t(MemoryLayout<Int32>.size))
+        Sys.configure(fd)
+        setsockopt(fd, Int32(IPPROTO_TCP), TCP_NODELAY, &one, socklen_t(MemoryLayout<Int32>.size))
         if let interface {
-            var index = if_nametoindex(interface)
-            if index == 0 || setsockopt(fd, IPPROTO_IP, IP_BOUND_IF, &index, socklen_t(MemoryLayout<UInt32>.size)) != 0 {
+            if !Sys.bind(fd, toInterface: interface) {
                 close()
                 throw FujiError.connectionFailed("cannot use network interface \(interface)")
             }
@@ -35,7 +40,7 @@ final class TCPSocket {
         // Non-blocking connect so we can enforce a timeout, then switch back to blocking.
         let flags = fcntl(fd, F_GETFL, 0)
         _ = fcntl(fd, F_SETFL, flags | O_NONBLOCK)
-        let c = Darwin.connect(fd, info.pointee.ai_addr, info.pointee.ai_addrlen)
+        let c = Sys.connect(fd, info.pointee.ai_addr, info.pointee.ai_addrlen)
         if c != 0 && errno != EINPROGRESS {
             let msg = String(cString: strerror(errno))
             close()
@@ -58,21 +63,20 @@ final class TCPSocket {
     /// Wraps an accepted connection.
     init(fd: Int32) {
         self.fd = fd
-        var one: Int32 = 1
-        setsockopt(fd, SOL_SOCKET, SO_NOSIGPIPE, &one, socklen_t(MemoryLayout<Int32>.size))
+        Sys.configure(fd)
     }
 
     deinit { close() }
 
     var readTimeout: TimeInterval = 10 {
         didSet {
-            var tv = timeval(tv_sec: Int(readTimeout), tv_usec: Int32((readTimeout - floor(readTimeout)) * 1_000_000))
+            var tv = Sys.timeout(seconds: readTimeout)
             setsockopt(fd, SOL_SOCKET, SO_RCVTIMEO, &tv, socklen_t(MemoryLayout<timeval>.size))
         }
     }
 
     func close() {
-        if fd >= 0 { Darwin.close(fd) }
+        if fd >= 0 { Sys.close(fd) }
         fd = -1
     }
 
@@ -81,7 +85,7 @@ final class TCPSocket {
         try data.withUnsafeBytes { (buf: UnsafeRawBufferPointer) in
             var sent = 0
             while sent < buf.count {
-                let n = Darwin.send(fd, buf.baseAddress! + sent, buf.count - sent, 0)
+                let n = send(fd, buf.baseAddress! + sent, buf.count - sent, Sys.sendFlags)
                 if n < 0 {
                     if errno == EINTR { continue }
                     throw FujiError.io("send: \(String(cString: strerror(errno)))")
@@ -98,7 +102,7 @@ final class TCPSocket {
         var got = 0
         try data.withUnsafeMutableBytes { (buf: UnsafeMutableRawBufferPointer) in
             while got < count {
-                let n = Darwin.recv(fd, buf.baseAddress! + got, count - got, 0)
+                let n = recv(fd, buf.baseAddress! + got, count - got, 0)
                 if n == 0 { throw FujiError.disconnected }
                 if n < 0 {
                     if errno == EINTR { continue }
@@ -116,7 +120,7 @@ final class TCPSocket {
         guard fd >= 0 else { throw FujiError.disconnected }
         var buf = [UInt8](repeating: 0, count: 4096)
         while true {
-            let n = Darwin.recv(fd, &buf, buf.count, 0)
+            let n = recv(fd, &buf, buf.count, 0)
             if n > 0 { return String(decoding: buf[0..<n], as: UTF8.self) }
             if n == 0 { throw FujiError.disconnected }
             if errno == EINTR { continue }
@@ -129,6 +133,6 @@ final class TCPSocket {
     func drain() {
         guard fd >= 0 else { return }
         var buf = [UInt8](repeating: 0, count: 65536)
-        while Darwin.recv(fd, &buf, buf.count, MSG_DONTWAIT) > 0 {}
+        while recv(fd, &buf, buf.count, Int32(MSG_DONTWAIT)) > 0 {}
     }
 }

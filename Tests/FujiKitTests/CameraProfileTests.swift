@@ -1,4 +1,4 @@
-import FujiKit
+@testable import FujiKit
 import XCTest
 
 final class CameraProfileTests: XCTestCase {
@@ -22,5 +22,18 @@ final class CameraProfileTests: XCTestCase {
         XCTAssertEqual(p.generation, .remoteNew)
         XCTAssertTrue(p.listsOldestFirst)
         XCTAssertTrue(p.thumbnailNeedsObjectInfo)
+    }
+}
+
+final class NetworkInfoTests: XCTestCase {
+    func testLinuxRouteTable() {
+        let table = """
+        Iface\tDestination\tGateway \tFlags\tRefCnt\tUse\tMetric\tMask\t\tMTU\tWindow\tIRTT
+        eth0\t00000000\t0101A8C0\t0003\t0\t0\t100\t00000000\t0\t0\t0
+        wlan0\t0000A8C0\t00000000\t0001\t0\t0\t600\t00FFFFFF\t0\t0\t0
+        wlan0\t00000000\t0100A8C0\t0003\t0\t0\t600\t00000000\t0\t0\t0
+        """
+        XCTAssertEqual(NetworkInfo.gateway(in: table, interface: "wlan0"), "192.168.0.1")
+        XCTAssertNil(NetworkInfo.gateway(in: table, interface: "wlan1"))
     }
 }

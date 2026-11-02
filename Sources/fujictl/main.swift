@@ -42,7 +42,11 @@ func logLine(_ msg: String) {
     if verbose { FileHandle.standardError.write("[\(stamp())] \(msg)\n".data(using: .utf8)!) }
 }
 
+#if os(macOS)
 let clientName = Host.current().localizedName ?? "fujictl"
+#else
+let clientName = ProcessInfo.processInfo.hostName
+#endif
 
 if command == "autosave" {
     guard args.count > 1 else { print(usage); exit(2) }

@@ -1,5 +1,9 @@
 @testable import FujiKit
+#if canImport(Darwin)
 import Darwin
+#elseif canImport(Glibc)
+import Glibc
+#endif
 import XCTest
 
 /// Plays the camera's side of the PC AutoSave handshake over loopback, following vcam's ssdp.c.
@@ -62,7 +66,7 @@ final class AutoSaveTests: XCTestCase {
         Thread.detachNewThread {
             defer { result.done.signal() }
             let notifyServer = Self.listen(port: ports.notify)
-            defer { close(notifyServer) }
+            defer { Sys.close(notifyServer) }
             Self.sendUDP("DISCOVER \(target) HTTP/1.1\r\nMX:3\r\nHOST:192.168.1.255:|\r\nDSCADDR:127.0.0.1\r\nSERVICE:PCAUTOSAVE/1.0\r\n",
                          port: discoverPort)
             let client = accept(notifyServer, nil, nil)
@@ -80,27 +84,21 @@ final class AutoSaveTests: XCTestCase {
     }
 
     private static func listen(port: UInt16) -> Int32 {
-        let fd = socket(AF_INET, SOCK_STREAM, 0)
+        let fd = socket(AF_INET, Sys.stream, 0)
         var yes: Int32 = 1
         setsockopt(fd, SOL_SOCKET, SO_REUSEADDR, &yes, socklen_t(MemoryLayout<Int32>.size))
-        var addr = sockaddr_in()
-        addr.sin_family = sa_family_t(AF_INET)
-        addr.sin_port = port.bigEndian
-        addr.sin_addr.s_addr = inet_addr("127.0.0.1")
+        var addr = Sys.sockaddrIPv4(port: port, address: inet_addr("127.0.0.1"))
         _ = withUnsafePointer(to: &addr) {
-            $0.withMemoryRebound(to: sockaddr.self, capacity: 1) { Darwin.bind(fd, $0, socklen_t(MemoryLayout<sockaddr_in>.size)) }
+            $0.withMemoryRebound(to: sockaddr.self, capacity: 1) { Sys.bind(fd, $0, socklen_t(MemoryLayout<sockaddr_in>.size)) }
         }
-        Darwin.listen(fd, 1)
+        _ = Sys.listen(fd, 1)
         return fd
     }
 
     private static func sendUDP(_ message: String, port: UInt16) {
-        let fd = socket(AF_INET, SOCK_DGRAM, 0)
-        defer { close(fd) }
-        var addr = sockaddr_in()
-        addr.sin_family = sa_family_t(AF_INET)
-        addr.sin_port = port.bigEndian
-        addr.sin_addr.s_addr = inet_addr("127.0.0.1")
+        let fd = socket(AF_INET, Sys.datagram, 0)
+        defer { Sys.close(fd) }
+        var addr = Sys.sockaddrIPv4(port: port, address: inet_addr("127.0.0.1"))
         let bytes = Array(message.utf8)
         _ = withUnsafePointer(to: &addr) {
             $0.withMemoryRebound(to: sockaddr.self, capacity: 1) {

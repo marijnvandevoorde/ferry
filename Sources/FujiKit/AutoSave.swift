@@ -1,4 +1,8 @@
+#if canImport(Darwin)
 import Darwin
+#elseif canImport(Glibc)
+import Glibc
+#endif
 import Foundation
 
 /// Fuji's *PC AutoSave*: the camera joins the home network and sends photos to a registered computer.
@@ -52,8 +56,8 @@ public final class AutoSaveListener: @unchecked Sendable {
     }
 
     public func stop() {
-        if registerSocket >= 0 { close(registerSocket) }
-        if connectSocket >= 0 { close(connectSocket) }
+        if registerSocket >= 0 { Sys.close(registerSocket) }
+        if connectSocket >= 0 { Sys.close(connectSocket) }
         registerSocket = -1
         connectSocket = -1
     }
@@ -96,7 +100,7 @@ public final class AutoSaveListener: @unchecked Sendable {
         // Listen before announcing ourselves: the camera connects back shortly after NOTIFY.
         let invitePort = register ? ports.register : ports.connect
         let server = try Self.tcpListener(port: invitePort)
-        defer { close(server) }
+        defer { Sys.close(server) }
 
         let notify = try TCPSocket(host: cameraIP, port: ports.notify, connectTimeout: 5)
         defer { notify.close() }
@@ -147,7 +151,7 @@ public final class AutoSaveListener: @unchecked Sendable {
     }
 
     private static func udpSocket(port: UInt16) throws -> Int32 {
-        let fd = socket(AF_INET, SOCK_DGRAM, 0)
+        let fd = socket(AF_INET, Sys.datagram, 0)
         guard fd >= 0 else { throw FujiError.io("socket: \(String(cString: strerror(errno)))") }
         var yes: Int32 = 1
         setsockopt(fd, SOL_SOCKET, SO_REUSEADDR, &yes, socklen_t(MemoryLayout<Int32>.size))
@@ -157,29 +161,26 @@ public final class AutoSaveListener: @unchecked Sendable {
     }
 
     private static func tcpListener(port: UInt16) throws -> Int32 {
-        let fd = socket(AF_INET, SOCK_STREAM, 0)
+        let fd = socket(AF_INET, Sys.stream, 0)
         guard fd >= 0 else { throw FujiError.io("socket: \(String(cString: strerror(errno)))") }
         var yes: Int32 = 1
         setsockopt(fd, SOL_SOCKET, SO_REUSEADDR, &yes, socklen_t(MemoryLayout<Int32>.size))
         try bindAny(fd, port: port)
-        guard listen(fd, 2) == 0 else {
-            close(fd)
+        guard Sys.listen(fd, 2) == 0 else {
+            Sys.close(fd)
             throw FujiError.io("listen on \(port): \(String(cString: strerror(errno)))")
         }
         return fd
     }
 
     private static func bindAny(_ fd: Int32, port: UInt16) throws {
-        var addr = sockaddr_in()
-        addr.sin_family = sa_family_t(AF_INET)
-        addr.sin_port = port.bigEndian
-        addr.sin_addr.s_addr = INADDR_ANY
+        var addr = Sys.sockaddrIPv4(port: port, address: in_addr_t(0))
         let rc = withUnsafePointer(to: &addr) {
-            $0.withMemoryRebound(to: sockaddr.self, capacity: 1) { bind(fd, $0, socklen_t(MemoryLayout<sockaddr_in>.size)) }
+            $0.withMemoryRebound(to: sockaddr.self, capacity: 1) { Sys.bind(fd, $0, socklen_t(MemoryLayout<sockaddr_in>.size)) }
         }
         guard rc == 0 else {
             let message = String(cString: strerror(errno))
-            close(fd)
+            Sys.close(fd)
             throw FujiError.io("port \(port) is in use (\(message)). Is Fujifilm's PC AutoSave app running?")
         }
     }
