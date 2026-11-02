@@ -22,6 +22,7 @@ options:
                        tokens: {yyyy} {MM} {dd} {HH} {mm} {ss} {camera} {original}
   --all                import everything, not only photos that weren't imported before
   --skip-videos        leave out videos
+  --protocol fuji|ptpip   camera protocol (default: try Fuji's, then standard PTP/IP for Canon, Nikon, …)
   --history FILE       import history file (default: \(ImportHistory.defaultURL.path))
   --quiet              no protocol log on stderr
 """
@@ -47,6 +48,7 @@ let host = option("--host")
 let folders = option("--folders")
 let rename = option("--rename")
 let historyPath = option("--history")
+let protocolName = option("--protocol")
 let all = flag("--all")
 let skipVideos = flag("--skip-videos")
 let watchAutoSave = flag("--autosave")
@@ -95,7 +97,7 @@ func folderImport(_ path: String) -> FolderImport {
 let history = ImportHistory(url: historyPath.map { URL(fileURLWithPath: $0) } ?? ImportHistory.defaultURL)
 
 /// Downloads `handle` next to its destination, then files it. Returns false if it was skipped.
-func importObject(_ camera: FujiCamera, handle: UInt32, into target: FolderImport, info known: ObjectInfo? = nil) throws -> Bool {
+func importObject(_ camera: WirelessCamera, handle: UInt32, into target: FolderImport, info known: ObjectInfo? = nil) throws -> Bool {
     let info = try known ?? camera.objectInfo(handle)
     if info.isFolder || (skipVideos && info.isVideo) { return false }
     let key = ImportHistory.key(camera: camera.cameraName, info: info)
@@ -112,11 +114,11 @@ func importObject(_ camera: FujiCamera, handle: UInt32, into target: FolderImpor
 
 /// Imports everything new the connected camera offers. Returns the number of files imported.
 @discardableResult
-func importNew(_ camera: FujiCamera, into target: FolderImport) throws -> Int {
+func importNew(_ camera: WirelessCamera, into target: FolderImport) throws -> Int {
     var count = 0
-    if camera.isSendingSelection {
+    if let fuji = camera as? FujiCamera, fuji.isSendingSelection {
         print("Receiving the images selected on the camera")
-        while let info = try camera.nextSelectedImage() {
+        while let info = try fuji.nextSelectedImage() {
             if try importObject(camera, handle: FujiCamera.selectedImageHandle, into: target, info: info) { count += 1 }
         }
     } else {
@@ -130,11 +132,21 @@ func importNew(_ camera: FujiCamera, into target: FolderImport) throws -> Int {
 
 let wifi = NetworkInfo.wifiInterface
 
-/// The camera on its own Wi-Fi network: an explicit --host, or the Wi-Fi router.
-func directCamera() -> FujiCamera? {
+/// Connects to the camera on its own Wi-Fi network: an explicit --host, or the Wi-Fi router.
+/// Returns nil when there's no network to look on.
+func connectDirect() throws -> WirelessCamera? {
     guard let cameraHost = host ?? wifi.flatMap(NetworkInfo.router(for:)) else { return nil }
     // Bind to Wi-Fi so a VPN can't swallow the connection; not for an explicit host like a local emulator.
-    return FujiCamera(host: cameraHost, interface: host == nil ? wifi : nil, clientName: clientName, log: logLine)
+    let interface = host == nil ? wifi : nil
+    let approval = { print("Press OK on the camera to allow the connection…") }
+    if let protocolName {
+        guard let proto = CameraProtocol(rawValue: protocolName) else { fail("unknown protocol \(protocolName)") }
+        let camera = proto.camera(host: cameraHost, interface: interface, clientName: clientName, log: logLine)
+        try camera.connect(onWaitingForApproval: approval)
+        return camera
+    }
+    return try CameraProtocol.connect(host: cameraHost, interface: interface, clientName: clientName, log: logLine,
+                                      onWaitingForApproval: approval)
 }
 
 func waitForAutoSave(_ listener: AutoSaveListener, register: Bool) throws -> AutoSaveListener.Event {
@@ -193,9 +205,9 @@ do {
         var importedFrom: String?
         while true {
             let router = host ?? wifi.flatMap(NetworkInfo.router(for:))
-            if router != importedFrom, let camera = directCamera() {
+            if router != importedFrom {
                 do {
-                    try camera.connect { print("Press OK on the camera to allow the connection…") }
+                    guard let camera = try connectDirect() else { Thread.sleep(forTimeInterval: 5); continue }
                     defer { camera.disconnect() }
                     try importNew(camera, into: target)
                     importedFrom = router
@@ -212,14 +224,13 @@ do {
         }
 
     default:
-        guard let camera = directCamera() else { fail("not connected to a Wi-Fi network; join the camera's network or use --host") }
-        try camera.connect { print("Press OK on the camera to allow the connection…") }
+        guard let camera = try connectDirect() else { fail("not connected to a Wi-Fi network; join the camera's network or use --host") }
         defer { camera.disconnect() }
-        print("Connected to \(camera.cameraName): \(camera.objectCount) objects")
+        print("Connected to \(camera.cameraName): \(camera.objectHandles.count) objects")
 
         switch command {
         case "info":
-            print(camera.profile.summary)
+            print((camera as? FujiCamera)?.profile.summary ?? "\(camera.cameraName): standard PTP/IP")
         case "import":
             try importNew(camera, into: folderImport(argument(1)))
         case "list":
@@ -227,14 +238,15 @@ do {
                 let info = try camera.objectInfo(handle)
                 print("\(String(handle).padding(toLength: 6, withPad: " ", startingAt: 0)) \(info.filename.padding(toLength: 14, withPad: " ", startingAt: 0)) \(info.captureDate)  \(info.imageWidth)x\(info.imageHeight)")
             }
-        case "download" where camera.isSendingSelection:
+        case "download" where (camera as? FujiCamera)?.isSendingSelection == true:
+            let fuji = camera as! FujiCamera
             let dir = URL(fileURLWithPath: argument(1))
             try FileManager.default.createDirectory(at: dir, withIntermediateDirectories: true)
             print("Receiving the images selected on the camera")
-            while let info = try camera.nextSelectedImage() {
+            while let info = try fuji.nextSelectedImage() {
                 let url = dir.appendingPathComponent(info.filename)
                 try? FileManager.default.removeItem(at: url)
-                try camera.download(FujiCamera.selectedImageHandle, to: url)
+                try fuji.download(FujiCamera.selectedImageHandle, to: url) { _, _ in }
                 print("\(info.filename) (\(info.compressedSize) bytes)")
             }
         case "download", "thumbs":
@@ -250,7 +262,7 @@ do {
                     if try camera.objectInfo(handle).isFolder { continue }
                     let tmp = dir.appendingPathComponent(".download-\(handle)")
                     let start = Date()
-                    let info = try camera.download(handle, to: tmp)
+                    let info = try camera.download(handle, to: tmp) { _, _ in }
                     let url = dir.appendingPathComponent(info.filename)
                     try? FileManager.default.removeItem(at: url)
                     try FileManager.default.moveItem(at: tmp, to: url)
