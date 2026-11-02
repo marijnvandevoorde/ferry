@@ -31,6 +31,13 @@ enum Prefs {
     static let hideResizeNotice = "hideResizeNotice"
     static let lastCameraName = "lastCameraName"
     static let lastCameraGeneration = "lastCameraGeneration"
+    static let destination = "destination"
+    static let folderBookmark = "folderBookmark"
+    static let folderTemplate = "folderTemplate"
+    static let renameFiles = "renameFiles"
+    static let fileTemplate = "fileTemplate"
+    static let backupEnabled = "backupEnabled"
+    static let backupBookmark = "backupBookmark"
 
     static func register() {
         UserDefaults.standard.register(defaults: [
@@ -39,6 +46,11 @@ enum Prefs {
             autoImport: false,
             useAlbum: true,
             albumName: "Fujifilm",
+            destination: DestinationKind.photos.rawValue,
+            folderTemplate: PathTemplate.defaultFolder.template,
+            renameFiles: false,
+            fileTemplate: "{yyyy-MM-dd}_{original}",
+            backupEnabled: false,
         ])
     }
 }
@@ -83,6 +95,10 @@ final class CameraModel {
         Prefs.register()
         #if DEBUG
         DebugSnapshot.startIfRequested()
+        // Lets scripts test folder imports without the open panel.
+        let env = ProcessInfo.processInfo.environment
+        if let path = env["FUJIIMPORT_TEST_FOLDER"] { FolderBookmark.save(URL(fileURLWithPath: path), for: Prefs.folderBookmark) }
+        if let path = env["FUJIIMPORT_TEST_BACKUP"] { FolderBookmark.save(URL(fileURLWithPath: path), for: Prefs.backupBookmark) }
         #endif
         startSearching()
     }
@@ -281,28 +297,21 @@ final class CameraModel {
         importTask = Task { await runImport(batch, camera: camera) }
     }
 
-    /// Where imported files go, or nil (with `lastError` set) when Photos access was denied.
-    private func photosTarget() async -> PhotosTarget? {
-        let useAlbum = UserDefaults.standard.bool(forKey: Prefs.useAlbum)
-        let access = await PhotoImporter.requestAccess(needsAlbum: useAlbum)
-        guard access != .denied else {
-            lastError = "Fuji Import needs access to Photos. Allow it in System Settings → Privacy & Security → Photos."
+    /// The configured destinations, ready to use, or nil (with `lastError` set) when one can't be used.
+    private func prepareDestinations() async -> [Destination]? {
+        let destinations = configuredDestinations()
+        do {
+            for destination in destinations { try await destination.prepare() }
+        } catch {
+            lastError = error.localizedDescription
+            appendLog("Can't import: \(error.localizedDescription)")
             return nil
         }
-        var album: PHAssetCollection?
-        if useAlbum, access == .full {
-            let name = UserDefaults.standard.string(forKey: Prefs.albumName) ?? "Fujifilm"
-            album = try? await PhotoImporter.album(named: name.isEmpty ? "Fujifilm" : name)
-        }
-        return PhotosTarget(album: album)
-    }
-
-    private struct PhotosTarget {
-        var album: PHAssetCollection?
+        return destinations
     }
 
     /// Downloads one object, imports it into Photos and records it. Returns the imported item's info.
-    private func importObject(_ handle: UInt32, filename: String, camera: FujiCamera, target: PhotosTarget,
+    private func importObject(_ handle: UInt32, filename: String, camera: FujiCamera, destinations: [Destination],
                               thumbnail: Bool = false, skipIfImported: Bool = false) async throws -> (ObjectInfo, NSImage?) {
         let tmpDir = FileManager.default.temporaryDirectory.appendingPathComponent("FujiImport", isDirectory: true)
         try? FileManager.default.createDirectory(at: tmpDir, withIntermediateDirectories: true)
@@ -320,7 +329,9 @@ final class CameraModel {
         let image = thumbnail ? NSImage(contentsOf: file) : nil
         if !info.isVideo { checkForResizedImage(file) }
         if !(skipIfImported && history.contains(key)) {
-            try await PhotoImporter.importFile(file, originalFilename: info.filename, isVideo: info.isVideo, album: target.album)
+            for (i, destination) in destinations.enumerated() {
+                try await destination.store(file, info: info, camera: cameraName, move: i == destinations.count - 1)
+            }
             history.insert(key)
         }
         if let i = items.firstIndex(where: { $0.id == key }) { items[i].imported = true }
@@ -330,7 +341,7 @@ final class CameraModel {
 
     private func runImport(_ batch: [PhotoItem], camera: FujiCamera) async {
         defer { importProgress = nil }
-        guard let target = await photosTarget() else { return }
+        guard let destinations = await prepareDestinations() else { return }
 
         var imported = 0
         var failed: [String] = []
@@ -338,7 +349,7 @@ final class CameraModel {
             if Task.isCancelled { break }
             importProgress = ImportProgress(index: index + 1, total: batch.count, filename: item.info.filename, fraction: 0)
             do {
-                _ = try await importObject(item.handle, filename: item.info.filename, camera: camera, target: target)
+                _ = try await importObject(item.handle, filename: item.info.filename, camera: camera, destinations: destinations)
                 imported += 1
             } catch let error as FujiError {
                 switch error {
@@ -355,7 +366,7 @@ final class CameraModel {
             }
         }
 
-        var summary = "Imported \(imported) \(imported == 1 ? "item" : "items") to Photos"
+        var summary = "Imported \(imported) \(imported == 1 ? "item" : "items") to \(destinations.last?.displayName ?? "Photos")"
         if Task.isCancelled { summary += " (cancelled)" }
         if !failed.isEmpty { summary += ". \(failed.count) failed: \(failed.prefix(3).joined(separator: ", "))" }
         importSummary = summary
@@ -367,13 +378,13 @@ final class CameraModel {
         importProgress = ImportProgress(index: 0, total: 0, filename: "", fraction: 0)
         var received = 0
         var failure: String?
-        if let target = await photosTarget() {
+        if let destinations = await prepareDestinations() {
             while !Task.isCancelled {
                 do {
                     guard let info = try await camera.run({ try $0.nextSelectedImage() }) else { break }
                     importProgress = ImportProgress(index: received + 1, total: 0, filename: info.filename, fraction: 0)
                     let (imported, image) = try await importObject(FujiCamera.selectedImageHandle, filename: info.filename,
-                                                                   camera: camera, target: target, thumbnail: true,
+                                                                   camera: camera, destinations: destinations, thumbnail: true,
                                                                    skipIfImported: true)
                     let key = ImportHistory.key(camera: cameraName, info: imported)
                     if !items.contains(where: { $0.id == key }) {
