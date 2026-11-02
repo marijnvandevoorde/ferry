@@ -32,7 +32,22 @@ Over Wi-Fi the camera only offers JPEGs (no RAF files).
 Tried it with your camera? Please [file a camera report](https://github.com/marijnvandevoorde/fuji-import/issues/new?template=camera-report.yml),
 whether it worked or not.
 
-## Command line (macOS and Linux)
+## Windows and Linux
+
+`apps/desktop` is a Tauri app that runs `fujictl serve` in the background: connect, browse, and import into a
+folder (your Pictures folder for Windows Photos, or a folder Lightroom, Photoshop Elements, digiKam or darktable
+watches), optionally also to Immich. To run it from source you need Swift, Rust and Node with pnpm:
+
+```sh
+cd apps/desktop
+pnpm install
+pnpm run sidecar     # builds fujictl and puts it where Tauri expects it
+pnpm tauri dev       # FUJIIMPORT_HOST=127.0.0.1 points it at the emulator
+```
+
+See [importing into other photo apps](docs/other-apps.md).
+
+## Command line (macOS, Linux, Windows)
 
 `fujictl` imports without the app, for example on a Linux machine or from a script:
 
@@ -44,7 +59,8 @@ swift build -c release --product fujictl
 .build/release/fujictl watch --autosave ~/Pictures/Fuji   # import over the home network
 ```
 
-Run `fujictl` without arguments for all commands and options (folder and file name templates, `--skip-videos`, …).
+Run `fujictl` without arguments for all commands and options (folder and file name templates, `--skip-videos`,
+`--immich` uploads, …).
 
 ## Building
 
