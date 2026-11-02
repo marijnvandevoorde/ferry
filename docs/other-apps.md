@@ -1,5 +1,8 @@
 # Importing into other photo apps
 
+This applies to the Mac app (Settings → Destination → A folder), the Windows and Linux app (Settings → Import to)
+and `fujictl import`.
+
 Fuji Import can put photos in a folder instead of Apple Photos (Settings → Destination → A folder).
 Most photo apps can watch a folder and pick up new files from it.
 
@@ -20,3 +23,23 @@ Most photo apps can watch a folder and pick up new files from it.
 ## Photo Mechanic, Adobe Bridge, darktable, digiKam
 
 Point the app at the folder Fuji Import uses, and keep the default **Year / Date** subfolders if you like.
+
+## Windows Photos and OneDrive
+
+Use the **Pictures folder** preset. Windows Photos shows everything under Pictures, and OneDrive backs it up when
+folder backup is on.
+
+## Photoshop Elements (Windows)
+
+In the Elements Organizer, choose **File → Watch Folders…**, add the folder Fuji Import uses, and pick
+*Automatically add files to Elements Organizer*.
+
+## Shotwell, GNOME Photos (Linux)
+
+Use the **Pictures folder** preset. GNOME Photos indexes Pictures; in Shotwell, turn on
+**Preferences → Watch library directory for new files** with Pictures as the library directory.
+
+## digiKam, darktable (Linux, Windows, macOS)
+
+digiKam: add the folder as a collection (Settings → Configure digiKam → Collections); new files appear after a scan.
+darktable: **import → add to library…** the folder, or point a lua auto-import script at it.

@@ -51,6 +51,10 @@
       <form method="dialog">
         <h2>Settings</h2>
         <label>Import to <span class="row"><input id="folder" readonly placeholder="Choose a folder" /><button id="choose-folder" type="button">Choose…</button></span></label>
+        <p class="row presets"><span class="muted small">Presets:</span>
+          <button id="preset-pictures" type="button">Pictures folder</button>
+          <button id="preset-watched" type="button">A folder my photo app watches…</button>
+        </p>
         <label>Subfolders
           <select id="folders">
             <option value="{yyyy}/{yyyy-MM-dd}">Year / Date</option>
@@ -63,8 +67,9 @@
         <label class="check"><input id="auto-import" type="checkbox" /> Import new photos automatically after connecting</label>
         <label class="check"><input id="skip-videos" type="checkbox" /> Leave videos out of “Import New”</label>
         <label class="check"><input id="autostart" type="checkbox" /> Start at login</label>
-        <p class="muted small">Windows Photos and OneDrive pick up photos in your Pictures folder. For Lightroom Classic or
-          Photoshop Elements, choose a folder they watch. Tokens: {yyyy} {MM} {dd} {HH} {mm} {ss} {camera} {original}.</p>
+        <p id="preset-help" class="muted small">Windows Photos, OneDrive, Shotwell and GNOME Photos pick up photos in your Pictures folder.
+          Lightroom Classic (Auto Import), Photoshop Elements (watched folders), digiKam and darktable can watch a folder:
+          choose it here and set Subfolders to “No subfolders” for Lightroom. Tokens: {yyyy} {MM} {dd} {HH} {mm} {ss} {camera} {original}.</p>
         <menu><button value="close" class="primary">Done</button></menu>
       </form>
     </dialog>

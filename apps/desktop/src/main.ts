@@ -1,4 +1,5 @@
 import { convertFileSrc, invoke } from "@tauri-apps/api/core";
+import { join, pictureDir } from "@tauri-apps/api/path";
 import { listen } from "@tauri-apps/api/event";
 import { disable as disableAutostart, enable as enableAutostart, isEnabled as autostartEnabled } from "@tauri-apps/plugin-autostart";
 import { open } from "@tauri-apps/plugin-dialog";
@@ -260,14 +261,22 @@ $("import-new").onclick = () => startImport();
 $("import-selected").onclick = () => startImport([...state.selection]);
 $("stop").onclick = () => send({ cmd: "cancel" });
 $("settings-button").onclick = openSettings;
-$("choose-folder").onclick = async () => {
-  const folder = await open({ directory: true, title: "Choose where to put imported photos" });
-  if (typeof folder === "string") {
-    settings.folder = folder;
-    $<HTMLInputElement>("folder").value = folder;
-    showError("");
-    render();
-  }
+function setFolder(folder: string) {
+  settings.folder = folder;
+  $<HTMLInputElement>("folder").value = folder;
+  showError("");
+  render();
+}
+async function chooseFolder(title: string) {
+  const folder = await open({ directory: true, title });
+  if (typeof folder === "string") setFolder(folder);
+}
+$("choose-folder").onclick = () => chooseFolder("Choose where to put imported photos");
+// Windows Photos/OneDrive (Windows) and Shotwell/GNOME Photos (Linux) index the Pictures folder.
+$("preset-pictures").onclick = async () => setFolder(await join(await pictureDir(), "Camera Imports"));
+$("preset-watched").onclick = async () => {
+  await chooseFolder("Choose the folder Lightroom, Photoshop Elements, digiKam or darktable watches");
+  $<HTMLSelectElement>("folders").value = settings.folders = "";
 };
 $("folders").onchange = (e) => (settings.folders = (e.target as HTMLSelectElement).value);
 $("rename").onchange = (e) => (settings.rename = (e.target as HTMLInputElement).value.trim());
