@@ -30,6 +30,12 @@ const settings = {
   get autoImport() { return localStorage.getItem("autoImport") === "true"; },
   set autoImport(v: boolean) { localStorage.setItem("autoImport", String(v)); },
   get skipVideos() { return localStorage.getItem("skipVideos") === "true"; },
+  get immichServer() { return localStorage.getItem("immichServer") ?? ""; },
+  set immichServer(v: string) { localStorage.setItem("immichServer", v); },
+  get immichKey() { return localStorage.getItem("immichKey") ?? ""; },
+  set immichKey(v: string) { localStorage.setItem("immichKey", v); },
+  get immichAlbum() { return localStorage.getItem("immichAlbum") ?? ""; },
+  set immichAlbum(v: string) { localStorage.setItem("immichAlbum", v); },
   set skipVideos(v: boolean) { localStorage.setItem("skipVideos", String(v)); },
 };
 
@@ -56,7 +62,10 @@ function startImport(ids?: string[]) {
     return;
   }
   state.importing = true;
-  send({ cmd: "import", ids, folder: settings.folder, folders: settings.folders, rename: settings.rename, skipVideos: settings.skipVideos });
+  const immich = settings.immichServer && settings.immichKey
+    ? { server: settings.immichServer, apiKey: settings.immichKey, album: settings.immichAlbum }
+    : undefined;
+  send({ cmd: "import", ids, folder: settings.folder, folders: settings.folders, rename: settings.rename, skipVideos: settings.skipVideos, immich });
   render();
 }
 
@@ -247,6 +256,9 @@ function openSettings() {
   $<HTMLInputElement>("rename").value = settings.rename;
   $<HTMLInputElement>("auto-import").checked = settings.autoImport;
   $<HTMLInputElement>("skip-videos").checked = settings.skipVideos;
+  $<HTMLInputElement>("immich-server").value = settings.immichServer;
+  $<HTMLInputElement>("immich-key").value = settings.immichKey;
+  $<HTMLInputElement>("immich-album").value = settings.immichAlbum;
   autostartEnabled().then((on) => ($<HTMLInputElement>("autostart").checked = on)).catch(() => {});
   $<HTMLDialogElement>("settings").showModal();
 }
@@ -285,6 +297,9 @@ $("skip-videos").onchange = (e) => {
   settings.skipVideos = (e.target as HTMLInputElement).checked;
   render();
 };
+$("immich-server").onchange = (e) => (settings.immichServer = (e.target as HTMLInputElement).value.trim());
+$("immich-key").onchange = (e) => (settings.immichKey = (e.target as HTMLInputElement).value.trim());
+$("immich-album").onchange = (e) => (settings.immichAlbum = (e.target as HTMLInputElement).value.trim());
 $("autostart").onchange = (e) => ((e.target as HTMLInputElement).checked ? enableAutostart() : disableAutostart());
 $("settings").addEventListener("close", render);
 

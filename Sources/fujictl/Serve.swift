@@ -6,7 +6,9 @@ import Foundation
 /// Commands, one JSON object per line on stdin:
 ///   {"cmd": "connect"}                          try to connect now (it also retries every few seconds)
 ///   {"cmd": "import", "ids": [...]?, "folder": "...", "folders": "{yyyy}/{yyyy-MM-dd}", "rename": "...",
-///    "skipVideos": false}                       import the given items, or all new ones without "ids"
+///    "skipVideos": false, "immich": {"server", "apiKey", "album"}?}
+///                                               import the given items, or all new ones without "ids";
+///                                               with "immich", also upload each file to that Immich server
 ///   {"cmd": "cancel"}                           stop the running import after the current file
 ///   {"cmd": "disconnect"} / {"cmd": "quit"}
 ///
@@ -189,6 +191,11 @@ final class Server: @unchecked Sendable {
                                   folderTemplate: PathTemplate(command["folders"] as? String ?? PathTemplate.defaultFolder.template),
                                   fileTemplate: (command["rename"] as? String).flatMap { $0.isEmpty ? nil : PathTemplate($0) })
         let skipVideos = command["skipVideos"] as? Bool ?? false
+        var immich: ImmichUpload?
+        if let config = command["immich"] as? [String: Any], let server = (config["server"] as? String).flatMap(URL.init(string:)),
+           let key = config["apiKey"] as? String, !key.isEmpty {
+            immich = ImmichUpload(server: server, apiKey: key, albumName: config["album"] as? String, deviceID: clientName)
+        }
         let ids: [String]
         if let requested = command["ids"] as? [String] {
             ids = requested.filter { items[$0] != nil }
@@ -216,6 +223,16 @@ final class Server: @unchecked Sendable {
                                "fraction": Double(done) / Double(total)])
                 }
                 let url = try target.store(tmp, info: downloaded, camera: camera.cameraName, move: true)
+                if let immich {
+                    let semaphore = DispatchSemaphore(value: 0)
+                    nonisolated(unsafe) var uploadError: Error?
+                    Task {
+                        do { try await immich.upload(url, info: downloaded, key: id) } catch { uploadError = error }
+                        semaphore.signal()
+                    }
+                    semaphore.wait()
+                    if let uploadError { throw uploadError }
+                }
                 history.insert(id)
                 imported += 1
                 emit(["event": "imported", "id": id, "path": url.path])

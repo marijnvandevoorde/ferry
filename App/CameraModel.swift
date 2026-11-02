@@ -42,6 +42,9 @@ enum Prefs {
     static let showMenuBarIcon = "showMenuBarIcon"
     static let hideDockIcon = "hideDockIcon"
     static let autoSave = "autoSave"
+    static let immichEnabled = "immichEnabled"
+    static let immichServer = "immichServer"
+    static let immichAlbum = "immichAlbum"
 
     static func register() {
         UserDefaults.standard.register(defaults: [

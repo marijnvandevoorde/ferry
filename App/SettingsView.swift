@@ -19,6 +19,10 @@ struct SettingsView: View {
     @AppStorage(Prefs.showMenuBarIcon) private var showMenuBarIcon = true
     @AppStorage(Prefs.hideDockIcon) private var hideDockIcon = false
     @AppStorage(Prefs.autoSave) private var autoSave = false
+    @AppStorage(Prefs.immichEnabled) private var immichEnabled = false
+    @AppStorage(Prefs.immichServer) private var immichServer = ""
+    @AppStorage(Prefs.immichAlbum) private var immichAlbum = ""
+    @State private var immichKey = ImmichKey.load() ?? ""
     @State private var folder = FolderBookmark.url(for: Prefs.folderBookmark)
     @State private var backupFolder = FolderBookmark.url(for: Prefs.backupBookmark)
     @State private var confirmForget = false
@@ -104,6 +108,20 @@ struct SettingsView: View {
             } footer: {
                 if backupEnabled {
                     Text("Backups are sorted into Year / Date folders.")
+                        .foregroundStyle(.secondary)
+                }
+            }
+            Section {
+                Toggle("Also upload to Immich", isOn: $immichEnabled)
+                if immichEnabled {
+                    TextField("Server", text: $immichServer, prompt: Text("https://photos.example.com"))
+                    SecureField("API key", text: $immichKey)
+                        .onChange(of: immichKey) { _, key in ImmichKey.save(key) }
+                    TextField("Album (optional)", text: $immichAlbum)
+                }
+            } footer: {
+                if immichEnabled {
+                    Text("Create an API key in Immich under Account Settings → API Keys.")
                         .foregroundStyle(.secondary)
                 }
             }

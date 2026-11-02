@@ -34,6 +34,11 @@ enum DestinationKind: String, CaseIterable, Identifiable {
 func configuredDestinations() -> [Destination] {
     let defaults = UserDefaults.standard
     var result: [Destination] = []
+    if defaults.bool(forKey: Prefs.immichEnabled), let server = URL(string: defaults.string(forKey: Prefs.immichServer) ?? "") {
+        result.append(ImmichDestination(upload: ImmichUpload(server: server, apiKey: ImmichKey.load() ?? "",
+                                                             albumName: defaults.string(forKey: Prefs.immichAlbum),
+                                                             deviceID: Host.current().localizedName ?? "Mac")))
+    }
     if defaults.bool(forKey: Prefs.backupEnabled) {
         result.append(FolderDestination(bookmarkKey: Prefs.backupBookmark, folderTemplate: PathTemplate.defaultFolder,
                                         fileTemplate: nil, role: "backup folder"))
@@ -84,6 +89,53 @@ final class PhotosDestination: Destination {
             try FileManager.default.copyItem(at: file, to: source)
         }
         try await PhotoImporter.importFile(source, originalFilename: info.filename, isVideo: info.isVideo, album: album)
+    }
+}
+
+// MARK: - Immich
+
+/// Uploads a copy to a self-hosted Immich server, next to the main destination.
+final class ImmichDestination: Destination {
+    let upload: ImmichUpload
+
+    init(upload: ImmichUpload) {
+        self.upload = upload
+    }
+
+    var displayName: String { "Immich" }
+
+    func prepare() async throws {
+        guard !upload.apiKey.isEmpty else { throw DestinationError("Enter your Immich API key in Settings.") }
+        try await upload.check()
+    }
+
+    func store(_ file: URL, info: ObjectInfo, camera: String, move: Bool) async throws {
+        try await upload.upload(file, info: info, key: "\(camera)/\(info.filename)/\(info.captureDate)")
+    }
+}
+
+/// The Immich API key, kept in the Keychain rather than in preferences.
+enum ImmichKey {
+    private static let query: [CFString: Any] = [
+        kSecClass: kSecClassGenericPassword,
+        kSecAttrService: "Fuji Import Immich API key",
+        kSecAttrAccount: "immich",
+    ]
+
+    static func load() -> String? {
+        var q = query
+        q[kSecReturnData] = true
+        var item: CFTypeRef?
+        guard SecItemCopyMatching(q as CFDictionary, &item) == errSecSuccess, let data = item as? Data else { return nil }
+        return String(data: data, encoding: .utf8)
+    }
+
+    static func save(_ key: String) {
+        SecItemDelete(query as CFDictionary)
+        guard !key.isEmpty else { return }
+        var q = query
+        q[kSecValueData] = Data(key.utf8)
+        SecItemAdd(q as CFDictionary, nil)
     }
 }
 

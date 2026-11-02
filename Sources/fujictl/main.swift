@@ -24,6 +24,8 @@ options:
   --all                import everything, not only photos that weren't imported before
   --skip-videos        leave out videos
   --protocol fuji|ptpip   camera protocol (default: try Fuji's, then standard PTP/IP for Canon, Nikon, …)
+  --immich URL         also upload imports to this Immich server (API key in $IMMICH_API_KEY)
+  --immich-album NAME  add Immich uploads to this album
   --history FILE       import history file (default: \(ImportHistory.defaultURL.path))
   --quiet              no protocol log on stderr
 """
@@ -50,6 +52,8 @@ let folders = option("--folders")
 let rename = option("--rename")
 let historyPath = option("--history")
 let protocolName = option("--protocol")
+let immichURL = option("--immich")
+let immichAlbum = option("--immich-album")
 let all = flag("--all")
 let skipVideos = flag("--skip-videos")
 let watchAutoSave = flag("--autosave")
@@ -95,20 +99,43 @@ func folderImport(_ path: String) -> FolderImport {
                  fileTemplate: rename.map(PathTemplate.init))
 }
 
+let immich: ImmichUpload? = immichURL.map { url in
+    guard let server = URL(string: url), let key = ProcessInfo.processInfo.environment["IMMICH_API_KEY"], !key.isEmpty else {
+        fail("--immich needs a server URL and the API key in IMMICH_API_KEY")
+    }
+    return ImmichUpload(server: server, apiKey: key, albumName: immichAlbum, deviceID: clientName)
+}
+
+/// Runs async work from this synchronous tool.
+@discardableResult
+func blocking<T: Sendable>(_ body: @escaping @Sendable () async throws -> T) throws -> T {
+    let semaphore = DispatchSemaphore(value: 0)
+    nonisolated(unsafe) var result: Result<T, Error>!
+    Task {
+        do { result = .success(try await body()) } catch { result = .failure(error) }
+        semaphore.signal()
+    }
+    semaphore.wait()
+    return try result.get()
+}
+
 let history = ImportHistory(url: historyPath.map { URL(fileURLWithPath: $0) } ?? ImportHistory.defaultURL)
 
 /// Downloads `handle` next to its destination, then files it. Returns false if it was skipped.
 func importObject(_ camera: WirelessCamera, handle: UInt32, into target: FolderImport, info known: ObjectInfo? = nil) throws -> Bool {
     let info = try known ?? camera.objectInfo(handle)
     if info.isFolder || (skipVideos && info.isVideo) { return false }
-    let key = ImportHistory.key(camera: camera.cameraName, info: info)
-    if !all && history.contains(key) { return false }
+    if !all && history.contains(ImportHistory.key(camera: camera.cameraName, info: info)) { return false }
     try FileManager.default.createDirectory(at: target.root, withIntermediateDirectories: true)
     let tmp = target.root.appendingPathComponent(".fujictl-\(UUID().uuidString)")
     defer { try? FileManager.default.removeItem(at: tmp) }
     let downloaded = try camera.download(handle, to: tmp)
     let url = try target.store(tmp, info: downloaded, camera: camera.cameraName, move: true)
-    history.insert(ImportHistory.key(camera: camera.cameraName, info: downloaded))
+    let key = ImportHistory.key(camera: camera.cameraName, info: downloaded)
+    if let immich {
+        try blocking { try await immich.upload(url, info: downloaded, key: key) }
+    }
+    history.insert(key)
     print("\(downloaded.filename) → \(url.path)")
     return true
 }

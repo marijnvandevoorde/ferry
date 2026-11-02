@@ -67,6 +67,12 @@
         <label class="check"><input id="auto-import" type="checkbox" /> Import new photos automatically after connecting</label>
         <label class="check"><input id="skip-videos" type="checkbox" /> Leave videos out of “Import New”</label>
         <label class="check"><input id="autostart" type="checkbox" /> Start at login</label>
+        <fieldset>
+          <legend>Also upload to Immich (optional)</legend>
+          <label>Server <input id="immich-server" placeholder="https://photos.example.com" /></label>
+          <label>API key <input id="immich-key" type="password" autocomplete="off" /></label>
+          <label>Album <input id="immich-album" placeholder="Fujifilm" /></label>
+        </fieldset>
         <p id="preset-help" class="muted small">Windows Photos, OneDrive, Shotwell and GNOME Photos pick up photos in your Pictures folder.
           Lightroom Classic (Auto Import), Photoshop Elements (watched folders), digiKam and darktable can watch a folder:
           choose it here and set Subfolders to “No subfolders” for Lightroom. Tokens: {yyyy} {MM} {dd} {HH} {mm} {ss} {camera} {original}.</p>

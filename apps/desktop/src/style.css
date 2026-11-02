@@ -64,4 +64,5 @@ dialog .row input { flex: 1; }
 dialog .presets { align-items: center; margin: -4px 0 8px; }
 dialog .presets button { padding: 2px 8px; font-size: 12px; }
 dialog .check { display: flex; gap: 8px; align-items: center; }
+dialog fieldset { border: 1px solid var(--border); border-radius: 8px; padding: 4px 12px; }
 dialog menu { display: flex; justify-content: flex-end; padding: 0; margin: 16px 0 0; }
