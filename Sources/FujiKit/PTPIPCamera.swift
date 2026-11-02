@@ -217,4 +217,9 @@ public final class PTPIPCamera: @unchecked Sendable {
     }
 }
 
-extension PTPIPCamera: WirelessCamera {}
+extension PTPIPCamera: WirelessCamera {
+    public func refreshObjectCount() throws -> Int {
+        try loadHandles()
+        return objectHandles.count
+    }
+}

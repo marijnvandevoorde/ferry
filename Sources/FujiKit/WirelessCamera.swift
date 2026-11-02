@@ -17,6 +17,28 @@ public protocol WirelessCamera: AnyObject, Sendable {
     func thumbnail(_ handle: UInt32) throws -> Data?
     @discardableResult
     func download(_ handle: UInt32, to destination: URL, progress: (Int64, Int64) -> Void) throws -> ObjectInfo
+    /// Keeps the connection alive and picks up new photos; returns the current number of objects.
+    func refreshObjectCount() throws -> Int
+}
+
+/// Serializes calls to a camera on its own queue, for use from async code.
+public final class SerialCamera: @unchecked Sendable {
+    public let camera: WirelessCamera
+    private let queue = DispatchQueue(label: "fujikit.camera.serial")
+
+    public init(_ camera: WirelessCamera) {
+        self.camera = camera
+    }
+
+    /// Fuji-specific features (selection mode, PC AutoSave, profile) when the camera is a Fuji.
+    public var fuji: FujiCamera? { camera as? FujiCamera }
+
+    public func run<T: Sendable>(_ body: @escaping @Sendable (WirelessCamera) throws -> T) async throws -> T {
+        let camera = self.camera
+        return try await withCheckedThrowingContinuation { cont in
+            queue.async { cont.resume(with: Result { try body(camera) }) }
+        }
+    }
 }
 
 public enum CameraProtocol: String, Sendable, CaseIterable {
@@ -57,4 +79,9 @@ extension WirelessCamera {
     }
 }
 
-extension FujiCamera: WirelessCamera {}
+extension FujiCamera: WirelessCamera {
+    public func refreshObjectCount() throws -> Int {
+        try pollEvents()
+        return objectCount
+    }
+}

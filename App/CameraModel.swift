@@ -89,7 +89,7 @@ final class CameraModel {
     private var lastSearchFailure: String?
     var selection: Set<String> = []
 
-    private var camera: FujiCamera?
+    private var camera: SerialCamera?
     private var sessionTask: Task<Void, Never>?
     private var searchTask: Task<Void, Never>?
     private var importTask: Task<Void, Never>?
@@ -152,18 +152,24 @@ final class CameraModel {
         let isLoopback = host.hasPrefix("127.") || host == "localhost"
         cameraAddress = host
         let clientName = Host.current().localizedName ?? "Mac"
-        let camera = FujiCamera(host: host, interface: isLoopback || autoSaveHost != nil ? nil : wifi, clientName: clientName) { [weak self] line in
-            Task { @MainActor in self?.appendLog(line) }
-        }
+        let interface = isLoopback || autoSaveHost != nil ? nil : wifi
+        let log: (String) -> Void = { [weak self] line in Task { @MainActor in self?.appendLog(line) } }
+        let onApproval: () -> Void = { Task { @MainActor [weak self] in self?.phase = .waitingForApproval } }
 
+        let camera: SerialCamera
         do {
-            try await camera.run { cam in
-                try cam.connect {
-                    Task { @MainActor [weak self] in self?.phase = .waitingForApproval }
+            camera = SerialCamera(try await Task.detached {
+                if autoSaveHost != nil {
+                    // PC AutoSave is Fuji-only.
+                    let fuji = FujiCamera(host: host, interface: interface, clientName: clientName, log: log)
+                    try fuji.connect(onWaitingForApproval: onApproval)
+                    return fuji as WirelessCamera
                 }
-            }
+                // Fuji's protocol first, then standard PTP/IP (Canon and others).
+                return try CameraProtocol.connect(host: host, interface: interface, clientName: clientName, log: log,
+                                                  onWaitingForApproval: onApproval)
+            }.value)
         } catch {
-            camera.disconnect()
             phase = .searching
             // While searching, failing to reach the camera is expected; only surface real problems.
             if case FujiError.connectionFailed(let reason) = error, quiet {
@@ -178,8 +184,8 @@ final class CameraModel {
 
         self.camera = camera
         lastSearchFailure = nil
-        cameraName = camera.cameraName
-        CameraGuide.remember(camera.profile)
+        cameraName = camera.camera.cameraName
+        if let fuji = camera.fuji { CameraGuide.remember(fuji.profile) }
         lastError = nil
         importSummary = nil
         phase = .connected
@@ -192,7 +198,7 @@ final class CameraModel {
         sessionTask?.cancel()
         let camera = self.camera
         self.camera = nil
-        Task.detached { camera?.disconnect() }
+        Task.detached { camera?.camera.disconnect() }
         resetSession()
     }
 
@@ -265,14 +271,14 @@ final class CameraModel {
 
     // MARK: - Session: listing, thumbnails, keep-alive
 
-    private func runSession(_ camera: FujiCamera) async {
-        if camera.isSendingSelection {
+    private func runSession(_ camera: SerialCamera) async {
+        if camera.fuji?.isSendingSelection == true {
             await receiveSelection(camera)
             return
         }
         do {
             try await loadList(camera)
-            if camera.isAutoSave {
+            if camera.fuji?.isAutoSave == true {
                 // The camera came to us to deliver photos: take everything new, then let it go.
                 startImport(itemsToImport)
                 await importTask?.value
@@ -293,14 +299,11 @@ final class CameraModel {
             try await loadThumbnails(camera)
 
             // Keep the connection alive and notice newly taken photos.
-            var count = camera.objectCount
+            var count = camera.camera.objectHandles.count
             while !Task.isCancelled {
                 try await Task.sleep(for: .seconds(4))
                 if isImporting { continue }
-                let newCount = try await camera.run { cam -> Int in
-                    try cam.pollEvents()
-                    return cam.objectCount
-                }
+                let newCount = try await camera.run { try $0.refreshObjectCount() }
                 if newCount != count {
                     count = newCount
                     try await loadList(camera)
@@ -313,10 +316,10 @@ final class CameraModel {
         }
     }
 
-    private func loadList(_ camera: FujiCamera) async throws {
+    private func loadList(_ camera: SerialCamera) async throws {
         isListing = true
         defer { isListing = false }
-        let handles = camera.objectHandles
+        let handles = camera.camera.objectHandles
         listProgress = (0, handles.count)
         var loaded: [PhotoItem] = []
         for handle in handles {
@@ -335,7 +338,7 @@ final class CameraModel {
         selection = selection.intersection(items.map(\.id))
     }
 
-    private func loadThumbnails(_ camera: FujiCamera) async throws {
+    private func loadThumbnails(_ camera: SerialCamera) async throws {
         for item in items where item.thumbnail == nil {
             try Task.checkCancellation()
             try await waitWhileImporting()
@@ -397,7 +400,7 @@ final class CameraModel {
     }
 
     /// Downloads one object, imports it into Photos and records it. Returns the imported item's info.
-    private func importObject(_ handle: UInt32, filename: String, camera: FujiCamera, destinations: [Destination],
+    private func importObject(_ handle: UInt32, filename: String, camera: SerialCamera, destinations: [Destination],
                               thumbnail: Bool = false, skipIfImported: Bool = false) async throws -> (ObjectInfo, NSImage?) {
         let tmpDir = FileManager.default.temporaryDirectory.appendingPathComponent("FujiImport", isDirectory: true)
         try? FileManager.default.createDirectory(at: tmpDir, withIntermediateDirectories: true)
@@ -425,7 +428,7 @@ final class CameraModel {
         return (info, image)
     }
 
-    private func runImport(_ batch: [PhotoItem], camera: FujiCamera) async {
+    private func runImport(_ batch: [PhotoItem], camera: SerialCamera) async {
         defer { importProgress = nil }
         let activity = keepAwake()
         defer { ProcessInfo.processInfo.endActivity(activity) }
@@ -467,7 +470,7 @@ final class CameraModel {
     }
 
     /// The user picked images on the camera and chose to send them: import each one as the camera offers it.
-    private func receiveSelection(_ camera: FujiCamera) async {
+    private func receiveSelection(_ camera: SerialCamera) async {
         appendLog("Receiving images selected on the camera")
         let activity = keepAwake()
         defer { ProcessInfo.processInfo.endActivity(activity) }
@@ -477,7 +480,7 @@ final class CameraModel {
         if let destinations = await prepareDestinations() {
             while !Task.isCancelled {
                 do {
-                    guard let info = try await camera.run({ try $0.nextSelectedImage() }) else { break }
+                    guard let info = try await camera.run({ try ($0 as! FujiCamera).nextSelectedImage() }) else { break }
                     importProgress = ImportProgress(index: received + 1, total: 0, filename: info.filename, fraction: 0)
                     let (imported, image) = try await importObject(FujiCamera.selectedImageHandle, filename: info.filename,
                                                                    camera: camera, destinations: destinations, thumbnail: true,
@@ -498,7 +501,7 @@ final class CameraModel {
         importProgress = nil
         // The camera ends this mode itself; keep showing what arrived until the user disconnects.
         self.camera = nil
-        Task.detached { camera.disconnect() }
+        Task.detached { camera.camera.disconnect() }
         importSummary = "Received \(received) \(received == 1 ? "item" : "items") from the camera" + (failure.map { ". Stopped: \($0)" } ?? "")
         Notifier.post("Transfer finished", importSummary ?? "")
     }
