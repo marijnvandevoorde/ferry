@@ -12,14 +12,15 @@ public enum FujiError: Error, LocalizedError, Equatable {
 
     public var errorDescription: String? {
         switch self {
-        case .connectionFailed(let m): return "Could not connect: \(m)"
-        case .handshakeRejected: return "The camera rejected the connection. Restart Wi-Fi on the camera and try again."
-        case .disconnected: return "The camera closed the connection."
-        case .timeout: return "The camera stopped responding."
-        case .io(let m): return "Network error: \(m)"
-        case .protocolError(let m): return "Protocol error: \(m)"
-        case .response(let op, let code): return String(format: "Camera returned 0x%04X for operation 0x%04X", code, op)
-        case .cancelled: return "Cancelled"
+        case .connectionFailed(let m): return localized("Could not connect: %@", m)
+        case .handshakeRejected: return localized("The camera rejected the connection. Restart Wi-Fi on the camera and try again.")
+        case .disconnected: return localized("The camera closed the connection.")
+        case .timeout: return localized("The camera stopped responding.")
+        case .io(let m): return localized("Network error: %@", m)
+        case .protocolError(let m): return localized("Protocol error: %@", m)
+        case .response(let op, let code):
+            return localized("Camera returned %@ for operation %@", String(format: "0x%04X", code), String(format: "0x%04X", op))
+        case .cancelled: return localized("Cancelled")
         }
     }
 
@@ -32,6 +33,25 @@ public enum FujiError: Error, LocalizedError, Equatable {
         return false
     }
 }
+
+/// Looks up `key` in FujiKit's translations and fills in `%@` arguments; English when they aren't shipped.
+func localized(_ key: String, _ args: String...) -> String {
+    let format = translations.map { NSLocalizedString(key, bundle: $0, comment: "") } ?? key
+    return String(format: format, arguments: args)
+}
+
+/// FujiKit's resource bundle. Not `Bundle.module`: that crashes when the bundle wasn't shipped next to the binary,
+/// as with the desktop app's single-file fujictl sidecar.
+private let translations: Bundle? = {
+    let names = ["FujiKit_FujiKit.bundle", "FujiKit_FujiKit.resources"]
+    let places = [Bundle.main.resourceURL, Bundle.main.bundleURL, Bundle.main.executableURL?.deletingLastPathComponent()]
+    for place in places.compactMap({ $0 }) {
+        for name in names {
+            if let bundle = Bundle(url: place.appendingPathComponent(name)) { return bundle }
+        }
+    }
+    return nil
+}()
 
 /// PTP codes used by this client. Fuji-specific values come from libfuji (MIT, github.com/petabyt/libfuji).
 enum PTP {

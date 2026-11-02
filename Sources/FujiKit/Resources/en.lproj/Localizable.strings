@@ -1,0 +1,9 @@
+/* FujiKit error messages. */
+"Could not connect: %@" = "Could not connect: %@";
+"The camera rejected the connection. Restart Wi-Fi on the camera and try again." = "The camera rejected the connection. Restart Wi-Fi on the camera and try again.";
+"The camera closed the connection." = "The camera closed the connection.";
+"The camera stopped responding." = "The camera stopped responding.";
+"Network error: %@" = "Network error: %@";
+"Protocol error: %@" = "Protocol error: %@";
+"Camera returned %@ for operation %@" = "Camera returned %@ for operation %@";
+"Cancelled" = "Cancelled";
