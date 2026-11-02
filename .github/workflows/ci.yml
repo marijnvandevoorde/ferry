@@ -28,6 +28,19 @@ jobs:
       - name: Unit tests
         run: swift test
 
+  windows:
+    runs-on: windows-2022
+    steps:
+      - uses: compnerd/gha-setup-swift@main
+        with:
+          branch: swift-6.0.3-release
+          tag: 6.0.3-RELEASE
+      - uses: actions/checkout@v4
+      - name: Build
+        run: swift build
+      - name: Unit tests
+        run: swift test
+
   emulator:
     runs-on: ubuntu-24.04
     steps:
