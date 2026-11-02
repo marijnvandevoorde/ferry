@@ -65,16 +65,16 @@ The project is laid out as:
 [vcam](https://github.com/petabyt/vcam) emulates Fujifilm cameras, including the X-T20:
 
 ```sh
-git clone https://github.com/petabyt/vcam && cd vcam
-# Build in a Linux container (see vcam's Dockerfile), then:
-docker run --rm -p 55740-55742:55740-55742 -v "$PWD/card:/card" <image> build/vcam fuji_x_t20 tcp --local-ip --fs /card
+docker build -t vcam-fuji scripts/vcam
+docker run --rm -p 55740-55742:55740-55742 -v "$PWD/card:/card" vcam-fuji build/vcam fuji_x_t20 tcp --local-ip --fs /card
 swift run fujictl --host 127.0.0.1 list
 # point the app at it (or set the camera address in Settings)
 defaults write ~/Library/Containers/io.github.fujiimport.FujiImport/Data/Library/Preferences/io.github.fujiimport.FujiImport cameraHost 127.0.0.1
 ```
 
 vcam only supports one connection per run; restart it between sessions.
-`scripts/test-vcam.sh` runs the download test against every emulated Fuji model.
+`scripts/test-vcam.sh` runs the download test against every emulated Fuji model, and
+`scripts/test-vcam-autosave.sh` tests PC AutoSave. CI runs both on Linux.
 
 ## Credits
 

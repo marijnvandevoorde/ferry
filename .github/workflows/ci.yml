@@ -19,3 +19,22 @@ jobs:
           xcodegen generate
           xcodebuild -project FujiImport.xcodeproj -scheme FujiImport -configuration Release \
             -derivedDataPath .build/xcode CODE_SIGNING_ALLOWED=NO build
+
+  linux:
+    runs-on: ubuntu-24.04
+    container: swift:6.0-noble
+    steps:
+      - uses: actions/checkout@v4
+      - name: Unit tests
+        run: swift test
+
+  emulator:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build vcam
+        run: docker build -q -t vcam-fuji scripts/vcam
+      - name: Every emulated Fuji model
+        run: scripts/test-vcam.sh
+      - name: PC AutoSave
+        run: scripts/test-vcam-autosave.sh
