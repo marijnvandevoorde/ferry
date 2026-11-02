@@ -79,7 +79,7 @@ struct GalleryView: View {
         .toolbar {
             ToolbarItem(placement: .principal) {
                 Picker("Show", selection: $filter) {
-                    ForEach(Filter.allCases) { Text($0.rawValue).tag($0) }
+                    ForEach(Filter.allCases) { Text(LocalizedStringKey($0.rawValue)).tag($0) }
                 }
                 .pickerStyle(.segmented)
                 .fixedSize()
@@ -106,11 +106,11 @@ struct GalleryView: View {
 
     private var subtitle: String {
         if model.isListing {
-            return "Reading card… \(model.listProgress.loaded) of \(model.listProgress.total)"
+            return String(localized: "Reading card… \(model.listProgress.loaded) of \(model.listProgress.total)")
         }
         let n = model.items.count
         let new = model.newItems.count
-        return "\(n) \(n == 1 ? "item" : "items") · \(new) not imported"
+        return String(localized: "\(n) items · \(new) not imported")
     }
 
     /// Arrow keys step through the photos in display order.
@@ -168,9 +168,9 @@ private struct SectionHeader: View {
     }
 
     private var title: String {
-        if day == Calendar.current.startOfDay(for: .distantPast) { return "Unknown date" }
-        if Calendar.current.isDateInToday(day) { return "Today" }
-        if Calendar.current.isDateInYesterday(day) { return "Yesterday" }
+        if day == Calendar.current.startOfDay(for: .distantPast) { return String(localized: "Unknown date") }
+        if Calendar.current.isDateInToday(day) { return String(localized: "Today") }
+        if Calendar.current.isDateInYesterday(day) { return String(localized: "Yesterday") }
         return day.formatted(.dateTime.weekday(.wide).day().month(.wide).year())
     }
 }

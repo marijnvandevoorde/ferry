@@ -88,7 +88,7 @@ struct ConnectView: View {
         }
     }
 
-    private var title: String {
+    private var title: LocalizedStringKey {
         switch model.phase {
         case .connecting: "Connecting…"
         case .waitingForApproval: "Press OK on the camera"
@@ -96,7 +96,7 @@ struct ConnectView: View {
         }
     }
 
-    private var subtitle: String {
+    private var subtitle: LocalizedStringKey {
         switch model.phase {
         case .connecting: "Talking to the camera at \(model.cameraAddress)"
         case .waitingForApproval: "The camera is asking whether to allow this Mac."

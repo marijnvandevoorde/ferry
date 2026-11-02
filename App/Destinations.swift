@@ -22,8 +22,8 @@ enum DestinationKind: String, CaseIterable, Identifiable {
     var id: String { rawValue }
     var title: String {
         switch self {
-        case .photos: "Apple Photos"
-        case .folder: "A folder"
+        case .photos: String(localized: "Apple Photos")
+        case .folder: String(localized: "A folder")
         }
     }
 }
@@ -41,7 +41,7 @@ func configuredDestinations() -> [Destination] {
     }
     if defaults.bool(forKey: Prefs.backupEnabled) {
         result.append(FolderDestination(bookmarkKey: Prefs.backupBookmark, folderTemplate: PathTemplate.defaultFolder,
-                                        fileTemplate: nil, role: "backup folder"))
+                                        fileTemplate: nil, role: String(localized: "backup folder")))
     }
     switch DestinationKind(rawValue: defaults.string(forKey: Prefs.destination) ?? "") ?? .photos {
     case .photos:
@@ -54,7 +54,7 @@ func configuredDestinations() -> [Destination] {
         let file = defaults.string(forKey: Prefs.fileTemplate) ?? ""
         result.append(FolderDestination(bookmarkKey: Prefs.folderBookmark, folderTemplate: PathTemplate(folder),
                                         fileTemplate: rename && !file.isEmpty ? PathTemplate(file) : nil,
-                                        role: "import folder"))
+                                        role: String(localized: "import folder")))
     }
     return result
 }
@@ -74,7 +74,7 @@ final class PhotosDestination: Destination {
     func prepare() async throws {
         let access = await PhotoImporter.requestAccess(needsAlbum: albumName != nil)
         guard access != .denied else {
-            throw DestinationError("Fuji Import needs access to Photos. Allow it in System Settings → Privacy & Security → Photos.")
+            throw DestinationError(String(localized: "Fuji Import needs access to Photos. Allow it in System Settings → Privacy & Security → Photos."))
         }
         if let albumName, access == .full {
             album = try? await PhotoImporter.album(named: albumName)
@@ -105,7 +105,7 @@ final class ImmichDestination: Destination {
     var displayName: String { "Immich" }
 
     func prepare() async throws {
-        guard !upload.apiKey.isEmpty else { throw DestinationError("Enter your Immich API key in Settings.") }
+        guard !upload.apiKey.isEmpty else { throw DestinationError(String(localized: "Enter your Immich API key in Settings.")) }
         try await upload.check()
     }
 
@@ -166,20 +166,20 @@ final class FolderDestination: Destination {
     func prepare() async throws {
         guard root == nil else { return }
         guard let url = FolderBookmark.url(for: bookmarkKey) else {
-            throw DestinationError("Choose a \(role) in Settings.")
+            throw DestinationError(String(localized: "Choose the \(role) in Settings."))
         }
         guard url.startAccessingSecurityScopedResource() else {
-            throw DestinationError("Fuji Import can't access the \(role) “\(url.lastPathComponent)”. Choose it again in Settings.")
+            throw DestinationError(String(localized: "Fuji Import can't access the \(role) “\(url.lastPathComponent)”. Choose it again in Settings."))
         }
         root = url
         var isDir: ObjCBool = false
         guard FileManager.default.fileExists(atPath: url.path, isDirectory: &isDir), isDir.boolValue else {
-            throw DestinationError("The \(role) “\(url.lastPathComponent)” isn't available. Is the drive connected?")
+            throw DestinationError(String(localized: "The \(role) “\(url.lastPathComponent)” isn't available. Is the drive connected?"))
         }
     }
 
     func store(_ file: URL, info: ObjectInfo, camera: String, move: Bool) async throws {
-        guard let root else { throw DestinationError("The \(role) isn't ready.") }
+        guard let root else { throw DestinationError(String(localized: "The \(role) isn't ready.")) }
         let folder = FolderImport(root: root, folderTemplate: folderTemplate, fileTemplate: fileTemplate)
         try await Task.detached { try folder.store(file, info: info, camera: camera, move: move) }.value
     }
@@ -212,7 +212,7 @@ enum FolderBookmark {
         panel.canCreateDirectories = true
         panel.allowsMultipleSelection = false
         panel.message = message
-        panel.prompt = "Choose"
+        panel.prompt = String(localized: "Choose")
         guard panel.runModal() == .OK, let url = panel.url else { return nil }
         save(url, for: key)
         return url

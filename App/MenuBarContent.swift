@@ -38,10 +38,10 @@ struct MenuBarContent: View {
 
     private var status: String {
         switch model.phase {
-        case .searching: "No camera connected"
-        case .connecting: "Connecting…"
-        case .waitingForApproval: "Press OK on the camera"
-        case .connected: "\(model.cameraName.isEmpty ? "Camera" : model.cameraName): \(model.newItems.count) new"
+        case .searching: String(localized: "No camera connected")
+        case .connecting: String(localized: "Connecting…")
+        case .waitingForApproval: String(localized: "Press OK on the camera")
+        case .connected: String(localized: "\(model.cameraName.isEmpty ? String(localized: "Camera") : model.cameraName): \(model.newItems.count) new")
         }
     }
 }

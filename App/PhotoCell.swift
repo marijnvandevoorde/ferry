@@ -76,9 +76,9 @@ struct PhotoCell: View {
     }
 
     private var accessibilityText: String {
-        var parts = [item.info.isVideo ? "Video" : "Photo", item.info.filename,
+        var parts = [item.info.isVideo ? String(localized: "Video") : String(localized: "Photo"), item.info.filename,
                      item.date.formatted(date: .abbreviated, time: .shortened)]
-        if item.imported { parts.append("imported") }
+        if item.imported { parts.append(String(localized: "imported")) }
         return parts.joined(separator: ", ")
     }
 }

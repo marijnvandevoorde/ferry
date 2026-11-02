@@ -218,7 +218,7 @@ final class CameraModel {
     private func connectionLost(_ error: Error) {
         guard phase == .connected else { return }
         appendLog("Connection lost: \(error.localizedDescription)")
-        lastError = "Lost connection to the camera."
+        lastError = String(localized: "Lost connection to the camera.")
         camera = nil
         importTask?.cancel()
         sessionTask?.cancel()
@@ -235,7 +235,7 @@ final class CameraModel {
             autoSaveStatus = ""
             return
         }
-        autoSaveStatus = "Listening for cameras on this network"
+        autoSaveStatus = String(localized: "Listening for cameras on this network")
         let clientName = Host.current().localizedName ?? "Mac"
         autoSaveTask = Task.detached { [weak self] in
             let listener = AutoSaveListener(clientName: clientName) { line in
@@ -261,8 +261,9 @@ final class CameraModel {
     private func handleAutoSave(_ event: AutoSaveListener.Event) async {
         switch event {
         case .registered(let camera, let model):
-            autoSaveStatus = "Registered with \(model.isEmpty ? camera : model)"
-            Notifier.post("Camera registered", "\(model.isEmpty ? camera : model) can now send photos to this Mac.")
+            let name = model.isEmpty ? camera : model
+            autoSaveStatus = String(localized: "Registered with \(name)")
+            Notifier.post(String(localized: "Camera registered"), String(localized: "\(name) can now send photos to this Mac."))
         case .importRequest(let host, _):
             guard phase == .searching else {
                 appendLog("AutoSave: ignoring the camera's request, already connected")
@@ -297,7 +298,7 @@ final class CameraModel {
                 importNew()
             } else if !itemsToImport.isEmpty {
                 let n = itemsToImport.count
-                Notifier.post(cameraName.isEmpty ? "Camera connected" : cameraName, "\(n) new \(n == 1 ? "item" : "items") to import")
+                Notifier.post(cameraName.isEmpty ? String(localized: "Camera connected") : cameraName, String(localized: "\(n) new items to import"))
             }
             try await loadThumbnails(camera)
 
@@ -465,11 +466,11 @@ final class CameraModel {
         }
         pendingImport = []
 
-        var summary = "Imported \(imported) \(imported == 1 ? "item" : "items") to \(destinations.last?.displayName ?? "Photos")"
-        if Task.isCancelled { summary += " (cancelled)" }
-        if !failed.isEmpty { summary += ". \(failed.count) failed: \(failed.prefix(3).joined(separator: ", "))" }
+        var summary = String(localized: "Imported \(imported) items to \(destinations.last?.displayName ?? "Photos")")
+        if Task.isCancelled { summary += String(localized: " (cancelled)") }
+        if !failed.isEmpty { summary += String(localized: ". \(failed.count) failed: \(failed.prefix(3).joined(separator: ", "))") }
         importSummary = summary
-        Notifier.post("Import finished", summary)
+        Notifier.post(String(localized: "Import finished"), summary)
     }
 
     /// The user picked images on the camera and chose to send them: import each one as the camera offers it.
@@ -505,8 +506,8 @@ final class CameraModel {
         // The camera ends this mode itself; keep showing what arrived until the user disconnects.
         self.camera = nil
         Task.detached { camera.camera.disconnect() }
-        importSummary = "Received \(received) \(received == 1 ? "item" : "items") from the camera" + (failure.map { ". Stopped: \($0)" } ?? "")
-        Notifier.post("Transfer finished", importSummary ?? "")
+        importSummary = String(localized: "Received \(received) items from the camera") + (failure.map { String(localized: ". Stopped: \($0)") } ?? "")
+        Notifier.post(String(localized: "Transfer finished"), importSummary ?? "")
     }
 
     /// Keeps the Mac from sleeping while an import runs; the Wi-Fi connection would drop.

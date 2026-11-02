@@ -78,10 +78,10 @@ struct SettingsView: View {
                         .disabled(!useAlbum)
                 case .folder:
                     FolderRow(title: "Folder", url: folder) {
-                        folder = FolderBookmark.choose(for: Prefs.folderBookmark, message: "Choose where to put imported photos.") ?? folder
+                        folder = FolderBookmark.choose(for: Prefs.folderBookmark, message: String(localized: "Choose where to put imported photos.")) ?? folder
                     }
                     Picker("Subfolders", selection: $folderTemplate) {
-                        ForEach(Self.folderPresets, id: \.1) { Text($0.0).tag($0.1) }
+                        ForEach(Self.folderPresets, id: \.1) { Text(LocalizedStringKey($0.0)).tag($0.1) }
                         if !Self.folderPresets.contains(where: { $0.1 == folderTemplate }) {
                             Text(folderTemplate).tag(folderTemplate)
                         }
@@ -102,7 +102,7 @@ struct SettingsView: View {
                 Toggle("Also copy to a backup folder", isOn: $backupEnabled)
                 if backupEnabled {
                     FolderRow(title: "Backup folder", url: backupFolder) {
-                        backupFolder = FolderBookmark.choose(for: Prefs.backupBookmark, message: "Choose a backup folder, for example on an external drive.") ?? backupFolder
+                        backupFolder = FolderBookmark.choose(for: Prefs.backupBookmark, message: String(localized: "Choose a backup folder, for example on an external drive.")) ?? backupFolder
                     }
                 }
             } footer: {
@@ -153,7 +153,7 @@ struct SettingsView: View {
 }
 
 private struct FolderRow: View {
-    let title: String
+    let title: LocalizedStringKey
     let url: URL?
     let choose: () -> Void
 
