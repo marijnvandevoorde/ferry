@@ -1,0 +1,21 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  macos:
+    runs-on: macos-15
+    steps:
+      - uses: actions/checkout@v4
+      - name: Unit tests
+        run: swift test
+      - name: Install XcodeGen
+        run: brew install xcodegen
+      - name: Build app
+        run: |
+          xcodegen generate
+          xcodebuild -project FujiImport.xcodeproj -scheme FujiImport -configuration Release \
+            -derivedDataPath .build/xcode CODE_SIGNING_ALLOWED=NO build
