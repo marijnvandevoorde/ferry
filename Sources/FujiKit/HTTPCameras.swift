@@ -45,7 +45,13 @@ public class HTTPCamera: @unchecked Sendable {
     /// GET `path` (with query) and return the body; throws `connectionFailed` when nothing answers.
     func get(_ pathAndQuery: String, timeout: TimeInterval = 10) throws -> (Data, Int) {
         guard let url = URL(string: pathAndQuery, relativeTo: base) else { throw FujiError.protocolError("bad URL \(pathAndQuery)") }
-        var request = URLRequest(url: url, timeoutInterval: timeout)
+        return try perform(URLRequest(url: url, timeoutInterval: timeout))
+    }
+
+    /// Sends `request` (with the camera's headers) and returns the body and status code.
+    func perform(_ request: URLRequest) throws -> (Data, Int) {
+        var request = request
+        let url = request.url!
         headers.forEach { request.setValue($1, forHTTPHeaderField: $0) }
         let semaphore = DispatchSemaphore(value: 0)
         nonisolated(unsafe) var result: Result<(Data, Int), Error>!
@@ -63,7 +69,7 @@ public class HTTPCamera: @unchecked Sendable {
 
     /// Downloads to a file without holding it in memory.
     func download(_ pathAndQuery: String, to destination: URL, timeout: TimeInterval = 120) throws {
-        guard let url = URL(string: pathAndQuery, relativeTo: base) else { throw FujiError.protocolError("bad URL \(pathAndQuery)") }
+        guard let url = URL(string: pathAndQuery, relativeTo: base)?.absoluteURL else { throw FujiError.protocolError("bad URL \(pathAndQuery)") }
         var request = URLRequest(url: url, timeoutInterval: timeout)
         headers.forEach { request.setValue($1, forHTTPHeaderField: $0) }
         let semaphore = DispatchSemaphore(value: 0)

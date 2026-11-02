@@ -50,6 +50,8 @@ public enum CameraProtocol: String, Sendable, CaseIterable {
     case olympus
     /// Ricoh GR II / III (HTTP API).
     case ricoh
+    /// DLNA media server: older Sony ("Send to Smartphone") and Panasonic Lumix.
+    case dlna
 
     /// Connects with each protocol in turn and returns the first camera that accepts. A protocol is skipped only
     /// when nothing listens on its port, so no camera gets a throwaway connection (some accept just one).
@@ -74,6 +76,7 @@ public enum CameraProtocol: String, Sendable, CaseIterable {
         case .ptpip: PTPIPCamera(host: host, interface: interface, clientName: clientName, log: log)
         case .olympus: OlympusCamera(host: host, log: log)
         case .ricoh: RicohCamera(host: host, log: log)
+        case .dlna: DLNACamera(host: host, log: log)
         }
     }
 }

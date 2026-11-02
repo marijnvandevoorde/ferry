@@ -268,6 +268,20 @@ enum Sys {
         #endif
     }
 
+    static func send(_ h: Handle, _ data: Data, to addr: sockaddr_in) -> Bool {
+        data.withUnsafeBytes { buf in
+            withSockaddr(addr) { ptr, len in
+                #if os(Windows)
+                WinSDK.sendto(h, buf.baseAddress!.assumingMemoryBound(to: CChar.self), Int32(buf.count), 0, ptr, len) >= 0
+                #elseif canImport(Darwin)
+                Darwin.sendto(h, buf.baseAddress!, buf.count, 0, ptr, socklen_t(len)) >= 0
+                #else
+                Glibc.sendto(h, buf.baseAddress!, buf.count, 0, ptr, socklen_t(len)) >= 0
+                #endif
+            }
+        }
+    }
+
     // MARK: Errors
 
     static func lastError() -> Int32 {
