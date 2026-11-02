@@ -71,7 +71,7 @@ jobs:
           branch: swift-6.2-release
           tag: 6.2-RELEASE
       - if: runner.os == 'Linux'
-        run: sudo apt-get update && sudo apt-get install -y libwebkit2gtk-4.1-dev libayatana-appindicator3-dev librsvg2-dev patchelf
+        run: sudo apt-get update && sudo apt-get install -y libwebkit2gtk-4.1-dev libayatana-appindicator3-dev librsvg2-dev patchelf libcurl4-openssl-dev
       - uses: actions/setup-node@v4
         with:
           node-version: 22

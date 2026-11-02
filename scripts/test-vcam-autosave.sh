@@ -16,8 +16,13 @@ head -c 1000 /dev/urandom > "$CARD/DSCF0003.JPG"
 
 run() {
     docker rm -f fujikit-vcam >/dev/null 2>&1 || true
-    docker run -d --name fujikit-vcam --cap-add NET_ADMIN -e MODE="$1" -p 51540:51540 -p 55740-55742:55740-55742 \
-        -v "$WORK/card:/card" vcam-fuji-autosave >/dev/null
+    # Ports of a container that was just removed can take a moment to be released.
+    for _ in $(seq 10); do
+        docker run -d --name fujikit-vcam --cap-add NET_ADMIN -e MODE="$1" -p 51540:51540 -p 55740-55742:55740-55742 \
+            -v "$WORK/card:/card" vcam-fuji-autosave >/dev/null 2>&1 && break
+        docker rm -f fujikit-vcam >/dev/null 2>&1 || true
+        sleep 1
+    done
     sleep 3
 }
 
