@@ -3,6 +3,7 @@ import SwiftUI
 struct ConnectView: View {
     @Environment(CameraModel.self) private var model
     @AppStorage(Prefs.autoConnect) private var autoConnect = true
+    @AppStorage(Prefs.autoSave) private var autoSave = false
 
     var body: some View {
         VStack(spacing: 28) {
@@ -26,6 +27,17 @@ struct ConnectView: View {
 
             if model.phase == .searching {
                 steps
+                if autoSave {
+                    Label("PC AutoSave is on: the camera can also send photos over your home Wi-Fi.", systemImage: "house")
+                        .font(.callout)
+                        .foregroundStyle(.secondary)
+                } else {
+                    SettingsLink {
+                        Text("Stay online: import over your home Wi-Fi with PC AutoSave…")
+                    }
+                    .buttonStyle(.link)
+                    .font(.callout)
+                }
             }
 
             if let error = model.lastError {

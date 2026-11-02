@@ -18,6 +18,7 @@ struct SettingsView: View {
     @State private var launchAtLogin = SMAppService.mainApp.status == .enabled
     @AppStorage(Prefs.showMenuBarIcon) private var showMenuBarIcon = true
     @AppStorage(Prefs.hideDockIcon) private var hideDockIcon = false
+    @AppStorage(Prefs.autoSave) private var autoSave = false
     @State private var folder = FolderBookmark.url(for: Prefs.folderBookmark)
     @State private var backupFolder = FolderBookmark.url(for: Prefs.backupBookmark)
     @State private var confirmForget = false
@@ -49,6 +50,18 @@ struct SettingsView: View {
                     .disabled(!showMenuBarIcon)
                     .onChange(of: hideDockIcon) { AppDelegate.applyDockIconPreference() }
                     .onChange(of: showMenuBarIcon) { _, show in if !show { hideDockIcon = false } }
+            }
+            Section {
+                Toggle("Receive photos over the home network", isOn: $autoSave)
+                    .onChange(of: autoSave) { model.updateAutoSave() }
+                if autoSave && !model.autoSaveStatus.isEmpty {
+                    LabeledContent("Status", value: model.autoSaveStatus)
+                }
+            } header: {
+                Text("PC AutoSave")
+            } footer: {
+                Text("The camera joins your Wi-Fi and sends new photos to this Mac, so the Mac stays online. Once, on the camera: Set Up → Connection Setting → PC AutoSave Setting, join your network, then register this Mac. After that, choose PC AutoSave in the camera's playback menu to send photos.")
+                    .foregroundStyle(.secondary)
             }
             Section {
                 Picker("Import to", selection: $destination) {

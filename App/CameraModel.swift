@@ -41,6 +41,7 @@ enum Prefs {
     static let skipVideos = "skipVideos"
     static let showMenuBarIcon = "showMenuBarIcon"
     static let hideDockIcon = "hideDockIcon"
+    static let autoSave = "autoSave"
 
     static func register() {
         UserDefaults.standard.register(defaults: [
@@ -57,6 +58,7 @@ enum Prefs {
             skipVideos: false,
             showMenuBarIcon: true,
             hideDockIcon: false,
+            autoSave: false,
         ])
     }
 }
@@ -95,6 +97,9 @@ final class CameraModel {
     private var thumbnailCache: [String: NSImage] = [:]
     /// Items of an import that the connection dropped in the middle of; resumed after reconnecting.
     private var pendingImport: Set<String> = []
+    private var autoSaveTask: Task<Void, Never>?
+    /// What the PC AutoSave listener is doing, for Settings.
+    private(set) var autoSaveStatus = ""
 
     var newItems: [PhotoItem] { items.filter { !$0.imported } }
     /// What "Import New" imports: new items, without videos if the user chose to skip them.
@@ -114,6 +119,7 @@ final class CameraModel {
         if let path = env["FUJIIMPORT_TEST_BACKUP"] { FolderBookmark.save(URL(fileURLWithPath: path), for: Prefs.backupBookmark) }
         #endif
         startSearching()
+        updateAutoSave()
     }
 
     // MARK: - Connection
@@ -131,7 +137,9 @@ final class CameraModel {
         }
     }
 
-    func connect(quiet: Bool = false) async {
+    /// Connects to the camera on its own Wi-Fi network, or to `autoSaveHost` when the camera reached out over
+    /// the home network (PC AutoSave).
+    func connect(quiet: Bool = false, autoSaveHost: String? = nil) async {
         guard phase == .searching else { return }
         phase = .connecting
         if !quiet { lastError = nil }
@@ -140,11 +148,11 @@ final class CameraModel {
         // explicitly so a VPN that routes 192.168.x.x can't intercept it.
         let custom = (UserDefaults.standard.string(forKey: Prefs.host) ?? "").trimmingCharacters(in: .whitespaces)
         let wifi = NetworkInfo.wifiInterface
-        let host = custom.isEmpty ? (wifi.flatMap(NetworkInfo.router(for:)) ?? "192.168.0.1") : custom
+        let host = autoSaveHost ?? (custom.isEmpty ? (wifi.flatMap(NetworkInfo.router(for:)) ?? "192.168.0.1") : custom)
         let isLoopback = host.hasPrefix("127.") || host == "localhost"
         cameraAddress = host
         let clientName = Host.current().localizedName ?? "Mac"
-        let camera = FujiCamera(host: host, interface: isLoopback ? nil : wifi, clientName: clientName) { [weak self] line in
+        let camera = FujiCamera(host: host, interface: isLoopback || autoSaveHost != nil ? nil : wifi, clientName: clientName) { [weak self] line in
             Task { @MainActor in self?.appendLog(line) }
         }
 
@@ -208,6 +216,53 @@ final class CameraModel {
         resetSession()
     }
 
+    // MARK: - PC AutoSave
+
+    /// Starts or stops listening for cameras on the home network, following the setting.
+    func updateAutoSave() {
+        autoSaveTask?.cancel()
+        autoSaveTask = nil
+        guard UserDefaults.standard.bool(forKey: Prefs.autoSave) else {
+            autoSaveStatus = ""
+            return
+        }
+        autoSaveStatus = "Listening for cameras on this network"
+        let clientName = Host.current().localizedName ?? "Mac"
+        autoSaveTask = Task.detached { [weak self] in
+            let listener = AutoSaveListener(clientName: clientName) { line in
+                Task { @MainActor in self?.appendLog(line) }
+            }
+            defer { listener.stop() }
+            while !Task.isCancelled {
+                do {
+                    guard let event = try listener.waitForCamera(timeout: 1) else { continue }
+                    await self?.handleAutoSave(event)
+                } catch {
+                    let message = error.localizedDescription
+                    await MainActor.run {
+                        self?.autoSaveStatus = message
+                        self?.appendLog("AutoSave: \(message)")
+                    }
+                    try? await Task.sleep(for: .seconds(5))
+                }
+            }
+        }
+    }
+
+    private func handleAutoSave(_ event: AutoSaveListener.Event) async {
+        switch event {
+        case .registered(let camera, let model):
+            autoSaveStatus = "Registered with \(model.isEmpty ? camera : model)"
+            Notifier.post("Camera registered", "\(model.isEmpty ? camera : model) can now send photos to this Mac.")
+        case .importRequest(let host, _):
+            guard phase == .searching else {
+                appendLog("AutoSave: ignoring the camera's request, already connected")
+                return
+            }
+            await connect(autoSaveHost: host)
+        }
+    }
+
     // MARK: - Session: listing, thumbnails, keep-alive
 
     private func runSession(_ camera: FujiCamera) async {
@@ -217,6 +272,13 @@ final class CameraModel {
         }
         do {
             try await loadList(camera)
+            if camera.isAutoSave {
+                // The camera came to us to deliver photos: take everything new, then let it go.
+                startImport(itemsToImport)
+                await importTask?.value
+                if pendingImport.isEmpty { disconnect() }
+                return
+            }
             let resumable = items.filter { pendingImport.contains($0.id) && !$0.imported }
             pendingImport = []
             if !resumable.isEmpty {
