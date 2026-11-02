@@ -237,6 +237,7 @@ public final class FujiCamera: @unchecked Sendable {
                 offset += UInt32(r.data.count)
                 progress(Int64(offset), Int64(total))
             }
+            try verifySize(destination, expected: total)
             result = .success(info)
         } catch {
             result = .failure(error)

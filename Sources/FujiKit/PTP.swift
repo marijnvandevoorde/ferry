@@ -180,6 +180,8 @@ public struct ObjectInfo: Sendable, Hashable {
     public var imageHeight: UInt32
     public var filename: String
     public var captureDate: String
+    /// Protected (locked) on the camera; photographers use this to mark their selects.
+    public var isProtected = false
 
     /// Parsed capture date (PTP format "YYYYMMDDThhmmss[.s]")
     public var date: Date? {
@@ -192,16 +194,27 @@ public struct ObjectInfo: Sendable, Hashable {
     /// Association (folder) objects. Real cameras don't list these over Wi-Fi, but be safe.
     public var isFolder: Bool { format == 0x3001 }
 
-    public var isVideo: Bool {
-        let ext = (filename as NSString).pathExtension.lowercased()
-        return ["mov", "mp4", "avi"].contains(ext)
+    public var isVideo: Bool { kind == .video }
+
+    public enum Kind: String, Sendable, CaseIterable {
+        case jpeg, raw, heif, video, other
+    }
+
+    public var kind: Kind {
+        switch (filename as NSString).pathExtension.lowercased() {
+        case "jpg", "jpeg": .jpeg
+        case "raf", "cr2", "cr3", "nef", "nrw", "arw", "orf", "rw2", "dng", "pef": .raw
+        case "heif", "heic", "hif": .heif
+        case "mov", "mp4", "avi", "mts": .video
+        default: .other
+        }
     }
 
     static func parse(handle: UInt32, payload: Data) throws -> ObjectInfo {
         var r = DataReader(payload)
         _ = try r.u32() // storage id
         let format = try r.u16()
-        _ = try r.u16() // protection
+        let protection = try r.u16()
         let size = try r.u32()
         _ = try r.u16() // thumb format
         _ = try r.u32() // thumb size
@@ -217,6 +230,6 @@ public struct ObjectInfo: Sendable, Hashable {
         let filename = try r.ptpString()
         let captured = (try? r.ptpString()) ?? ""
         return ObjectInfo(handle: handle, format: format, compressedSize: size, imageWidth: w, imageHeight: h,
-                          filename: filename, captureDate: captured)
+                          filename: filename, captureDate: captured, isProtected: protection != 0)
     }
 }

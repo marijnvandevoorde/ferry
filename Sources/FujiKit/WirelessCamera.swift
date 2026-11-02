@@ -81,6 +81,15 @@ public enum CameraProtocol: String, Sendable, CaseIterable {
     }
 }
 
+/// Checks that a download is complete, so a truncated file is never imported.
+func verifySize(_ file: URL, expected: UInt32) throws {
+    guard expected > 0 else { return }
+    let size = (try? FileManager.default.attributesOfItem(atPath: file.path)[.size] as? NSNumber)?.uint64Value ?? 0
+    guard size == UInt64(expected) else {
+        throw FujiError.protocolError("incomplete download: \(size) of \(expected) bytes")
+    }
+}
+
 extension WirelessCamera {
     @discardableResult
     public func download(_ handle: UInt32, to destination: URL) throws -> ObjectInfo {

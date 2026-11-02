@@ -24,4 +24,20 @@ final class PTPTests: XCTestCase {
         XCTAssertNotNil(info.date)
         XCTAssertFalse(info.isVideo)
     }
+
+    func testProtectionAndKind() throws {
+        var w = DataWriter()
+        w.u32(0x10000001); w.u16(0x3801); w.u16(1); w.u32(10)
+        w.u16(0); w.u32(0); w.u32(0); w.u32(0); w.u32(0); w.u32(0); w.u32(0); w.u32(0); w.u16(0); w.u32(0); w.u32(0)
+        for s in ["DSCF0001.RAF", ""] {
+            w.u8(UInt8(s.utf16.count + 1))
+            s.utf16.forEach { w.u16($0) }
+            w.u16(0)
+        }
+        let info = try ObjectInfo.parse(handle: 1, payload: w.data)
+        XCTAssertTrue(info.isProtected)
+        XCTAssertEqual(info.kind, .raw)
+        XCTAssertEqual(ObjectInfo(handle: 1, format: 0, compressedSize: 0, imageWidth: 0, imageHeight: 0,
+                                  filename: "a.HIF", captureDate: "").kind, .heif)
+    }
 }

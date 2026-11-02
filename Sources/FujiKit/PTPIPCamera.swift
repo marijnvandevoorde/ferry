@@ -150,6 +150,8 @@ public final class PTPIPCamera: @unchecked Sendable {
             try file.write(contentsOf: r.data)
             progress(Int64(r.data.count), Int64(total))
         }
+        try file.synchronize()
+        try verifySize(destination, expected: total)
         return info
     }
 

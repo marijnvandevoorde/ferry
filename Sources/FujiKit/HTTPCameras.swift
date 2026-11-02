@@ -191,6 +191,7 @@ public final class OlympusCamera: HTTPCamera {
         let (path, info) = try entry(handle)
         log("Downloading \(info.filename) (\(info.compressedSize) bytes)")
         try download(path, to: destination)
+        try verifySize(destination, expected: info.compressedSize)
         progress(Int64(info.compressedSize), Int64(info.compressedSize))
         return info
     }
