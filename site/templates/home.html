@@ -1,0 +1,106 @@
+<section class="hero">
+  <div class="wrap hero-grid">
+    <div class="hero-copy">
+      <p class="eyebrow">{{hero.eyebrow}}</p>
+      <h1>{{hero.h1}}</h1>
+      <p class="lede">{{hero.lede}}</p>
+      <div class="cta-row">
+        <a class="btn btn-primary" href="#download-mac">{{hero.cta_mac}}</a>
+        <a class="btn btn-ghost" href="#download">{{hero.cta_other}}</a>
+      </div>
+      <p class="hero-note">{{hero.note}}</p>
+    </div>
+    <figure class="hero-shot">
+      <img src="/img/screenshot-mac.png" alt="{{shots.mac_alt}}" width="1600" height="1100" fetchpriority="high">
+    </figure>
+  </div>
+  <div class="horizon" aria-hidden="true"></div>
+</section>
+
+<section class="why" id="why">
+  <div class="wrap narrow">
+    <h2>{{why.h2}}</h2>
+    <p>{{why.p1}}</p>
+    <p>{{why.p2}}</p>
+  </div>
+</section>
+
+<section class="how" id="how">
+  <div class="wrap">
+    <h2>{{how.h2}}</h2>
+    <ol class="steps">
+      {{#each how.steps}}<li><h3>{{.t}}</h3><p>{{.d}}</p></li>{{/each}}
+    </ol>
+    <p class="callout">{{how.autosave}}</p>
+  </div>
+</section>
+
+<section class="features" id="features">
+  <div class="wrap">
+    <h2>{{features.h2}}</h2>
+    <ul class="feature-grid">
+      {{#each features.items}}<li><h3>{{.t}}</h3><p>{{.d}}</p></li>{{/each}}
+    </ul>
+  </div>
+</section>
+
+<section class="screens" id="screenshots">
+  <div class="wrap shots-grid">
+    <figure>
+      <img src="/img/screenshot-mac.png" alt="{{shots.mac_alt}}" width="1600" height="1100" loading="lazy">
+      <figcaption>{{shots.mac_caption}}</figcaption>
+    </figure>
+    <figure>
+      <img src="/img/screenshot-desktop.png" alt="{{shots.desktop_alt}}" width="2200" height="1440" loading="lazy">
+      <figcaption>{{shots.desktop_caption}}</figcaption>
+    </figure>
+  </div>
+</section>
+
+<section class="not" id="not">
+  <div class="wrap narrow">
+    <h2>{{not.h2}}</h2>
+    <ul class="not-list">
+      {{#each not.items}}<li>{{.}}</li>{{/each}}
+    </ul>
+  </div>
+</section>
+
+<section class="cameras-teaser" id="cameras">
+  <div class="wrap narrow">
+    <h2>{{camerasblock.h2}}</h2>
+    <p>{{camerasblock.p}}</p>
+    <p><a class="arrow" href="{{cameras_url}}">{{camerasblock.link}}</a></p>
+  </div>
+</section>
+
+<section class="download" id="download">
+  <div class="wrap">
+    <h2>{{download.h2}}</h2>
+    <p class="lede">{{download.lede}}</p>
+    <div class="dl-grid">
+      {{#each downloads}}<article class="dl" id="download-{{.slug}}">
+        <h3>{{.os}}</h3>
+        <p class="muted">{{.req}}</p>
+        <ul>
+          {{#each2 .links}}<li><a class="btn {{#if .soon}}btn-soon{{/if}}" href="{{.href}}"{{#if .soon}} rel="nofollow"{{/if}}>{{.label}}</a>{{#if2 .soon}}<span class="soon">{{download.soon}}</span>{{/if2}}</li>{{/each2}}
+        </ul>
+      </article>{{/each}}
+      <article class="dl" id="download-cli">
+        <h3>{{download.cli}}</h3>
+        <p class="muted">{{download.cli_req}}</p>
+        <ul><li><a class="btn" href="{{site.downloads.cli}}">{{download.cli_link}}</a></li></ul>
+      </article>
+    </div>
+  </div>
+</section>
+
+<section class="faq" id="faq">
+  <div class="wrap narrow">
+    <h2>{{faq.h2}}</h2>
+    {{#each faq.items}}<details>
+      <summary>{{.q}}</summary>
+      <p>{{.a}}</p>
+    </details>{{/each}}
+  </div>
+</section>

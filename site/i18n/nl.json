@@ -1,0 +1,239 @@
+{
+  "lang_name": "Nederlands",
+  "og_locale": "nl_NL",
+  "meta": {
+    "home_title": "{name}: foto's van je camera via wifi (Mac, Windows, Linux)",
+    "home_description": "{name} zet foto's van je Fujifilm-camera via wifi op je computer: in Apple Foto's, een map of Lightroom. Geen kabel of kaartlezer nodig. Gratis.",
+    "cameras_title": "Ondersteunde camera's: Fujifilm, Canon, Olympus, Ricoh | {name}",
+    "cameras_description": "Welke camera's werken met {name}: Fujifilm X-T20, X-T2, X-T4, X-T30, X-S10 en meer, plus Canon, Olympus, Ricoh, Sony en Panasonic.",
+    "privacy_title": "Privacy | {name}",
+    "privacy_description": "{name} verzamelt niets. Het praat met je camera en met de plekken waar je naartoe importeert, en met niets anders. Deze website gebruikt geen cookies en geen tracking.",
+    "notfound_title": "Pagina niet gevonden | {name}",
+    "og_image_alt": "{name} op een Mac, met foto's op een Fujifilm-camera die klaarstaan om te importeren."
+  },
+  "nav": {
+    "features": "Functies",
+    "how": "Hoe het werkt",
+    "cameras": "Camera's",
+    "download": "Downloaden",
+    "faq": "Veelgestelde vragen",
+    "source": "Broncode",
+    "skip": "Naar de inhoud",
+    "menu": "Menu",
+    "language": "Taal",
+    "home": "{name} startpagina"
+  },
+  "hero": {
+    "eyebrow": "Gratis en open source · Mac, Windows, Linux",
+    "h1": "Haal de foto's van je camera. Zonder kabel.",
+    "lede": "{name} kopieert foto's van je Fujifilm-camera via wifi naar je computer, rechtstreeks naar Apple Foto's, een map of Lightroom. Het onthoudt wat al geïmporteerd is, dus de volgende keer krijg je alleen de nieuwe.",
+    "cta_mac": "Downloaden voor Mac",
+    "cta_other": "Windows en Linux",
+    "note": "Vervangt het overzetten van foto's in Fujifilms Camera Remote-app."
+  },
+  "shots": {
+    "mac_alt": "{name} op een Mac: foto's op de camera gegroepeerd per dag, met een knop om de nieuwe te importeren.",
+    "mac_caption": "Op een Mac gaan foto's rechtstreeks naar Apple Foto's.",
+    "desktop_alt": "{name} op Windows: foto's gegroepeerd per dag, enkele al geïmporteerd, en een knop 9 nieuwe importeren.",
+    "desktop_caption": "Op Windows en Linux naar je map Afbeeldingen of de map die je fotoapp bewaakt."
+  },
+  "why": {
+    "h2": "Je camera heeft wifi. Gebruik het.",
+    "p1": "De meeste Fujifilm-camera's van de laatste tien jaar kunnen foto's via wifi versturen, maar alleen naar een smartphone-app die niet meer onderhouden wordt. Op een computer heb je weer kabels en kaartlezers nodig, en die liggen nooit waar je ze nodig hebt.",
+    "p2": "{name} doet één ding: het brengt je foto's van de camera naar je computer, veilig en zonder gedoe. Het bewerkt, ordent of beoordeelt niets. Dat doet je fotoapp al."
+  },
+  "how": {
+    "h2": "Hoe het werkt",
+    "steps": [
+      {
+        "t": "Zet wifi aan op de camera",
+        "d": "Druk op Weergave en kies Draadloze communicatie. De camera start zijn eigen wifinetwerk."
+      },
+      {
+        "t": "Verbind met het netwerk van de camera",
+        "d": "Kies op je computer het netwerk met de naam FUJIFILM-… {name} vindt de camera zelf. Druk de eerste keer op OK op de camera."
+      },
+      {
+        "t": "Klik op Nieuwe importeren",
+        "d": "Alleen foto's die je nog niet geïmporteerd hebt worden gekopieerd, gecontroleerd en op de gewenste plek gezet. Of selecteer zelf welke je wilt."
+      }
+    ],
+    "autosave": "Nog makkelijker: met PC AutoSave stuurt de camera nieuwe foto's via je wifi thuis naar {name}. Je hoeft niet van netwerk te wisselen."
+  },
+  "features": {
+    "h2": "Alles wat je nodig hebt, niets extra",
+    "items": [
+      {
+        "t": "Alleen nieuwe foto's",
+        "d": "{name} onthoudt wat het geïmporteerd heeft, ook als je foto's van je computer verwijdert. Geen dubbele foto's."
+      },
+      {
+        "t": "Waar je ze wilt",
+        "d": "Apple Foto's (met een album), elke map, je map Afbeeldingen voor Foto's op Windows, een map die Lightroom bewaakt, of je eigen Immich-server."
+      },
+      {
+        "t": "PC AutoSave",
+        "d": "Registreer de camera één keer. Kies daarna PC AutoSave op de camera en die stuurt nieuwe foto's via je wifi thuis."
+      },
+      {
+        "t": "Kies op de camera",
+        "d": "Selecteer foto's op de camera en verstuur ze, of beveilig je favorieten en importeer alleen die."
+      },
+      {
+        "t": "Veilige kopieën",
+        "d": "Elk bestand wordt gecontroleerd aan de hand van wat de camera opgaf en opnieuw geprobeerd als het niet klopt. Je krijgt een waarschuwing voordat je schijf vol raakt."
+      },
+      {
+        "t": "Geordend op jouw manier",
+        "d": "Mappen per jaar en datum, je eigen bestandsnamen, een album per maand en een back-up naar een tweede schijf."
+      },
+      {
+        "t": "Blijft uit de weg",
+        "d": "Zit in de menubalk of het systeemvak, importeert automatisch als de camera verbindt en laat weten wanneer het klaar is."
+      },
+      {
+        "t": "Privé door ontwerp",
+        "d": "Geen account, geen cloud, geen tracking. Je foto's gaan van de camera naar je computer en nergens anders heen."
+      }
+    ]
+  },
+  "not": {
+    "h2": "Wat {name} niet is",
+    "items": [
+      "Geen fotobewerker en geen vervanging voor Lightroom. Het geeft je foto's door aan de app die je al gebruikt.",
+      "Geen afstandsbediening. Het drukt niet af en past geen camera-instellingen aan.",
+      "Geen clouddienst. Er is geen account en er wordt niets geüpload, tenzij je je eigen Immich-server instelt.",
+      "Het verwijdert nooit foto's van je camera."
+    ]
+  },
+  "camerasblock": {
+    "h2": "Werkt met je camera",
+    "p": "Gemaakt voor Fujifilm X- en GFX-camera's die met Camera Remote werkten, van ongeveer 2014 tot 2021. Getest op de X-T20 en op negen andere Fujifilm-modellen in een emulator. Ondersteuning voor Canon, Olympus, Ricoh, Sony en Panasonic is experimenteel.",
+    "link": "Alle ondersteunde camera's bekijken"
+  },
+  "download": {
+    "h2": "{name} downloaden",
+    "lede": "Gratis, open source (MIT) en ondertekend voor elk platform. Versie {version}.",
+    "soon": "Binnenkort beschikbaar",
+    "mac": "Mac",
+    "mac_req": "macOS 14 Sonoma of nieuwer, Apple silicon en Intel.",
+    "mac_store": "Mac App Store",
+    "mac_dmg": ".dmg downloaden",
+    "windows": "Windows",
+    "windows_req": "Windows 10 en 11.",
+    "windows_msi": "Installatieprogramma downloaden",
+    "linux": "Linux",
+    "linux_req": "De meeste 64-bit (x86-64) distributies.",
+    "linux_appimage": "AppImage",
+    "linux_deb": ".deb-pakket",
+    "cli": "Opdrachtregel",
+    "cli_req": "Voor servers, scripts en een Raspberry Pi: fujictl voor macOS, Linux en Windows.",
+    "cli_link": "Lees de instructies"
+  },
+  "faq": {
+    "h2": "Vragen",
+    "items": [
+      {
+        "q": "Werkt {name} met mijn camera?",
+        "a": "Als je Fujifilm-camera via wifi met de Camera Remote-app werkte, werkt hij waarschijnlijk met {name}. Nieuwere modellen die via Bluetooth koppelen, zoals de X-T5 en X-S20, worden nog niet ondersteund. Bekijk de cameralijst voor details."
+      },
+      {
+        "q": "Kan het RAW-bestanden importeren?",
+        "a": "Fujifilm-camera's sturen via wifi alleen JPEG's. Dat is een beperking van de camera, niet van {name}. Voor RAF-bestanden heb je nog steeds een kaartlezer of de USB-verbinding van de camera nodig."
+      },
+      {
+        "q": "Is het echt gratis?",
+        "a": "Ja. {name} is open source onder de MIT-licentie. Er zijn geen advertenties, abonnementen of aankopen in de app."
+      },
+      {
+        "q": "Ben ik tijdens het importeren offline?",
+        "a": "Ja, zolang je computer op de wifi van de camera zit, heeft hij geen internet. Met PC AutoSave maakt de camera juist verbinding met je thuisnetwerk, zodat je online blijft."
+      },
+      {
+        "q": "Worden mijn foto's ergens naartoe geüpload?",
+        "a": "Nee. {name} praat met je camera en met de mappen of apps die je kiest. Het heeft geen account, geen analyse en geen eigen servers."
+      },
+      {
+        "q": "Werkt het met Lightroom, Capture One of Foto's op Windows?",
+        "a": "Ja. Importeer naar een map die je fotoapp bewaakt, of naar je map Afbeeldingen voor Foto's op Windows. Op een Mac kan {name} ook rechtstreeks naar Apple Foto's importeren."
+      },
+      {
+        "q": "Verwijdert het foto's van de camera?",
+        "a": "Nooit. Je kaart blijft precies zoals hij was. Verwijder foto's op de camera wanneer jij eraan toe bent."
+      },
+      {
+        "q": "En andere cameramerken?",
+        "a": "Canon, Olympus en OM System, Ricoh GR en oudere Sony- en Panasonic-camera's worden experimenteel ondersteund. Als je er een probeert, laat dan weten of het gelukt is."
+      }
+    ]
+  },
+  "cameras": {
+    "h1": "Ondersteunde camera's",
+    "lede": "{name} importeert foto's via wifi van de onderstaande camera's. Een camera die niet in de lijst staat, kan toch werken: als hij foto's via zijn eigen wifinetwerk naar een smartphone-app kan sturen, probeer het dan en laat het ons weten.",
+    "status": {
+      "tested": "Getest op een echte camera",
+      "emulator": "Werkt in de emulator",
+      "experimental": "Zou moeten werken, nog niet getest",
+      "planned": "Gepland"
+    },
+    "th_model": "Model",
+    "th_status": "Status",
+    "th_notes": "Opmerkingen",
+    "notes": {
+      "jpeg_only": "JPEG via wifi.",
+      "camera_remote": "Hetzelfde wifiprotocol als de geteste modellen.",
+      "bluetooth": "Deze koppelen eerst via Bluetooth. Ondersteuning is gepland.",
+      "ptpip": "Standaard PTP/IP via de wifi van de camera.",
+      "oishare": "Gebruikt de OI.Share-wifi-interface.",
+      "ricoh": "Gebruikt de wifi-interface van de GR.",
+      "dlna": "Camera's die foto's delen als mediaserver via wifi.",
+      "nikon": "Vraagt onderzoek met een echte camera."
+    },
+    "emulator_note": "\"Werkt in de emulator\" betekent dat {name} zijn tests doorstaat met vcam, een open-source emulator van het protocol van die camera. Echte camera's gedragen zich soms anders.",
+    "report_h2": "Met je camera geprobeerd?",
+    "report_p": "Laat weten of het werkte, ook als het niet werkte. Elk rapport brengt een camera hoger in deze lijst.",
+    "report_link": "Camerarapport sturen"
+  },
+  "privacy": {
+    "h1": "Privacy",
+    "updated": "Laatst bijgewerkt op 3 november 2026.",
+    "sections": [
+      {
+        "h": "De korte versie",
+        "p": "{name} verzamelt niets over jou. Er is geen account, geen analyse, geen crashrapportage en geen server. Deze website gebruikt geen cookies, geen JavaScript en geen tracking."
+      },
+      {
+        "h": "Wat de app met je foto's doet",
+        "p": "{name} maakt via wifi verbinding met je camera en kopieert foto's naar de plekken die je kiest: Apple Foto's, een map op je computer of een back-upschijf. Als je een Immich-server instelt, uploadt het naar die server, die je zelf beheert."
+      },
+      {
+        "h": "Wat de app opslaat",
+        "p": "Een lijst van de geïmporteerde foto's (bestandsnaam, datum en grootte), zodat ze de volgende keer overgeslagen worden, en je instellingen. Beide blijven op je computer. Een Immich-API-sleutel wordt bewaard in de sleutelhanger van het systeem."
+      },
+      {
+        "h": "Toestemmingen",
+        "p": "Op een Mac vraagt {name} toegang tot Foto's om foto's toe te voegen, en tot het lokale netwerk om de camera te bereiken. Die toegang wordt alleen gebruikt om foto's toe te voegen en het eigen album aan te maken."
+      },
+      {
+        "h": "Deze website",
+        "p": "Deze site wordt gehost door Cloudflare Pages. Cloudflare verwerkt verzoeken om pagina's te leveren en bewaart mogelijk kortstondig logbestanden; wij ontvangen of gebruiken die niet. Er zijn geen scripts van derden."
+      },
+      {
+        "h": "Contact",
+        "p": "Vragen? Open een issue op GitHub."
+      }
+    ]
+  },
+  "notfound": {
+    "h1": "Deze pagina bestaat niet",
+    "p": "Misschien is ze verplaatst. Alles over {name} staat op de startpagina.",
+    "home": "Naar de startpagina"
+  },
+  "foot": {
+    "tagline": "Foto's importeren via wifi voor Fujifilm en andere camera's.",
+    "license": "Open source onder de MIT-licentie.",
+    "nocookies": "Geen cookies, geen tracking.",
+    "privacy": "Privacy",
+    "trademark": "Fujifilm, Canon, Olympus, OM System, Ricoh, Sony, Panasonic en Nikon zijn handelsmerken van hun eigenaars. {name} is niet aan hen gelieerd."
+  }
+}

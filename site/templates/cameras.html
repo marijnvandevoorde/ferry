@@ -1,0 +1,33 @@
+<section class="page-head">
+  <div class="wrap narrow">
+    <h1>{{cameras.h1}}</h1>
+    <p class="lede">{{cameras.lede}}</p>
+    <ul class="legend">
+      <li><span class="status status-tested">{{cameras.status.tested}}</span></li>
+      <li><span class="status status-emulator">{{cameras.status.emulator}}</span></li>
+      <li><span class="status status-experimental">{{cameras.status.experimental}}</span></li>
+      <li><span class="status status-planned">{{cameras.status.planned}}</span></li>
+    </ul>
+  </div>
+</section>
+
+<section class="camera-list">
+  <div class="wrap narrow">
+    {{#each camera_tables}}<h2 id="{{.slug}}">{{.brand}}</h2>
+    <div class="table-scroll">
+      <table>
+        <thead><tr><th scope="col">{{cameras.th_model}}</th><th scope="col">{{cameras.th_status}}</th><th scope="col">{{cameras.th_notes}}</th></tr></thead>
+        <tbody>
+          {{#each2 .models}}<tr><th scope="row">{{.model}}</th><td><span class="status status-{{.status}}">{{.status_label}}</span></td><td>{{.note}}</td></tr>{{/each2}}
+        </tbody>
+      </table>
+    </div>
+    {{/each}}
+    <p class="muted">{{cameras.emulator_note}}</p>
+    <div class="callout">
+      <h2>{{cameras.report_h2}}</h2>
+      <p>{{cameras.report_p}}</p>
+      <p><a class="btn btn-primary" href="{{site.repo}}/issues/new?template=camera-report.yml">{{cameras.report_link}}</a></p>
+    </div>
+  </div>
+</section>

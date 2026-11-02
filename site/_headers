@@ -1,0 +1,14 @@
+# Response headers for Cloudflare Pages.
+# The site has no JavaScript and loads nothing from other origins, and the CSP says so. The JSON-LD blocks are
+# data, not scripts, so script-src 'none' doesn't block them.
+/*
+  Content-Security-Policy: default-src 'none'; img-src 'self'; style-src 'self'; connect-src 'self'; base-uri 'none'; form-action 'none'; frame-ancestors 'none'
+  Referrer-Policy: strict-origin-when-cross-origin
+  X-Content-Type-Options: nosniff
+  Permissions-Policy: camera=(), microphone=(), geolocation=(), interest-cohort=()
+
+/css/*
+  Cache-Control: public, max-age=3600
+
+/img/*
+  Cache-Control: public, max-age=86400

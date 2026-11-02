@@ -1,0 +1,239 @@
+{
+  "lang_name": "Italiano",
+  "og_locale": "it_IT",
+  "meta": {
+    "home_title": "{name}: trasferire foto via Wi-Fi (Mac, Windows, Linux)",
+    "home_description": "{name} copia le foto dalla tua Fujifilm al computer via Wi-Fi: in Foto, in una cartella o in Lightroom. Niente cavo né lettore di schede. Gratis.",
+    "cameras_title": "Fotocamere supportate: Fujifilm, Canon, Olympus, Ricoh | {name}",
+    "cameras_description": "Quali fotocamere funzionano con {name} per trasferire le foto via Wi-Fi: Fujifilm X-T20, X-T2, X-T4, X-T30, X-S10 e altre, più Canon, Olympus, Ricoh, Sony e Panasonic.",
+    "privacy_title": "Privacy | {name}",
+    "privacy_description": "{name} non raccoglie nulla. Comunica con la tua fotocamera e con i luoghi in cui importi le foto, e con nient'altro. Questo sito non usa cookie né tracciamento.",
+    "notfound_title": "Pagina non trovata | {name}",
+    "og_image_alt": "{name} su un Mac, con le foto di una fotocamera Fujifilm pronte da importare."
+  },
+  "nav": {
+    "features": "Funzioni",
+    "how": "Come funziona",
+    "cameras": "Fotocamere",
+    "download": "Scarica",
+    "faq": "FAQ",
+    "source": "Codice sorgente",
+    "skip": "Vai al contenuto",
+    "menu": "Menu",
+    "language": "Lingua",
+    "home": "Home di {name}"
+  },
+  "hero": {
+    "eyebrow": "Gratis e open source · Mac, Windows, Linux",
+    "h1": "Porta le foto fuori dalla fotocamera. Senza cavo.",
+    "lede": "{name} copia le foto dalla tua fotocamera Fujifilm al computer via Wi-Fi, direttamente in Foto, in una cartella o in Lightroom. Ricorda cosa ha già importato, quindi la volta dopo ricevi solo le nuove.",
+    "cta_mac": "Scarica per Mac",
+    "cta_other": "Windows e Linux",
+    "note": "Sostituisce il trasferimento foto dell'app Camera Remote di Fujifilm."
+  },
+  "shots": {
+    "mac_alt": "{name} su un Mac: le foto della fotocamera raggruppate per giorno, con un pulsante per importare le nuove.",
+    "mac_caption": "Su Mac, le foto vanno direttamente in Foto.",
+    "desktop_alt": "{name} su Windows: foto raggruppate per giorno, alcune già importate, e un pulsante Importa 9 nuove.",
+    "desktop_caption": "Su Windows e Linux, nella cartella Immagini o nella cartella controllata dalla tua app di foto."
+  },
+  "why": {
+    "h2": "La tua fotocamera ha il Wi-Fi. Usalo.",
+    "p1": "La maggior parte delle fotocamere Fujifilm degli ultimi dieci anni può inviare foto via Wi-Fi, ma solo a un'app per telefono che non è più aggiornata. Sul computer si torna a cavi e lettori di schede, che non sono mai a portata di mano quando servono.",
+    "p2": "{name} fa una cosa sola: porta le foto dalla fotocamera al computer, in sicurezza e senza complicazioni. Non modifica, non organizza, non assegna voti. Lo fa già la tua app di foto."
+  },
+  "how": {
+    "h2": "Come funziona",
+    "steps": [
+      {
+        "t": "Attiva il Wi-Fi sulla fotocamera",
+        "d": "Premi Riproduzione, poi scegli Comunicazione wireless. La fotocamera crea la sua rete Wi-Fi."
+      },
+      {
+        "t": "Collegati alla rete della fotocamera",
+        "d": "Sul computer, scegli la rete chiamata FUJIFILM-… {name} trova la fotocamera da solo. La prima volta premi OK sulla fotocamera."
+      },
+      {
+        "t": "Fai clic su Importa nuove",
+        "d": "Vengono copiate solo le foto che non hai ancora importato, verificate e salvate dove vuoi. Oppure seleziona quelle che ti servono."
+      }
+    ],
+    "autosave": "Ancora più semplice: con PC AutoSave, la fotocamera invia le nuove foto a {name} tramite il Wi-Fi di casa. Senza cambiare rete."
+  },
+  "features": {
+    "h2": "Tutto quello che serve, niente di più",
+    "items": [
+      {
+        "t": "Solo foto nuove",
+        "d": "{name} ricorda cosa ha importato, anche se poi elimini le foto dal computer. Niente doppioni."
+      },
+      {
+        "t": "Dove vuoi tu",
+        "d": "Foto, una cartella qualsiasi, la cartella Immagini per l'app Foto di Windows, una cartella controllata da Lightroom, oppure il tuo server Immich."
+      },
+      {
+        "t": "PC AutoSave",
+        "d": "Registra la fotocamera una volta sola. Poi scegli PC AutoSave sulla fotocamera e invierà le nuove foto tramite il Wi-Fi di casa."
+      },
+      {
+        "t": "Scegli sulla fotocamera",
+        "d": "Seleziona le foto sulla fotocamera e inviale, oppure proteggi le preferite e importa solo quelle."
+      },
+      {
+        "t": "Copie sicure",
+        "d": "Ogni file viene confrontato con i dati dichiarati dalla fotocamera e ripetuto se non corrisponde. Ti avvisa prima che il disco si riempia."
+      },
+      {
+        "t": "Organizzate a modo tuo",
+        "d": "Cartelle per anno e data, nomi file personalizzati, un album per mese e una copia di backup su un secondo disco."
+      },
+      {
+        "t": "Non ti disturba",
+        "d": "Resta nella barra dei menu o nell'area di notifica, importa in automatico quando la fotocamera si collega e ti avvisa a lavoro finito."
+      },
+      {
+        "t": "Privato per natura",
+        "d": "Nessun account, nessun cloud, nessun tracciamento. Le tue foto vanno dalla fotocamera al computer e da nessun'altra parte."
+      }
+    ]
+  },
+  "not": {
+    "h2": "Cosa non è {name}",
+    "items": [
+      "Non è un editor di foto né un sostituto di Lightroom. Passa le foto all'app che usi già.",
+      "Non è un telecomando. Non scatta e non cambia le impostazioni della fotocamera.",
+      "Non è un servizio cloud. Non c'è nessun account e non viene caricato nulla, a meno che tu non configuri il tuo server Immich.",
+      "Non elimina mai le foto dalla fotocamera."
+    ]
+  },
+  "camerasblock": {
+    "h2": "Funziona con la tua fotocamera",
+    "p": "Pensato per le fotocamere Fujifilm X e GFX che funzionavano con Camera Remote, dal 2014 al 2021 circa. Provato sulla X-T20 e, in un emulatore, su altri nove modelli Fujifilm. Il supporto per Canon, Olympus, Ricoh, Sony e Panasonic è sperimentale.",
+    "link": "Vedi tutte le fotocamere supportate"
+  },
+  "download": {
+    "h2": "Scarica {name}",
+    "lede": "Gratis, open source (MIT) e firmato per ogni piattaforma. Versione {version}.",
+    "soon": "Presto disponibile",
+    "mac": "Mac",
+    "mac_req": "macOS 14 Sonoma o successivo, Apple silicon e Intel.",
+    "mac_store": "Mac App Store",
+    "mac_dmg": "Scarica .dmg",
+    "windows": "Windows",
+    "windows_req": "Windows 10 e 11.",
+    "windows_msi": "Scarica il programma di installazione",
+    "linux": "Linux",
+    "linux_req": "La maggior parte delle distribuzioni a 64 bit (x86-64).",
+    "linux_appimage": "AppImage",
+    "linux_deb": "Pacchetto .deb",
+    "cli": "Riga di comando",
+    "cli_req": "Per server, script e Raspberry Pi: fujictl per macOS, Linux e Windows.",
+    "cli_link": "Leggi le istruzioni"
+  },
+  "faq": {
+    "h2": "Domande",
+    "items": [
+      {
+        "q": "{name} funziona con la mia fotocamera?",
+        "a": "Se la tua fotocamera Fujifilm funzionava con l'app Camera Remote via Wi-Fi, dovrebbe funzionare con {name}. I modelli più recenti che si abbinano via Bluetooth, come X-T5 e X-S20, non sono ancora supportati. Trovi i dettagli nell'elenco delle fotocamere."
+      },
+      {
+        "q": "Può importare i file RAW?",
+        "a": "Le fotocamere Fujifilm inviano via Wi-Fi solo JPEG. È un limite della fotocamera, non di {name}. Per i file RAF ti serve ancora un lettore di schede o il collegamento USB della fotocamera."
+      },
+      {
+        "q": "È davvero gratis?",
+        "a": "Sì. {name} è open source con licenza MIT. Niente pubblicità, abbonamenti o acquisti in-app."
+      },
+      {
+        "q": "Il computer resta offline durante l'importazione?",
+        "a": "Sì: finché il computer è sul Wi-Fi della fotocamera, non può raggiungere internet. Con PC AutoSave è la fotocamera a collegarsi alla rete di casa, quindi resti online."
+      },
+      {
+        "q": "Carica le mie foto da qualche parte?",
+        "a": "No. {name} comunica con la tua fotocamera e con le cartelle o le app che scegli. Non ha account, analisi d'uso né server propri."
+      },
+      {
+        "q": "Funziona con Lightroom, Capture One o l'app Foto di Windows?",
+        "a": "Sì. Importa in una cartella controllata dalla tua app di foto, oppure nella cartella Immagini per l'app Foto di Windows. Su Mac, {name} può anche importare direttamente in Foto."
+      },
+      {
+        "q": "Elimina le foto dalla fotocamera?",
+        "a": "Mai. La tua scheda resta esattamente com'era. Elimina le foto sulla fotocamera quando vuoi."
+      },
+      {
+        "q": "E le altre marche di fotocamere?",
+        "a": "Canon, Olympus e OM System, Ricoh GR e le Sony e Panasonic meno recenti sono supportate in modo sperimentale. Se ne provi una, faccelo sapere se ha funzionato."
+      }
+    ]
+  },
+  "cameras": {
+    "h1": "Fotocamere supportate",
+    "lede": "{name} importa le foto via Wi-Fi dalle fotocamere qui sotto. Una fotocamera non in elenco potrebbe comunque funzionare: se può inviare foto a un'app per telefono tramite la propria rete Wi-Fi, provala e facci sapere.",
+    "status": {
+      "tested": "Provata su una fotocamera reale",
+      "emulator": "Funziona nell'emulatore",
+      "experimental": "Dovrebbe funzionare, non ancora provata",
+      "planned": "In programma"
+    },
+    "th_model": "Modello",
+    "th_status": "Stato",
+    "th_notes": "Note",
+    "notes": {
+      "jpeg_only": "JPEG via Wi-Fi.",
+      "camera_remote": "Stesso protocollo Wi-Fi dei modelli provati.",
+      "bluetooth": "Si abbinano prima via Bluetooth. Il supporto è in programma.",
+      "ptpip": "PTP/IP standard sul Wi-Fi della fotocamera.",
+      "oishare": "Usa l'interfaccia Wi-Fi OI.Share.",
+      "ricoh": "Usa l'interfaccia Wi-Fi della GR.",
+      "dlna": "Fotocamere che condividono le foto come media server sul Wi-Fi.",
+      "nikon": "Servono verifiche con una fotocamera reale."
+    },
+    "emulator_note": "«Funziona nell'emulatore» significa che {name} supera i suoi test con vcam, un emulatore open source del protocollo di quella fotocamera. Le fotocamere reali a volte si comportano in modo diverso.",
+    "report_h2": "L'hai provato con la tua fotocamera?",
+    "report_p": "Dicci se ha funzionato, anche se non è andata. Ogni segnalazione fa salire una fotocamera in questo elenco.",
+    "report_link": "Invia una segnalazione"
+  },
+  "privacy": {
+    "h1": "Privacy",
+    "updated": "Ultimo aggiornamento: 3 novembre 2026.",
+    "sections": [
+      {
+        "h": "In breve",
+        "p": "{name} non raccoglie nulla su di te. Non ha account, analisi d'uso, segnalazione dei crash né server. Questo sito non usa cookie, JavaScript né tracciamento."
+      },
+      {
+        "h": "Cosa fa l'app con le tue foto",
+        "p": "{name} si collega alla fotocamera via Wi-Fi e copia le foto nei luoghi che scegli: Foto, una cartella del computer o un disco di backup. Se configuri un server Immich, le carica su quel server, che gestisci tu."
+      },
+      {
+        "h": "Cosa memorizza l'app",
+        "p": "Un elenco delle foto importate (nome file, data e dimensione), per saltarle la volta dopo, e le tue impostazioni. Entrambi restano sul tuo computer. La chiave API di Immich è salvata nel portachiavi di sistema."
+      },
+      {
+        "h": "Permessi",
+        "p": "Su Mac, {name} chiede l'accesso a Foto per aggiungere le foto e alla rete locale per raggiungere la fotocamera. Usa questi accessi solo per aggiungere le foto e creare il proprio album."
+      },
+      {
+        "h": "Questo sito",
+        "p": "Questo sito è ospitato su Cloudflare Pages. Cloudflare elabora le richieste per consegnare le pagine e può conservare log di breve durata; noi non li riceviamo né li usiamo. Non ci sono script di terze parti."
+      },
+      {
+        "h": "Contatti",
+        "p": "Domande? Apri una issue su GitHub."
+      }
+    ]
+  },
+  "notfound": {
+    "h1": "Questa pagina non c'è",
+    "p": "Potrebbe essere stata spostata. Tutto su {name} è nella home.",
+    "home": "Vai alla home"
+  },
+  "foot": {
+    "tagline": "Trasferimento foto via Wi-Fi per Fujifilm e altre fotocamere.",
+    "license": "Open source con licenza MIT.",
+    "nocookies": "Niente cookie, niente tracciamento.",
+    "privacy": "Privacy",
+    "trademark": "Fujifilm, Canon, Olympus, OM System, Ricoh, Sony, Panasonic e Nikon sono marchi dei rispettivi proprietari. {name} non è affiliato a nessuno di essi."
+  }
+}

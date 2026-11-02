@@ -1,0 +1,14 @@
+<section class="page-head">
+  <div class="wrap narrow">
+    <h1>{{privacy.h1}}</h1>
+    <p class="muted">{{privacy.updated}}</p>
+  </div>
+</section>
+<section class="prose">
+  <div class="wrap narrow">
+    {{#each privacy.sections}}<h2>{{.h}}</h2>
+    <p>{{.p}}</p>
+    {{/each}}
+    <p><a href="{{site.contact}}">{{site.contact}}</a></p>
+  </div>
+</section>

@@ -94,6 +94,11 @@ vcam only supports one connection per run; restart it between sessions.
 `scripts/test-vcam.sh` runs the download test against every emulated Fuji model, and
 `scripts/test-vcam-autosave.sh` tests PC AutoSave. CI runs both on Linux.
 
+## Website
+
+`site/` is the marketing site (Cloudflare Pages, six languages, no JavaScript). See [site/README.md](site/README.md).
+The working name for the app is Ferry ([how we got there](docs/naming.md)); the site reads it from `site/site.json`.
+
 ## Credits
 
 The protocol handling is a port of [libfuji](https://github.com/petabyt/libfuji) by Daniel Cook (MIT),

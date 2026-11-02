@@ -1,0 +1,62 @@
+{
+  "_comment": "Status: tested (a real camera), emulator (vcam emulates the model), experimental (mock API only), planned, unsupported. Notes are keys into i18n cameras.notes.",
+  "brands": [
+    {
+      "brand": "Fujifilm",
+      "slug": "fujifilm",
+      "models": [
+        ["X-T20", "tested", "jpeg_only"],
+        ["X-T2", "emulator", "jpeg_only"],
+        ["X-T4", "emulator", "jpeg_only"],
+        ["X-T30", "emulator", "jpeg_only"],
+        ["X-S10", "emulator", "jpeg_only"],
+        ["X-H1", "emulator", "jpeg_only"],
+        ["X-A2", "emulator", "jpeg_only"],
+        ["X30", "emulator", "jpeg_only"],
+        ["X-F10", "emulator", "jpeg_only"],
+        ["GFX100 II", "emulator", ""],
+        ["X-E3, X-Pro2, X-Pro3, X100F, X100V, X-T3, X-T100, X-T200", "experimental", "camera_remote"],
+        ["X-T5, X-H2, X-H2S, X-S20, X100VI, X-T50, X-M5", "planned", "bluetooth"]
+      ]
+    },
+    {
+      "brand": "Canon",
+      "slug": "canon",
+      "models": [
+        ["EOS R", "emulator", "ptpip"],
+        ["EOS 90D", "emulator", "ptpip"],
+        ["EOS 5D Mark III", "emulator", "ptpip"],
+        ["EOS Rebel SL2 / 200D", "emulator", "ptpip"],
+        ["PowerShot G7 X Mark III", "emulator", "ptpip"]
+      ]
+    },
+    {
+      "brand": "Olympus / OM System",
+      "slug": "olympus",
+      "models": [
+        ["OM-D E-M10, E-M5, E-M1 series, PEN", "experimental", "oishare"]
+      ]
+    },
+    {
+      "brand": "Ricoh",
+      "slug": "ricoh",
+      "models": [
+        ["GR II, GR III, GR IIIx", "experimental", "ricoh"]
+      ]
+    },
+    {
+      "brand": "Sony / Panasonic",
+      "slug": "sony-panasonic",
+      "models": [
+        ["Older Sony Alpha and Panasonic Lumix with Wi-Fi sharing", "experimental", "dlna"]
+      ]
+    },
+    {
+      "brand": "Nikon",
+      "slug": "nikon",
+      "models": [
+        ["Wi-Fi models", "planned", "nikon"]
+      ]
+    }
+  ]
+}

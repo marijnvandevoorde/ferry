@@ -1,0 +1,239 @@
+{
+  "lang_name": "Français",
+  "og_locale": "fr_FR",
+  "meta": {
+    "home_title": "{name} : transférer vos photos en Wi-Fi (Mac, Windows, Linux)",
+    "home_description": "{name} copie les photos de votre Fujifilm vers votre ordinateur en Wi-Fi : dans Photos, un dossier ou Lightroom. Sans câble ni lecteur de carte. Gratuit.",
+    "cameras_title": "Appareils compatibles : Fujifilm, Canon, Olympus, Ricoh | {name}",
+    "cameras_description": "Les appareils compatibles avec {name} : Fujifilm X-T20, X-T2, X-T4, X-T30, X-S10 et d'autres, ainsi que Canon, Olympus, Ricoh, Sony et Panasonic.",
+    "privacy_title": "Confidentialité | {name}",
+    "privacy_description": "{name} ne collecte rien. Il communique avec votre appareil photo et avec les destinations d'importation, et rien d'autre. Ce site n'utilise ni cookies ni traceurs.",
+    "notfound_title": "Page introuvable | {name}",
+    "og_image_alt": "{name} sur un Mac, affichant les photos d'un appareil Fujifilm prêtes à être importées."
+  },
+  "nav": {
+    "features": "Fonctionnalités",
+    "how": "Comment ça marche",
+    "cameras": "Appareils",
+    "download": "Télécharger",
+    "faq": "FAQ",
+    "source": "Code source",
+    "skip": "Aller au contenu",
+    "menu": "Menu",
+    "language": "Langue",
+    "home": "Accueil {name}"
+  },
+  "hero": {
+    "eyebrow": "Gratuit et open source · Mac, Windows, Linux",
+    "h1": "Sortez les photos de votre appareil. Sans câble.",
+    "lede": "{name} copie les photos de votre appareil photo Fujifilm vers votre ordinateur en Wi-Fi, directement dans Photos, un dossier ou Lightroom. Il retient ce qu'il a déjà importé : la fois suivante, vous ne récupérez que les nouvelles.",
+    "cta_mac": "Télécharger pour Mac",
+    "cta_other": "Windows et Linux",
+    "note": "Remplace le transfert de photos de l'app Camera Remote de Fujifilm."
+  },
+  "shots": {
+    "mac_alt": "{name} sur un Mac : les photos de l'appareil groupées par jour, avec un bouton pour importer les nouvelles.",
+    "mac_caption": "Sur Mac, les photos vont directement dans Photos.",
+    "desktop_alt": "{name} sur Windows : photos groupées par jour, certaines déjà importées, et un bouton Importer 9 nouvelles.",
+    "desktop_caption": "Sous Windows et Linux, dans votre dossier Images ou dans le dossier surveillé par votre app photo."
+  },
+  "why": {
+    "h2": "Votre appareil a le Wi-Fi. Servez-vous-en.",
+    "p1": "La plupart des appareils Fujifilm des dix dernières années peuvent envoyer des photos en Wi-Fi, mais seulement vers une app pour téléphone qui n'est plus maintenue. Sur un ordinateur, vous revenez aux câbles et aux lecteurs de carte, jamais là où il le faudrait.",
+    "p2": "{name} fait une seule chose : il transfère vos photos de l'appareil vers votre ordinateur, en toute sécurité et sans complication. Il ne retouche, ne classe et ne note rien. Votre app photo s'en charge déjà."
+  },
+  "how": {
+    "h2": "Comment ça marche",
+    "steps": [
+      {
+        "t": "Activez le Wi-Fi sur l'appareil",
+        "d": "Appuyez sur Lecture, puis choisissez Communication sans fil. L'appareil crée son propre réseau Wi-Fi."
+      },
+      {
+        "t": "Rejoignez le réseau de l'appareil",
+        "d": "Sur votre ordinateur, choisissez le réseau nommé FUJIFILM-… {name} trouve l'appareil tout seul. La première fois, appuyez sur OK sur l'appareil."
+      },
+      {
+        "t": "Cliquez sur Importer les nouvelles",
+        "d": "Seules les photos pas encore importées sont copiées, vérifiées et placées où vous le souhaitez. Vous pouvez aussi choisir celles que vous voulez."
+      }
+    ],
+    "autosave": "Encore plus simple : avec PC AutoSave, l'appareil envoie ses nouvelles photos à {name} via votre Wi-Fi domestique. Sans changer de réseau."
+  },
+  "features": {
+    "h2": "Tout ce qu'il faut, rien de plus",
+    "items": [
+      {
+        "t": "Seulement les nouvelles photos",
+        "d": "{name} retient ce qu'il a importé, même si vous supprimez ensuite des photos de votre ordinateur. Pas de doublons."
+      },
+      {
+        "t": "Où vous voulez",
+        "d": "Photos, n'importe quel dossier, votre dossier Images pour Photos de Windows, un dossier surveillé par Lightroom, ou votre propre serveur Immich."
+      },
+      {
+        "t": "PC AutoSave",
+        "d": "Enregistrez l'appareil une fois. Ensuite, choisissez PC AutoSave sur l'appareil et il envoie ses nouvelles photos via votre Wi-Fi domestique."
+      },
+      {
+        "t": "Choisir sur l'appareil",
+        "d": "Sélectionnez des photos sur l'appareil et envoyez-les, ou protégez vos préférées et n'importez que celles-là."
+      },
+      {
+        "t": "Copies fiables",
+        "d": "Chaque fichier est comparé à ce que l'appareil a annoncé, et recopié s'il ne correspond pas. Vous êtes prévenu avant que le disque ne soit plein."
+      },
+      {
+        "t": "Classé à votre façon",
+        "d": "Dossiers par année et par date, vos propres noms de fichiers, un album par mois, et une copie de sauvegarde sur un second disque."
+      },
+      {
+        "t": "Reste discret",
+        "d": "Vit dans la barre des menus ou la zone de notification, importe automatiquement quand l'appareil se connecte et vous prévient quand c'est terminé."
+      },
+      {
+        "t": "Confidentiel par conception",
+        "d": "Pas de compte, pas de cloud, pas de suivi. Vos photos vont de l'appareil à votre ordinateur, et nulle part ailleurs."
+      }
+    ]
+  },
+  "not": {
+    "h2": "Ce que {name} n'est pas",
+    "items": [
+      "Ce n'est pas un logiciel de retouche ni un remplaçant de Lightroom. Il confie vos photos à l'app que vous utilisez déjà.",
+      "Ce n'est pas une télécommande. Il ne déclenche pas l'appareil et ne modifie pas ses réglages.",
+      "Ce n'est pas un service cloud. Il n'y a pas de compte et rien n'est envoyé en ligne, sauf si vous configurez votre propre serveur Immich.",
+      "Il ne supprime jamais de photos de votre appareil."
+    ]
+  },
+  "camerasblock": {
+    "h2": "Compatible avec votre appareil",
+    "p": "Conçu pour les appareils Fujifilm X et GFX compatibles avec Camera Remote, d'environ 2014 à 2021. Testé sur le X-T20, et sur neuf autres modèles Fujifilm dans un émulateur. La prise en charge de Canon, Olympus, Ricoh, Sony et Panasonic est expérimentale.",
+    "link": "Voir tous les appareils compatibles"
+  },
+  "download": {
+    "h2": "Télécharger {name}",
+    "lede": "Gratuit, open source (MIT) et signé pour chaque plateforme. Version {version}.",
+    "soon": "Bientôt disponible",
+    "mac": "Mac",
+    "mac_req": "macOS 14 Sonoma ou version ultérieure, Apple silicon et Intel.",
+    "mac_store": "Mac App Store",
+    "mac_dmg": "Télécharger le .dmg",
+    "windows": "Windows",
+    "windows_req": "Windows 10 et 11.",
+    "windows_msi": "Télécharger l'installeur",
+    "linux": "Linux",
+    "linux_req": "La plupart des distributions 64 bits (x86-64).",
+    "linux_appimage": "AppImage",
+    "linux_deb": "Paquet .deb",
+    "cli": "Ligne de commande",
+    "cli_req": "Pour les serveurs, les scripts et un Raspberry Pi : fujictl pour macOS, Linux et Windows.",
+    "cli_link": "Lire les instructions"
+  },
+  "faq": {
+    "h2": "Questions",
+    "items": [
+      {
+        "q": "{name} fonctionne-t-il avec mon appareil ?",
+        "a": "Si votre appareil Fujifilm fonctionnait en Wi-Fi avec l'app Camera Remote, il devrait fonctionner avec {name}. Les modèles récents qui s'appairent en Bluetooth, comme le X-T5 et le X-S20, ne sont pas encore pris en charge. Voir la liste des appareils pour les détails."
+      },
+      {
+        "q": "Peut-il importer les fichiers RAW ?",
+        "a": "Les appareils Fujifilm n'envoient que des JPEG en Wi-Fi. C'est une limite de l'appareil, pas de {name}. Pour les fichiers RAF, il faut toujours un lecteur de carte ou la connexion USB de l'appareil."
+      },
+      {
+        "q": "Est-ce vraiment gratuit ?",
+        "a": "Oui. {name} est open source sous licence MIT. Il n'y a ni publicité, ni abonnement, ni achat intégré."
+      },
+      {
+        "q": "Mon ordinateur sera-t-il hors ligne pendant l'importation ?",
+        "a": "Oui : tant que votre ordinateur est sur le Wi-Fi de l'appareil, il n'a pas accès à Internet. Avec PC AutoSave, l'appareil rejoint votre réseau domestique, et vous restez en ligne."
+      },
+      {
+        "q": "Envoie-t-il mes photos quelque part ?",
+        "a": "Non. {name} communique avec votre appareil et avec les dossiers ou apps que vous choisissez. Il n'a ni compte, ni outil d'analyse, ni serveur."
+      },
+      {
+        "q": "Fonctionne-t-il avec Lightroom, Capture One ou Photos de Windows ?",
+        "a": "Oui. Importez dans un dossier surveillé par votre app photo, ou dans votre dossier Images pour Photos de Windows. Sur Mac, {name} peut aussi importer directement dans Photos."
+      },
+      {
+        "q": "Supprime-t-il des photos de l'appareil ?",
+        "a": "Jamais. Votre carte reste exactement comme elle était. Supprimez les photos sur l'appareil quand vous êtes prêt."
+      },
+      {
+        "q": "Et les autres marques d'appareils ?",
+        "a": "Canon, Olympus et OM System, Ricoh GR, ainsi que les anciens Sony et Panasonic sont pris en charge à titre expérimental. Si vous en essayez un, dites-nous si cela a fonctionné."
+      }
+    ]
+  },
+  "cameras": {
+    "h1": "Appareils photo compatibles",
+    "lede": "{name} importe des photos en Wi-Fi depuis les appareils ci-dessous. Un appareil absent de la liste peut quand même fonctionner : s'il peut envoyer des photos à une app pour téléphone via son propre réseau Wi-Fi, essayez-le et dites-le-nous.",
+    "status": {
+      "tested": "Testé sur un vrai appareil",
+      "emulator": "Fonctionne dans l'émulateur",
+      "experimental": "Devrait fonctionner, pas encore testé",
+      "planned": "Prévu"
+    },
+    "th_model": "Modèle",
+    "th_status": "État",
+    "th_notes": "Remarques",
+    "notes": {
+      "jpeg_only": "JPEG en Wi-Fi.",
+      "camera_remote": "Même protocole Wi-Fi que les modèles testés.",
+      "bluetooth": "S'appairent d'abord en Bluetooth. La prise en charge est prévue.",
+      "ptpip": "PTP/IP standard via le Wi-Fi de l'appareil.",
+      "oishare": "Utilise l'interface Wi-Fi OI.Share.",
+      "ricoh": "Utilise l'interface Wi-Fi du GR.",
+      "dlna": "Appareils qui partagent leurs photos comme un serveur multimédia en Wi-Fi.",
+      "nikon": "À étudier avec un vrai appareil."
+    },
+    "emulator_note": "« Fonctionne dans l'émulateur » signifie que {name} réussit ses tests face à vcam, un émulateur open source du protocole de cet appareil. Les vrais appareils se comportent parfois différemment.",
+    "report_h2": "Vous l'avez essayé avec votre appareil ?",
+    "report_p": "Dites-nous si cela a fonctionné, même si ce n'est pas le cas. Chaque retour fait avancer un appareil dans cette liste.",
+    "report_link": "Envoyer un retour sur un appareil"
+  },
+  "privacy": {
+    "h1": "Confidentialité",
+    "updated": "Dernière mise à jour le 3 novembre 2026.",
+    "sections": [
+      {
+        "h": "En bref",
+        "p": "{name} ne collecte rien sur vous. Il n'a ni compte, ni outil d'analyse, ni rapport de plantage, ni serveur. Ce site n'utilise ni cookies, ni JavaScript, ni traceurs."
+      },
+      {
+        "h": "Ce que l'app fait de vos photos",
+        "p": "{name} se connecte à votre appareil en Wi-Fi et copie les photos vers les destinations que vous choisissez : Photos, un dossier sur votre ordinateur ou un disque de sauvegarde. Si vous configurez un serveur Immich, il envoie les photos vers ce serveur, que vous gérez vous-même."
+      },
+      {
+        "h": "Ce que l'app conserve",
+        "p": "La liste des photos importées (nom de fichier, date et taille), pour les ignorer la fois suivante, ainsi que vos réglages. Les deux restent sur votre ordinateur. Une clé API Immich est stockée dans le trousseau du système."
+      },
+      {
+        "h": "Autorisations",
+        "p": "Sur Mac, {name} demande l'accès à Photos pour ajouter des photos, et au réseau local pour joindre l'appareil. Il n'utilise cet accès que pour ajouter des photos et créer son album."
+      },
+      {
+        "h": "Ce site",
+        "p": "Ce site est hébergé par Cloudflare Pages. Cloudflare traite les requêtes pour servir les pages et peut conserver brièvement des journaux ; nous ne les recevons ni ne les utilisons. Aucun script tiers n'est utilisé."
+      },
+      {
+        "h": "Contact",
+        "p": "Une question ? Ouvrez un ticket sur GitHub."
+      }
+    ]
+  },
+  "notfound": {
+    "h1": "Cette page n'existe pas",
+    "p": "Elle a peut-être été déplacée. Tout sur {name} se trouve sur la page d'accueil.",
+    "home": "Aller à la page d'accueil"
+  },
+  "foot": {
+    "tagline": "Transfert de photos en Wi-Fi pour Fujifilm et d'autres appareils.",
+    "license": "Open source sous licence MIT.",
+    "nocookies": "Pas de cookies, pas de suivi.",
+    "privacy": "Confidentialité",
+    "trademark": "Fujifilm, Canon, Olympus, OM System, Ricoh, Sony, Panasonic et Nikon sont des marques de leurs propriétaires. {name} n'est affilié à aucun d'entre eux."
+  }
+}
