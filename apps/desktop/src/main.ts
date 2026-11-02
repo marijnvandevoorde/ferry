@@ -3,16 +3,17 @@ import { join, pictureDir } from "@tauri-apps/api/path";
 import { listen } from "@tauri-apps/api/event";
 import { disable as disableAutostart, enable as enableAutostart, isEnabled as autostartEnabled } from "@tauri-apps/plugin-autostart";
 import { open } from "@tauri-apps/plugin-dialog";
+import { open as openPath } from "@tauri-apps/plugin-shell";
 import { t, translatePage } from "./i18n";
 import { isPermissionGranted, requestPermission, sendNotification } from "@tauri-apps/plugin-notification";
 
 // Events from `fujictl serve` (see Sources/fujictl/Serve.swift).
-type Item = { id: string; filename: string; date: string; isVideo: boolean; size: number; imported: boolean };
+type Item = { id: string; filename: string; date: string; isVideo: boolean; kind: string; protected: boolean; size: number; imported: boolean };
 type ServeEvent =
   | { event: "status"; phase: "searching" | "connecting" | "waitingForApproval" | "connected"; camera?: string; address?: string }
   | { event: "items"; items: Item[] }
   | { event: "thumbnail"; id: string; path: string }
-  | { event: "progress"; index: number; total: number; filename: string; fraction: number }
+  | { event: "progress"; index: number; total: number; filename: string; fraction: number; bytes: number; totalBytes: number }
   | { event: "imported"; id: string; path: string }
   | { event: "done"; imported: number; failed: string[]; cancelled: boolean }
   | { event: "error"; message: string }
@@ -48,12 +49,26 @@ const state = {
   selection: new Set<string>(),
   importing: false,
   lastError: "",
+  importStarted: 0,
 };
+
+/** Filters shown in the toolbar; "Import New" imports what they show. */
+function matchesFilters(item: Item): boolean {
+  const kind = $<HTMLSelectElement>("kind").value;
+  return (!kind || item.kind === kind) && ($<HTMLSelectElement>("filter").value !== "protected" || item.protected);
+}
+
+function formatBytes(n: number): string {
+  const units = ["B", "KB", "MB", "GB"];
+  let i = 0;
+  while (n >= 1000 && i < units.length - 1) { n /= 1000; i++; }
+  return `${n.toFixed(i ? 1 : 0)} ${units[i]}`;
+}
 
 const send = (command: Record<string, unknown>) => invoke("send", { command });
 
 function itemsToImport(): Item[] {
-  return state.items.filter((i) => !i.imported && !(settings.skipVideos && i.isVideo));
+  return state.items.filter((i) => !i.imported && !(settings.skipVideos && i.isVideo) && matchesFilters(i));
 }
 
 function startImport(ids?: string[]) {
@@ -63,6 +78,8 @@ function startImport(ids?: string[]) {
     return;
   }
   state.importing = true;
+  state.importStarted = Date.now();
+  $("show-folder").hidden = true;
   const immich = settings.immichServer && settings.immichKey
     ? { server: settings.immichServer, apiKey: settings.immichKey, album: settings.immichAlbum }
     : undefined;
@@ -121,8 +138,18 @@ listen<ServeEvent>("fujictl", ({ payload: e }) => {
       state.thumbnails.set(e.id, convertFileSrc(e.path));
       break;
     case "progress":
-      $("status").textContent = t("Importing {file} — {index} of {total}", { file: e.filename, index: e.index, total: e.total });
-      $<HTMLProgressElement>("progress").value = (e.index - 1 + e.fraction) / Math.max(e.total, 1);
+      {
+        let text = t("Importing {file} — {index} of {total}", { file: e.filename, index: e.index, total: e.total });
+        const seconds = (Date.now() - state.importStarted) / 1000;
+        if (seconds > 2 && e.bytes > 0) {
+          const speed = e.bytes / seconds;
+          const left = Math.max(0, (e.totalBytes - e.bytes) / speed);
+          const leftText = left >= 3600 ? `${Math.round(left / 3600)} h` : left >= 60 ? `${Math.round(left / 60)} min` : `${Math.ceil(left)} s`;
+          text += " · " + t("{speed}/s · {left} left", { speed: formatBytes(speed), left: leftText });
+        }
+        $("status").textContent = text;
+        $<HTMLProgressElement>("progress").value = e.totalBytes ? e.bytes / e.totalBytes : (e.index - 1 + e.fraction) / Math.max(e.total, 1);
+      }
       return; // no full re-render for progress
     case "imported": {
       const item = state.items.find((i) => i.id === e.id);
@@ -137,6 +164,7 @@ listen<ServeEvent>("fujictl", ({ payload: e }) => {
       if (e.failed.length) summary += t(". {n} failed: {list}", { n: e.failed.length, list: e.failed.slice(0, 3).join(", ") });
       render();
       $("status").textContent = summary;
+      $("show-folder").hidden = e.imported === 0;
       notify(t("Import finished"), summary);
       return;
     }
@@ -159,7 +187,7 @@ function render() {
   $("gallery").hidden = !connected;
   $("bar").hidden = !connected;
   $("disconnect").hidden = !connected;
-  $("filter").hidden = !connected;
+  for (const id of ["filter", "kind", "order", "thumb-size"]) $(id).hidden = !connected;
   $("title").textContent = connected ? state.camera || t("Camera") : "Fuji Import";
   const newCount = state.items.filter((i) => !i.imported).length;
   $("subtitle").textContent = connected ? t("{n} items · {m} not imported", { n: state.items.length, m: newCount }) : "";
@@ -181,7 +209,11 @@ function render() {
 
   // Gallery, grouped by day
   const filter = $<HTMLSelectElement>("filter").value;
-  const visible = filter === "new" ? state.items.filter((i) => !i.imported) : state.items;
+  const oldestFirst = $<HTMLSelectElement>("order").value === "oldest";
+  const visible = (filter === "new" ? state.items.filter((i) => !i.imported) : state.items)
+    .filter(matchesFilters)
+    .slice()
+    .sort((a, b) => (oldestFirst ? 1 : -1) * (a.date.localeCompare(b.date) || a.filename.localeCompare(b.filename)));
   const gallery = $("gallery");
   gallery.replaceChildren();
   if (visible.length === 0) {
@@ -233,10 +265,10 @@ function render() {
       name.className = "name";
       name.textContent = item.filename;
       cell.append(name);
-      if (item.imported || item.isVideo) {
+      if (item.imported || item.isVideo || item.protected) {
         const badge = document.createElement("span");
         badge.className = "badge";
-        badge.textContent = [item.imported ? t("Imported") : "", item.isVideo ? t("Video") : ""].filter(Boolean).join(" · ");
+        badge.textContent = [item.protected ? "🔒" : "", item.imported ? t("Imported") : "", item.isVideo ? t("Video") : ""].filter(Boolean).join(" · ");
         cell.append(badge);
       }
       cell.onclick = () => {
@@ -270,6 +302,17 @@ $("connect-now").onclick = () => {
 };
 $("disconnect").onclick = () => send({ cmd: "disconnect" });
 $("filter").onchange = render;
+$("kind").onchange = render;
+$("order").onchange = render;
+$<HTMLInputElement>("thumb-size").value = localStorage.getItem("thumbSize") ?? "160";
+const applyThumbSize = () => {
+  const size = $<HTMLInputElement>("thumb-size").value;
+  document.documentElement.style.setProperty("--thumb", `${size}px`);
+  localStorage.setItem("thumbSize", size);
+};
+$("thumb-size").oninput = applyThumbSize;
+applyThumbSize();
+$("show-folder").onclick = () => settings.folder && openPath(settings.folder);
 $("import-new").onclick = () => startImport();
 $("import-selected").onclick = () => startImport([...state.selection]);
 $("stop").onclick = () => send({ cmd: "cancel" });

@@ -17,7 +17,20 @@
         <select id="filter" aria-label="Show" data-i18n-label>
           <option value="all" data-i18n>All</option>
           <option value="new" data-i18n>Not imported</option>
+          <option value="protected" data-i18n>Protected</option>
         </select>
+        <select id="kind" aria-label="Type" data-i18n-label>
+          <option value="" data-i18n>All types</option>
+          <option value="jpeg">JPEG</option>
+          <option value="raw">RAW</option>
+          <option value="heif">HEIF</option>
+          <option value="video" data-i18n>Videos</option>
+        </select>
+        <select id="order" aria-label="Order" data-i18n-label>
+          <option value="newest" data-i18n>Newest first</option>
+          <option value="oldest" data-i18n>Oldest first</option>
+        </select>
+        <input id="thumb-size" type="range" min="110" max="320" value="160" aria-label="Thumbnail size" data-i18n-label />
         <button id="settings-button" type="button" data-i18n>Settings</button>
         <button id="disconnect" type="button" hidden data-i18n>Disconnect</button>
       </nav>
@@ -41,6 +54,7 @@
     <footer id="bar" hidden>
       <div id="status" class="muted"></div>
       <progress id="progress" max="1" value="0" hidden></progress>
+      <button id="show-folder" type="button" hidden data-i18n>Open folder</button>
       <span class="spacer"></span>
       <button id="stop" type="button" hidden data-i18n>Stop</button>
       <button id="import-selected" type="button" hidden></button>

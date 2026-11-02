@@ -4,6 +4,16 @@
 type Lang = "fr" | "es" | "it" | "de" | "nl";
 
 const strings: Record<string, Record<Lang, string>> = {
+  "Protected": { fr: "Protégées", es: "Protegidas", it: "Protette", de: "Geschützt", nl: "Beveiligd" },
+  "All types": { fr: "Tous les types", es: "Todos los tipos", it: "Tutti i tipi", de: "Alle Typen", nl: "Alle types" },
+  "Videos": { fr: "Vidéos", es: "Vídeos", it: "Video", de: "Videos", nl: "Video's" },
+  "Newest first": { fr: "Plus récentes d'abord", es: "Más recientes primero", it: "Più recenti prima", de: "Neueste zuerst", nl: "Nieuwste eerst" },
+  "Oldest first": { fr: "Plus anciennes d'abord", es: "Más antiguas primero", it: "Più vecchie prima", de: "Älteste zuerst", nl: "Oudste eerst" },
+  "Type": { fr: "Type", es: "Tipo", it: "Tipo", de: "Typ", nl: "Type" },
+  "Order": { fr: "Ordre", es: "Orden", it: "Ordine", de: "Reihenfolge", nl: "Volgorde" },
+  "Thumbnail size": { fr: "Taille des vignettes", es: "Tamaño de las miniaturas", it: "Dimensione miniature", de: "Miniaturgröße", nl: "Miniatuurgrootte" },
+  "Open folder": { fr: "Ouvrir le dossier", es: "Abrir carpeta", it: "Apri cartella", de: "Ordner öffnen", nl: "Map openen" },
+  "{speed}/s · {left} left": { fr: "{speed}/s · encore {left}", es: "{speed}/s · quedan {left}", it: "{speed}/s · mancano {left}", de: "{speed}/s · noch {left}", nl: "{speed}/s · nog {left}" },
   "Settings": { fr: "Réglages", es: "Ajustes", it: "Impostazioni", de: "Einstellungen", nl: "Instellingen" },
   "Disconnect": { fr: "Déconnecter", es: "Desconectar", it: "Scollega", de: "Trennen", nl: "Verbreken" },
   "All": { fr: "Tout", es: "Todo", it: "Tutto", de: "Alle", nl: "Alles" },

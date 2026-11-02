@@ -14,9 +14,9 @@ import Foundation
 ///
 /// Events, one JSON object per line on stdout:
 ///   {"event": "status", "phase": "searching|connecting|waitingForApproval|connected", "camera": "...", "address": "..."}
-///   {"event": "items", "items": [{"id", "filename", "date", "isVideo", "size", "imported"}]}
+///   {"event": "items", "items": [{"id", "filename", "date", "isVideo", "kind", "protected", "size", "imported"}]}
 ///   {"event": "thumbnail", "id", "path"}
-///   {"event": "progress", "index", "total", "filename", "fraction"}
+///   {"event": "progress", "index", "total", "filename", "fraction", "bytes", "totalBytes"}
 ///   {"event": "imported", "id", "path"}
 ///   {"event": "done", "imported", "failed", "cancelled"}
 ///   {"event": "error", "message"}
@@ -171,6 +171,8 @@ final class Server: @unchecked Sendable {
             "filename": info.filename,
             "date": info.date.map { ISO8601DateFormatter().string(from: $0) } ?? "",
             "isVideo": info.isVideo,
+            "kind": info.kind.rawValue,
+            "protected": info.isProtected,
             "size": Int(info.compressedSize),
             "imported": history.contains(id),
         ]
@@ -205,12 +207,26 @@ final class Server: @unchecked Sendable {
                 .map(\.key)
         }
 
+        let totalBytes = ids.reduce(0) { $0 + Int(items[$1]?.info.compressedSize ?? 0) }
+        try? FileManager.default.createDirectory(at: target.root, withIntermediateDirectories: true)
+        if let free = (try? FileManager.default.attributesOfFileSystem(forPath: target.root.path))?[.systemFreeSize] as? NSNumber,
+           free.int64Value < Int64(totalBytes) + Int64(totalBytes) / 20 + 50_000_000 {
+            let need = ByteCountFormatter.string(fromByteCount: Int64(totalBytes), countStyle: .file)
+            let have = ByteCountFormatter.string(fromByteCount: free.int64Value, countStyle: .file)
+            emit(["event": "error", "message": "Not enough free space: the import needs \(need) but only \(have) is free."])
+            emit(["event": "done", "imported": 0, "failed": [String](), "cancelled": false])
+            return
+        }
+
         var imported = 0
         var failed: [String] = []
+        var bytesBefore = 0
         for (index, id) in ids.enumerated() {
             if lock.withLock({ cancelRequested }) { break }
             guard let (handle, info) = items[id] else { continue }
-            emit(["event": "progress", "index": index + 1, "total": ids.count, "filename": info.filename, "fraction": 0.0])
+            emit(["event": "progress", "index": index + 1, "total": ids.count, "filename": info.filename, "fraction": 0.0,
+                  "bytes": bytesBefore, "totalBytes": totalBytes])
+            defer { bytesBefore += Int(info.compressedSize) }
             let tmp = target.root.appendingPathComponent(".fujictl-\(UUID().uuidString)")
             defer { try? FileManager.default.removeItem(at: tmp) }
             do {
@@ -220,7 +236,7 @@ final class Server: @unchecked Sendable {
                     guard Date().timeIntervalSince(lastReport) > 0.2, total > 0 else { return }
                     lastReport = Date()
                     self.emit(["event": "progress", "index": index + 1, "total": ids.count, "filename": info.filename,
-                               "fraction": Double(done) / Double(total)])
+                               "fraction": Double(done) / Double(total), "bytes": bytesBefore + Int(done), "totalBytes": totalBytes])
                 }
                 let url = try target.store(tmp, info: downloaded, camera: camera.cameraName, move: true)
                 if let immich {
