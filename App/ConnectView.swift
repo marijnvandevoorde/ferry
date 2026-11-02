@@ -57,7 +57,7 @@ struct ConnectView: View {
 
     private var steps: some View {
         VStack(alignment: .leading, spacing: 14) {
-            StepRow(number: 1, text: "On the camera, press **Playback**, then choose **Wireless Communication** (Wi-Fi button, or Menu → Connection Setting).")
+            StepRow(number: 1, text: CameraGuide.lastConnected.cameraStep)
             StepRow(number: 2, text: "On this Mac, join the camera's Wi-Fi network (named **FUJIFILM-X-…**).")
             StepRow(number: 3, text: autoConnect
                     ? "Fuji Import connects automatically. Press **OK** on the camera if it asks."

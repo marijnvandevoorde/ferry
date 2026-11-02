@@ -29,6 +29,8 @@ enum Prefs {
     static let useAlbum = "useAlbum"
     static let albumName = "albumName"
     static let hideResizeNotice = "hideResizeNotice"
+    static let lastCameraName = "lastCameraName"
+    static let lastCameraGeneration = "lastCameraGeneration"
 
     static func register() {
         UserDefaults.standard.register(defaults: [
@@ -140,6 +142,7 @@ final class CameraModel {
         self.camera = camera
         lastSearchFailure = nil
         cameraName = camera.cameraName
+        CameraGuide.remember(camera.profile)
         lastError = nil
         importSummary = nil
         phase = .connected
