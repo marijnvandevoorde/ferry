@@ -3,8 +3,8 @@
 An open-source Mac app that imports photos from Fujifilm X cameras over Wi-Fi straight into Apple Photos.
 It replaces the photo-transfer part of Fujifilm's unmaintained *Camera Remote* app.
 
-Tested on a real X-T20 and on an emulated X-T20. Other Wi-Fi Fujifilm X cameras from roughly 2015–2020 that use
-*Camera Remote* should work the same way.
+Fujifilm X and GFX cameras from roughly 2014–2021 that work with *Camera Remote* over Wi-Fi should work.
+See [compatibility](#compatibility) and the [roadmap](ROADMAP.md).
 
 ## Using it
 
@@ -18,6 +18,18 @@ so next time only new photos are offered. Settings (⌘,) has the camera address
 If something goes wrong, **Window → Connection Log** shows what the camera said.
 
 Over Wi-Fi the camera only offers JPEGs (no RAF files).
+
+## Compatibility
+
+| Camera | Real camera | Emulator |
+|--------|-------------|----------|
+| X-T20 | ✅ | ✅ |
+| X-A2, X30, X-F10, X-T2, X-T4, X-T30, X-S10, X-H1, GFX100 II | not yet | ✅ |
+| X-T5, X-S20, X100VI and other cameras that pair over Bluetooth | ❌ planned | |
+
+"Emulator" means the protocol works against [vcam](https://github.com/petabyt/vcam)'s model of that camera.
+Tried it with your camera? Please [file a camera report](https://github.com/marijnvandevoorde/fuji-import/issues/new?template=camera-report.yml),
+whether it worked or not.
 
 ## Building
 
@@ -47,6 +59,7 @@ defaults write io.github.fujiimport.FujiImport cameraHost 127.0.0.1   # point th
 ```
 
 vcam only supports one connection per run; restart it between sessions.
+`scripts/test-vcam.sh` runs the download test against every emulated Fuji model.
 
 ## Credits
 

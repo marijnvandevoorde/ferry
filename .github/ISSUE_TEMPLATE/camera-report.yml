@@ -1,0 +1,42 @@
+name: Camera report
+description: Tell us how Fuji Import works with your camera, good or bad.
+labels: ["camera report"]
+body:
+  - type: input
+    id: model
+    attributes:
+      label: Camera model
+      placeholder: X-T20
+    validations:
+      required: true
+  - type: input
+    id: firmware
+    attributes:
+      label: Camera firmware version
+      placeholder: "4.30"
+  - type: dropdown
+    id: result
+    attributes:
+      label: Did importing work?
+      options:
+        - "Yes, everything worked"
+        - "Partly (see below)"
+        - "No"
+    validations:
+      required: true
+  - type: textarea
+    id: details
+    attributes:
+      label: What happened?
+      description: Which camera menu you used, what worked, what didn't.
+  - type: textarea
+    id: log
+    attributes:
+      label: Connection log
+      description: In the app, Window → Connection Log → Copy Log, then paste here.
+      render: text
+  - type: input
+    id: app
+    attributes:
+      label: App version and OS
+      placeholder: Fuji Import 0.2, macOS 26.1
