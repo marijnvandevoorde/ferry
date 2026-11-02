@@ -9,7 +9,9 @@ enum DebugSnapshot {
         var n = 0
         Timer.scheduledTimer(withTimeInterval: 3, repeats: true) { _ in
             MainActor.assumeIsolated {
-                guard let window = NSApp.windows.first(where: { $0.isVisible && $0.title != "Connection Log" }),
+                // The largest window, so the menu bar extra's tiny window isn't picked.
+                guard let window = NSApp.windows.filter({ $0.isVisible && $0.title != "Connection Log" })
+                        .max(by: { $0.frame.width * $0.frame.height < $1.frame.width * $1.frame.height }),
                       let view = window.contentView?.superview, let layer = view.layer else { return }
                 // Render the layer tree; cacheDisplay misses layer-backed scroll content.
                 let scale = window.backingScaleFactor
