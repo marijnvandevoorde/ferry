@@ -25,6 +25,6 @@ run --register
 "$FUJICTL" --host 127.0.0.1 --quiet autosave register | grep -q "Registered with VCAM" && echo "register: ok"
 
 run --discovery
-"$FUJICTL" --host 127.0.0.1 --quiet autosave "$WORK/out" > /dev/null
+"$FUJICTL" --host 127.0.0.1 --quiet --history "$WORK/history.json" --folders "" autosave "$WORK/out" > /dev/null
 for f in "$WORK/out"/*; do cmp -s "$f" "$CARD/$(basename "$f")" || { echo "import: $(basename "$f") differs"; exit 1; }; done
 echo "import: ok ($(ls "$WORK/out" | wc -l | tr -d ' ') files)"

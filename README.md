@@ -31,6 +31,20 @@ Over Wi-Fi the camera only offers JPEGs (no RAF files).
 Tried it with your camera? Please [file a camera report](https://github.com/marijnvandevoorde/fuji-import/issues/new?template=camera-report.yml),
 whether it worked or not.
 
+## Command line (macOS and Linux)
+
+`fujictl` imports without the app, for example on a Linux machine or from a script:
+
+```sh
+swift build -c release --product fujictl
+.build/release/fujictl import ~/Pictures/Fuji        # new photos, into Year/Date folders
+.build/release/fujictl watch ~/Pictures/Fuji         # keep running; import whenever the camera's Wi-Fi is joined
+.build/release/fujictl autosave register             # register with the camera's PC AutoSave
+.build/release/fujictl watch --autosave ~/Pictures/Fuji   # import over the home network
+```
+
+Run `fujictl` without arguments for all commands and options (folder and file name templates, `--skip-videos`, …).
+
 ## Building
 
 Requires Xcode 16+ and [XcodeGen](https://github.com/yonaskolb/XcodeGen).
@@ -43,7 +57,7 @@ open FujiImport.xcodeproj
 The project is laid out as:
 
 - `Sources/FujiKit` – Swift implementation of Fujifilm's Wi-Fi protocol (PTP over TCP, port 55740).
-- `Sources/fujictl` – command-line tool for testing: `swift run fujictl [--host IP] info|list|download <dir>|thumbs <dir>`
+- `Sources/fujictl` – command-line tool for macOS and Linux (see below).
 - `App` – the SwiftUI app.
 
 ### Testing without a camera

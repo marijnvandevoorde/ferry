@@ -128,34 +128,8 @@ final class FolderDestination: Destination {
 
     func store(_ file: URL, info: ObjectInfo, camera: String, move: Bool) async throws {
         guard let root else { throw DestinationError("The \(role) isn't ready.") }
-        let date = info.date ?? Date()
-        let original = (info.filename as NSString).deletingPathExtension
-        var dir = root
-        for component in folderTemplate.folderComponents(date: date, camera: camera, original: original) {
-            dir.appendPathComponent(component, isDirectory: true)
-        }
-        var name = info.filename
-        if let fileTemplate {
-            let base = fileTemplate.render(date: date, camera: camera, original: original)
-            let ext = (info.filename as NSString).pathExtension
-            if !base.isEmpty { name = ext.isEmpty ? base : "\(base).\(ext)" }
-        }
-        let target = dir
-        let finalName = name
-        try await Task.detached {
-            let fm = FileManager.default
-            try fm.createDirectory(at: target, withIntermediateDirectories: true)
-            let unique = PathTemplate.uniqueName(finalName) { fm.fileExists(atPath: target.appendingPathComponent($0).path) }
-            let destination = target.appendingPathComponent(unique)
-            if move {
-                try fm.moveItem(at: file, to: destination)
-            } else {
-                try fm.copyItem(at: file, to: destination)
-            }
-            if let date = info.date {
-                try? fm.setAttributes([.creationDate: date, .modificationDate: date], ofItemAtPath: destination.path)
-            }
-        }.value
+        let folder = FolderImport(root: root, folderTemplate: folderTemplate, fileTemplate: fileTemplate)
+        try await Task.detached { try folder.store(file, info: info, camera: camera, move: move) }.value
     }
 }
 
