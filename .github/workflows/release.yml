@@ -1,9 +1,11 @@
 name: Release
 
 # Push a tag like v0.2.0. Needs the secrets and variables described in docs/releasing.md.
+# Run it by hand for a dry run: everything is signed and notarized, but nothing is published.
 on:
   push:
     tags: ["v*"]
+  workflow_dispatch:
 
 jobs:
   mac:
@@ -14,7 +16,7 @@ jobs:
       TEAM_ID: ${{ vars.APPLE_TEAM_ID }}
       ASC_KEY_ID: ${{ secrets.ASC_KEY_ID }}
       ASC_ISSUER_ID: ${{ secrets.ASC_ISSUER_ID }}
-      VERSION: ${{ github.ref_name }}
+      VERSION: ${{ github.ref_type == 'tag' && github.ref_name || 'v0.0.0-dryrun' }}
     steps:
       - uses: actions/checkout@v4
 
@@ -60,13 +62,22 @@ jobs:
           xcrun stapler staple "$DMG"
           echo "DMG=$DMG" >> $GITHUB_ENV
 
+      - name: Keep the DMG (dry run)
+        if: github.ref_type != 'tag'
+        uses: actions/upload-artifact@v4
+        with:
+          name: dmg
+          path: ${{ env.DMG }}
+          retention-days: 3
+
       - name: Publish GitHub release
+        if: github.ref_type == 'tag'
         env:
           GH_TOKEN: ${{ github.token }}
         run: gh release create "$VERSION" "$DMG" --title "Fuji Import $MARKETING_VERSION" --generate-notes
 
       - name: Upload to App Store Connect
-        if: vars.APP_STORE_UPLOAD == 'true'
+        if: github.ref_type == 'tag' && vars.APP_STORE_UPLOAD == 'true'
         run: |
           cat > build/app-store.plist <<EOF
           <?xml version="1.0" encoding="UTF-8"?>
