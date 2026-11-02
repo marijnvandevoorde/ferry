@@ -38,6 +38,10 @@ struct PhotoCell: View {
             }
             .overlay(alignment: .bottomLeading) {
                 HStack(spacing: 4) {
+                    if item.info.isProtected {
+                        Image(systemName: "lock.fill")
+                            .accessibilityLabel("Protected")
+                    }
                     if item.imported {
                         Label("Imported", systemImage: "checkmark")
                     }
@@ -52,7 +56,7 @@ struct PhotoCell: View {
                 .padding(.vertical, 3)
                 .background(.black.opacity(0.45), in: Capsule())
                 .padding(6)
-                .opacity(item.imported || item.info.isVideo ? 1 : 0)
+                .opacity(item.imported || item.info.isVideo || item.info.isProtected ? 1 : 0)
             }
             .overlay {
                 RoundedRectangle(cornerRadius: 8)
@@ -78,6 +82,7 @@ struct PhotoCell: View {
     private var accessibilityText: String {
         var parts = [item.info.isVideo ? String(localized: "Video") : String(localized: "Photo"), item.info.filename,
                      item.date.formatted(date: .abbreviated, time: .shortened)]
+        if item.info.isProtected { parts.append(String(localized: "protected")) }
         if item.imported { parts.append(String(localized: "imported")) }
         return parts.joined(separator: ", ")
     }

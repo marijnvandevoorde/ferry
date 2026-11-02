@@ -20,6 +20,27 @@ struct ImportProgress {
     var total: Int
     var filename: String
     var fraction: Double
+    /// Bytes of the whole batch, for speed and time left (0 when unknown).
+    var bytesDone: Int64 = 0
+    var totalBytes: Int64 = 0
+    var started = Date()
+
+    /// Bytes per second since the import started.
+    var speed: Double? {
+        let elapsed = Date().timeIntervalSince(started)
+        return elapsed > 2 && bytesDone > 0 ? Double(bytesDone) / elapsed : nil
+    }
+
+    var timeRemaining: TimeInterval? {
+        guard let speed, speed > 0, totalBytes > bytesDone else { return nil }
+        return Double(totalBytes - bytesDone) / speed
+    }
+}
+
+/// Where the last import went, so it can be shown.
+enum ImportLocation: Equatable {
+    case photos
+    case folder(URL)
 }
 
 enum Prefs {
@@ -42,6 +63,9 @@ enum Prefs {
     static let showMenuBarIcon = "showMenuBarIcon"
     static let hideDockIcon = "hideDockIcon"
     static let autoSave = "autoSave"
+    static let protectedOnly = "protectedOnly"
+    static let sortOldestFirst = "sortOldestFirst"
+    static let thumbnailSize = "thumbnailSize"
     static let immichEnabled = "immichEnabled"
     static let immichServer = "immichServer"
     static let immichAlbum = "immichAlbum"
@@ -62,6 +86,9 @@ enum Prefs {
             showMenuBarIcon: true,
             hideDockIcon: false,
             autoSave: false,
+            protectedOnly: false,
+            sortOldestFirst: false,
+            thumbnailSize: 170.0,
         ])
     }
 }
@@ -108,8 +135,21 @@ final class CameraModel {
     /// What "Import New" imports: new items, without videos if the user chose to skip them.
     var itemsToImport: [PhotoItem] {
         let skipVideos = UserDefaults.standard.bool(forKey: Prefs.skipVideos)
-        return newItems.filter { !(skipVideos && $0.info.isVideo) }
+        return newItems.filter { !(skipVideos && $0.info.isVideo) && matchesFilters($0) }
     }
+
+    /// Gallery filters; "Import New" imports what the filters show.
+    var kindFilter: ObjectInfo.Kind?
+    var protectedOnly = UserDefaults.standard.bool(forKey: Prefs.protectedOnly) {
+        didSet { UserDefaults.standard.set(protectedOnly, forKey: Prefs.protectedOnly) }
+    }
+
+    func matchesFilters(_ item: PhotoItem) -> Bool {
+        (kindFilter == nil || item.info.kind == kindFilter) && (!protectedOnly || item.info.isProtected)
+    }
+
+    /// Where the last finished import went.
+    private(set) var lastImportLocation: ImportLocation?
     var isImporting: Bool { importProgress != nil }
 
     init() {
@@ -414,7 +454,12 @@ final class CameraModel {
         let info = try await camera.run { cam in
             try cam.download(handle, to: file) { done, total in
                 let fraction = total > 0 ? Double(done) / Double(total) : 0
-                Task { @MainActor [weak self] in self?.importProgress?.fraction = fraction }
+                Task { @MainActor [weak self] in
+                    guard let self, var p = importProgress else { return }
+                    p.fraction = fraction
+                    p.bytesDone = batchBytesBefore + done
+                    importProgress = p
+                }
             }
         }
         // Use what was actually downloaded, in case handles shifted since listing.
@@ -432,18 +477,32 @@ final class CameraModel {
         return (info, image)
     }
 
+    /// Bytes of the current batch that finished before the file being downloaded.
+    private var batchBytesBefore: Int64 = 0
+
     private func runImport(_ batch: [PhotoItem], camera: SerialCamera) async {
         defer { importProgress = nil }
         let activity = keepAwake()
         defer { ProcessInfo.processInfo.endActivity(activity) }
         guard let destinations = await prepareDestinations() else { return }
 
+        let totalBytes = batch.reduce(Int64(0)) { $0 + Int64($1.info.compressedSize) }
+        if let shortage = Self.spaceShortage(needed: totalBytes, destinations: destinations) {
+            lastError = shortage
+            appendLog("Not enough space: \(shortage)")
+            return
+        }
+        let started = Date()
+        batchBytesBefore = 0
+
         var imported = 0
         var failed: [String] = []
         pendingImport = Set(batch.map(\.id))
         for (index, item) in batch.enumerated() {
             if Task.isCancelled { break }
-            importProgress = ImportProgress(index: index + 1, total: batch.count, filename: item.info.filename, fraction: 0)
+            importProgress = ImportProgress(index: index + 1, total: batch.count, filename: item.info.filename, fraction: 0,
+                                            bytesDone: batchBytesBefore, totalBytes: totalBytes, started: started)
+            defer { batchBytesBefore += Int64(item.info.compressedSize) }
             // One retry for errors that aren't a lost connection.
             for attempt in 1...2 {
                 do {
@@ -470,6 +529,7 @@ final class CameraModel {
         if Task.isCancelled { summary += String(localized: " (cancelled)") }
         if !failed.isEmpty { summary += String(localized: ". \(failed.count) failed: \(failed.prefix(3).joined(separator: ", "))") }
         importSummary = summary
+        if imported > 0 { lastImportLocation = destinations.last?.location }
         Notifier.post(String(localized: "Import finished"), summary)
     }
 
@@ -508,6 +568,37 @@ final class CameraModel {
         Task.detached { camera.camera.disconnect() }
         importSummary = String(localized: "Received \(received) items from the camera") + (failure.map { String(localized: ". Stopped: \($0)") } ?? "")
         Notifier.post(String(localized: "Transfer finished"), importSummary ?? "")
+    }
+
+    /// A message when a destination's disk can't hold `needed` bytes (plus a margin), else nil.
+    /// Downloads pass through the temporary folder, so its disk counts too.
+    static func spaceShortage(needed: Int64, destinations: [Destination]) -> String? {
+        let margin = needed / 20 + 50_000_000
+        let places = destinations.compactMap(\.location).map { location -> URL in
+            switch location {
+            case .photos: FileManager.default.homeDirectoryForCurrentUser
+            case .folder(let url): url
+            }
+        } + [FileManager.default.temporaryDirectory]
+        for place in places {
+            guard let free = try? place.resourceValues(forKeys: [.volumeAvailableCapacityForImportantUsageKey])
+                .volumeAvailableCapacityForImportantUsage, free < needed + margin else { continue }
+            let need = ByteCountFormatter.string(fromByteCount: needed, countStyle: .file)
+            let have = ByteCountFormatter.string(fromByteCount: free, countStyle: .file)
+            return String(localized: "Not enough free space: the import needs \(need) but only \(have) is free on the disk of “\(place.lastPathComponent)”.")
+        }
+        return nil
+    }
+
+    func showLastImport() {
+        switch lastImportLocation {
+        case .photos?:
+            NSWorkspace.shared.open(URL(fileURLWithPath: "/System/Applications/Photos.app"))
+        case .folder(let url)?:
+            NSWorkspace.shared.activateFileViewerSelecting([url])
+        case nil:
+            break
+        }
     }
 
     /// Keeps the Mac from sleeping while an import runs; the Wi-Fi connection would drop.

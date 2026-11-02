@@ -1,3 +1,4 @@
+import FujiKit
 import QuickLook
 import SwiftUI
 
@@ -7,6 +8,8 @@ struct GalleryView: View {
     /// The item last clicked; space previews it.
     @State private var focusedItem: PhotoItem?
     @State private var previewURL: URL?
+    @AppStorage(Prefs.sortOldestFirst) private var oldestFirst = false
+    @AppStorage(Prefs.thumbnailSize) private var thumbnailSize = 170.0
 
     enum Filter: String, CaseIterable, Identifiable {
         case all = "All", new = "Not Imported"
@@ -14,14 +17,20 @@ struct GalleryView: View {
     }
 
     private var visibleItems: [PhotoItem] {
-        filter == .new ? model.newItems : model.items
+        (filter == .new ? model.newItems : model.items).filter(model.matchesFilters)
     }
 
     private var sections: [(day: Date, items: [PhotoItem])] {
         let calendar = Calendar.current
         let groups = Dictionary(grouping: visibleItems) { calendar.startOfDay(for: $0.date) }
-        return groups.keys.sorted(by: >).map { ($0, groups[$0]!) }
+        let days = groups.keys.sorted(by: >)
+        // The model lists newest first.
+        return (oldestFirst ? days.reversed() : days).map { ($0, oldestFirst ? groups[$0]!.reversed() : groups[$0]!) }
     }
+
+    private static let kinds: [(ObjectInfo.Kind?, LocalizedStringKey)] = [
+        (nil, "All Types"), (.jpeg, "JPEG"), (.raw, "RAW"), (.heif, "HEIF"), (.video, "Videos"),
+    ]
 
     var body: some View {
         @Bindable var model = model
@@ -31,7 +40,7 @@ struct GalleryView: View {
                                        systemImage: filter == .new ? "checkmark.circle" : "photo.on.rectangle.angled")
                     .padding(.top, 120)
             }
-            LazyVGrid(columns: [GridItem(.adaptive(minimum: 150, maximum: 220), spacing: 10)], spacing: 10,
+            LazyVGrid(columns: [GridItem(.adaptive(minimum: thumbnailSize, maximum: thumbnailSize * 1.4), spacing: 10)], spacing: 10,
                       pinnedViews: [.sectionHeaders]) {
                 ForEach(sections, id: \.day) { section in
                     Section {
@@ -85,6 +94,26 @@ struct GalleryView: View {
                 .fixedSize()
             }
             ToolbarItemGroup {
+                Slider(value: $thumbnailSize, in: 110...320)
+                    .frame(width: 90)
+                    .help("Thumbnail size")
+                Menu {
+                    Picker("Type", selection: $model.kindFilter) {
+                        ForEach(Self.kinds, id: \.0) { Text($0.1).tag($0.0) }
+                    }
+                    .pickerStyle(.inline)
+                    Toggle("Only Protected Photos", isOn: $model.protectedOnly)
+                    Divider()
+                    Picker("Order", selection: $oldestFirst) {
+                        Text("Newest First").tag(false)
+                        Text("Oldest First").tag(true)
+                    }
+                    .pickerStyle(.inline)
+                } label: {
+                    Label("Filter", systemImage: model.kindFilter != nil || model.protectedOnly
+                          ? "line.3.horizontal.decrease.circle.fill" : "line.3.horizontal.decrease.circle")
+                }
+                .help("Filter and sort. Import New imports what the filters show.")
                 Menu {
                     Button("Select All") { model.selection = Set(visibleItems.map(\.id)) }
                         .keyboardShortcut("a")
@@ -223,10 +252,19 @@ private struct ImportBar: View {
                                 .lineLimit(1)
                             ProgressView(value: p.fraction)
                         } else {
-                            Text("Importing \(p.filename) — \(p.index) of \(p.total)")
-                                .font(.callout)
-                                .lineLimit(1)
-                            ProgressView(value: (Double(p.index - 1) + p.fraction) / Double(max(p.total, 1)))
+                            HStack {
+                                Text("Importing \(p.filename) — \(p.index) of \(p.total)")
+                                    .lineLimit(1)
+                                Spacer()
+                                if let speed = p.speed {
+                                    Text(Self.rate(speed, remaining: p.timeRemaining))
+                                        .monospacedDigit()
+                                        .foregroundStyle(.secondary)
+                                }
+                            }
+                            .font(.callout)
+                            ProgressView(value: p.totalBytes > 0 ? Double(p.bytesDone) / Double(p.totalBytes)
+                                         : (Double(p.index - 1) + p.fraction) / Double(max(p.total, 1)))
                         }
                     }
                     Button("Stop") { model.cancelImport() }
@@ -244,7 +282,7 @@ private struct ImportBar: View {
                     }
                     .buttonStyle(.borderedProminent)
                     .disabled(model.itemsToImport.isEmpty || model.isListing)
-                    .keyboardShortcut(.defaultAction)
+
                 }
             }
             .controlSize(.large)
@@ -254,16 +292,31 @@ private struct ImportBar: View {
         .background(.bar)
     }
 
+    /// "12.3 MB/s · 2 min left"
+    static func rate(_ bytesPerSecond: Double, remaining: TimeInterval?) -> String {
+        let speed = ByteCountFormatter.string(fromByteCount: Int64(bytesPerSecond), countStyle: .file) + "/s"
+        guard let remaining else { return speed }
+        let formatter = DateComponentsFormatter()
+        formatter.unitsStyle = .short
+        formatter.allowedUnits = remaining >= 3600 ? [.hour, .minute] : remaining >= 60 ? [.minute] : [.second]
+        let left = formatter.string(from: max(remaining, 1)) ?? ""
+        return String(localized: "\(speed) · \(left) left")
+    }
+
     @ViewBuilder private var status: some View {
         if let summary = model.importSummary {
             HStack(spacing: 8) {
                 Label(summary, systemImage: "checkmark.circle.fill")
                     .foregroundStyle(.green)
                     .lineLimit(1)
-                Button("Open Photos") {
-                    NSWorkspace.shared.open(URL(fileURLWithPath: "/System/Applications/Photos.app"))
+                switch model.lastImportLocation {
+                case .photos?:
+                    Button("Open Photos") { model.showLastImport() }.buttonStyle(.link)
+                case .folder?:
+                    Button("Show in Finder") { model.showLastImport() }.buttonStyle(.link)
+                case nil:
+                    EmptyView()
                 }
-                .buttonStyle(.link)
             }
         } else if let error = model.lastError {
             Label(error, systemImage: "exclamationmark.triangle.fill")

@@ -6,6 +6,8 @@ import Photos
 @MainActor
 protocol Destination: AnyObject {
     var displayName: String { get }
+    /// Where imported files can be seen afterwards; nil for remote destinations.
+    var location: ImportLocation? { get }
     /// Checks access before an import; throws a user-facing error when the destination can't be used.
     func prepare() async throws
     /// Stores `file`. With `move`, the destination may take the file instead of copying it.
@@ -62,23 +64,24 @@ func configuredDestinations() -> [Destination] {
 // MARK: - Apple Photos
 
 final class PhotosDestination: Destination {
+    /// May contain date tokens, e.g. "Fujifilm {yyyy}-{MM}", for an album per month.
     let albumName: String?
-    private var album: PHAssetCollection?
+    private var canUseAlbums = false
+    private var albums: [String: PHAssetCollection] = [:]
 
     init(albumName: String?) {
         self.albumName = albumName
     }
 
     var displayName: String { "Photos" }
+    var location: ImportLocation? { .photos }
 
     func prepare() async throws {
         let access = await PhotoImporter.requestAccess(needsAlbum: albumName != nil)
         guard access != .denied else {
             throw DestinationError(String(localized: "Fuji Import needs access to Photos. Allow it in System Settings → Privacy & Security → Photos."))
         }
-        if let albumName, access == .full {
-            album = try? await PhotoImporter.album(named: albumName)
-        }
+        canUseAlbums = albumName != nil && access == .full
     }
 
     func store(_ file: URL, info: ObjectInfo, camera: String, move: Bool) async throws {
@@ -87,6 +90,13 @@ final class PhotosDestination: Destination {
             // Photos always takes the file it is given.
             source = file.deletingLastPathComponent().appendingPathComponent(UUID().uuidString + "-" + info.filename)
             try FileManager.default.copyItem(at: file, to: source)
+        }
+        var album: PHAssetCollection?
+        if canUseAlbums, let albumName {
+            let name = PathTemplate(albumName).render(date: info.date ?? Date(), camera: camera,
+                                                      original: (info.filename as NSString).deletingPathExtension)
+            if albums[name] == nil { albums[name] = try? await PhotoImporter.album(named: name) }
+            album = albums[name]
         }
         try await PhotoImporter.importFile(source, originalFilename: info.filename, isVideo: info.isVideo, album: album)
     }
@@ -103,6 +113,7 @@ final class ImmichDestination: Destination {
     }
 
     var displayName: String { "Immich" }
+    var location: ImportLocation? { nil }
 
     func prepare() async throws {
         guard !upload.apiKey.isEmpty else { throw DestinationError(String(localized: "Enter your Immich API key in Settings.")) }
@@ -162,6 +173,9 @@ final class FolderDestination: Destination {
     }
 
     var displayName: String { root?.lastPathComponent ?? FolderBookmark.url(for: bookmarkKey)?.lastPathComponent ?? "folder" }
+    /// The last file stored, to select it in Finder; the folder before that.
+    private var lastStored: URL?
+    var location: ImportLocation? { (lastStored ?? root).map { .folder($0) } }
 
     func prepare() async throws {
         guard root == nil else { return }
@@ -181,7 +195,7 @@ final class FolderDestination: Destination {
     func store(_ file: URL, info: ObjectInfo, camera: String, move: Bool) async throws {
         guard let root else { throw DestinationError(String(localized: "The \(role) isn't ready.")) }
         let folder = FolderImport(root: root, folderTemplate: folderTemplate, fileTemplate: fileTemplate)
-        try await Task.detached { try folder.store(file, info: info, camera: camera, move: move) }.value
+        lastStored = try await Task.detached { try folder.store(file, info: info, camera: camera, move: move) }.value
     }
 }
 

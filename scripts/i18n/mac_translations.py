@@ -1,6 +1,24 @@
 # Translations for the Mac app's string catalog (App/Localizable.xcstrings): key -> (fr, es, it, de, nl).
 # Run scripts/i18n/build_catalog.py after editing.
 T = {
+"%@ · %@ left": ("%@ · encore %@", "%@ · quedan %@", "%@ · mancano %@", "%@ · noch %@", "%@ · nog %@"),
+"All Types": ("Tous les types", "Todos los tipos", "Tutti i tipi", "Alle Typen", "Alle types"),
+"Filter": ("Filtrer", "Filtrar", "Filtra", "Filtern", "Filteren"),
+"Filter and sort. Import New imports what the filters show.": ("Filtrer et trier. « Importer les nouvelles » importe ce que montrent les filtres.", "Filtrar y ordenar. «Importar nuevas» importa lo que muestran los filtros.", "Filtra e ordina. «Importa nuove» importa ciò che mostrano i filtri.", "Filtern und sortieren. „Neue importieren“ importiert, was die Filter zeigen.", "Filteren en sorteren. ‘Nieuwe importeren’ importeert wat de filters tonen."),
+"Import": ("Importer", "Importar", "Importa", "Importieren", "Importeren"),
+"Import New": ("Importer les nouvelles", "Importar nuevas", "Importa nuove", "Neue importieren", "Nieuwe importeren"),
+"Import Selected": ("Importer la sélection", "Importar selección", "Importa selezione", "Auswahl importieren", "Selectie importeren"),
+"Newest First": ("Plus récentes d'abord", "Más recientes primero", "Più recenti prima", "Neueste zuerst", "Nieuwste eerst"),
+"Not enough free space: the import needs %@ but only %@ is free on the disk of “%@”.": ("Espace insuffisant : l'importation nécessite %@ mais seuls %@ sont libres sur le disque de « %@ ».", "No hay espacio suficiente: la importación necesita %@ pero solo hay %@ libres en el disco de «%@».", "Spazio insufficiente: l'importazione richiede %@ ma solo %@ sono liberi sul disco di «%@».", "Nicht genug Speicherplatz: Der Import braucht %1$@, aber auf dem Laufwerk von „%3$@“ sind nur %2$@ frei.", "Niet genoeg vrije ruimte: het importeren heeft %@ nodig, maar er is maar %@ vrij op de schijf van ‘%@’."),
+"Oldest First": ("Plus anciennes d'abord", "Más antiguas primero", "Più vecchie prima", "Älteste zuerst", "Oudste eerst"),
+"Only Protected Photos": ("Photos protégées uniquement", "Solo fotos protegidas", "Solo foto protette", "Nur geschützte Fotos", "Alleen beveiligde foto's"),
+"Order": ("Ordre", "Orden", "Ordine", "Reihenfolge", "Volgorde"),
+"Protected": ("Protégée", "Protegida", "Protetta", "Geschützt", "Beveiligd"),
+"Show in Finder": ("Afficher dans le Finder", "Mostrar en el Finder", "Mostra nel Finder", "Im Finder zeigen", "Toon in Finder"),
+"Thumbnail size": ("Taille des vignettes", "Tamaño de las miniaturas", "Dimensione miniature", "Miniaturgröße", "Miniatuurgrootte"),
+"Type": ("Type", "Tipo", "Tipo", "Typ", "Type"),
+"Videos": ("Vidéos", "Vídeos", "Video", "Videos", "Video's"),
+"protected": ("protégée", "protegida", "protetta", "geschützt", "beveiligd"),
 " (cancelled)": (" (annulé)", " (cancelado)", " (annullato)", " (abgebrochen)", " (geannuleerd)"),
 "%@ can now send photos to this Mac.": ("%@ peut maintenant envoyer des photos à ce Mac.", "%@ ya puede enviar fotos a este Mac.", "%@ ora può inviare foto a questo Mac.", "%@ kann jetzt Fotos an diesen Mac senden.", "%@ kan nu foto's naar deze Mac sturen."),
 "%@: %lld new": ("%@ : %lld nouvelles", "%@: %lld nuevas", "%@: %lld nuove", "%@: %lld neu", "%@: %lld nieuw"),
@@ -174,7 +192,7 @@ PLURALS = {
 }
 
 # Keys that stay as they are.
-VERBATIM = ["%@\n%@", "%lld", "Fuji Import", "PC AutoSave", "https://photos.example.com", "{yyyy-MM-dd}_{original}"]
+VERBATIM = ["HEIF", "JPEG", "RAW", "Fujifilm {yyyy}-{MM}", "%@\n%@", "%lld", "Fuji Import", "PC AutoSave", "https://photos.example.com", "{yyyy-MM-dd}_{original}"]
 
 INFO_PLIST = {
 "NSLocalNetworkUsageDescription": ("Fuji Import connects to your camera over its Wi-Fi network to read and download photos.", (

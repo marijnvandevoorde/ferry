@@ -17,6 +17,18 @@ struct FujiImportApp: App {
             CommandGroup(after: .windowArrangement) {
                 OpenLogButton()
             }
+            CommandMenu("Import") {
+                Button("Import New") { model.importNew() }
+                    .keyboardShortcut("i")
+                    .disabled(model.phase != .connected || model.itemsToImport.isEmpty || model.isImporting)
+                Button("Import Selected") { model.importSelected() }
+                    .keyboardShortcut("i", modifiers: [.command, .shift])
+                    .disabled(model.phase != .connected || model.selection.isEmpty || model.isImporting)
+                Divider()
+                Button("Stop Import") { model.cancelImport() }
+                    .keyboardShortcut(".")
+                    .disabled(!model.isImporting)
+            }
         }
 
         Window("Connection Log", id: "log") {

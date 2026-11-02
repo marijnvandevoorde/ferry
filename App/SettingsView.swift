@@ -74,7 +74,7 @@ struct SettingsView: View {
                 switch destination {
                 case .photos:
                     Toggle("Add imported photos to an album", isOn: $useAlbum)
-                    TextField("Album name", text: $albumName)
+                    TextField("Album name", text: $albumName, prompt: Text("Fujifilm {yyyy}-{MM}"))
                         .disabled(!useAlbum)
                 case .folder:
                     FolderRow(title: "Folder", url: folder) {

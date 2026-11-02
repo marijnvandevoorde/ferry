@@ -72,6 +72,40 @@
         }
       }
     },
+    "%@ · %@ left": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ · encore %@"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ · quedan %@"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ · mancano %@"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ · noch %@"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ · nog %@"
+          }
+        }
+      }
+    },
     "%@: %lld new": {
       "localizations": {
         "fr": {
@@ -721,6 +755,40 @@
           "stringUnit": {
             "state": "translated",
             "value": "Alles"
+          }
+        }
+      }
+    },
+    "All Types": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tous les types"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Todos los tipos"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tutti i tipi"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alle Typen"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alle types"
           }
         }
       }
@@ -1949,6 +2017,74 @@
         }
       }
     },
+    "Filter": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Filtrer"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Filtrar"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Filtra"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Filtern"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Filteren"
+          }
+        }
+      }
+    },
+    "Filter and sort. Import New imports what the filters show.": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Filtrer et trier. « Importer les nouvelles » importe ce que montrent les filtres."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Filtrar y ordenar. «Importar nuevas» importa lo que muestran los filtros."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Filtra e ordina. «Importa nuove» importa ciò che mostrano i filtri."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Filtern und sortieren. „Neue importieren“ importiert, was die Filter zeigen."
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Filteren en sorteren. ‘Nieuwe importeren’ importeert wat de filters tonen."
+          }
+        }
+      }
+    },
     "Folder": {
       "localizations": {
         "fr": {
@@ -2224,6 +2360,12 @@
         }
       }
     },
+    "Fujifilm {yyyy}-{MM}": {
+      "shouldTranslate": false
+    },
+    "HEIF": {
+      "shouldTranslate": false
+    },
     "Hide the Dock icon": {
       "localizations": {
         "fr": {
@@ -2254,6 +2396,40 @@
           "stringUnit": {
             "state": "translated",
             "value": "Dock-pictogram verbergen"
+          }
+        }
+      }
+    },
+    "Import": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Importer"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Importar"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Importa"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Importieren"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Importeren"
           }
         }
       }
@@ -2322,6 +2498,74 @@
           "stringUnit": {
             "state": "translated",
             "value": "%lld geselecteerde importeren"
+          }
+        }
+      }
+    },
+    "Import New": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Importer les nouvelles"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Importar nuevas"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Importa nuove"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Neue importieren"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nieuwe importeren"
+          }
+        }
+      }
+    },
+    "Import Selected": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Importer la sélection"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Importar selección"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Importa selezione"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Auswahl importieren"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Selectie importeren"
           }
         }
       }
@@ -2736,6 +2980,9 @@
         }
       }
     },
+    "JPEG": {
+      "shouldTranslate": false
+    },
     "Leave videos out of “Import New”": {
       "localizations": {
         "fr": {
@@ -2868,6 +3115,40 @@
           "stringUnit": {
             "state": "translated",
             "value": "Verbinding met de camera verloren."
+          }
+        }
+      }
+    },
+    "Newest First": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Plus récentes d'abord"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Más recientes primero"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Più recenti prima"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Neueste zuerst"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nieuwste eerst"
           }
         }
       }
@@ -3076,6 +3357,74 @@
         }
       }
     },
+    "Not enough free space: the import needs %@ but only %@ is free on the disk of “%@”.": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Espace insuffisant : l'importation nécessite %@ mais seuls %@ sont libres sur le disque de « %@ »."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No hay espacio suficiente: la importación necesita %@ pero solo hay %@ libres en el disco de «%@»."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Spazio insufficiente: l'importazione richiede %@ ma solo %@ sono liberi sul disco di «%@»."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nicht genug Speicherplatz: Der Import braucht %1$@, aber auf dem Laufwerk von „%3$@“ sind nur %2$@ frei."
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Niet genoeg vrije ruimte: het importeren heeft %@ nodig, maar er is maar %@ vrij op de schijf van ‘%@’."
+          }
+        }
+      }
+    },
+    "Oldest First": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Plus anciennes d'abord"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Más antiguas primero"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Più vecchie prima"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Älteste zuerst"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Oudste eerst"
+          }
+        }
+      }
+    },
     "On the %@, open the **Playback** menu and choose **Wireless Communication**. If it offers Bluetooth pairing, skip it.": {
       "localizations": {
         "fr": {
@@ -3246,6 +3595,40 @@
         }
       }
     },
+    "Only Protected Photos": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Photos protégées uniquement"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Solo fotos protegidas"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Solo foto protette"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nur geschützte Fotos"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alleen beveiligde foto's"
+          }
+        }
+      }
+    },
     "Open Fuji Import": {
       "localizations": {
         "fr": {
@@ -3378,6 +3761,40 @@
           "stringUnit": {
             "state": "translated",
             "value": "Wifi-instellingen openen"
+          }
+        }
+      }
+    },
+    "Order": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ordre"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Orden"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ordine"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Reihenfolge"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Volgorde"
           }
         }
       }
@@ -3521,6 +3938,40 @@
         }
       }
     },
+    "Protected": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Protégée"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Protegida"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Protetta"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Geschützt"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Beveiligd"
+          }
+        }
+      }
+    },
     "Quit Fuji Import": {
       "localizations": {
         "fr": {
@@ -3554,6 +4005,9 @@
           }
         }
       }
+    },
+    "RAW": {
+      "shouldTranslate": false
     },
     "Reading card…": {
       "localizations": {
@@ -4169,6 +4623,40 @@
         }
       }
     },
+    "Show in Finder": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Afficher dans le Finder"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mostrar en el Finder"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mostra nel Finder"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Im Finder zeigen"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Toon in Finder"
+          }
+        }
+      }
+    },
     "Show in the menu bar": {
       "localizations": {
         "fr": {
@@ -4577,6 +5065,40 @@
         }
       }
     },
+    "Thumbnail size": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Taille des vignettes"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tamaño de las miniaturas"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dimensione miniature"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Miniaturgröße"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Miniatuurgrootte"
+          }
+        }
+      }
+    },
     "To get full-size photos, turn off **Resize Img for Smartphone** on the camera. It's under Set Up → Connection Setting → General Settings on most models.": {
       "localizations": {
         "fr": {
@@ -4679,6 +5201,40 @@
         }
       }
     },
+    "Type": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Type"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tipo"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tipo"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Typ"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Type"
+          }
+        }
+      }
+    },
     "Unknown date": {
       "localizations": {
         "fr": {
@@ -4743,6 +5299,40 @@
           "stringUnit": {
             "state": "translated",
             "value": "Video"
+          }
+        }
+      }
+    },
+    "Videos": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Vidéos"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Vídeos"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Video"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Videos"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Video's"
           }
         }
       }
@@ -4984,6 +5574,40 @@
           "stringUnit": {
             "state": "translated",
             "value": "geïmporteerd"
+          }
+        }
+      }
+    },
+    "protected": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "protégée"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "protegida"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "protetta"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "geschützt"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "beveiligd"
           }
         }
       }
