@@ -9,6 +9,7 @@ commands:
   watch <dir>          wait for the camera, import new photos, repeat (with --autosave: over the home network)
   autosave register    wait for the camera's "PC AutoSave Setting" and register this computer
   autosave <dir>       wait for the camera to send photos over the home network and import them
+  serve                drive the camera for a desktop UI over JSON lines on stdin/stdout (see Serve.swift)
   info                 connect and print the camera name and photo count
   list [n]             list the first n photos (default: all)
   download <dir> [n]   download the first n photos into <dir> as they are, ignoring import history
@@ -180,6 +181,9 @@ do {
             if register { fail("the camera asked to send photos instead of registering") }
             try autoSaveImport(cameraHost, into: folderImport(argument(1)))
         }
+
+    case "serve":
+        Server(host: host, clientName: clientName, history: history).run()
 
     case "watch" where watchAutoSave:
         let target = folderImport(argument(1))
