@@ -71,6 +71,8 @@ enum Prefs {
     static let immichAlbum = "immichAlbum"
     /// JSON list of `FujiBluetooth.Pairing`.
     static let bluetoothPairings = "bluetoothPairings"
+    /// Cameras whose "already copied these?" notice was closed.
+    static let backlogNoticeDismissed = "backlogNoticeDismissed"
 
     static func register() {
         UserDefaults.standard.register(defaults: [
@@ -443,7 +445,7 @@ final class CameraModel {
         if importTask == nil { sessionTask?.cancel() }
     }
 
-    private func startImport(_ batch: [PhotoItem]) {
+    func startImport(_ batch: [PhotoItem]) {
         guard let camera, !batch.isEmpty, !isImporting else { return }
         importSummary = nil
         importProgress = ImportProgress(index: 0, total: batch.count, filename: "", fraction: 0)
@@ -638,6 +640,27 @@ final class CameraModel {
             appendLog("Received a \(width)×\(height) image; the camera is probably resizing images for smartphones")
             showResizeNotice = true
         }
+    }
+
+    /// A camera full of photos, none of them imported by Ferry: probably copied some other way before.
+    var showBacklogNotice: Bool {
+        phase == .connected && !isListing && items.count >= 30 && !items.contains(where: \.imported)
+            && !backlogNoticeDismissed.contains(cameraName)
+    }
+
+    private var backlogNoticeDismissed = Set(UserDefaults.standard.stringArray(forKey: Prefs.backlogNoticeDismissed) ?? [])
+
+    func dismissBacklogNotice() {
+        backlogNoticeDismissed.insert(cameraName)
+        UserDefaults.standard.set(Array(backlogNoticeDismissed), forKey: Prefs.backlogNoticeDismissed)
+    }
+
+    /// Records photos as imported, or not, without copying anything, so "Import New" leaves them out or offers
+    /// them again.
+    func markImported(_ ids: Set<String>, _ imported: Bool) {
+        if imported { history.insert(contentsOf: ids) } else { history.remove(contentsOf: ids) }
+        for i in items.indices where ids.contains(items[i].id) { items[i].imported = imported }
+        if imported { selection.subtract(ids) }
     }
 
     func dismissResizeNotice(forever: Bool) {

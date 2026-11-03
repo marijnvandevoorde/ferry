@@ -49,6 +49,7 @@ struct GalleryView: View {
                                       isFocused: focusedItem?.id == item.id)
                                 .onTapGesture(count: 2) { preview(item) }
                                 .onTapGesture { toggle(item) }
+                                .contextMenu { contextMenu(for: item) }
                                 .accessibilityAction { toggle(item) }
                                 .accessibilityAction(named: "Preview") { preview(item) }
                         }
@@ -78,7 +79,10 @@ struct GalleryView: View {
         }
         .quickLookPreview($previewURL)
         .safeAreaInset(edge: .top, spacing: 0) {
-            if model.showResizeNotice { ResizeNotice() }
+            VStack(spacing: 0) {
+                if model.showBacklogNotice { BacklogNotice() }
+                if model.showResizeNotice { ResizeNotice() }
+            }
         }
         .safeAreaInset(edge: .bottom, spacing: 0) {
             ImportBar()
@@ -120,6 +124,11 @@ struct GalleryView: View {
                     Button("Select Not Imported") { model.selection = Set(model.newItems.map(\.id)) }
                     Button("Deselect All") { model.selection = [] }
                         .keyboardShortcut("d")
+                    Divider()
+                    Button("Mark Selected as Imported") { model.markImported(model.selection, true) }
+                        .disabled(model.selection.isEmpty)
+                    Button("Mark Selected as Not Imported") { model.markImported(model.selection, false) }
+                        .disabled(model.selection.isEmpty)
                 } label: {
                     Label("Select", systemImage: "checkmark.circle")
                 }
@@ -155,6 +164,26 @@ struct GalleryView: View {
     private func preview(_ item: PhotoItem) {
         focusedItem = item
         Task { previewURL = await model.previewFile(for: item) }
+    }
+
+    /// Acts on the whole selection when the clicked photo is part of it, like the Finder.
+    @ViewBuilder private func contextMenu(for item: PhotoItem) -> some View {
+        let ids = model.selection.contains(item.id) ? model.selection : [item.id]
+        let targets = model.items.filter { ids.contains($0.id) }
+        Button(ids.count > 1 ? "Import \(ids.count) Photos" : "Import") {
+            model.startImport(targets)
+        }
+        .disabled(model.isImporting)
+        if !item.info.isVideo {
+            Button("Quick Look") { preview(item) }
+        }
+        Divider()
+        if targets.contains(where: { !$0.imported }) {
+            Button("Mark as Imported") { model.markImported(ids, true) }
+        }
+        if targets.contains(where: \.imported) {
+            Button("Mark as Not Imported") { model.markImported(ids, false) }
+        }
     }
 
     private func toggle(_ item: PhotoItem) {
@@ -201,6 +230,40 @@ private struct SectionHeader: View {
         if Calendar.current.isDateInToday(day) { return String(localized: "Today") }
         if Calendar.current.isDateInYesterday(day) { return String(localized: "Yesterday") }
         return day.formatted(.dateTime.weekday(.wide).day().month(.wide).year())
+    }
+}
+
+private struct BacklogNotice: View {
+    @Environment(CameraModel.self) private var model
+
+    var body: some View {
+        HStack(alignment: .top, spacing: 12) {
+            Image(systemName: "tray.full")
+                .font(.title2)
+                .foregroundStyle(.tint)
+            VStack(alignment: .leading, spacing: 4) {
+                Text("Already copied these photos some other way?")
+                    .font(.headline)
+                Text("Mark them as imported, and Import New will only pick up photos you take from now on. Nothing is copied or deleted.")
+                    .font(.callout)
+                    .foregroundStyle(.secondary)
+                    .fixedSize(horizontal: false, vertical: true)
+            }
+            Spacer()
+            Button("Mark All as Imported") {
+                model.markImported(Set(model.items.map(\.id)), true)
+            }
+            Button {
+                model.dismissBacklogNotice()
+            } label: {
+                Image(systemName: "xmark")
+            }
+            .buttonStyle(.borderless)
+            .help("Dismiss")
+        }
+        .padding(12)
+        .background(.bar)
+        .overlay(alignment: .bottom) { Divider() }
     }
 }
 

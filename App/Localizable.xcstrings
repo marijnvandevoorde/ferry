@@ -827,6 +827,40 @@
         }
       }
     },
+    "Already copied these photos some other way?": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Vous avez déjà copié ces photos autrement ?"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "¿Ya copiaste estas fotos de otra forma?"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hai già copiato queste foto in un altro modo?"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Diese Fotos schon auf anderem Weg kopiert?"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Deze foto's al op een andere manier gekopieerd?"
+          }
+        }
+      }
+    },
     "Also copy to a backup folder": {
       "localizations": {
         "fr": {
@@ -2604,6 +2638,40 @@
         }
       }
     },
+    "Import %lld Photos": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Importer %lld photos"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Importar %lld fotos"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Importa %lld foto"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld Fotos importieren"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld foto's importeren"
+          }
+        }
+      }
+    },
     "Import %lld Selected": {
       "localizations": {
         "fr": {
@@ -2774,36 +2842,36 @@
         }
       }
     },
-    "Import photos from your Fujifilm camera over Wi-Fi.": {
+    "Import photos from your camera over Wi-Fi.": {
       "localizations": {
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Importez les photos de votre appareil Fujifilm par Wi-Fi."
+            "value": "Importez les photos de votre appareil par Wi-Fi."
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Importa fotos de tu cámara Fujifilm por Wi-Fi."
+            "value": "Importa las fotos de tu cámara por Wi-Fi."
           }
         },
         "it": {
           "stringUnit": {
             "state": "translated",
-            "value": "Importa le foto dalla tua fotocamera Fujifilm via Wi-Fi."
+            "value": "Importa le foto dalla tua fotocamera via Wi-Fi."
           }
         },
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Importiere Fotos von deiner Fujifilm-Kamera über WLAN."
+            "value": "Importiere Fotos von deiner Kamera über WLAN."
           }
         },
         "nl": {
           "stringUnit": {
             "state": "translated",
-            "value": "Importeer foto's van je Fujifilm-camera via wifi."
+            "value": "Importeer foto's van je camera via wifi."
           }
         }
       }
@@ -3353,6 +3421,210 @@
           "stringUnit": {
             "state": "translated",
             "value": "Verbinding met de camera verloren."
+          }
+        }
+      }
+    },
+    "Mark All as Imported": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tout marquer comme importé"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Marcar todo como importado"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Segna tutto come importato"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alle als importiert markieren"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alles markeren als geïmporteerd"
+          }
+        }
+      }
+    },
+    "Mark Selected as Imported": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Marquer la sélection comme importée"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Marcar selección como importada"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Segna selezione come importata"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Auswahl als importiert markieren"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Selectie markeren als geïmporteerd"
+          }
+        }
+      }
+    },
+    "Mark Selected as Not Imported": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Marquer la sélection comme non importée"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Marcar selección como no importada"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Segna selezione come non importata"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Auswahl als nicht importiert markieren"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Selectie markeren als niet geïmporteerd"
+          }
+        }
+      }
+    },
+    "Mark as Imported": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Marquer comme importée"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Marcar como importada"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Segna come importata"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Als importiert markieren"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Markeer als geïmporteerd"
+          }
+        }
+      }
+    },
+    "Mark as Not Imported": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Marquer comme non importée"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Marcar como no importada"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Segna come non importata"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Als nicht importiert markieren"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Markeer als niet geïmporteerd"
+          }
+        }
+      }
+    },
+    "Mark them as imported, and Import New will only pick up photos you take from now on. Nothing is copied or deleted.": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Marquez-les comme importées : « Importer les nouvelles » ne prendra plus que les photos que vous prendrez désormais. Rien n'est copié ni supprimé."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Márcalas como importadas e «Importar nuevas» solo recogerá las fotos que hagas a partir de ahora. No se copia ni se borra nada."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Segnale come importate e «Importa nuove» prenderà solo le foto che scatterai da ora in poi. Niente viene copiato o eliminato."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Markiere sie als importiert, dann holt „Neue importieren“ nur noch Fotos, die du ab jetzt machst. Es wird nichts kopiert oder gelöscht."
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Markeer ze als geïmporteerd, dan haalt ‘Nieuwe importeren’ alleen nog foto's op die je vanaf nu maakt. Er wordt niets gekopieerd of verwijderd."
           }
         }
       }
@@ -4512,6 +4784,40 @@
           "stringUnit": {
             "state": "translated",
             "value": "Beveiligd"
+          }
+        }
+      }
+    },
+    "Quick Look": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Coup d'œil"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Vista rápida"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Visualizzazione rapida"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Übersicht"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Snelle weergave"
           }
         }
       }
@@ -5979,6 +6285,40 @@
           "stringUnit": {
             "state": "translated",
             "value": "Wachten tot de camera beelden stuurt…"
+          }
+        }
+      }
+    },
+    "While this Mac is on the camera's network it has no internet. It goes back to your usual Wi-Fi when you turn the camera off.": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tant que ce Mac est sur le réseau de l'appareil, il n'a pas d'internet. Il revient sur votre Wi-Fi habituel quand vous éteignez l'appareil."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mientras este Mac esté en la red de la cámara no tendrá internet. Vuelve a tu Wi-Fi habitual cuando apagas la cámara."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Finché questo Mac è sulla rete della fotocamera non ha internet. Torna al tuo Wi-Fi abituale quando spegni la fotocamera."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Solange dieser Mac im Netzwerk der Kamera ist, hat er kein Internet. Er wechselt zurück in dein übliches WLAN, wenn du die Kamera ausschaltest."
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Zolang deze Mac op het netwerk van de camera zit, heeft hij geen internet. Hij gaat terug naar je gewone wifi als je de camera uitzet."
           }
         }
       }

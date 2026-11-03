@@ -79,6 +79,10 @@ struct ConnectView: View {
             StepRow(number: 3, text: autoConnect
                     ? "Ferry connects automatically. Press **OK** on the camera if it asks."
                     : "Click **Connect**. Press **OK** on the camera if it asks.")
+            Label("While this Mac is on the camera's network it has no internet. It goes back to your usual Wi-Fi when you turn the camera off.", systemImage: "wifi.exclamationmark")
+                .font(.callout)
+                .foregroundStyle(.secondary)
+                .fixedSize(horizontal: false, vertical: true)
         }
         .padding(20)
         .frame(maxWidth: 480, alignment: .leading)
@@ -105,7 +109,7 @@ struct ConnectView: View {
         switch model.phase {
         case .connecting: "Talking to the camera at \(model.cameraAddress)"
         case .waitingForApproval: "The camera is asking whether to allow this Mac."
-        default: autoConnect ? "Looking for the camera on your Wi-Fi network…" : "Import photos from your Fujifilm camera over Wi-Fi."
+        default: autoConnect ? "Looking for the camera on your Wi-Fi network…" : "Import photos from your camera over Wi-Fi."
         }
     }
 }

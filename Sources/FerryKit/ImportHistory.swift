@@ -43,6 +43,16 @@ public final class ImportHistory: @unchecked Sendable {
         save()
     }
 
+    public func insert<S: Sequence<String>>(contentsOf keys: S) {
+        lock.withLock { self.keys.formUnion(keys) }
+        save()
+    }
+
+    public func remove<S: Sequence<String>>(contentsOf keys: S) {
+        lock.withLock { self.keys.subtract(keys) }
+        save()
+    }
+
     public func removeAll() {
         lock.withLock { keys.removeAll() }
         save()
