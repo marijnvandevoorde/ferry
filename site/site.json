@@ -1,6 +1,6 @@
 {
   "name": "Ferry",
-  "origin": "https://ferry-app.pages.dev",
+  "origin": "https://ferry.small-victories.co",
   "cloudflare_project": "ferry-app",
   "version": "0.2.0",
   "repo": "https://github.com/marijnvandevoorde/ferry",
