@@ -53,6 +53,7 @@ button:disabled { opacity: 0.5; cursor: default; }
 .cell.selected { outline: 3px solid var(--accent); outline-offset: -3px; opacity: 1; }
 .cell .badge { position: absolute; top: 6px; left: 6px; font-size: 10px; font-weight: 600; color: #fff; background: rgba(0, 0, 0, 0.5); border-radius: 8px; padding: 1px 6px; }
 
+[hidden] { display: none !important; }
 footer { display: flex; align-items: center; gap: 12px; padding: 10px 20px; border-top: 1px solid var(--border); background: var(--surface); }
 footer progress { width: 220px; }
 .spacer { flex: 1; }

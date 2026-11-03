@@ -14,3 +14,7 @@ const bin = execSync("swift build -c release --show-bin-path", { cwd: root }).to
 mkdirSync(join(import.meta.dirname, "..", "src-tauri", "binaries"), { recursive: true });
 copyFileSync(join(bin, `fujictl${ext}`), join(import.meta.dirname, "..", "src-tauri", "binaries", `fujictl-${triple}${ext}`));
 console.log(`sidecar ready: fujictl-${triple}${ext}`);
+
+// The license notices the bundle ships (docs/licenses.md).
+const python = process.platform === "win32" ? "python" : "python3";
+execSync(`${python} scripts/third_party_notices.py`, { cwd: root, stdio: "inherit" });
