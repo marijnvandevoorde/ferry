@@ -2017,40 +2017,6 @@
         }
       }
     },
-    "Everything is imported": {
-      "localizations": {
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Tout est importé"
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Todo está importado"
-          }
-        },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "È tutto importato"
-          }
-        },
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Alles ist importiert"
-          }
-        },
-        "nl": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Alles is geïmporteerd"
-          }
-        }
-      }
-    },
     "Example: %@. For Lightroom Classic, pick the folder that Auto Import watches; for Capture One, its hot folder. Tokens: {yyyy} {MM} {dd} {HH} {mm} {ss} {camera} {original}.": {
       "localizations": {
         "fr": {
@@ -4033,6 +3999,40 @@
           "stringUnit": {
             "state": "translated",
             "value": "Nog niet getest op een echte camera. Probeer je het, laat ons dan weten of het werkte."
+          }
+        }
+      }
+    },
+    "Nothing new to bring across": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Rien de nouveau à rapporter"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nada nuevo que traer"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Niente di nuovo da portare"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nichts Neues zum Herüberbringen"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Niets nieuws om over te zetten"
           }
         }
       }
@@ -6421,6 +6421,40 @@
           "stringUnit": {
             "state": "translated",
             "value": "Gisteren"
+          }
+        }
+      }
+    },
+    "Your new photos have arrived": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Vos nouvelles photos sont arrivées"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tus fotos nuevas han llegado"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Le tue nuove foto sono arrivate"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Deine neuen Fotos sind angekommen"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Je nieuwe foto's zijn aangekomen"
           }
         }
       }

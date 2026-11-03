@@ -249,7 +249,7 @@ def main():
     if DIST.exists():
         shutil.rmtree(DIST)
     DIST.mkdir()
-    for folder in ("css", "img"):
+    for folder in ("css", "fonts", "img"):
         shutil.copytree(SITE / folder, DIST / folder)
     for name in ("_headers", "_redirects"):
         if (SITE / name).exists():

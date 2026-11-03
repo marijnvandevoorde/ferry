@@ -1,5 +1,5 @@
 #!/bin/bash
-# Regenerates site/img: icons from the app icon, the screenshots and the social card.
+# Regenerates site/img: the screenshots and the social card. The icons come from brand/export.sh.
 # Needs macOS (sips), Google Chrome, Python 3 and Node with apps/desktop's dependencies installed.
 #
 #   site/tools/assets.sh            everything
@@ -17,10 +17,6 @@ shot() { # url width height out
     "$CHROME" --headless --hide-scrollbars --force-device-scale-factor=2 --default-background-color=00000000 \
         --virtual-time-budget=4000 --window-size="$2,$3" --screenshot="$4" "$1" >/dev/null 2>&1
 }
-
-# Icons
-ICON=../App/Assets.xcassets/AppIcon.appiconset/icon_512x512@2x.png
-for size in 32 64 180 192 512; do sips -Z $size "$ICON" --out "$IMG/icon-$size.png" >/dev/null; done
 
 # The Mac app: a real screenshot if given, otherwise the drawing in mockups/mac.html.
 if [ -n "${MAC_SCREENSHOT:-}" ]; then

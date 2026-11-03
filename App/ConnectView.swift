@@ -12,10 +12,18 @@ struct ConnectView: View {
                 Circle()
                     .fill(.quaternary)
                     .frame(width: 112, height: 112)
-                Image(systemName: icon)
-                    .font(.system(size: 46, weight: .light))
-                    .foregroundStyle(.secondary)
-                    .symbolEffect(.pulse, isActive: model.phase != .searching || autoConnect)
+                if model.phase == .searching {
+                    Image("FerryMark")
+                        .resizable()
+                        .scaledToFit()
+                        .frame(width: 72)
+                        .accessibilityHidden(true)
+                } else {
+                    Image(systemName: icon)
+                        .font(.system(size: 46, weight: .light))
+                        .foregroundStyle(.secondary)
+                        .symbolEffect(.pulse)
+                }
             }
 
             VStack(spacing: 8) {
@@ -92,8 +100,7 @@ struct ConnectView: View {
     private var icon: String {
         switch model.phase {
         case .waitingForApproval: "hand.tap"
-        case .connecting: "wifi"
-        default: "camera"
+        default: "wifi"
         }
     }
 

@@ -37,7 +37,7 @@ struct FerryApp: App {
         }
         .defaultSize(width: 700, height: 420)
 
-        MenuBarExtra("Ferry", systemImage: "camera.aperture", isInserted: $showMenuBarIcon) {
+        MenuBarExtra("Ferry", image: "MenuBarIcon", isInserted: $showMenuBarIcon) {
             MenuBarContent()
                 .environment(model)
         }

@@ -1,0 +1,37 @@
+:root {
+  /* Ferry brand palette */
+  --ferry-night-blue: #1B2440;
+  --ferry-dusk-violet: #3B3A6B;
+  --ferry-horizon-glow: #F4A26B;
+  --ferry-signal-vermilion: #C9472B;
+  --ferry-warm-paper: #FBFAF7;
+  --ferry-ink: #1C2233;
+
+  /* Semantic light theme */
+  --ferry-bg: var(--ferry-warm-paper);
+  --ferry-fg: var(--ferry-ink);
+  --ferry-surface: #FFFFFF;
+  --ferry-muted: #686D78;
+  --ferry-border: #E7E4DF;
+  --ferry-primary: var(--ferry-signal-vermilion);
+  --ferry-primary-fg: #FFFFFF;
+
+  --ferry-font-display: "Newsreader", Georgia, serif;
+  --ferry-font-ui: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+[data-theme="dark"] {
+  --ferry-bg: var(--ferry-night-blue);
+  --ferry-fg: var(--ferry-warm-paper);
+  --ferry-surface: #252F4D;
+  --ferry-muted: #C6C9D5;
+  --ferry-border: #414A64;
+  --ferry-primary: var(--ferry-signal-vermilion);
+  --ferry-primary-fg: #FFFFFF;
+}
+
+.ferry-wordmark {
+  font-family: var(--ferry-font-display);
+  font-weight: 600;
+  letter-spacing: -0.035em;
+}

@@ -18,7 +18,8 @@ and all of them allow selling. What they ask is that the license texts travel wi
 | WebKitGTK (Linux) | LGPL-2.1 | linked as a system library; bundled inside the AppImage | Dynamic linking is allowed. Name it in the notices and keep the user able to replace it (the AppImage does). |
 | WebView2 (Windows) | Microsoft's runtime | installed by Microsoft's bootstrapper | Nothing from us. |
 | vcam emulator | LGPL-2.1 | **nothing**: tests and CI only | Nothing, as long as it isn't shipped. |
-| App icon, website images | our own work | | |
+| App icon, logo, website images | our own work (`brand/`) | | |
+| Newsreader and Inter fonts | SIL OFL 1.1 | website only (`site/fonts/`) | Keep the license next to the fonts (`OFL-*.txt`); don't sell the fonts on their own. |
 
 ## Things to watch
 

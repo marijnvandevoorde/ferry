@@ -1,18 +1,25 @@
 <!doctype html>
 <!-- The social sharing card (1200×630). No app name on it, so renaming the app doesn't mean redrawing it. -->
 <html><head><meta charset="utf-8"><style>
+  @font-face { font-family: "Newsreader"; font-weight: 200 800; src: url(../../fonts/newsreader.woff2) format("woff2-variations"); }
+  @font-face { font-family: "Inter"; font-weight: 100 900; src: url(../../fonts/inter.woff2) format("woff2-variations"); }
   html, body { margin: 0; width: 1200px; height: 630px; overflow: hidden; }
-  body { font-family: -apple-system, BlinkMacSystemFont, sans-serif; color: #fff;
+  body { font-family: "Inter", -apple-system, BlinkMacSystemFont, sans-serif; color: #fff;
          background: linear-gradient(180deg, #1b2440 0%, #3b3a6b 50%, #8a4f6e 80%, #f4a26b 100%); position: relative; }
-  .copy { position: absolute; left: 72px; top: 150px; width: 470px; }
-  img.icon { width: 96px; height: 96px; }
-  h1 { font-size: 52px; line-height: 1.08; margin: 28px 0 18px; letter-spacing: -1px; }
-  p { font-size: 24px; color: rgba(255,255,255,.82); margin: 0; }
+  .copy { position: absolute; left: 72px; top: 110px; width: 500px; }
+  svg.mark { width: 150px; height: auto; display: block; }
+  h1 { font-family: "Newsreader", Georgia, serif; font-weight: 600; font-size: 60px; line-height: 1.02; margin: 28px 0 18px; letter-spacing: -1.6px; }
+  p { font-size: 21px; color: rgba(255,255,255,.82); margin: 0; }
   iframe { position: absolute; left: 590px; top: 110px; width: 800px; height: 550px; border: 0; transform: scale(.88); transform-origin: top left;
            border-radius: 16px; box-shadow: 0 30px 60px rgba(10,10,30,.45); }
 </style></head><body>
   <div class="copy">
-    <img class="icon" src="../../img/icon-192.png" alt="">
+    <svg class="mark" viewBox="10 4 104 86" aria-hidden="true">
+      <path fill="#FBFAF7" d="M42 37 L48 25 L58 22 L62 10 L68 10 L70 22 L83 24 L91 31 L96 37 L88 35 L80 32 L63 31 L52 34 Z"/>
+      <path fill="#FBFAF7" d="M56 39 L64 32 L82 33 L91 38 L100 44 L89 45 L68 43 Z"/>
+      <path fill="#C9472B" d="M15 51 L34 46 L59 43 L82 45 L108 42 L98 56 Q94 62 83 62 L31 62 Q22 60 15 51 Z"/>
+      <g fill="none" stroke="#FBFAF7" stroke-linecap="round"><path d="M23 69 Q58 73 96 68" stroke-width="3.2"/><path d="M35 77 Q59 80 82 76" stroke-width="2.6"/><path d="M47 84 Q60 86 72 83" stroke-width="2.2"/></g>
+    </svg>
     <h1>Camera to computer over Wi&#8209;Fi</h1>
     <p>Fujifilm and more · Mac, Windows, Linux · Free</p>
   </div>

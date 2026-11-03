@@ -91,7 +91,8 @@ T = {
 "Dismiss": ("Fermer", "Cerrar", "Chiudi", "Schließen", "Sluiten"),
 "Don't Show Again": ("Ne plus afficher", "No volver a mostrar", "Non mostrare più", "Nicht mehr anzeigen", "Niet meer tonen"),
 "Enter your Immich API key in Settings.": ("Saisissez votre clé API Immich dans les réglages.", "Introduce tu clave de API de Immich en Ajustes.", "Inserisci la chiave API di Immich nelle impostazioni.", "Gib deinen Immich-API-Schlüssel in den Einstellungen ein.", "Vul je Immich-API-sleutel in bij Instellingen."),
-"Everything is imported": ("Tout est importé", "Todo está importado", "È tutto importato", "Alles ist importiert", "Alles is geïmporteerd"),
+"Nothing new to bring across": ("Rien de nouveau à rapporter", "Nada nuevo que traer", "Niente di nuovo da portare", "Nichts Neues zum Herüberbringen", "Niets nieuws om over te zetten"),
+"Your new photos have arrived": ("Vos nouvelles photos sont arrivées", "Tus fotos nuevas han llegado", "Le tue nuove foto sono arrivate", "Deine neuen Fotos sind angekommen", "Je nieuwe foto's zijn aangekomen"),
 "Example: %@. For Lightroom Classic, pick the folder that Auto Import watches; for Capture One, its hot folder. Tokens: {yyyy} {MM} {dd} {HH} {mm} {ss} {camera} {original}.": (
  "Exemple : %@. Pour Lightroom Classic, choisissez le dossier surveillé par l'importation automatique ; pour Capture One, son dossier actif. Jetons : {yyyy} {MM} {dd} {HH} {mm} {ss} {camera} {original}.",
  "Ejemplo: %@. Para Lightroom Classic, elige la carpeta que vigila la importación automática; para Capture One, su carpeta activa. Variables: {yyyy} {MM} {dd} {HH} {mm} {ss} {camera} {original}.",

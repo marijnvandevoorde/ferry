@@ -22,10 +22,12 @@
 <meta property="og:image:height" content="630">
 <meta property="og:image:alt" content="{{meta.og_image_alt}}">
 <meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="/img/favicon.svg" type="image/svg+xml">
 <link rel="icon" href="/img/icon-32.png" sizes="32x32">
 <link rel="icon" href="/img/icon-192.png" sizes="192x192">
 <link rel="apple-touch-icon" href="/img/icon-180.png">
 <link rel="alternate" type="text/plain" title="llms.txt" href="/llms.txt">
+<link rel="preload" href="/fonts/newsreader.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="/css/site.css">
 {{=jsonld}}
 </head>
@@ -35,7 +37,8 @@
 <header class="site-head">
   <div class="wrap head-row">
     <a class="brand" href="{{home}}" aria-label="{{nav.home}}">
-      <img src="/img/icon-64.png" alt="" width="32" height="32">
+      <!-- The Ferry mark (brand/), without its water lines at this size. -->
+      <svg class="mark" viewBox="12 8 98 56" width="42" height="24" aria-hidden="true"><path fill="currentColor" d="M42 37 L48 25 L58 22 L62 10 L68 10 L70 22 L83 24 L91 31 L96 37 L88 35 L80 32 L63 31 L52 34 Z"/><path fill="currentColor" d="M56 39 L64 32 L82 33 L91 38 L100 44 L89 45 L68 43 Z"/><path fill="#c9472b" d="M15 51 L34 46 L59 43 L82 45 L108 42 L98 56 Q94 62 83 62 L31 62 Q22 60 15 51 Z"/></svg>
       <span>{{site.name}}</span>
     </a>
     <nav class="primary" aria-label="{{nav.menu}}">
@@ -73,7 +76,7 @@
 <footer class="site-foot">
   <div class="wrap foot-grid">
     <div>
-      <p class="brand"><img src="/img/icon-64.png" alt="" width="24" height="24"> <span>{{site.name}}</span></p>
+      <p class="brand"><svg class="mark" viewBox="12 8 98 56" width="42" height="24" aria-hidden="true"><path fill="currentColor" d="M42 37 L48 25 L58 22 L62 10 L68 10 L70 22 L83 24 L91 31 L96 37 L88 35 L80 32 L63 31 L52 34 Z"/><path fill="currentColor" d="M56 39 L64 32 L82 33 L91 38 L100 44 L89 45 L68 43 Z"/><path fill="#c9472b" d="M15 51 L34 46 L59 43 L82 45 L108 42 L98 56 Q94 62 83 62 L31 62 Q22 60 15 51 Z"/></svg> <span>{{site.name}}</span></p>
       <p>{{foot.tagline}}</p>
       <p class="muted">{{foot.license}} {{foot.nocookies}}</p>
     </div>

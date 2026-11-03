@@ -36,7 +36,7 @@ struct GalleryView: View {
         @Bindable var model = model
         ScrollView {
             if visibleItems.isEmpty && !model.isListing {
-                ContentUnavailableView(filter == .new ? "Everything is imported" : "No photos on the card",
+                ContentUnavailableView(filter == .new ? "Nothing new to bring across" : "No photos on the card",
                                        systemImage: filter == .new ? "checkmark.circle" : "photo.on.rectangle.angled")
                     .padding(.top, 120)
             }

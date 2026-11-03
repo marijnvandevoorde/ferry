@@ -552,7 +552,7 @@ final class CameraModel {
         if !failed.isEmpty { summary += String(localized: ". \(failed.count) failed: \(failed.prefix(3).joined(separator: ", "))") }
         importSummary = summary
         if imported > 0 { lastImportLocation = destinations.last?.location }
-        Notifier.post(String(localized: "Import finished"), summary)
+        Notifier.post(failed.isEmpty && imported > 0 ? String(localized: "Your new photos have arrived") : String(localized: "Import finished"), summary)
     }
 
     /// The user picked images on the camera and chose to send them: import each one as the camera offers it.
