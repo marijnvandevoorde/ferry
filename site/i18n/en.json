@@ -196,7 +196,8 @@
     "emulator_note": "\"Works in the emulator\" means {name} passes its tests against vcam, an open-source emulator of that camera's protocol. Real cameras sometimes behave differently.",
     "report_h2": "Tried it with your camera?",
     "report_p": "Tell us whether it worked, even if it didn't. Each report moves a camera up this list.",
-    "report_link": "Send a camera report"
+    "report_link": "Send a camera report",
+    "report_github": "Or open an issue on GitHub"
   },
   "privacy": {
     "h1": "Privacy",
@@ -221,6 +222,10 @@
       {
         "h": "This website",
         "p": "This site is hosted by Cloudflare Pages. Cloudflare processes requests to deliver pages and may keep short-lived logs; we don't receive or use them. There are no third-party scripts."
+      },
+      {
+        "h": "Camera reports",
+        "p": "The camera report form runs on Tally, which stores the answers. It asks for your email so we can follow up on your report; we don't use it for anything else and don't add you to a mailing list."
       },
       {
         "h": "Contact",

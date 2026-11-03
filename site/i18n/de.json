@@ -196,7 +196,8 @@
     "emulator_note": "„Funktioniert im Emulator“ heißt: {name} besteht seine Tests gegen vcam, einen Open-Source-Emulator des Protokolls dieser Kamera. Echte Kameras verhalten sich manchmal anders.",
     "report_h2": "Mit deiner Kamera probiert?",
     "report_p": "Sag uns, ob es geklappt hat, auch wenn nicht. Jeder Bericht bringt eine Kamera in dieser Liste weiter nach oben.",
-    "report_link": "Kamerabericht senden"
+    "report_link": "Kamerabericht senden",
+    "report_github": "Oder öffne ein Issue auf GitHub"
   },
   "privacy": {
     "h1": "Datenschutz",
@@ -221,6 +222,10 @@
       {
         "h": "Diese Website",
         "p": "Diese Seite wird von Cloudflare Pages gehostet. Cloudflare verarbeitet Anfragen, um Seiten auszuliefern, und speichert eventuell kurzlebige Protokolle. Wir erhalten oder nutzen sie nicht. Es gibt keine Skripte von Drittanbietern."
+      },
+      {
+        "h": "Kameraberichte",
+        "p": "Das Formular für Kameraberichte läuft bei Tally, das die Antworten speichert. Es fragt nach deiner E-Mail-Adresse, damit wir zu deinem Bericht nachfragen können; wir verwenden sie für nichts anderes und tragen dich in keine Mailingliste ein."
       },
       {
         "h": "Kontakt",

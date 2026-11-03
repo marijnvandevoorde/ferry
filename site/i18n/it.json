@@ -196,7 +196,8 @@
     "emulator_note": "«Funziona nell'emulatore» significa che {name} supera i suoi test con vcam, un emulatore open source del protocollo di quella fotocamera. Le fotocamere reali a volte si comportano in modo diverso.",
     "report_h2": "L'hai provato con la tua fotocamera?",
     "report_p": "Dicci se ha funzionato, anche se non è andata. Ogni segnalazione fa salire una fotocamera in questo elenco.",
-    "report_link": "Invia una segnalazione"
+    "report_link": "Invia una segnalazione",
+    "report_github": "Oppure apri una issue su GitHub"
   },
   "privacy": {
     "h1": "Privacy",
@@ -221,6 +222,10 @@
       {
         "h": "Questo sito",
         "p": "Questo sito è ospitato su Cloudflare Pages. Cloudflare elabora le richieste per consegnare le pagine e può conservare log di breve durata; noi non li riceviamo né li usiamo. Non ci sono script di terze parti."
+      },
+      {
+        "h": "Segnalazioni sulle fotocamere",
+        "p": "Il modulo per le segnalazioni sulle fotocamere funziona su Tally, che conserva le risposte. Chiede la tua email per poterti ricontattare sulla segnalazione; non la usiamo per altro e non ti iscriviamo a nessuna mailing list."
       },
       {
         "h": "Contatti",

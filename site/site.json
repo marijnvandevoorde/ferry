@@ -5,6 +5,7 @@
   "version": "0.2.0",
   "repo": "https://github.com/marijnvandevoorde/ferry",
   "contact": "https://github.com/marijnvandevoorde/ferry/issues",
+  "camera_report": "https://tally.so/r/PRpy60",
   "languages": ["en", "nl", "fr", "de", "es", "it"],
   "downloads": {
     "mac_app_store": "https://apps.apple.com/app/id0000000000",

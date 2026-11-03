@@ -196,7 +196,8 @@
     "emulator_note": "\"Werkt in de emulator\" betekent dat {name} zijn tests doorstaat met vcam, een open-source emulator van het protocol van die camera. Echte camera's gedragen zich soms anders.",
     "report_h2": "Met je camera geprobeerd?",
     "report_p": "Laat weten of het werkte, ook als het niet werkte. Elk rapport brengt een camera hoger in deze lijst.",
-    "report_link": "Camerarapport sturen"
+    "report_link": "Camerarapport sturen",
+    "report_github": "Of open een issue op GitHub"
   },
   "privacy": {
     "h1": "Privacy",
@@ -221,6 +222,10 @@
       {
         "h": "Deze website",
         "p": "Deze site wordt gehost door Cloudflare Pages. Cloudflare verwerkt verzoeken om pagina's te leveren en bewaart mogelijk kortstondig logbestanden; wij ontvangen of gebruiken die niet. Er zijn geen scripts van derden."
+      },
+      {
+        "h": "Camerameldingen",
+        "p": "Het formulier voor camerameldingen draait op Tally, dat de antwoorden bewaart. Het vraagt je e-mailadres zodat we op je melding kunnen reageren; we gebruiken het voor niets anders en zetten je niet op een mailinglijst."
       },
       {
         "h": "Contact",

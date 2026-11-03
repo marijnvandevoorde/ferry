@@ -196,7 +196,8 @@
     "emulator_note": "« Fonctionne dans l'émulateur » signifie que {name} réussit ses tests face à vcam, un émulateur open source du protocole de cet appareil. Les vrais appareils se comportent parfois différemment.",
     "report_h2": "Vous l'avez essayé avec votre appareil ?",
     "report_p": "Dites-nous si cela a fonctionné, même si ce n'est pas le cas. Chaque retour fait avancer un appareil dans cette liste.",
-    "report_link": "Envoyer un retour sur un appareil"
+    "report_link": "Envoyer un retour sur un appareil",
+    "report_github": "Ou ouvrez une issue sur GitHub"
   },
   "privacy": {
     "h1": "Confidentialité",
@@ -221,6 +222,10 @@
       {
         "h": "Ce site",
         "p": "Ce site est hébergé par Cloudflare Pages. Cloudflare traite les requêtes pour servir les pages et peut conserver brièvement des journaux ; nous ne les recevons ni ne les utilisons. Aucun script tiers n'est utilisé."
+      },
+      {
+        "h": "Rapports d'appareil",
+        "p": "Le formulaire de rapport d'appareil est hébergé par Tally, qui conserve les réponses. Il demande votre e-mail pour que nous puissions revenir vers vous au sujet de votre rapport ; nous ne l'utilisons pour rien d'autre et ne vous inscrivons à aucune liste de diffusion."
       },
       {
         "h": "Contact",
