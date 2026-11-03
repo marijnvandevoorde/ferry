@@ -127,7 +127,7 @@
     "linux_appimage": "AppImage",
     "linux_deb": ".deb-pakket",
     "cli": "Opdrachtregel",
-    "cli_req": "Voor servers, scripts en een Raspberry Pi: fujictl voor macOS, Linux en Windows.",
+    "cli_req": "Voor servers, scripts en een Raspberry Pi: ferryctl voor macOS, Linux en Windows.",
     "cli_link": "Lees de instructies"
   },
   "faq": {

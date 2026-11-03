@@ -2051,6 +2051,145 @@
         }
       }
     },
+    "Ferry": {
+      "shouldTranslate": false
+    },
+    "Ferry can't access the %@ “%@”. Choose it again in Settings.": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ferry ne peut pas accéder au %@ « %@ ». Choisissez-le à nouveau dans les réglages."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ferry no puede acceder a la %@ «%@». Vuelve a elegirla en Ajustes."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ferry non può accedere alla %@ «%@». Sceglila di nuovo nelle impostazioni."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ferry kann nicht auf den %@ „%@“ zugreifen. Wähle ihn in den Einstellungen erneut."
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ferry heeft geen toegang tot de %@ ‘%@’. Kies hem opnieuw bij Instellingen."
+          }
+        }
+      }
+    },
+    "Ferry connects automatically. Press **OK** on the camera if it asks.": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ferry se connecte automatiquement. Appuyez sur **OK** sur l'appareil s'il le demande."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ferry se conecta automáticamente. Pulsa **OK** en la cámara si te lo pide."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ferry si collega automaticamente. Premi **OK** sulla fotocamera se lo chiede."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ferry verbindet sich automatisch. Drücke **OK** an der Kamera, wenn sie fragt."
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ferry maakt automatisch verbinding. Druk op **OK** op de camera als die erom vraagt."
+          }
+        }
+      }
+    },
+    "Ferry needs access to Photos. Allow it in System Settings → Privacy & Security → Photos.": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ferry a besoin d'accéder à Photos. Autorisez-le dans Réglages Système → Confidentialité et sécurité → Photos."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ferry necesita acceso a Fotos. Permítelo en Ajustes del Sistema → Privacidad y seguridad → Fotos."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ferry ha bisogno di accedere a Foto. Consentilo in Impostazioni di Sistema → Privacy e sicurezza → Foto."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ferry braucht Zugriff auf Fotos. Erlaube ihn in Systemeinstellungen → Datenschutz & Sicherheit → Fotos."
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ferry heeft toegang tot Foto's nodig. Sta dit toe in Systeeminstellingen → Privacy en beveiliging → Foto's."
+          }
+        }
+      }
+    },
+    "Ferry remembers which photos it imported so it only offers new ones.": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ferry retient les photos déjà importées pour ne proposer que les nouvelles."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ferry recuerda qué fotos importó para ofrecer solo las nuevas."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ferry ricorda quali foto ha importato per proporre solo quelle nuove."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ferry merkt sich, welche Fotos importiert wurden, und bietet nur neue an."
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ferry onthoudt welke foto's het geïmporteerd heeft en biedt alleen nieuwe aan."
+          }
+        }
+      }
+    },
     "File name": {
       "localizations": {
         "fr": {
@@ -2353,145 +2492,6 @@
           "stringUnit": {
             "state": "translated",
             "value": "Vergeten welke foto's geïmporteerd zijn?"
-          }
-        }
-      }
-    },
-    "Fuji Import": {
-      "shouldTranslate": false
-    },
-    "Fuji Import can't access the %@ “%@”. Choose it again in Settings.": {
-      "localizations": {
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Fuji Import ne peut pas accéder au %@ « %@ ». Choisissez-le à nouveau dans les réglages."
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Fuji Import no puede acceder a la %@ «%@». Vuelve a elegirla en Ajustes."
-          }
-        },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Fuji Import non può accedere alla %@ «%@». Sceglila di nuovo nelle impostazioni."
-          }
-        },
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Fuji Import kann nicht auf den %@ „%@“ zugreifen. Wähle ihn in den Einstellungen erneut."
-          }
-        },
-        "nl": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Fuji Import heeft geen toegang tot de %@ ‘%@’. Kies hem opnieuw bij Instellingen."
-          }
-        }
-      }
-    },
-    "Fuji Import connects automatically. Press **OK** on the camera if it asks.": {
-      "localizations": {
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Fuji Import se connecte automatiquement. Appuyez sur **OK** sur l'appareil s'il le demande."
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Fuji Import se conecta automáticamente. Pulsa **OK** en la cámara si te lo pide."
-          }
-        },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Fuji Import si collega automaticamente. Premi **OK** sulla fotocamera se lo chiede."
-          }
-        },
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Fuji Import verbindet sich automatisch. Drücke **OK** an der Kamera, wenn sie fragt."
-          }
-        },
-        "nl": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Fuji Import maakt automatisch verbinding. Druk op **OK** op de camera als die erom vraagt."
-          }
-        }
-      }
-    },
-    "Fuji Import needs access to Photos. Allow it in System Settings → Privacy & Security → Photos.": {
-      "localizations": {
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Fuji Import a besoin d'accéder à Photos. Autorisez-le dans Réglages Système → Confidentialité et sécurité → Photos."
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Fuji Import necesita acceso a Fotos. Permítelo en Ajustes del Sistema → Privacidad y seguridad → Fotos."
-          }
-        },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Fuji Import ha bisogno di accedere a Foto. Consentilo in Impostazioni di Sistema → Privacy e sicurezza → Foto."
-          }
-        },
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Fuji Import braucht Zugriff auf Fotos. Erlaube ihn in Systemeinstellungen → Datenschutz & Sicherheit → Fotos."
-          }
-        },
-        "nl": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Fuji Import heeft toegang tot Foto's nodig. Sta dit toe in Systeeminstellingen → Privacy en beveiliging → Foto's."
-          }
-        }
-      }
-    },
-    "Fuji Import remembers which photos it imported so it only offers new ones.": {
-      "localizations": {
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Fuji Import retient les photos déjà importées pour ne proposer que les nouvelles."
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Fuji Import recuerda qué fotos importó para ofrecer solo las nuevas."
-          }
-        },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Fuji Import ricorda quali foto ha importato per proporre solo quelle nuove."
-          }
-        },
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Fuji Import merkt sich, welche Fotos importiert wurden, und bietet nur neue an."
-          }
-        },
-        "nl": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Fuji Import onthoudt welke foto's het geïmporteerd heeft en biedt alleen nieuwe aan."
           }
         }
       }
@@ -4003,70 +4003,70 @@
         }
       }
     },
-    "Open Fuji Import": {
+    "Open Ferry": {
       "localizations": {
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Ouvrir Fuji Import"
+            "value": "Ouvrir Ferry"
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Abrir Fuji Import"
+            "value": "Abrir Ferry"
           }
         },
         "it": {
           "stringUnit": {
             "state": "translated",
-            "value": "Apri Fuji Import"
+            "value": "Apri Ferry"
           }
         },
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Fuji Import öffnen"
+            "value": "Ferry öffnen"
           }
         },
         "nl": {
           "stringUnit": {
             "state": "translated",
-            "value": "Fuji Import openen"
+            "value": "Ferry openen"
           }
         }
       }
     },
-    "Open Fuji Import at login": {
+    "Open Ferry at login": {
       "localizations": {
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Ouvrir Fuji Import à l'ouverture de session"
+            "value": "Ouvrir Ferry à l'ouverture de session"
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Abrir Fuji Import al iniciar sesión"
+            "value": "Abrir Ferry al iniciar sesión"
           }
         },
         "it": {
           "stringUnit": {
             "state": "translated",
-            "value": "Apri Fuji Import al login"
+            "value": "Apri Ferry al login"
           }
         },
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Fuji Import bei der Anmeldung öffnen"
+            "value": "Ferry bei der Anmeldung öffnen"
           }
         },
         "nl": {
           "stringUnit": {
             "state": "translated",
-            "value": "Fuji Import openen bij inloggen"
+            "value": "Ferry openen bij inloggen"
           }
         }
       }
@@ -4516,36 +4516,36 @@
         }
       }
     },
-    "Quit Fuji Import": {
+    "Quit Ferry": {
       "localizations": {
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Quitter Fuji Import"
+            "value": "Quitter Ferry"
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Salir de Fuji Import"
+            "value": "Salir de Ferry"
           }
         },
         "it": {
           "stringUnit": {
             "state": "translated",
-            "value": "Esci da Fuji Import"
+            "value": "Esci da Ferry"
           }
         },
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Fuji Import beenden"
+            "value": "Ferry beenden"
           }
         },
         "nl": {
           "stringUnit": {
             "state": "translated",
-            "value": "Fuji Import stoppen"
+            "value": "Ferry stoppen"
           }
         }
       }

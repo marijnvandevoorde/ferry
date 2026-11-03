@@ -49,7 +49,7 @@ Fuji's *PC AutoSave* lets the camera join your home network and send photos to t
 ## v0.5: Portable core
 
 - FujiKit builds on Linux and Windows
-- `fujictl import` and `fujictl watch`: import new photos into a folder from the command line, or automatically when the camera appears
+- `ferryctl import` and `ferryctl watch`: import new photos into a folder from the command line, or automatically when the camera appears
 - CI on Linux and Windows, protocol tests against the emulator
 
 ## v1.0: Windows and Linux app

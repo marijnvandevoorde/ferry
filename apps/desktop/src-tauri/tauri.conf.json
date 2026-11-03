@@ -1,6 +1,6 @@
 {
   "$schema": "https://schema.tauri.app/config/2",
-  "productName": "Fuji Import",
+  "productName": "Ferry",
   "version": "0.2.0",
   "identifier": "io.github.fujiimport.desktop",
   "build": {
@@ -11,18 +11,18 @@
   },
   "app": {
     "windows": [
-      { "label": "main", "title": "Fuji Import", "width": 980, "height": 680, "minWidth": 720, "minHeight": 500 }
+      { "label": "main", "title": "Ferry", "width": 980, "height": 680, "minWidth": 720, "minHeight": 500 }
     ],
     "security": {
       "csp": "default-src 'self'; img-src 'self' asset: http://asset.localhost data:; style-src 'self' 'unsafe-inline'",
-      "assetProtocol": { "enable": true, "scope": ["$TEMP/fujictl-thumbnails/**", "/tmp/**", "/var/folders/**", "/private/var/folders/**"] }
+      "assetProtocol": { "enable": true, "scope": ["$TEMP/ferryctl-thumbnails/**", "/tmp/**", "/var/folders/**", "/private/var/folders/**"] }
     }
   },
   "bundle": {
     "active": true,
     "targets": ["msi", "nsis", "appimage", "deb"],
     "icon": ["icons/32x32.png", "icons/128x128.png", "icons/128x128@2x.png", "icons/icon.png", "icons/icon.ico", "icons/icon.icns"],
-    "externalBin": ["binaries/fujictl"],
+    "externalBin": ["binaries/ferryctl"],
     "resources": { "THIRD-PARTY-NOTICES.txt": "THIRD-PARTY-NOTICES.txt" },
     "category": "Photography",
     "shortDescription": "Import photos from your camera over Wi-Fi",

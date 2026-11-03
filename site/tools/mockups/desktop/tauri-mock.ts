@@ -6,7 +6,7 @@ export const convertFileSrc = (p: string) => p;
 export const join = async (...p: string[]) => p.join("/");
 export const pictureDir = async () => "C:/Users/you/Pictures";
 export const listen = async (event: string, h: (e: { payload: unknown }) => void) => {
-  if (event !== "fujictl") return () => {}; // only fujictl's events are played back
+  if (event !== "ferryctl") return () => {}; // only ferryctl's events are played back
   handler = h;
   const emit = (payload: unknown) => handler!({ payload });
   setTimeout(() => {

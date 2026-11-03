@@ -1,6 +1,6 @@
 //! Bluetooth hand-off for newer Fujifilm cameras (X-T30/X-T4 and later). Bluetooth is only used to get onto the
 //! camera's Wi-Fi: pair over BLE, ask the camera to start its network, read the network name and password, and
-//! hand those to the UI, which joins the network (see wifi.rs) and lets fujictl connect as usual.
+//! hand those to the UI, which joins the network (see wifi.rs) and lets ferryctl connect as usual.
 //!
 //! The GATT sequence follows libfuji's lib/bluetooth.c (MIT); docs/bluetooth.md has the background. None of this
 //! has been tried against a real camera yet.

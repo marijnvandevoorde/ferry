@@ -41,7 +41,7 @@ struct SettingsView: View {
                 Toggle("Connect automatically when the camera is found", isOn: $autoConnect)
                 Toggle("Import new photos automatically after connecting", isOn: $autoImport)
                 Toggle("Leave videos out of “Import New”", isOn: $skipVideos)
-                Toggle("Open Fuji Import at login", isOn: $launchAtLogin)
+                Toggle("Open Ferry at login", isOn: $launchAtLogin)
                     .onChange(of: launchAtLogin) { _, enabled in
                         do {
                             if enabled { try SMAppService.mainApp.register() } else { try SMAppService.mainApp.unregister() }
@@ -128,7 +128,7 @@ struct SettingsView: View {
             Section {
                 Button("Forget Import History…") { confirmForget = true }
             } footer: {
-                Text("Fuji Import remembers which photos it imported so it only offers new ones.")
+                Text("Ferry remembers which photos it imported so it only offers new ones.")
                     .foregroundStyle(.secondary)
             }
         }

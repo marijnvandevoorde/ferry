@@ -2,7 +2,7 @@ import FujiKit
 import Foundation
 
 let usage = """
-usage: fujictl [options] <command>
+usage: ferryctl [options] <command>
 
 commands:
   import <dir>         import photos not imported before into <dir>
@@ -81,7 +81,7 @@ func fail(_ message: String) -> Never {
 }
 
 #if os(macOS)
-let clientName = Host.current().localizedName ?? "fujictl"
+let clientName = Host.current().localizedName ?? "ferryctl"
 #else
 let clientName = ProcessInfo.processInfo.hostName
 #endif
@@ -129,7 +129,7 @@ func importObject(_ camera: WirelessCamera, handle: UInt32, into target: FolderI
     if info.isFolder || (skipVideos && info.isVideo) { return false }
     if !all && history.contains(ImportHistory.key(camera: camera.cameraName, info: info)) { return false }
     try FileManager.default.createDirectory(at: target.root, withIntermediateDirectories: true)
-    let tmp = target.root.appendingPathComponent(".fujictl-\(UUID().uuidString)")
+    let tmp = target.root.appendingPathComponent(".ferryctl-\(UUID().uuidString)")
     defer { try? FileManager.default.removeItem(at: tmp) }
     let downloaded = try camera.download(handle, to: tmp)
     let url = try target.store(tmp, info: downloaded, camera: camera.cameraName, move: true)

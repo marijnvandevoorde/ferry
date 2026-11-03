@@ -2,8 +2,8 @@
 # Imports from mock Olympus, Ricoh and DLNA (Sony/Panasonic) cameras (scripts/mock-cameras) and checks the files are byte-identical.
 set -euo pipefail
 cd "$(dirname "$0")/.."
-swift build -q --product fujictl
-FUJICTL=$(swift build --show-bin-path)/fujictl
+swift build -q --product ferryctl
+FUJICTL=$(swift build --show-bin-path)/ferryctl
 WORK=$(mktemp -d)
 PIDS=()
 trap 'kill "${PIDS[@]}" 2>/dev/null || true; rm -rf "$WORK"' EXIT

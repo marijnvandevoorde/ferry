@@ -77,7 +77,7 @@ struct ConnectView: View {
             StepRow(number: 1, text: CameraGuide.lastConnected.cameraStep)
             StepRow(number: 2, text: "On this Mac, join the camera's Wi-Fi network (named **FUJIFILM-X-…**).")
             StepRow(number: 3, text: autoConnect
-                    ? "Fuji Import connects automatically. Press **OK** on the camera if it asks."
+                    ? "Ferry connects automatically. Press **OK** on the camera if it asks."
                     : "Click **Connect**. Press **OK** on the camera if it asks.")
         }
         .padding(20)

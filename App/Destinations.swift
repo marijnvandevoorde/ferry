@@ -79,7 +79,7 @@ final class PhotosDestination: Destination {
     func prepare() async throws {
         let access = await PhotoImporter.requestAccess(needsAlbum: albumName != nil)
         guard access != .denied else {
-            throw DestinationError(String(localized: "Fuji Import needs access to Photos. Allow it in System Settings → Privacy & Security → Photos."))
+            throw DestinationError(String(localized: "Ferry needs access to Photos. Allow it in System Settings → Privacy & Security → Photos."))
         }
         canUseAlbums = albumName != nil && access == .full
     }
@@ -129,6 +129,7 @@ final class ImmichDestination: Destination {
 enum ImmichKey {
     private static let query: [CFString: Any] = [
         kSecClass: kSecClassGenericPassword,
+        // The app's old name; kept so a saved key is still found.
         kSecAttrService: "Fuji Import Immich API key",
         kSecAttrAccount: "immich",
     ]
@@ -183,7 +184,7 @@ final class FolderDestination: Destination {
             throw DestinationError(String(localized: "Choose the \(role) in Settings."))
         }
         guard url.startAccessingSecurityScopedResource() else {
-            throw DestinationError(String(localized: "Fuji Import can't access the \(role) “\(url.lastPathComponent)”. Choose it again in Settings."))
+            throw DestinationError(String(localized: "Ferry can't access the \(role) “\(url.lastPathComponent)”. Choose it again in Settings."))
         }
         root = url
         var isDir: ObjCBool = false

@@ -22,9 +22,9 @@ struct MenuBarContent: View {
             Text(summary)
         }
         Divider()
-        Button("Open Fuji Import") {
+        Button("Open Ferry") {
             NSApp.activate()
-            if let window = NSApp.windows.first(where: { $0.identifier?.rawValue.hasPrefix("main") == true || $0.title == "Fuji Import" }) {
+            if let window = NSApp.windows.first(where: { $0.identifier?.rawValue.hasPrefix("main") == true || $0.title == "Ferry" }) {
                 window.makeKeyAndOrderFront(nil)
             } else {
                 openWindow(id: "main")
@@ -32,7 +32,7 @@ struct MenuBarContent: View {
         }
         SettingsLink { Text("Settings…") }
         Divider()
-        Button("Quit Fuji Import") { NSApp.terminate(nil) }
+        Button("Quit Ferry") { NSApp.terminate(nil) }
             .keyboardShortcut("q")
     }
 

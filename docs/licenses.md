@@ -1,6 +1,6 @@
 # Licenses: can the apps be sold?
 
-Checked 2026-11-03 against everything the Mac app, `fujictl` and the desktop app ship. Not legal advice.
+Checked 2026-11-03 against everything the Mac app, `ferryctl` and the desktop app ship. Not legal advice.
 
 **Yes.** Everything that ships is under a permissive license (MIT, Apache-2.0, BSD, ISC, Zlib, Unicode) or MPL-2.0,
 and all of them allow selling. What they ask is that the license texts travel with the app.
@@ -11,7 +11,7 @@ and all of them allow selling. What they ask is that the license texts travel wi
 | libfuji (protocol, ported) | MIT | everything | Keep its notice: `licenses/protocol.txt`. |
 | furble (libfuji's Bluetooth code is derived from it) | MIT | Bluetooth pairing | Same file. |
 | Swift packages | none used | | |
-| Swift runtime and Foundation (Windows, Linux `fujictl`) | Apache-2.0 with the Runtime Library Exception; Foundation bundles ICU (Unicode-3.0), libcurl (curl) and libxml2 (MIT) | desktop | The exception covers the runtime; include the others' notices if they're bundled. |
+| Swift runtime and Foundation (Windows, Linux `ferryctl`) | Apache-2.0 with the Runtime Library Exception; Foundation bundles ICU (Unicode-3.0), libcurl (curl) and libxml2 (MIT) | desktop | The exception covers the runtime; include the others' notices if they're bundled. |
 | Rust crates (~490, via Tauri) | MIT/Apache-2.0 and similar | desktop | License texts: `scripts/third_party_notices.py` writes them all to one file for the bundle. |
 | 5 of those crates: cssparser, cssparser-macros, dtoa-short, option-ext, selectors | MPL-2.0 | desktop | File-level copyleft: fine to sell; if those files are changed, publish the changed files. We don't change them. |
 | npm runtime: @tauri-apps/api and plugins | MIT or Apache-2.0 | desktop | Covered by the same notices. |
@@ -22,8 +22,7 @@ and all of them allow selling. What they ask is that the license texts travel wi
 
 ## Things to watch
 
-- **The name.** "Fuji Import" uses Fujifilm's trademark. Stores reject that and Fujifilm could object. Shipping as
-  Ferry fixes it. Saying "works with Fujifilm cameras" in a description is normal (nominative use).
+- **The name.** The app was called "Fuji Import", which uses Fujifilm's trademark; it ships as Ferry now. Saying "works with Fujifilm cameras" in a description is normal (nominative use).
 - **Reverse-engineered protocols.** libfuji was built from packet captures of Fuji's apps for interoperability,
   which EU and US law generally allow; we never agreed to Fujifilm's app terms and don't use their code.
 - **GPL.** Nothing GPL may be added to the shipped apps if they're sold on the App Store (the store's terms clash

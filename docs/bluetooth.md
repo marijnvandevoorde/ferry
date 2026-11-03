@@ -52,10 +52,10 @@ Implemented, **not yet tested on a real camera** (none with Bluetooth is availab
   to join by hand. Pairings are remembered, so later connections don't need pairing mode. The Bluetooth link stays
   open while connected, in case the camera turns its Wi-Fi off when it drops.
 - **Windows and Linux:** the desktop app pairs with btleplug and joins the network with `netsh` or `nmcli`, then
-  tells `fujictl serve` to connect with `"bluetooth": true`.
+  tells `ferryctl serve` to connect with `"bluetooth": true`.
 - **After the hand-off** (#45): cameras with remote version 0x20007 or later use the XApp gallery (client state 20,
   photo list from property D621, full-size downloads with D226 = 2). Tested against vcam's GFX100 II
-  (`scripts/test-vcam.sh fuji_gfx100_ii+bluetooth`), which also offers RAF files in this mode. `fujictl --bluetooth`
+  (`scripts/test-vcam.sh fuji_gfx100_ii+bluetooth`), which also offers RAF files in this mode. `ferryctl --bluetooth`
   selects it by hand.
 
 What a first real test should check: the pairing prompt, whether the secure acknowledgement is accepted, whether the

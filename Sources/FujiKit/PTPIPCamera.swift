@@ -32,7 +32,7 @@ public final class PTPIPCamera: @unchecked Sendable {
         case operationRequest, operationResponse, event, startData, data, cancel, endData
     }
 
-    public init(host: String, interface: String? = nil, clientName: String = "FujiImport",
+    public init(host: String, interface: String? = nil, clientName: String = "Ferry",
                 log: @escaping (String) -> Void = { _ in }) {
         self.host = host
         self.interface = interface

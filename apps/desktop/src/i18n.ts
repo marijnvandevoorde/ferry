@@ -33,12 +33,12 @@ const strings: Record<string, Record<Lang, string>> = {
     it: "Su questo computer, collegati alla rete Wi-Fi della fotocamera (chiamata <b>FUJIFILM-…</b>).",
     de: "Verbinde diesen Computer mit dem WLAN der Kamera (Name <b>FUJIFILM-…</b>).",
     nl: "Verbind deze computer met het wifinetwerk van de camera (genaamd <b>FUJIFILM-…</b>)." },
-  "Fuji Import connects automatically. Press <b>OK</b> on the camera if it asks.": {
-    fr: "Fuji Import se connecte automatiquement. Appuyez sur <b>OK</b> sur l'appareil s'il le demande.",
-    es: "Fuji Import se conecta automáticamente. Pulsa <b>OK</b> en la cámara si te lo pide.",
-    it: "Fuji Import si collega automaticamente. Premi <b>OK</b> sulla fotocamera se lo chiede.",
-    de: "Fuji Import verbindet sich automatisch. Drücke <b>OK</b> an der Kamera, wenn sie fragt.",
-    nl: "Fuji Import maakt automatisch verbinding. Druk op <b>OK</b> op de camera als die erom vraagt." },
+  "Ferry connects automatically. Press <b>OK</b> on the camera if it asks.": {
+    fr: "Ferry se connecte automatiquement. Appuyez sur <b>OK</b> sur l'appareil s'il le demande.",
+    es: "Ferry se conecta automáticamente. Pulsa <b>OK</b> en la cámara si te lo pide.",
+    it: "Ferry si collega automaticamente. Premi <b>OK</b> sulla fotocamera se lo chiede.",
+    de: "Ferry verbindet sich automatisch. Drücke <b>OK</b> an der Kamera, wenn sie fragt.",
+    nl: "Ferry maakt automatisch verbinding. Druk op <b>OK</b> op de camera als die erom vraagt." },
   "Connect": { fr: "Connecter", es: "Conectar", it: "Collega", de: "Verbinden", nl: "Verbinden" },
   "Stop": { fr: "Arrêter", es: "Detener", it: "Interrompi", de: "Stoppen", nl: "Stoppen" },
   "Import to": { fr: "Importer dans", es: "Importar a", it: "Importa in", de: "Importieren nach", nl: "Importeren naar" },

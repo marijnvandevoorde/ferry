@@ -127,7 +127,7 @@
     "linux_appimage": "AppImage",
     "linux_deb": "Pacchetto .deb",
     "cli": "Riga di comando",
-    "cli_req": "Per server, script e Raspberry Pi: fujictl per macOS, Linux e Windows.",
+    "cli_req": "Per server, script e Raspberry Pi: ferryctl per macOS, Linux e Windows.",
     "cli_link": "Leggi le istruzioni"
   },
   "faq": {

@@ -1,5 +1,5 @@
 name: Camera report
-description: Tell us how Fuji Import works with your camera, good or bad.
+description: Tell us how Ferry works with your camera, good or bad.
 labels: ["camera report"]
 body:
   - type: input
@@ -39,4 +39,4 @@ body:
     id: app
     attributes:
       label: App version and OS
-      placeholder: Fuji Import 0.2, macOS 26.1
+      placeholder: Ferry 0.2, macOS 26.1

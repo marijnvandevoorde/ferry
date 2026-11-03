@@ -41,7 +41,7 @@ public final class AutoSaveListener: @unchecked Sendable {
     static func importerName(_ name: String) -> String {
         let allowed = name.unicodeScalars.map { CharacterSet.alphanumerics.contains($0) && $0.isASCII ? Character($0) : "-" }
         let collapsed = String(allowed).split(separator: "-").joined(separator: "-")
-        return collapsed.isEmpty ? "FujiImport" : String(collapsed.prefix(32))
+        return collapsed.isEmpty ? "Ferry" : String(collapsed.prefix(32))
     }
 
     /// Opens the UDP ports the camera broadcasts to.

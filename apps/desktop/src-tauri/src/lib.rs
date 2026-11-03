@@ -1,5 +1,5 @@
-//! The desktop shell: runs `fujictl serve` as a sidecar and relays its JSON lines to the UI.
-//! All camera logic lives in fujictl (FujiKit); see docs/adr/0001-windows-linux-app.md.
+//! The desktop shell: runs `ferryctl serve` as a sidecar and relays its JSON lines to the UI.
+//! All camera logic lives in ferryctl (FujiKit); see docs/adr/0001-windows-linux-app.md.
 
 mod bluetooth;
 mod wifi;
@@ -15,11 +15,11 @@ use tauri_plugin_shell::ShellExt;
 #[derive(Default)]
 struct Sidecar(Mutex<Option<CommandChild>>);
 
-/// Sends one command (a JSON object) to fujictl.
+/// Sends one command (a JSON object) to ferryctl.
 #[tauri::command]
 fn send(command: serde_json::Value, sidecar: State<Sidecar>) -> Result<(), String> {
     let mut guard = sidecar.0.lock().map_err(|e| e.to_string())?;
-    let child = guard.as_mut().ok_or("fujictl is not running")?;
+    let child = guard.as_mut().ok_or("ferryctl is not running")?;
     let mut line = command.to_string();
     line.push('\n');
     child.write(line.as_bytes()).map_err(|e| e.to_string())
@@ -32,7 +32,7 @@ fn start_sidecar(app: &AppHandle) -> Result<(), Box<dyn std::error::Error>> {
         args.insert(0, host);
         args.insert(0, "--host".into());
     }
-    let (mut events, child) = app.shell().sidecar("fujictl")?.args(args).spawn()?;
+    let (mut events, child) = app.shell().sidecar("ferryctl")?.args(args).spawn()?;
     app.state::<Sidecar>().0.lock().unwrap().replace(child);
 
     let app = app.clone();
@@ -46,17 +46,17 @@ fn start_sidecar(app: &AppHandle) -> Result<(), Box<dyn std::error::Error>> {
                     while let Some(pos) = pending.iter().position(|&b| b == b'\n') {
                         let line: Vec<u8> = pending.drain(..=pos).collect();
                         if let Ok(value) = serde_json::from_slice::<serde_json::Value>(&line) {
-                            let _ = app.emit("fujictl", value);
+                            let _ = app.emit("ferryctl", value);
                         }
                     }
                 }
                 CommandEvent::Stderr(bytes) => {
                     let line = String::from_utf8_lossy(&bytes).trim().to_string();
-                    let _ = app.emit("fujictl", serde_json::json!({ "event": "log", "line": line }));
+                    let _ = app.emit("ferryctl", serde_json::json!({ "event": "log", "line": line }));
                 }
                 CommandEvent::Terminated(status) => {
-                    let message = format!("fujictl stopped ({:?})", status.code);
-                    let _ = app.emit("fujictl", serde_json::json!({ "event": "error", "message": message }));
+                    let message = format!("ferryctl stopped ({:?})", status.code);
+                    let _ = app.emit("ferryctl", serde_json::json!({ "event": "error", "message": message }));
                     break;
                 }
                 _ => {}
@@ -97,12 +97,12 @@ pub fn run() {
         .setup(|app| {
             start_sidecar(app.handle())?;
 
-            let open = MenuItem::with_id(app, "open", "Open Fuji Import", true, None::<&str>)?;
+            let open = MenuItem::with_id(app, "open", "Open Ferry", true, None::<&str>)?;
             let quit = MenuItem::with_id(app, "quit", "Quit", true, None::<&str>)?;
             let menu = Menu::with_items(app, &[&open, &quit])?;
             TrayIconBuilder::new()
                 .icon(app.default_window_icon().unwrap().clone())
-                .tooltip("Fuji Import")
+                .tooltip("Ferry")
                 .menu(&menu)
                 .on_menu_event(|app, event| match event.id.as_ref() {
                     "open" => show_main_window(app),

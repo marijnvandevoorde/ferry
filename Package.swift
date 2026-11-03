@@ -7,11 +7,11 @@ let package = Package(
     platforms: [.macOS(.v14)],
     products: [
         .library(name: "FujiKit", targets: ["FujiKit"]),
-        .executable(name: "fujictl", targets: ["fujictl"]),
+        .executable(name: "ferryctl", targets: ["ferryctl"]),
     ],
     targets: [
         .target(name: "FujiKit", resources: [.process("Resources")]),
-        .executableTarget(name: "fujictl", dependencies: ["FujiKit"]),
+        .executableTarget(name: "ferryctl", dependencies: ["FujiKit"]),
         .testTarget(name: "FujiKitTests", dependencies: ["FujiKit"]),
     ]
 )

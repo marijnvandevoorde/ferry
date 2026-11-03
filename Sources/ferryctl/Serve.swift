@@ -1,7 +1,7 @@
 import FujiKit
 import Foundation
 
-/// `fujictl serve`: drives the camera for a desktop UI (the Tauri app) over JSON lines.
+/// `ferryctl serve`: drives the camera for a desktop UI (the Tauri app) over JSON lines.
 ///
 /// Commands, one JSON object per line on stdin:
 ///   {"cmd": "connect", "bluetooth": true?}      try to connect now (it also retries every few seconds); "bluetooth"
@@ -27,7 +27,7 @@ final class Server: @unchecked Sendable {
     private let clientName: String
     private let history: ImportHistory
     private let thumbnails: URL
-    private let queue = DispatchQueue(label: "fujictl.serve")
+    private let queue = DispatchQueue(label: "ferryctl.serve")
     private let lock = NSLock()
     private let output = FileHandle.standardOutput
 
@@ -43,7 +43,7 @@ final class Server: @unchecked Sendable {
         self.host = host
         self.clientName = clientName
         self.history = history
-        thumbnails = FileManager.default.temporaryDirectory.appendingPathComponent("fujictl-thumbnails", isDirectory: true)
+        thumbnails = FileManager.default.temporaryDirectory.appendingPathComponent("ferryctl-thumbnails", isDirectory: true)
         try? FileManager.default.createDirectory(at: thumbnails, withIntermediateDirectories: true)
     }
 
@@ -236,7 +236,7 @@ final class Server: @unchecked Sendable {
             emit(["event": "progress", "index": index + 1, "total": ids.count, "filename": info.filename, "fraction": 0.0,
                   "bytes": bytesBefore, "totalBytes": totalBytes])
             defer { bytesBefore += Int(info.compressedSize) }
-            let tmp = target.root.appendingPathComponent(".fujictl-\(UUID().uuidString)")
+            let tmp = target.root.appendingPathComponent(".ferryctl-\(UUID().uuidString)")
             defer { try? FileManager.default.removeItem(at: tmp) }
             do {
                 try FileManager.default.createDirectory(at: target.root, withIntermediateDirectories: true)

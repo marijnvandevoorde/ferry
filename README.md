@@ -1,4 +1,4 @@
-# Fuji Import
+# Ferry
 
 An open-source Mac app that imports photos from Fujifilm X cameras over Wi-Fi straight into Apple Photos.
 It replaces the photo-transfer part of Fujifilm's unmaintained *Camera Remote* app.
@@ -10,10 +10,10 @@ See [compatibility](#compatibility) and the [roadmap](ROADMAP.md).
 
 1. On the camera, press **Playback**, then choose **Wireless Communication** (Wi-Fi button, or Menu → Connection Setting).
 2. On the Mac, join the camera's Wi-Fi network (`FUJIFILM-X-…`). Your Mac will be offline while connected.
-3. Open Fuji Import. It finds the camera automatically; press **OK** on the camera if it asks.
+3. Open Ferry. It finds the camera automatically; press **OK** on the camera if it asks.
 4. Click **Import New**, or select photos and click **Import Selected**.
 
-Photos go into your Photos library, in a *Fujifilm* album by default. Fuji Import remembers what it imported,
+Photos go into your Photos library, in a *Fujifilm* album by default. Ferry remembers what it imported,
 so next time only new photos are offered. Settings (⌘,) has the camera address, auto-connect, auto-import and album options.
 If something goes wrong, **Window → Connection Log** shows what the camera said.
 
@@ -35,14 +35,14 @@ whether it worked or not.
 
 ## Windows and Linux
 
-`apps/desktop` is a Tauri app that runs `fujictl serve` in the background: connect, browse, and import into a
+`apps/desktop` is a Tauri app that runs `ferryctl serve` in the background: connect, browse, and import into a
 folder (your Pictures folder for Windows Photos, or a folder Lightroom, Photoshop Elements, digiKam or darktable
 watches), optionally also to Immich. To run it from source you need Swift, Rust and Node with pnpm:
 
 ```sh
 cd apps/desktop
 pnpm install
-pnpm run sidecar     # builds fujictl and puts it where Tauri expects it
+pnpm run sidecar     # builds ferryctl and puts it where Tauri expects it
 pnpm tauri dev       # FUJIIMPORT_HOST=127.0.0.1 points it at the emulator
 ```
 
@@ -50,17 +50,17 @@ See [importing into other photo apps](docs/other-apps.md).
 
 ## Command line (macOS, Linux, Windows)
 
-`fujictl` imports without the app, for example on a Linux machine or from a script:
+`ferryctl` imports without the app, for example on a Linux machine or from a script:
 
 ```sh
-swift build -c release --product fujictl
-.build/release/fujictl import ~/Pictures/Fuji        # new photos, into Year/Date folders
-.build/release/fujictl watch ~/Pictures/Fuji         # keep running; import whenever the camera's Wi-Fi is joined
-.build/release/fujictl autosave register             # register with the camera's PC AutoSave
-.build/release/fujictl watch --autosave ~/Pictures/Fuji   # import over the home network
+swift build -c release --product ferryctl
+.build/release/ferryctl import ~/Pictures/Fuji        # new photos, into Year/Date folders
+.build/release/ferryctl watch ~/Pictures/Fuji         # keep running; import whenever the camera's Wi-Fi is joined
+.build/release/ferryctl autosave register             # register with the camera's PC AutoSave
+.build/release/ferryctl watch --autosave ~/Pictures/Fuji   # import over the home network
 ```
 
-Run `fujictl` without arguments for all commands and options (folder and file name templates, `--skip-videos`,
+Run `ferryctl` without arguments for all commands and options (folder and file name templates, `--skip-videos`,
 `--immich` uploads, …).
 
 ## Building
@@ -75,7 +75,7 @@ open FujiImport.xcodeproj
 The project is laid out as:
 
 - `Sources/FujiKit` – Swift implementation of Fujifilm's Wi-Fi protocol (PTP over TCP, port 55740).
-- `Sources/fujictl` – command-line tool for macOS and Linux (see below).
+- `Sources/ferryctl` – command-line tool for macOS and Linux (see below).
 - `App` – the SwiftUI app.
 
 ### Testing without a camera
@@ -85,7 +85,7 @@ The project is laid out as:
 ```sh
 docker build -t vcam-fuji scripts/vcam
 docker run --rm -p 55740-55742:55740-55742 -v "$PWD/card:/card" vcam-fuji build/vcam fuji_x_t20 tcp --local-ip --fs /card
-swift run fujictl --host 127.0.0.1 list
+swift run ferryctl --host 127.0.0.1 list
 # point the app at it (or set the camera address in Settings)
 defaults write ~/Library/Containers/io.github.fujiimport.FujiImport/Data/Library/Preferences/io.github.fujiimport.FujiImport cameraHost 127.0.0.1
 ```

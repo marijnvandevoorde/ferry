@@ -7,7 +7,7 @@ import { open as openPath } from "@tauri-apps/plugin-shell";
 import { t, translatePage } from "./i18n";
 import { isPermissionGranted, requestPermission, sendNotification } from "@tauri-apps/plugin-notification";
 
-// Events from `fujictl serve` (see Sources/fujictl/Serve.swift).
+// Events from `ferryctl serve` (see Sources/ferryctl/Serve.swift).
 type Item = { id: string; filename: string; date: string; isVideo: boolean; kind: string; protected: boolean; size: number; imported: boolean };
 type ServeEvent =
   | { event: "status"; phase: "searching" | "connecting" | "waitingForApproval" | "connected"; camera?: string; address?: string }
@@ -104,7 +104,7 @@ function showError(message: string) {
 
 // MARK: - Events
 
-listen<ServeEvent>("fujictl", ({ payload: e }) => {
+listen<ServeEvent>("ferryctl", ({ payload: e }) => {
   switch (e.event) {
     case "status": {
       const wasConnected = state.phase === "connected";
@@ -188,7 +188,7 @@ function render() {
   $("bar").hidden = !connected;
   $("disconnect").hidden = !connected;
   for (const id of ["filter", "kind", "order", "thumb-size"]) $(id).hidden = !connected;
-  $("title").textContent = connected ? state.camera || t("Camera") : "Fuji Import";
+  $("title").textContent = connected ? state.camera || t("Camera") : "Ferry";
   const newCount = state.items.filter((i) => !i.imported).length;
   $("subtitle").textContent = connected ? t("{n} items · {m} not imported", { n: state.items.length, m: newCount }) : "";
   $<HTMLButtonElement>("connect-now").disabled = state.phase !== "searching";
@@ -352,7 +352,7 @@ $("settings").addEventListener("close", render);
 
 // MARK: - Bluetooth
 // Newer cameras hand over their Wi-Fi network over Bluetooth (src-tauri/src/bluetooth.rs); the computer joins it
-// (wifi.rs) and fujictl connects as usual.
+// (wifi.rs) and ferryctl connects as usual.
 
 type BtCamera = { id: string; name: string; pairing: boolean; saved: boolean; nearby: boolean };
 type Credentials = { ssid: string; password: string };
@@ -474,7 +474,7 @@ async function btConnect(camera: BtCamera) {
   btHandOver();
 }
 
-/** The computer is on the camera's network: fujictl takes it from here. */
+/** The computer is on the camera's network: ferryctl takes it from here. */
 function btHandOver() {
   showError("");
   send({ cmd: "connect", bluetooth: true });

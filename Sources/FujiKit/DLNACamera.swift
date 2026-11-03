@@ -60,7 +60,7 @@ public final class DLNACamera: HTTPCamera {
     private func preparePanasonic(_ control: URL) {
         guard let base = URL(string: "http://\(control.host ?? host)") else { return }
         let id = "4D454930-0100-1000-8001-\(String(UUID().uuidString.suffix(12)))"
-        for query in ["mode=accctrl&type=req_acc&value=\(id)&value2=FujiImport", "mode=camcmd&value=playmode"] {
+        for query in ["mode=accctrl&type=req_acc&value=\(id)&value2=Ferry", "mode=camcmd&value=playmode"] {
             _ = try? fetch(base.appendingPathComponent("cam.cgi").appendingQuery(query), timeout: 5)
         }
     }

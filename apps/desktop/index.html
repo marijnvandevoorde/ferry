@@ -3,14 +3,14 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Fuji Import</title>
+    <title>Ferry</title>
     <link rel="stylesheet" href="/src/style.css" />
     <script type="module" src="/src/main.ts"></script>
   </head>
   <body>
     <header>
       <div>
-        <h1 id="title">Fuji Import</h1>
+        <h1 id="title">Ferry</h1>
         <p id="subtitle" class="muted"></p>
       </div>
       <nav>
@@ -43,7 +43,7 @@
         <ol>
           <li data-i18n>On the camera, press <b>Playback</b>, then choose <b>Wireless Communication</b>.</li>
           <li data-i18n>On this computer, join the camera's Wi-Fi network (named <b>FUJIFILM-…</b>).</li>
-          <li data-i18n>Fuji Import connects automatically. Press <b>OK</b> on the camera if it asks.</li>
+          <li data-i18n>Ferry connects automatically. Press <b>OK</b> on the camera if it asks.</li>
         </ol>
         <button id="connect-now" type="button" data-i18n>Connect</button>
         <p id="error" class="error" role="alert" hidden></p>
@@ -94,7 +94,7 @@
       </form>
     </dialog>
 
-    <!-- Newer cameras: Bluetooth hands over the camera's Wi-Fi network, then fujictl connects as usual. -->
+    <!-- Newer cameras: Bluetooth hands over the camera's Wi-Fi network, then ferryctl connects as usual. -->
     <dialog id="bluetooth">
       <form method="dialog">
         <h2 data-i18n>Pair over Bluetooth</h2>

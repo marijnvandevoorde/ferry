@@ -184,7 +184,7 @@ def llms(strings, full=False):
     lines = [f"# {n}", "", f"> {t['meta']['home_description']}", "",
              t["why"]["p1"], "", t["why"]["p2"], "",
              "## Facts", "",
-             f"- Platforms: macOS 14 or later (imports into Apple Photos or a folder), Windows 10 and 11, Linux, and a command-line tool (fujictl).",
+             f"- Platforms: macOS 14 or later (imports into Apple Photos or a folder), Windows 10 and 11, Linux, and a command-line tool (ferryctl).",
              f"- Price: free. License: MIT. Source code: {CONFIG['repo']}",
              f"- Current version: {CONFIG['version']}.",
              "- Connection: the camera's own Wi-Fi network, or the home network with Fujifilm PC AutoSave. No cable, no card reader, no cloud.",

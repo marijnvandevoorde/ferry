@@ -93,10 +93,10 @@ T = {
 "Forget History": ("Oublier l'historique", "Olvidar historial", "Dimentica cronologia", "Verlauf vergessen", "Geschiedenis vergeten"),
 "Forget Import History…": ("Oublier l'historique d'importation…", "Olvidar historial de importación…", "Dimentica cronologia importazioni…", "Importverlauf vergessen…", "Importgeschiedenis vergeten…"),
 "Forget which photos were imported?": ("Oublier quelles photos ont été importées ?", "¿Olvidar qué fotos se importaron?", "Dimenticare quali foto sono state importate?", "Vergessen, welche Fotos importiert wurden?", "Vergeten welke foto's geïmporteerd zijn?"),
-"Fuji Import can't access the %@ “%@”. Choose it again in Settings.": ("Fuji Import ne peut pas accéder au %@ « %@ ». Choisissez-le à nouveau dans les réglages.", "Fuji Import no puede acceder a la %@ «%@». Vuelve a elegirla en Ajustes.", "Fuji Import non può accedere alla %@ «%@». Sceglila di nuovo nelle impostazioni.", "Fuji Import kann nicht auf den %@ „%@“ zugreifen. Wähle ihn in den Einstellungen erneut.", "Fuji Import heeft geen toegang tot de %@ ‘%@’. Kies hem opnieuw bij Instellingen."),
-"Fuji Import connects automatically. Press **OK** on the camera if it asks.": ("Fuji Import se connecte automatiquement. Appuyez sur **OK** sur l'appareil s'il le demande.", "Fuji Import se conecta automáticamente. Pulsa **OK** en la cámara si te lo pide.", "Fuji Import si collega automaticamente. Premi **OK** sulla fotocamera se lo chiede.", "Fuji Import verbindet sich automatisch. Drücke **OK** an der Kamera, wenn sie fragt.", "Fuji Import maakt automatisch verbinding. Druk op **OK** op de camera als die erom vraagt."),
-"Fuji Import needs access to Photos. Allow it in System Settings → Privacy & Security → Photos.": ("Fuji Import a besoin d'accéder à Photos. Autorisez-le dans Réglages Système → Confidentialité et sécurité → Photos.", "Fuji Import necesita acceso a Fotos. Permítelo en Ajustes del Sistema → Privacidad y seguridad → Fotos.", "Fuji Import ha bisogno di accedere a Foto. Consentilo in Impostazioni di Sistema → Privacy e sicurezza → Foto.", "Fuji Import braucht Zugriff auf Fotos. Erlaube ihn in Systemeinstellungen → Datenschutz & Sicherheit → Fotos.", "Fuji Import heeft toegang tot Foto's nodig. Sta dit toe in Systeeminstellingen → Privacy en beveiliging → Foto's."),
-"Fuji Import remembers which photos it imported so it only offers new ones.": ("Fuji Import retient les photos déjà importées pour ne proposer que les nouvelles.", "Fuji Import recuerda qué fotos importó para ofrecer solo las nuevas.", "Fuji Import ricorda quali foto ha importato per proporre solo quelle nuove.", "Fuji Import merkt sich, welche Fotos importiert wurden, und bietet nur neue an.", "Fuji Import onthoudt welke foto's het geïmporteerd heeft en biedt alleen nieuwe aan."),
+"Ferry can't access the %@ “%@”. Choose it again in Settings.": ("Ferry ne peut pas accéder au %@ « %@ ». Choisissez-le à nouveau dans les réglages.", "Ferry no puede acceder a la %@ «%@». Vuelve a elegirla en Ajustes.", "Ferry non può accedere alla %@ «%@». Sceglila di nuovo nelle impostazioni.", "Ferry kann nicht auf den %@ „%@“ zugreifen. Wähle ihn in den Einstellungen erneut.", "Ferry heeft geen toegang tot de %@ ‘%@’. Kies hem opnieuw bij Instellingen."),
+"Ferry connects automatically. Press **OK** on the camera if it asks.": ("Ferry se connecte automatiquement. Appuyez sur **OK** sur l'appareil s'il le demande.", "Ferry se conecta automáticamente. Pulsa **OK** en la cámara si te lo pide.", "Ferry si collega automaticamente. Premi **OK** sulla fotocamera se lo chiede.", "Ferry verbindet sich automatisch. Drücke **OK** an der Kamera, wenn sie fragt.", "Ferry maakt automatisch verbinding. Druk op **OK** op de camera als die erom vraagt."),
+"Ferry needs access to Photos. Allow it in System Settings → Privacy & Security → Photos.": ("Ferry a besoin d'accéder à Photos. Autorisez-le dans Réglages Système → Confidentialité et sécurité → Photos.", "Ferry necesita acceso a Fotos. Permítelo en Ajustes del Sistema → Privacidad y seguridad → Fotos.", "Ferry ha bisogno di accedere a Foto. Consentilo in Impostazioni di Sistema → Privacy e sicurezza → Foto.", "Ferry braucht Zugriff auf Fotos. Erlaube ihn in Systemeinstellungen → Datenschutz & Sicherheit → Fotos.", "Ferry heeft toegang tot Foto's nodig. Sta dit toe in Systeeminstellingen → Privacy en beveiliging → Foto's."),
+"Ferry remembers which photos it imported so it only offers new ones.": ("Ferry retient les photos déjà importées pour ne proposer que les nouvelles.", "Ferry recuerda qué fotos importó para ofrecer solo las nuevas.", "Ferry ricorda quali foto ha importato per proporre solo quelle nuove.", "Ferry merkt sich, welche Fotos importiert wurden, und bietet nur neue an.", "Ferry onthoudt welke foto's het geïmporteerd heeft en biedt alleen nieuwe aan."),
 "Hide the Dock icon": ("Masquer l'icône du Dock", "Ocultar el icono del Dock", "Nascondi l'icona nel Dock", "Dock-Symbol ausblenden", "Dock-pictogram verbergen"),
 "Import %lld New": ("Importer %lld nouvelles", "Importar %lld nuevas", "Importa %lld nuove", "%lld neue importieren", "%lld nieuwe importeren"),
 "Import %lld Selected": ("Importer la sélection (%lld)", "Importar %lld seleccionadas", "Importa %lld selezionate", "%lld ausgewählte importieren", "%lld geselecteerde importeren"),
@@ -122,15 +122,15 @@ T = {
 "On the %@, press **Playback**, then the **Wi-Fi** button (on some models: Menu → **Wireless Communication**).": ("Sur le %@, appuyez sur **Lecture**, puis sur le bouton **Wi-Fi** (sur certains modèles : Menu → **Communication sans fil**).", "En la %@, pulsa **Reproducción** y luego el botón **Wi-Fi** (en algunos modelos: Menú → **Comunicación inalámbrica**).", "Sulla %@, premi **Riproduzione**, poi il tasto **Wi-Fi** (su alcuni modelli: Menu → **Comunicazione wireless**).", "Drücke an der %@ **Wiedergabe** und dann die **WLAN**-Taste (bei manchen Modellen: Menü → **Drahtlose Kommunikation**).", "Druk op de %@ op **Weergave** en dan op de **wifi**-knop (bij sommige modellen: Menu → **Draadloze communicatie**)."),
 "On the camera, press **Playback**, then choose **Wireless Communication** (Wi-Fi button, or Menu → Connection Setting).": ("Sur l'appareil, appuyez sur **Lecture**, puis choisissez **Communication sans fil** (bouton Wi-Fi, ou Menu → Paramètres de connexion).", "En la cámara, pulsa **Reproducción** y elige **Comunicación inalámbrica** (botón Wi-Fi, o Menú → Ajustes de conexión).", "Sulla fotocamera, premi **Riproduzione**, poi scegli **Comunicazione wireless** (tasto Wi-Fi, oppure Menu → Impostazioni connessione).", "Drücke an der Kamera **Wiedergabe** und wähle **Drahtlose Kommunikation** (WLAN-Taste oder Menü → Verbindungseinstellungen).", "Druk op de camera op **Weergave** en kies **Draadloze communicatie** (wifiknop, of Menu → Verbindingsinstellingen)."),
 "On this Mac, join the camera's Wi-Fi network (named **FUJIFILM-X-…**).": ("Sur ce Mac, rejoignez le réseau Wi-Fi de l'appareil (nommé **FUJIFILM-X-…**).", "En este Mac, conéctate a la red Wi-Fi de la cámara (llamada **FUJIFILM-X-…**).", "Su questo Mac, collegati alla rete Wi-Fi della fotocamera (chiamata **FUJIFILM-X-…**).", "Verbinde diesen Mac mit dem WLAN der Kamera (Name **FUJIFILM-X-…**).", "Verbind deze Mac met het wifinetwerk van de camera (genaamd **FUJIFILM-X-…**)."),
-"Open Fuji Import": ("Ouvrir Fuji Import", "Abrir Fuji Import", "Apri Fuji Import", "Fuji Import öffnen", "Fuji Import openen"),
-"Open Fuji Import at login": ("Ouvrir Fuji Import à l'ouverture de session", "Abrir Fuji Import al iniciar sesión", "Apri Fuji Import al login", "Fuji Import bei der Anmeldung öffnen", "Fuji Import openen bij inloggen"),
+"Open Ferry": ("Ouvrir Ferry", "Abrir Ferry", "Apri Ferry", "Ferry öffnen", "Ferry openen"),
+"Open Ferry at login": ("Ouvrir Ferry à l'ouverture de session", "Abrir Ferry al iniciar sesión", "Apri Ferry al login", "Ferry bei der Anmeldung öffnen", "Ferry openen bij inloggen"),
 "Open Photos": ("Ouvrir Photos", "Abrir Fotos", "Apri Foto", "Fotos öffnen", "Foto's openen"),
 "Open Wi-Fi Settings": ("Ouvrir les réglages Wi-Fi", "Abrir ajustes de Wi-Fi", "Apri impostazioni Wi-Fi", "WLAN-Einstellungen öffnen", "Wifi-instellingen openen"),
 "PC AutoSave is on: the camera can also send photos over your home Wi-Fi.": ("PC AutoSave est activé : l'appareil peut aussi envoyer des photos via votre Wi-Fi domestique.", "PC AutoSave está activado: la cámara también puede enviar fotos por el Wi-Fi de casa.", "PC AutoSave è attivo: la fotocamera può inviare foto anche tramite il Wi-Fi di casa.", "PC AutoSave ist an: Die Kamera kann Fotos auch über dein Heim-WLAN senden.", "PC AutoSave staat aan: de camera kan ook foto's sturen via je wifi thuis."),
 "Photo": ("Photo", "Foto", "Foto", "Foto", "Foto"),
 "Press OK on the camera": ("Appuyez sur OK sur l'appareil", "Pulsa OK en la cámara", "Premi OK sulla fotocamera", "Drücke OK an der Kamera", "Druk op OK op de camera"),
 "Preview": ("Aperçu", "Vista previa", "Anteprima", "Vorschau", "Voorvertoning"),
-"Quit Fuji Import": ("Quitter Fuji Import", "Salir de Fuji Import", "Esci da Fuji Import", "Fuji Import beenden", "Fuji Import stoppen"),
+"Quit Ferry": ("Quitter Ferry", "Salir de Ferry", "Esci da Ferry", "Ferry beenden", "Ferry stoppen"),
 "Reading card…": ("Lecture de la carte…", "Leyendo la tarjeta…", "Lettura della scheda…", "Karte wird gelesen…", "Kaart lezen…"),
 "Reading card… %lld of %lld": ("Lecture de la carte… %lld sur %lld", "Leyendo la tarjeta… %lld de %lld", "Lettura della scheda… %lld di %lld", "Karte wird gelesen… %lld von %lld", "Kaart lezen… %lld van %lld"),
 "Receive photos over the home network": ("Recevoir les photos via le réseau domestique", "Recibir fotos por la red de casa", "Ricevi foto tramite la rete di casa", "Fotos über das Heimnetzwerk empfangen", "Foto's ontvangen via het thuisnetwerk"),
@@ -210,31 +210,31 @@ PLURALS = {
 }
 
 # Keys that stay as they are.
-VERBATIM = ["HEIF", "JPEG", "RAW", "Fujifilm {yyyy}-{MM}", "%@\n%@", "%lld", "Fuji Import", "PC AutoSave", "https://photos.example.com", "{yyyy-MM-dd}_{original}"]
+VERBATIM = ["HEIF", "JPEG", "RAW", "Fujifilm {yyyy}-{MM}", "%@\n%@", "%lld", "Ferry", "PC AutoSave", "https://photos.example.com", "{yyyy-MM-dd}_{original}"]
 
 INFO_PLIST = {
-"NSBluetoothAlwaysUsageDescription": ("Fuji Import pairs with newer Fujifilm cameras over Bluetooth to start their Wi-Fi.", (
-  "Fuji Import s'appaire en Bluetooth avec les appareils Fujifilm récents pour démarrer leur Wi-Fi.",
-  "Fuji Import se empareja por Bluetooth con las cámaras Fujifilm más nuevas para activar su Wi-Fi.",
-  "Fuji Import si abbina via Bluetooth alle fotocamere Fujifilm più recenti per avviarne il Wi-Fi.",
-  "Fuji Import koppelt sich per Bluetooth mit neueren Fujifilm-Kameras, um ihr WLAN zu starten.",
-  "Fuji Import koppelt via Bluetooth met nieuwere Fujifilm-camera's om hun wifi te starten.")),
-"NSLocalNetworkUsageDescription": ("Fuji Import connects to your camera over its Wi-Fi network to read and download photos.", (
-  "Fuji Import se connecte à votre appareil via son réseau Wi-Fi pour lire et télécharger les photos.",
-  "Fuji Import se conecta a tu cámara por su red Wi-Fi para leer y descargar fotos.",
-  "Fuji Import si collega alla fotocamera tramite la sua rete Wi-Fi per leggere e scaricare le foto.",
-  "Fuji Import verbindet sich über das WLAN der Kamera, um Fotos zu lesen und herunterzuladen.",
-  "Fuji Import maakt via het wifinetwerk van de camera verbinding om foto's te lezen en te downloaden.")),
-"NSPhotoLibraryUsageDescription": ("Fuji Import adds the photos you import to an album in your library.", (
-  "Fuji Import ajoute les photos importées à un album de votre photothèque.",
-  "Fuji Import añade las fotos que importas a un álbum de tu fototeca.",
-  "Fuji Import aggiunge le foto importate a un album della tua libreria.",
-  "Fuji Import fügt importierte Fotos einem Album in deiner Mediathek hinzu.",
-  "Fuji Import voegt geïmporteerde foto's toe aan een album in je bibliotheek.")),
-"NSPhotoLibraryAddUsageDescription": ("Fuji Import saves photos from your camera to your Photos library.", (
-  "Fuji Import enregistre les photos de votre appareil dans votre photothèque.",
-  "Fuji Import guarda las fotos de tu cámara en tu fototeca.",
-  "Fuji Import salva le foto della fotocamera nella tua libreria Foto.",
-  "Fuji Import sichert Fotos deiner Kamera in deiner Fotos-Mediathek.",
-  "Fuji Import bewaart foto's van je camera in je Foto's-bibliotheek.")),
+"NSBluetoothAlwaysUsageDescription": ("Ferry pairs with newer Fujifilm cameras over Bluetooth to start their Wi-Fi.", (
+  "Ferry s'appaire en Bluetooth avec les appareils Fujifilm récents pour démarrer leur Wi-Fi.",
+  "Ferry se empareja por Bluetooth con las cámaras Fujifilm más nuevas para activar su Wi-Fi.",
+  "Ferry si abbina via Bluetooth alle fotocamere Fujifilm più recenti per avviarne il Wi-Fi.",
+  "Ferry koppelt sich per Bluetooth mit neueren Fujifilm-Kameras, um ihr WLAN zu starten.",
+  "Ferry koppelt via Bluetooth met nieuwere Fujifilm-camera's om hun wifi te starten.")),
+"NSLocalNetworkUsageDescription": ("Ferry connects to your camera over its Wi-Fi network to read and download photos.", (
+  "Ferry se connecte à votre appareil via son réseau Wi-Fi pour lire et télécharger les photos.",
+  "Ferry se conecta a tu cámara por su red Wi-Fi para leer y descargar fotos.",
+  "Ferry si collega alla fotocamera tramite la sua rete Wi-Fi per leggere e scaricare le foto.",
+  "Ferry verbindet sich über das WLAN der Kamera, um Fotos zu lesen und herunterzuladen.",
+  "Ferry maakt via het wifinetwerk van de camera verbinding om foto's te lezen en te downloaden.")),
+"NSPhotoLibraryUsageDescription": ("Ferry adds the photos you import to an album in your library.", (
+  "Ferry ajoute les photos importées à un album de votre photothèque.",
+  "Ferry añade las fotos que importas a un álbum de tu fototeca.",
+  "Ferry aggiunge le foto importate a un album della tua libreria.",
+  "Ferry fügt importierte Fotos einem Album in deiner Mediathek hinzu.",
+  "Ferry voegt geïmporteerde foto's toe aan een album in je bibliotheek.")),
+"NSPhotoLibraryAddUsageDescription": ("Ferry saves photos from your camera to your Photos library.", (
+  "Ferry enregistre les photos de votre appareil dans votre photothèque.",
+  "Ferry guarda las fotos de tu cámara en tu fototeca.",
+  "Ferry salva le foto della fotocamera nella tua libreria Foto.",
+  "Ferry sichert Fotos deiner Kamera in deiner Fotos-Mediathek.",
+  "Ferry bewaart foto's van je camera in je Foto's-bibliotheek.")),
 }

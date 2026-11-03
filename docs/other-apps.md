@@ -1,9 +1,9 @@
 # Importing into other photo apps
 
 This applies to the Mac app (Settings → Destination → A folder), the Windows and Linux app (Settings → Import to)
-and `fujictl import`.
+and `ferryctl import`.
 
-Fuji Import can put photos in a folder instead of Apple Photos (Settings → Destination → A folder).
+Ferry can put photos in a folder instead of Apple Photos (Settings → Destination → A folder).
 Most photo apps can watch a folder and pick up new files from it.
 
 ## Lightroom Classic
@@ -12,17 +12,17 @@ Most photo apps can watch a folder and pick up new files from it.
 2. Pick a **Watched Folder** (an empty folder, for example `~/Pictures/Fuji Inbox`) and a destination for the photos
    Lightroom moves out of it.
 3. Turn on **Enable Auto Import**.
-4. In Fuji Import, choose that same watched folder and set **Subfolders** to **No subfolders**:
+4. In Ferry, choose that same watched folder and set **Subfolders** to **No subfolders**:
    Lightroom only watches the folder itself.
 
 ## Capture One
 
 1. In Capture One, set up a **hot folder** (in a session: **Capture → Capture Location**, or with a tethered-style hot folder plugin).
-2. In Fuji Import, choose that folder and set **Subfolders** to **No subfolders**.
+2. In Ferry, choose that folder and set **Subfolders** to **No subfolders**.
 
 ## Photo Mechanic, Adobe Bridge, darktable, digiKam
 
-Point the app at the folder Fuji Import uses, and keep the default **Year / Date** subfolders if you like.
+Point the app at the folder Ferry uses, and keep the default **Year / Date** subfolders if you like.
 
 ## Windows Photos and OneDrive
 
@@ -31,7 +31,7 @@ folder backup is on.
 
 ## Photoshop Elements (Windows)
 
-In the Elements Organizer, choose **File → Watch Folders…**, add the folder Fuji Import uses, and pick
+In the Elements Organizer, choose **File → Watch Folders…**, add the folder Ferry uses, and pick
 *Automatically add files to Elements Organizer*.
 
 ## Shotwell, GNOME Photos (Linux)

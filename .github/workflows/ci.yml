@@ -80,7 +80,7 @@ jobs:
           version: 10
       - name: Install
         run: pnpm install
-      - name: Build fujictl sidecar
+      - name: Build ferryctl sidecar
         run: pnpm run sidecar
       - name: Build app
         run: pnpm tauri build --debug --no-bundle

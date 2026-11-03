@@ -33,7 +33,7 @@ public final class FujiCamera: @unchecked Sendable {
     private var xappHandles: [UInt32] = []
     private let queue = DispatchQueue(label: "fujikit.camera")
 
-    public init(host: String = "192.168.0.1", interface: String? = nil, clientName: String = "FujiImport",
+    public init(host: String = "192.168.0.1", interface: String? = nil, clientName: String = "Ferry",
                 afterBluetoothHandoff: Bool = false, log: @escaping (String) -> Void = { _ in }) {
         self.host = host
         self.interface = interface

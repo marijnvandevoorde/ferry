@@ -18,15 +18,15 @@ targets:
     info:
       path: App/Info.plist
       properties:
-        CFBundleDisplayName: Fuji Import
+        CFBundleDisplayName: Ferry
         CFBundleShortVersionString: $(MARKETING_VERSION)
         CFBundleVersion: $(CURRENT_PROJECT_VERSION)
         ITSAppUsesNonExemptEncryption: false
         LSApplicationCategoryType: public.app-category.photography
-        NSLocalNetworkUsageDescription: Fuji Import connects to your camera over its Wi-Fi network to read and download photos.
-        NSPhotoLibraryUsageDescription: Fuji Import adds the photos you import to an album in your library.
-        NSPhotoLibraryAddUsageDescription: Fuji Import saves photos from your camera to your Photos library.
-        NSBluetoothAlwaysUsageDescription: Fuji Import pairs with newer Fujifilm cameras over Bluetooth to start their Wi-Fi.
+        NSLocalNetworkUsageDescription: Ferry connects to your camera over its Wi-Fi network to read and download photos.
+        NSPhotoLibraryUsageDescription: Ferry adds the photos you import to an album in your library.
+        NSPhotoLibraryAddUsageDescription: Ferry saves photos from your camera to your Photos library.
+        NSBluetoothAlwaysUsageDescription: Ferry pairs with newer Fujifilm cameras over Bluetooth to start their Wi-Fi.
     entitlements:
       path: App/FujiImport.entitlements
       properties:
@@ -42,7 +42,7 @@ targets:
         com.apple.security.files.bookmarks.app-scope: true
     settings:
       base:
-        PRODUCT_NAME: Fuji Import
+        PRODUCT_NAME: Ferry
         PRODUCT_BUNDLE_IDENTIFIER: io.github.fujiimport.FujiImport
         SWIFT_VERSION: "5.0"
         CODE_SIGN_IDENTITY: "-"

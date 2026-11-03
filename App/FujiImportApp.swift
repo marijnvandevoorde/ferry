@@ -7,7 +7,7 @@ struct FujiImportApp: App {
     @AppStorage(Prefs.showMenuBarIcon) private var showMenuBarIcon = true
 
     var body: some Scene {
-        WindowGroup("Fuji Import", id: "main") {
+        WindowGroup("Ferry", id: "main") {
             ContentView()
                 .environment(model)
                 .frame(minWidth: 720, minHeight: 500)
@@ -37,7 +37,7 @@ struct FujiImportApp: App {
         }
         .defaultSize(width: 700, height: 420)
 
-        MenuBarExtra("Fuji Import", systemImage: "camera.aperture", isInserted: $showMenuBarIcon) {
+        MenuBarExtra("Ferry", systemImage: "camera.aperture", isInserted: $showMenuBarIcon) {
             MenuBarContent()
                 .environment(model)
         }

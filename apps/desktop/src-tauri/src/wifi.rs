@@ -98,7 +98,7 @@ fn join(ssid: &str, password: &str) -> Result<(), WifiError> {
                 line.split_once(':').is_some_and(|(key, value)| key.trim() == "SSID" && value.trim() == ssid)
             });
             if on_it {
-                // Give DHCP a moment before fujictl looks for the camera.
+                // Give DHCP a moment before ferryctl looks for the camera.
                 std::thread::sleep(Duration::from_secs(2));
                 return Ok(());
             }

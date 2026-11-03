@@ -3,8 +3,8 @@
 set -euo pipefail
 cd "$(dirname "$0")/.."
 docker build -q -t vcam-fuji-autosave --build-arg VCAM_IMAGE="${VCAM_IMAGE:-vcam-fuji}" scripts/vcam-autosave >/dev/null
-swift build -q --product fujictl
-FUJICTL=$(swift build --show-bin-path)/fujictl
+swift build -q --product ferryctl
+FUJICTL=$(swift build --show-bin-path)/ferryctl
 
 WORK=$(mktemp -d)
 trap 'docker rm -f fujikit-vcam >/dev/null 2>&1 || true; rm -rf "$WORK"' EXIT

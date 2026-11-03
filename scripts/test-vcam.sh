@@ -1,5 +1,5 @@
 #!/bin/bash
-# Runs fujictl against every model the vcam emulator knows (Fuji, and Canon over PTP/IP) and checks that downloads are byte-identical.
+# Runs ferryctl against every model the vcam emulator knows (Fuji, and Canon over PTP/IP) and checks that downloads are byte-identical.
 #
 # Needs Docker and a vcam image (see README): VCAM_IMAGE=vcam-fuji scripts/test-vcam.sh [model...]
 set -euo pipefail
@@ -13,8 +13,8 @@ MODELS=("$@")
 # "+bluetooth" connects as after a Bluetooth hand-off, which puts newer cameras in the XApp gallery.
 
 cd "$(dirname "$0")/.."
-swift build -q --product fujictl
-FUJICTL=$(swift build --show-bin-path)/fujictl
+swift build -q --product ferryctl
+FUJICTL=$(swift build --show-bin-path)/ferryctl
 
 WORK=$(mktemp -d)
 trap 'docker rm -f fujikit-vcam >/dev/null 2>&1 || true; rm -rf "$WORK"' EXIT
@@ -56,7 +56,7 @@ for model in "${MODELS[@]}"; do
     start_vcam "${model%+bluetooth}"
     out=$WORK/out-$model
     if ! "$FUJICTL" --host 127.0.0.1 --quiet ${extra[@]+"${extra[@]}"} download "$out" > "$WORK/$model.log" 2>&1; then
-        echo "FAIL (fujictl)"; tail -5 "$WORK/$model.log"; failed+=("$model"); continue
+        echo "FAIL (ferryctl)"; tail -5 "$WORK/$model.log"; failed+=("$model"); continue
     fi
     ok=1
     # vcam's Fuji mode lists folders as objects but leaves one entry out of the count, so one file is never listed.
