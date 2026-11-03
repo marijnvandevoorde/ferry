@@ -2,14 +2,14 @@
   "lang_name": "Deutsch",
   "og_locale": "de_DE",
   "meta": {
-    "home_title": "{name}: Fotos per WLAN von der Kamera übertragen",
-    "home_description": "{name} überträgt Fotos von deiner Fujifilm-Kamera per WLAN in Fotos, einen Ordner oder Lightroom. Ohne Kabel und Kartenleser. Kostenlos, Open Source.",
+    "home_title": "{name}: Fotos von der Kamera per WLAN, ohne Kabel",
+    "home_description": "{name} kopiert Fotos per WLAN von der Kamera auf den Computer: in Fotos, einen Ordner oder Lightroom. Ohne Kabel, ohne Kartenleser. Kostenlos für Mac, Windows und Linux.",
     "cameras_title": "Unterstützte Kameras: Fujifilm, Canon, Olympus, Ricoh | {name}",
     "cameras_description": "Diese Kameras funktionieren mit {name} per WLAN: Fujifilm X-T20, X-T2, X-T4, X-T30, X-S10 und mehr, dazu Canon, Olympus, Ricoh, Sony, Panasonic.",
     "privacy_title": "Datenschutz | {name}",
     "privacy_description": "{name} sammelt nichts. Die App spricht nur mit deiner Kamera und den Orten, in die du importierst. Diese Website nutzt keine Cookies und kein Tracking.",
     "notfound_title": "Seite nicht gefunden | {name}",
-    "og_image_alt": "{name} auf einem Mac, mit Fotos einer Fujifilm-Kamera, bereit zum Import."
+    "og_image_alt": "{name} auf einem Mac mit Fotos auf einer Kamera, bereit zum Import."
   },
   "nav": {
     "features": "Funktionen",
@@ -24,12 +24,12 @@
     "home": "{name} Startseite"
   },
   "hero": {
-    "eyebrow": "Kostenlos und Open Source · Mac, Windows, Linux",
+    "eyebrow": "Ein sicherer Hafen für deine Fotos",
     "h1": "Fotos von der Kamera holen. Ohne Kabel.",
-    "lede": "{name} kopiert Fotos von deiner Fujifilm-Kamera per WLAN auf den Computer, direkt in Fotos, einen Ordner oder Lightroom. Die App merkt sich, was schon importiert ist. Beim nächsten Mal holst du nur die neuen.",
+    "lede": "{name} bringt die Fotos von deiner Kamera per WLAN sicher nach Hause auf den Computer: in Fotos, einen Ordner oder Lightroom. Die App merkt sich, was schon importiert ist. Beim nächsten Mal holst du nur die neuen.",
     "cta_mac": "Für Mac laden",
     "cta_other": "Windows und Linux",
-    "note": "Ersetzt die Fotoübertragung in der Fujifilm-App Camera Remote."
+    "note": "Kostenlos und Open Source · Mac, Windows, Linux"
   },
   "shots": {
     "mac_alt": "{name} auf einem Mac: Fotos der Kamera nach Tag gruppiert, mit einer Schaltfläche zum Importieren der neuen.",
@@ -39,29 +39,62 @@
   },
   "why": {
     "h2": "Deine Kamera hat WLAN. Nutze es.",
-    "p1": "Die meisten Fujifilm-Kameras der letzten zehn Jahre senden Fotos per WLAN, aber nur an eine Handy-App, die nicht mehr gepflegt wird. Am Computer bleiben Kabel und Kartenleser, und die liegen nie da, wo du sie brauchst.",
+    "p1": "Die meisten Kameras der letzten zehn Jahre haben WLAN, aber gemacht für eine Handy-App. Um Fotos auf den Computer zu bekommen, bist du wieder bei Kabeln und Kartenlesern, und die sind nie da, wo du sie brauchst.",
     "p2": "{name} macht eine Sache: Es bringt deine Fotos sicher und ohne Umstände von der Kamera auf den Computer. Es bearbeitet, sortiert und bewertet nichts. Das macht deine Foto-App schon."
   },
   "how": {
     "h2": "So funktioniert's",
     "steps": [
-      {"t": "WLAN an der Kamera einschalten", "d": "Drücke Playback und wähle Wireless Communication. Die Kamera startet ein eigenes WLAN."},
-      {"t": "Mit dem WLAN der Kamera verbinden", "d": "Wähle am Computer das Netzwerk FUJIFILM-… {name} findet die Kamera von selbst. Beim ersten Mal drückst du OK an der Kamera."},
-      {"t": "Auf „Neue importieren“ klicken", "d": "Nur Fotos, die du noch nicht importiert hast, werden kopiert, geprüft und dort abgelegt, wo du sie willst. Oder wähle selbst aus."}
+      {
+        "t": "WLAN an der Kamera einschalten",
+        "d": "So wie für ihre Handy-App. An einer Fujifilm: Wiedergabe, dann Drahtlose Kommunikation."
+      },
+      {
+        "t": "Mit dem Netzwerk der Kamera verbinden",
+        "d": "Wähle am Computer das Netzwerk, das die Kamera startet. {name} findet die Kamera von selbst. Beim ersten Mal bestätigst du an der Kamera."
+      },
+      {
+        "t": "Auf „Neue importieren“ klicken",
+        "d": "Nur Fotos, die du noch nicht importiert hast, werden kopiert, geprüft und dort abgelegt, wo du sie willst. Oder wähle selbst aus."
+      }
     ],
-    "autosave": "Noch einfacher: Mit PC AutoSave sendet die Kamera neue Fotos über dein Heim-WLAN an {name}. Kein Netzwerkwechsel nötig."
+    "autosave": "Noch einfacher bei Fujifilm-Kameras: Mit PC AutoSave sendet die Kamera neue Fotos über dein Heim-WLAN an {name}. Kein Netzwerkwechsel."
   },
   "features": {
     "h2": "Alles, was du brauchst. Nichts, was nicht.",
     "items": [
-      {"t": "Nur neue Fotos", "d": "{name} merkt sich, was importiert wurde, auch wenn du Fotos vom Computer löschst. Keine Duplikate."},
-      {"t": "Wohin du willst", "d": "Fotos (mit Album), ein beliebiger Ordner, dein Bilder-Ordner für die Fotos-App von Windows, ein Ordner, den Lightroom überwacht, oder dein eigener Immich-Server."},
-      {"t": "PC AutoSave", "d": "Registriere die Kamera einmal. Danach wählst du an der Kamera PC AutoSave, und sie sendet neue Fotos über dein Heim-WLAN."},
-      {"t": "An der Kamera auswählen", "d": "Wähle Fotos an der Kamera aus und sende sie, oder schütze deine Favoriten und importiere nur diese."},
-      {"t": "Sichere Kopien", "d": "Jede Datei wird mit den Angaben der Kamera abgeglichen und bei Abweichung erneut geladen. Die App warnt dich, bevor der Speicher voll ist."},
-      {"t": "So sortiert, wie du willst", "d": "Ordner nach Jahr und Datum, eigene Dateinamen, ein Album pro Monat und eine Sicherungskopie auf einem zweiten Laufwerk."},
-      {"t": "Bleibt im Hintergrund", "d": "Läuft in der Menüleiste oder im Infobereich, importiert automatisch, sobald die Kamera verbunden ist, und meldet sich, wenn alles fertig ist."},
-      {"t": "Privat von Grund auf", "d": "Kein Konto, keine Cloud, kein Tracking. Deine Fotos gehen von der Kamera auf deinen Computer und sonst nirgendwohin."}
+      {
+        "t": "Nur neue Fotos",
+        "d": "{name} merkt sich, was importiert wurde, auch wenn du Fotos vom Computer löschst. Keine Duplikate."
+      },
+      {
+        "t": "Wohin du willst",
+        "d": "Fotos (mit Album), ein beliebiger Ordner, dein Bilder-Ordner für die Fotos-App von Windows, ein Ordner, den Lightroom überwacht, oder dein eigener Immich-Server."
+      },
+      {
+        "t": "Über dein Heim-WLAN",
+        "d": "Bei Fujifilm-Kameras: Registriere die Kamera einmal, wähle danach an der Kamera PC AutoSave, und sie sendet neue Fotos über dein Heim-WLAN."
+      },
+      {
+        "t": "An der Kamera auswählen",
+        "d": "Wähle Fotos an der Kamera aus und sende sie, oder schütze deine Favoriten und importiere nur diese."
+      },
+      {
+        "t": "Sichere Kopien",
+        "d": "Jede Datei wird mit den Angaben der Kamera abgeglichen und bei Abweichung erneut geladen. Die App warnt dich, bevor der Speicher voll ist."
+      },
+      {
+        "t": "So sortiert, wie du willst",
+        "d": "Ordner nach Jahr und Datum, eigene Dateinamen, ein Album pro Monat und eine Sicherungskopie auf einem zweiten Laufwerk."
+      },
+      {
+        "t": "Bleibt im Hintergrund",
+        "d": "Läuft in der Menüleiste oder im Infobereich, importiert automatisch, sobald die Kamera verbunden ist, und meldet sich, wenn alles fertig ist."
+      },
+      {
+        "t": "Privat von Grund auf",
+        "d": "Kein Konto, keine Cloud, kein Tracking. Deine Fotos gehen von der Kamera auf deinen Computer und sonst nirgendwohin."
+      }
     ]
   },
   "not": {
@@ -75,7 +108,7 @@
   },
   "camerasblock": {
     "h2": "Funktioniert mit deiner Kamera",
-    "p": "Gemacht für Fujifilm X und GFX, die mit Camera Remote funktionierten, etwa von 2014 bis 2021. Getestet mit der X-T20 und mit neun weiteren Fujifilm-Modellen in einem Emulator. Die Unterstützung für Canon, Olympus, Ricoh, Sony und Panasonic ist experimentell.",
+    "p": "Funktioniert heute am besten mit Fujifilm X- und GFX-Kameras von etwa 2014 bis 2021, die mit Fujifilms App Camera Remote liefen. Getestet an der X-T20 und an neun weiteren Fujifilm-Modellen im Emulator. Canon, Olympus, Ricoh, Sony und Panasonic sind experimentell.",
     "link": "Alle unterstützten Kameras ansehen"
   },
   "download": {
@@ -100,14 +133,42 @@
   "faq": {
     "h2": "Fragen",
     "items": [
-      {"q": "Funktioniert {name} mit meiner Kamera?", "a": "Wenn deine Fujifilm-Kamera per WLAN mit der App Camera Remote funktionierte, sollte sie auch mit {name} funktionieren. Neuere Modelle, die per Bluetooth koppeln, etwa X-T5 und X-S20, werden noch nicht unterstützt. Details findest du in der Kameraliste."},
-      {"q": "Kann ich RAW-Dateien importieren?", "a": "Fujifilm-Kameras senden per WLAN nur JPEGs. Das ist eine Grenze der Kamera, nicht von {name}. Für RAF-Dateien brauchst du weiter einen Kartenleser oder die USB-Verbindung der Kamera."},
-      {"q": "Ist es wirklich kostenlos?", "a": "Ja. {name} ist Open Source unter der MIT-Lizenz. Es gibt keine Werbung, keine Abos und keine In-App-Käufe."},
-      {"q": "Bin ich beim Import offline?", "a": "Ja. Solange dein Computer im WLAN der Kamera ist, hat er keinen Internetzugang. Mit PC AutoSave tritt die Kamera stattdessen deinem Heimnetz bei, du bleibst also online."},
-      {"q": "Lädt die App meine Fotos irgendwohin hoch?", "a": "Nein. {name} spricht nur mit deiner Kamera und den Ordnern oder Apps, die du wählst. Es gibt kein Konto, keine Analyse und keine eigenen Server."},
-      {"q": "Funktioniert es mit Lightroom, Capture One oder der Fotos-App von Windows?", "a": "Ja. Importiere in einen Ordner, den deine Foto-App überwacht, oder in deinen Bilder-Ordner für die Fotos-App von Windows. Auf dem Mac importiert {name} auch direkt in Fotos."},
-      {"q": "Löscht die App Fotos von der Kamera?", "a": "Nie. Deine Karte bleibt genau, wie sie war. Lösche Fotos an der Kamera, wenn du so weit bist."},
-      {"q": "Und andere Kameramarken?", "a": "Canon, Olympus und OM System, Ricoh GR sowie ältere Sony- und Panasonic-Kameras werden experimentell unterstützt. Wenn du eine ausprobierst, sag uns bitte, ob es geklappt hat."}
+      {
+        "q": "Funktioniert {name} mit meiner Kamera?",
+        "a": "Fujifilm-Kameras, die per WLAN mit der App Camera Remote funktionierten, werden am besten unterstützt; {name} ersetzt deren Fotoübertragung. Neuere Fujifilm-Modelle, die sich per Bluetooth koppeln, wie die X-T5 und X-S20, werden noch nicht unterstützt. Canon, Olympus, Ricoh, Sony und Panasonic sind experimentell. Siehe die Kameraliste."
+      },
+      {
+        "q": "Kann ich RAW-Dateien importieren?",
+        "a": "Die meisten Kameras, auch Fujifilm, senden per WLAN nur JPEGs. Das ist eine Grenze der Kamera, nicht von {name}. Für RAW-Dateien brauchst du weiter einen Kartenleser oder ein Kabel."
+      },
+      {
+        "q": "Ist das etwas für Profis?",
+        "a": "Eher nicht. Für eine volle Karte mit RAW-Dateien ist ein Kartenleser viel schneller als WLAN. {name} ist für die Tage, an denen du keinen dabeihast, und um auf einer Veranstaltung ein paar ausgewählte Fotos von der Kamera an einen Laptop zu senden."
+      },
+      {
+        "q": "Ist es wirklich kostenlos?",
+        "a": "Ja. {name} ist Open Source unter der MIT-Lizenz. Es gibt keine Werbung, keine Abos und keine In-App-Käufe."
+      },
+      {
+        "q": "Bin ich beim Import offline?",
+        "a": "Ja. Solange dein Computer im WLAN der Kamera ist, hat er keinen Internetzugang. Mit PC AutoSave tritt die Kamera stattdessen deinem Heimnetz bei, du bleibst also online."
+      },
+      {
+        "q": "Lädt die App meine Fotos irgendwohin hoch?",
+        "a": "Nein. {name} spricht nur mit deiner Kamera und den Ordnern oder Apps, die du wählst. Es gibt kein Konto, keine Analyse und keine eigenen Server."
+      },
+      {
+        "q": "Funktioniert es mit Lightroom, Capture One oder der Fotos-App von Windows?",
+        "a": "Ja. Importiere in einen Ordner, den deine Foto-App überwacht, oder in deinen Bilder-Ordner für die Fotos-App von Windows. Auf dem Mac importiert {name} auch direkt in Fotos."
+      },
+      {
+        "q": "Löscht die App Fotos von der Kamera?",
+        "a": "Nie. Deine Karte bleibt genau, wie sie war. Lösche Fotos an der Kamera, wenn du so weit bist."
+      },
+      {
+        "q": "Und andere Kameramarken?",
+        "a": "Canon, Olympus und OM System, Ricoh GR sowie ältere Sony- und Panasonic-Kameras werden experimentell unterstützt. Wenn du eine ausprobierst, sag uns bitte, ob es geklappt hat."
+      }
     ]
   },
   "cameras": {
@@ -141,12 +202,30 @@
     "h1": "Datenschutz",
     "updated": "Zuletzt aktualisiert am 3. November 2026.",
     "sections": [
-      {"h": "Kurz gesagt", "p": "{name} sammelt nichts über dich. Es gibt kein Konto, keine Analyse, keine Absturzberichte und keine Server. Diese Website nutzt keine Cookies, kein JavaScript und kein Tracking."},
-      {"h": "Was die App mit deinen Fotos macht", "p": "{name} verbindet sich per WLAN mit deiner Kamera und kopiert Fotos an die Orte, die du wählst: Fotos, einen Ordner auf deinem Computer oder ein Backup-Laufwerk. Wenn du einen Immich-Server einrichtest, lädt die App dorthin hoch. Diesen Server betreibst du selbst."},
-      {"h": "Was die App speichert", "p": "Eine Liste der importierten Fotos (Dateiname, Datum und Größe), damit sie beim nächsten Mal übersprungen werden, und deine Einstellungen. Beides bleibt auf deinem Computer. Ein Immich-API-Schlüssel wird im Schlüsselbund des Systems gespeichert."},
-      {"h": "Berechtigungen", "p": "Auf dem Mac fragt {name} nach Zugriff auf Fotos, um Fotos hinzuzufügen, und nach dem lokalen Netzwerk, um die Kamera zu erreichen. Der Zugriff dient nur dazu, Fotos hinzuzufügen und das eigene Album anzulegen."},
-      {"h": "Diese Website", "p": "Diese Seite wird von Cloudflare Pages gehostet. Cloudflare verarbeitet Anfragen, um Seiten auszuliefern, und speichert eventuell kurzlebige Protokolle. Wir erhalten oder nutzen sie nicht. Es gibt keine Skripte von Drittanbietern."},
-      {"h": "Kontakt", "p": "Fragen? Eröffne ein Issue auf GitHub."}
+      {
+        "h": "Kurz gesagt",
+        "p": "{name} sammelt nichts über dich. Es gibt kein Konto, keine Analyse, keine Absturzberichte und keine Server. Diese Website nutzt keine Cookies, kein JavaScript und kein Tracking."
+      },
+      {
+        "h": "Was die App mit deinen Fotos macht",
+        "p": "{name} verbindet sich per WLAN mit deiner Kamera und kopiert Fotos an die Orte, die du wählst: Fotos, einen Ordner auf deinem Computer oder ein Backup-Laufwerk. Wenn du einen Immich-Server einrichtest, lädt die App dorthin hoch. Diesen Server betreibst du selbst."
+      },
+      {
+        "h": "Was die App speichert",
+        "p": "Eine Liste der importierten Fotos (Dateiname, Datum und Größe), damit sie beim nächsten Mal übersprungen werden, und deine Einstellungen. Beides bleibt auf deinem Computer. Ein Immich-API-Schlüssel wird im Schlüsselbund des Systems gespeichert."
+      },
+      {
+        "h": "Berechtigungen",
+        "p": "Auf dem Mac fragt {name} nach Zugriff auf Fotos, um Fotos hinzuzufügen, und nach dem lokalen Netzwerk, um die Kamera zu erreichen. Der Zugriff dient nur dazu, Fotos hinzuzufügen und das eigene Album anzulegen."
+      },
+      {
+        "h": "Diese Website",
+        "p": "Diese Seite wird von Cloudflare Pages gehostet. Cloudflare verarbeitet Anfragen, um Seiten auszuliefern, und speichert eventuell kurzlebige Protokolle. Wir erhalten oder nutzen sie nicht. Es gibt keine Skripte von Drittanbietern."
+      },
+      {
+        "h": "Kontakt",
+        "p": "Fragen? Eröffne ein Issue auf GitHub."
+      }
     ]
   },
   "notfound": {
@@ -155,7 +234,7 @@
     "home": "Zur Startseite"
   },
   "foot": {
-    "tagline": "WLAN-Fotoimport für Fujifilm und andere Kameras.",
+    "tagline": "Ein sicherer Hafen für deine Fotos: per WLAN von der Kamera auf den Computer.",
     "license": "Open Source unter der MIT-Lizenz.",
     "nocookies": "Keine Cookies, kein Tracking.",
     "privacy": "Datenschutz",

@@ -2,14 +2,14 @@
   "lang_name": "Français",
   "og_locale": "fr_FR",
   "meta": {
-    "home_title": "{name} : transférer vos photos en Wi-Fi (Mac, Windows, Linux)",
-    "home_description": "{name} copie les photos de votre Fujifilm vers votre ordinateur en Wi-Fi : dans Photos, un dossier ou Lightroom. Sans câble ni lecteur de carte. Gratuit.",
+    "home_title": "{name} : les photos de votre appareil en Wi-Fi, sans câble",
+    "home_description": "{name} copie les photos de votre appareil vers votre ordinateur en Wi-Fi : dans Photos, un dossier ou Lightroom. Sans câble. Gratuit sur Mac, Windows et Linux.",
     "cameras_title": "Appareils compatibles : Fujifilm, Canon, Olympus, Ricoh | {name}",
     "cameras_description": "Les appareils compatibles avec {name} : Fujifilm X-T20, X-T2, X-T4, X-T30, X-S10 et d'autres, ainsi que Canon, Olympus, Ricoh, Sony et Panasonic.",
     "privacy_title": "Confidentialité | {name}",
     "privacy_description": "{name} ne collecte rien. Il communique avec votre appareil photo et avec les destinations d'importation, et rien d'autre. Ce site n'utilise ni cookies ni traceurs.",
     "notfound_title": "Page introuvable | {name}",
-    "og_image_alt": "{name} sur un Mac, affichant les photos d'un appareil Fujifilm prêtes à être importées."
+    "og_image_alt": "{name} sur un Mac, avec les photos d'un appareil prêtes à importer."
   },
   "nav": {
     "features": "Fonctionnalités",
@@ -24,12 +24,12 @@
     "home": "Accueil {name}"
   },
   "hero": {
-    "eyebrow": "Gratuit et open source · Mac, Windows, Linux",
+    "eyebrow": "Un port sûr pour vos photos",
     "h1": "Sortez les photos de votre appareil. Sans câble.",
-    "lede": "{name} copie les photos de votre appareil photo Fujifilm vers votre ordinateur en Wi-Fi, directement dans Photos, un dossier ou Lightroom. Il retient ce qu'il a déjà importé : la fois suivante, vous ne récupérez que les nouvelles.",
+    "lede": "{name} ramène les photos de votre appareil à bon port, sur votre ordinateur, en Wi-Fi : dans Photos, un dossier ou Lightroom. Il retient ce qu'il a déjà importé : la fois suivante, vous ne récupérez que les nouvelles.",
     "cta_mac": "Télécharger pour Mac",
     "cta_other": "Windows et Linux",
-    "note": "Remplace le transfert de photos de l'app Camera Remote de Fujifilm."
+    "note": "Gratuit et open source · Mac, Windows, Linux"
   },
   "shots": {
     "mac_alt": "{name} sur un Mac : les photos de l'appareil groupées par jour, avec un bouton pour importer les nouvelles.",
@@ -39,26 +39,26 @@
   },
   "why": {
     "h2": "Votre appareil a le Wi-Fi. Servez-vous-en.",
-    "p1": "La plupart des appareils Fujifilm des dix dernières années peuvent envoyer des photos en Wi-Fi, mais seulement vers une app pour téléphone qui n'est plus maintenue. Sur un ordinateur, vous revenez aux câbles et aux lecteurs de carte, jamais là où il le faudrait.",
+    "p1": "La plupart des appareils photo des dix dernières années ont le Wi-Fi, mais il a été conçu pour une application de téléphone. Pour mettre les photos sur un ordinateur, retour aux câbles et aux lecteurs de cartes, jamais là quand il faut.",
     "p2": "{name} fait une seule chose : il transfère vos photos de l'appareil vers votre ordinateur, en toute sécurité et sans complication. Il ne retouche, ne classe et ne note rien. Votre app photo s'en charge déjà."
   },
   "how": {
     "h2": "Comment ça marche",
     "steps": [
       {
-        "t": "Activez le Wi-Fi sur l'appareil",
-        "d": "Appuyez sur Lecture, puis choisissez Communication sans fil. L'appareil crée son propre réseau Wi-Fi."
+        "t": "Activez le Wi-Fi de l'appareil",
+        "d": "Comme pour son application de téléphone. Sur un Fujifilm : Lecture, puis Communication sans fil."
       },
       {
         "t": "Rejoignez le réseau de l'appareil",
-        "d": "Sur votre ordinateur, choisissez le réseau nommé FUJIFILM-… {name} trouve l'appareil tout seul. La première fois, appuyez sur OK sur l'appareil."
+        "d": "Sur votre ordinateur, choisissez le réseau créé par l'appareil. {name} trouve l'appareil tout seul. La première fois, confirmez sur l'appareil."
       },
       {
         "t": "Cliquez sur Importer les nouvelles",
         "d": "Seules les photos pas encore importées sont copiées, vérifiées et placées où vous le souhaitez. Vous pouvez aussi choisir celles que vous voulez."
       }
     ],
-    "autosave": "Encore plus simple : avec PC AutoSave, l'appareil envoie ses nouvelles photos à {name} via votre Wi-Fi domestique. Sans changer de réseau."
+    "autosave": "Encore plus simple sur les Fujifilm : avec PC AutoSave, l'appareil envoie ses nouvelles photos à {name} via votre Wi-Fi domestique. Sans changer de réseau."
   },
   "features": {
     "h2": "Tout ce qu'il faut, rien de plus",
@@ -72,8 +72,8 @@
         "d": "Photos, n'importe quel dossier, votre dossier Images pour Photos de Windows, un dossier surveillé par Lightroom, ou votre propre serveur Immich."
       },
       {
-        "t": "PC AutoSave",
-        "d": "Enregistrez l'appareil une fois. Ensuite, choisissez PC AutoSave sur l'appareil et il envoie ses nouvelles photos via votre Wi-Fi domestique."
+        "t": "Via votre Wi-Fi domestique",
+        "d": "Sur les Fujifilm : enregistrez l'appareil une fois, puis choisissez PC AutoSave sur l'appareil et il envoie ses nouvelles photos via votre Wi-Fi domestique."
       },
       {
         "t": "Choisir sur l'appareil",
@@ -108,7 +108,7 @@
   },
   "camerasblock": {
     "h2": "Compatible avec votre appareil",
-    "p": "Conçu pour les appareils Fujifilm X et GFX compatibles avec Camera Remote, d'environ 2014 à 2021. Testé sur le X-T20, et sur neuf autres modèles Fujifilm dans un émulateur. La prise en charge de Canon, Olympus, Ricoh, Sony et Panasonic est expérimentale.",
+    "p": "Fonctionne le mieux aujourd'hui avec les Fujifilm X et GFX d'environ 2014 à 2021, ceux qui fonctionnaient avec l'application Camera Remote de Fujifilm. Testé sur le X-T20, et sur neuf autres modèles Fujifilm dans un émulateur. Canon, Olympus, Ricoh, Sony et Panasonic sont expérimentaux.",
     "link": "Voir tous les appareils compatibles"
   },
   "download": {
@@ -134,12 +134,16 @@
     "h2": "Questions",
     "items": [
       {
-        "q": "{name} fonctionne-t-il avec mon appareil ?",
-        "a": "Si votre appareil Fujifilm fonctionnait en Wi-Fi avec l'app Camera Remote, il devrait fonctionner avec {name}. Les modèles récents qui s'appairent en Bluetooth, comme le X-T5 et le X-S20, ne sont pas encore pris en charge. Voir la liste des appareils pour les détails."
+        "q": "{name} fonctionne-t-il avec mon appareil ?",
+        "a": "Les Fujifilm qui fonctionnaient en Wi-Fi avec l'application Camera Remote sont les mieux pris en charge ; {name} remplace le transfert de photos de cette application. Les Fujifilm plus récents qui s'appairent en Bluetooth, comme le X-T5 et le X-S20, ne sont pas encore pris en charge. Canon, Olympus, Ricoh, Sony et Panasonic sont expérimentaux. Voir la liste des appareils."
       },
       {
-        "q": "Peut-il importer les fichiers RAW ?",
-        "a": "Les appareils Fujifilm n'envoient que des JPEG en Wi-Fi. C'est une limite de l'appareil, pas de {name}. Pour les fichiers RAF, il faut toujours un lecteur de carte ou la connexion USB de l'appareil."
+        "q": "Peut-il importer les fichiers RAW ?",
+        "a": "La plupart des appareils, Fujifilm compris, n'envoient que des JPEG en Wi-Fi. C'est une limite de l'appareil, pas de {name}. Pour les fichiers RAW, il faut toujours un lecteur de cartes ou un câble."
+      },
+      {
+        "q": "Est-ce pour les professionnels ?",
+        "a": "Pas vraiment. Pour une carte pleine de fichiers RAW, un lecteur de cartes est bien plus rapide que le Wi-Fi. {name} sert les jours où vous n'en avez pas sous la main, et pour envoyer quelques photos choisies de l'appareil vers un portable pendant un événement."
       },
       {
         "q": "Est-ce vraiment gratuit ?",
@@ -230,7 +234,7 @@
     "home": "Aller à la page d'accueil"
   },
   "foot": {
-    "tagline": "Transfert de photos en Wi-Fi pour Fujifilm et d'autres appareils.",
+    "tagline": "Un port sûr pour vos photos : de l'appareil à l'ordinateur en Wi-Fi.",
     "license": "Open source sous licence MIT.",
     "nocookies": "Pas de cookies, pas de suivi.",
     "privacy": "Confidentialité",

@@ -2,14 +2,14 @@
   "lang_name": "Español",
   "og_locale": "es_ES",
   "meta": {
-    "home_title": "{name}: pasa fotos de tu cámara por wifi (Mac, Windows, Linux)",
-    "home_description": "{name} pasa las fotos de tu cámara Fujifilm al ordenador por wifi: a Fotos, una carpeta o Lightroom. Sin cable ni lector de tarjetas. Gratis.",
+    "home_title": "{name}: las fotos de tu cámara por wifi, sin cable",
+    "home_description": "{name} copia las fotos de tu cámara al ordenador por wifi: a Fotos, una carpeta o Lightroom. Sin cable ni lector de tarjetas. Gratis para Mac, Windows y Linux.",
     "cameras_title": "Cámaras compatibles: Fujifilm X y GFX, Canon, Olympus, Ricoh | {name}",
     "cameras_description": "Qué cámaras funcionan con {name} para pasar fotos por wifi: Fujifilm X-T20, X-T2, X-T4, X-T30, X-S10 y más, además de Canon, Olympus, Ricoh, Sony y Panasonic.",
     "privacy_title": "Privacidad | {name}",
     "privacy_description": "{name} no recoge nada. Habla con tu cámara y con los lugares donde importas, y con nadie más. Esta web no usa cookies ni rastreo.",
     "notfound_title": "Página no encontrada | {name}",
-    "og_image_alt": "{name} en un Mac, mostrando las fotos de una cámara Fujifilm listas para importar."
+    "og_image_alt": "{name} en un Mac, con fotos de una cámara listas para importar."
   },
   "nav": {
     "features": "Funciones",
@@ -24,12 +24,12 @@
     "home": "Inicio de {name}"
   },
   "hero": {
-    "eyebrow": "Gratis y de código abierto · Mac, Windows, Linux",
+    "eyebrow": "Un puerto seguro para tus fotos",
     "h1": "Saca las fotos de tu cámara. Sin cable.",
-    "lede": "{name} copia las fotos de tu cámara Fujifilm al ordenador por wifi, directamente a Fotos, una carpeta o Lightroom. Recuerda lo que ya importó, así que la próxima vez solo trae las nuevas.",
+    "lede": "{name} lleva las fotos de tu cámara a buen puerto, a tu ordenador, por wifi: a Fotos, una carpeta o Lightroom. Recuerda lo que ya importó, así que la próxima vez solo trae las nuevas.",
     "cta_mac": "Descargar para Mac",
     "cta_other": "Windows y Linux",
-    "note": "Sustituye la transferencia de fotos de la app Camera Remote de Fujifilm."
+    "note": "Gratis y de código abierto · Mac, Windows, Linux"
   },
   "shots": {
     "mac_alt": "{name} en un Mac: las fotos de la cámara agrupadas por día, con un botón para importar las nuevas.",
@@ -39,26 +39,26 @@
   },
   "why": {
     "h2": "Tu cámara tiene wifi. Aprovéchalo.",
-    "p1": "La mayoría de las cámaras Fujifilm de los últimos diez años pueden enviar fotos por wifi, pero solo a una app de móvil que ya no tiene mantenimiento. En el ordenador vuelves a los cables y los lectores de tarjetas, que nunca están donde los necesitas.",
+    "p1": "La mayoría de las cámaras de los últimos diez años tienen wifi, pero pensado para una app del móvil. Para pasar fotos a un ordenador vuelves a los cables y lectores de tarjetas, y nunca están donde los necesitas.",
     "p2": "{name} hace una sola cosa: pasa las fotos de la cámara al ordenador, con seguridad y sin complicaciones. No edita, no organiza ni puntúa. Eso ya lo hace tu app de fotos."
   },
   "how": {
     "h2": "Cómo funciona",
     "steps": [
       {
-        "t": "Activa el wifi en la cámara",
-        "d": "Pulsa Reproducción y elige Comunicación inalámbrica. La cámara crea su propia red wifi."
+        "t": "Activa el wifi de la cámara",
+        "d": "Igual que para su app del móvil. En una Fujifilm: Reproducción y luego Comunicación inalámbrica."
       },
       {
         "t": "Conéctate a la red de la cámara",
-        "d": "En el ordenador, elige la red llamada FUJIFILM-… {name} encuentra la cámara solo. La primera vez, pulsa OK en la cámara."
+        "d": "En el ordenador, elige la red que crea la cámara. {name} encuentra la cámara solo. La primera vez, confirma en la cámara."
       },
       {
         "t": "Haz clic en Importar nuevas",
         "d": "Solo se copian las fotos que aún no has importado, se comprueban y se guardan donde quieras. O selecciona las que prefieras."
       }
     ],
-    "autosave": "Aún más fácil: con PC AutoSave, la cámara envía sus fotos nuevas a {name} por el wifi de casa. Sin cambiar de red."
+    "autosave": "Aún más fácil en cámaras Fujifilm: con PC AutoSave, la cámara envía sus fotos nuevas a {name} por el wifi de casa. Sin cambiar de red."
   },
   "features": {
     "h2": "Todo lo que necesitas, nada que sobre",
@@ -72,8 +72,8 @@
         "d": "Fotos, cualquier carpeta, tu carpeta Imágenes para la app Fotos de Windows, una carpeta que vigile Lightroom o tu propio servidor Immich."
       },
       {
-        "t": "PC AutoSave",
-        "d": "Registra la cámara una vez. Después, elige PC AutoSave en la cámara y enviará sus fotos nuevas por el wifi de casa."
+        "t": "Por el wifi de casa",
+        "d": "En cámaras Fujifilm: registra la cámara una vez, elige después PC AutoSave en ella y enviará sus fotos nuevas por el wifi de casa."
       },
       {
         "t": "Elige en la cámara",
@@ -108,7 +108,7 @@
   },
   "camerasblock": {
     "h2": "Funciona con tu cámara",
-    "p": "Pensada para las cámaras Fujifilm X y GFX que funcionaban con Camera Remote, de 2014 a 2021 aproximadamente. Probada en la X-T20 y en otros nueve modelos Fujifilm con un emulador. La compatibilidad con Canon, Olympus, Ricoh, Sony y Panasonic es experimental.",
+    "p": "Hoy funciona mejor con las Fujifilm X y GFX de aproximadamente 2014 a 2021, las que funcionaban con la app Camera Remote de Fujifilm. Probado en la X-T20 y en otros nueve modelos Fujifilm en un emulador. Canon, Olympus, Ricoh, Sony y Panasonic son experimentales.",
     "link": "Ver todas las cámaras compatibles"
   },
   "download": {
@@ -135,11 +135,15 @@
     "items": [
       {
         "q": "¿Funciona {name} con mi cámara?",
-        "a": "Si tu cámara Fujifilm funcionaba con la app Camera Remote por wifi, debería funcionar con {name}. Los modelos nuevos que se emparejan por Bluetooth, como la X-T5 y la X-S20, aún no son compatibles. Consulta la lista de cámaras para más detalles."
+        "a": "Las Fujifilm que funcionaban por wifi con la app Camera Remote son las mejor soportadas; {name} sustituye la transferencia de fotos de esa app. Los modelos Fujifilm más nuevos que se emparejan por Bluetooth, como la X-T5 y la X-S20, aún no son compatibles. Canon, Olympus, Ricoh, Sony y Panasonic son experimentales. Consulta la lista de cámaras."
       },
       {
         "q": "¿Puede importar archivos RAW?",
-        "a": "Las cámaras Fujifilm solo envían JPEG por wifi. Es un límite de la cámara, no de {name}. Para los RAF sigues necesitando un lector de tarjetas o la conexión USB de la cámara."
+        "a": "La mayoría de las cámaras, Fujifilm incluida, solo envían JPEG por wifi. Es un límite de la cámara, no de {name}. Para los RAW sigues necesitando un lector de tarjetas o un cable."
+      },
+      {
+        "q": "¿Es para profesionales?",
+        "a": "En general, no. Para una tarjeta llena de archivos RAW, un lector de tarjetas es mucho más rápido que el wifi. {name} es para los días en que no llevas uno, y para enviar unas cuantas fotos elegidas de la cámara a un portátil durante un evento."
       },
       {
         "q": "¿De verdad es gratis?",
@@ -230,7 +234,7 @@
     "home": "Ir a la página de inicio"
   },
   "foot": {
-    "tagline": "Importación de fotos por wifi para Fujifilm y otras cámaras.",
+    "tagline": "Un puerto seguro para tus fotos: de la cámara al ordenador por wifi.",
     "license": "Código abierto con licencia MIT.",
     "nocookies": "Sin cookies, sin rastreo.",
     "privacy": "Privacidad",

@@ -2,14 +2,14 @@
   "lang_name": "Nederlands",
   "og_locale": "nl_NL",
   "meta": {
-    "home_title": "{name}: foto's van je camera via wifi (Mac, Windows, Linux)",
-    "home_description": "{name} zet foto's van je Fujifilm-camera via wifi op je computer: in Apple Foto's, een map of Lightroom. Geen kabel of kaartlezer nodig. Gratis.",
+    "home_title": "{name}: foto's van je camera via wifi, zonder kabel",
+    "home_description": "{name} kopieert foto's van je camera via wifi naar je computer: naar Apple Foto's, een map of Lightroom. Geen kabel, geen kaartlezer. Gratis voor Mac, Windows en Linux.",
     "cameras_title": "Ondersteunde camera's: Fujifilm, Canon, Olympus, Ricoh | {name}",
     "cameras_description": "Welke camera's werken met {name}: Fujifilm X-T20, X-T2, X-T4, X-T30, X-S10 en meer, plus Canon, Olympus, Ricoh, Sony en Panasonic.",
     "privacy_title": "Privacy | {name}",
     "privacy_description": "{name} verzamelt niets. Het praat met je camera en met de plekken waar je naartoe importeert, en met niets anders. Deze website gebruikt geen cookies en geen tracking.",
     "notfound_title": "Pagina niet gevonden | {name}",
-    "og_image_alt": "{name} op een Mac, met foto's op een Fujifilm-camera die klaarstaan om te importeren."
+    "og_image_alt": "{name} op een Mac, met foto's op een camera klaar om te importeren."
   },
   "nav": {
     "features": "Functies",
@@ -24,12 +24,12 @@
     "home": "{name} startpagina"
   },
   "hero": {
-    "eyebrow": "Gratis en open source · Mac, Windows, Linux",
+    "eyebrow": "Een veilige haven voor je foto's",
     "h1": "Haal de foto's van je camera. Zonder kabel.",
-    "lede": "{name} kopieert foto's van je Fujifilm-camera via wifi naar je computer, rechtstreeks naar Apple Foto's, een map of Lightroom. Het onthoudt wat al geïmporteerd is, dus de volgende keer krijg je alleen de nieuwe.",
+    "lede": "{name} brengt de foto's op je camera via wifi veilig thuis op je computer: in Apple Foto's, een map of Lightroom. Het onthoudt wat al geïmporteerd is, dus de volgende keer krijg je alleen de nieuwe.",
     "cta_mac": "Downloaden voor Mac",
     "cta_other": "Windows en Linux",
-    "note": "Vervangt het overzetten van foto's in Fujifilms Camera Remote-app."
+    "note": "Gratis en open source · Mac, Windows, Linux"
   },
   "shots": {
     "mac_alt": "{name} op een Mac: foto's op de camera gegroepeerd per dag, met een knop om de nieuwe te importeren.",
@@ -39,7 +39,7 @@
   },
   "why": {
     "h2": "Je camera heeft wifi. Gebruik het.",
-    "p1": "De meeste Fujifilm-camera's van de laatste tien jaar kunnen foto's via wifi versturen, maar alleen naar een smartphone-app die niet meer onderhouden wordt. Op een computer heb je weer kabels en kaartlezers nodig, en die liggen nooit waar je ze nodig hebt.",
+    "p1": "De meeste camera's van de laatste tien jaar hebben wifi, maar die is gemaakt voor een app op je telefoon. Om foto's op een computer te krijgen, ben je terug bij kabels en kaartlezers, en die liggen nooit waar je ze nodig hebt.",
     "p2": "{name} doet één ding: het brengt je foto's van de camera naar je computer, veilig en zonder gedoe. Het bewerkt, ordent of beoordeelt niets. Dat doet je fotoapp al."
   },
   "how": {
@@ -47,18 +47,18 @@
     "steps": [
       {
         "t": "Zet wifi aan op de camera",
-        "d": "Druk op Weergave en kies Draadloze communicatie. De camera start zijn eigen wifinetwerk."
+        "d": "Net zoals je zou doen voor de telefoon-app. Op een Fujifilm-camera: Weergave, dan Draadloze communicatie."
       },
       {
         "t": "Verbind met het netwerk van de camera",
-        "d": "Kies op je computer het netwerk met de naam FUJIFILM-… {name} vindt de camera zelf. Druk de eerste keer op OK op de camera."
+        "d": "Kies op je computer het netwerk dat de camera start. {name} vindt de camera zelf. De eerste keer bevestig je op de camera."
       },
       {
         "t": "Klik op Nieuwe importeren",
         "d": "Alleen foto's die je nog niet geïmporteerd hebt worden gekopieerd, gecontroleerd en op de gewenste plek gezet. Of selecteer zelf welke je wilt."
       }
     ],
-    "autosave": "Nog makkelijker: met PC AutoSave stuurt de camera nieuwe foto's via je wifi thuis naar {name}. Je hoeft niet van netwerk te wisselen."
+    "autosave": "Nog makkelijker op Fujifilm-camera's: met PC AutoSave stuurt de camera nieuwe foto's naar {name} via je wifi thuis. Geen netwerk wisselen."
   },
   "features": {
     "h2": "Alles wat je nodig hebt, niets extra",
@@ -72,8 +72,8 @@
         "d": "Apple Foto's (met een album), elke map, je map Afbeeldingen voor Foto's op Windows, een map die Lightroom bewaakt, of je eigen Immich-server."
       },
       {
-        "t": "PC AutoSave",
-        "d": "Registreer de camera één keer. Kies daarna PC AutoSave op de camera en die stuurt nieuwe foto's via je wifi thuis."
+        "t": "Via je wifi thuis",
+        "d": "Op Fujifilm-camera's: registreer de camera één keer, kies daarna PC AutoSave op de camera en die stuurt nieuwe foto's via je wifi thuis."
       },
       {
         "t": "Kies op de camera",
@@ -108,7 +108,7 @@
   },
   "camerasblock": {
     "h2": "Werkt met je camera",
-    "p": "Gemaakt voor Fujifilm X- en GFX-camera's die met Camera Remote werkten, van ongeveer 2014 tot 2021. Getest op de X-T20 en op negen andere Fujifilm-modellen in een emulator. Ondersteuning voor Canon, Olympus, Ricoh, Sony en Panasonic is experimenteel.",
+    "p": "Werkt vandaag het best met Fujifilm X- en GFX-camera's van ongeveer 2014 tot 2021, die met de Camera Remote-app van Fujifilm werkten. Getest op de X-T20, en op negen andere Fujifilm-modellen in een emulator. Canon, Olympus, Ricoh, Sony en Panasonic zijn experimenteel.",
     "link": "Alle ondersteunde camera's bekijken"
   },
   "download": {
@@ -135,11 +135,15 @@
     "items": [
       {
         "q": "Werkt {name} met mijn camera?",
-        "a": "Als je Fujifilm-camera via wifi met de Camera Remote-app werkte, werkt hij waarschijnlijk met {name}. Nieuwere modellen die via Bluetooth koppelen, zoals de X-T5 en X-S20, worden nog niet ondersteund. Bekijk de cameralijst voor details."
+        "a": "Fujifilm-camera's die via wifi met de Camera Remote-app werkten, worden het best ondersteund; {name} vervangt de fotoverzending van die app. Nieuwere Fujifilm-modellen die via Bluetooth koppelen, zoals de X-T5 en X-S20, worden nog niet ondersteund. Canon, Olympus, Ricoh, Sony en Panasonic zijn experimenteel. Zie de lijst met camera's."
       },
       {
         "q": "Kan het RAW-bestanden importeren?",
-        "a": "Fujifilm-camera's sturen via wifi alleen JPEG's. Dat is een beperking van de camera, niet van {name}. Voor RAF-bestanden heb je nog steeds een kaartlezer of de USB-verbinding van de camera nodig."
+        "a": "De meeste camera's, ook Fujifilm, sturen via wifi alleen JPEG's. Dat is een beperking van de camera, niet van {name}. Voor RAW-bestanden heb je nog altijd een kaartlezer of een kabel nodig."
+      },
+      {
+        "q": "Is het voor professionals?",
+        "a": "Meestal niet. Voor een volle kaart met RAW-bestanden is een kaartlezer veel sneller dan wifi. {name} is voor de dagen dat je er geen bij je hebt, en om op een evenement een paar gekozen foto's van de camera naar een laptop te sturen."
       },
       {
         "q": "Is het echt gratis?",
@@ -230,7 +234,7 @@
     "home": "Naar de startpagina"
   },
   "foot": {
-    "tagline": "Foto's importeren via wifi voor Fujifilm en andere camera's.",
+    "tagline": "Een veilige haven voor je foto's: via wifi van je camera naar je computer.",
     "license": "Open source onder de MIT-licentie.",
     "nocookies": "Geen cookies, geen tracking.",
     "privacy": "Privacy",

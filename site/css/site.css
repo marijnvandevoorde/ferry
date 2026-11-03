@@ -122,7 +122,7 @@ details > summary::-webkit-details-marker { display: none; }
   .head-tools .btn-small { display: none; }
 }
 
-/* Hero: dusk over water, the colors of a ferry crossing. */
+/* Hero: dusk over a harbour. */
 .hero {
   position: relative; overflow: hidden; color: #fff;
   background: linear-gradient(180deg, var(--night) 0%, var(--dusk) 55%, #7a4766 88%, #c9775f 100%);
