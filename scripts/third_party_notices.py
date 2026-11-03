@@ -19,14 +19,14 @@ def license_texts(package):
                    if p.is_file() and p.name.upper().startswith(("LICENSE", "LICENCE", "COPYING", "NOTICE")))
     if package.get("license_file"):
         files.append(folder / package["license_file"])
-    return [(f.name, f.read_text(errors="replace").strip()) for f in dict.fromkeys(files)]
+    return [(f.name, f.read_text(encoding="utf-8", errors="replace").strip()) for f in dict.fromkeys(files)]
 
 
 def main():
     meta = json.loads(subprocess.check_output(
         ["cargo", "metadata", "--format-version", "1", "--locked"], cwd=TAURI))
     own = {p["id"] for p in meta["packages"] if p["source"] is None}
-    parts = ["Third-party notices for Ferry (desktop).\n", (ROOT / "licenses/protocol.txt").read_text().strip()]
+    parts = ["Third-party notices for Ferry (desktop).\n", (ROOT / "licenses/protocol.txt").read_text(encoding="utf-8").strip()]
     missing = []
     for p in sorted(meta["packages"], key=lambda p: (p["name"], p["version"])):
         if p["id"] in own:
@@ -38,7 +38,7 @@ def main():
         if p.get("repository"):
             header += f"\n{p['repository']}"
         parts.append(header + "\n\n" + "\n\n".join(t for _, t in texts))
-    OUT.write_text(("\n\n" + "-" * 72 + "\n\n").join(parts) + "\n")
+    OUT.write_text(("\n\n" + "-" * 72 + "\n\n").join(parts) + "\n", encoding="utf-8")
     print(f"wrote {OUT.relative_to(ROOT)}: {len(parts) - 2} crates")
     if missing:
         print("no license file in the crate (license named in Cargo.toml only):", ", ".join(missing))
