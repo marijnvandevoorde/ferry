@@ -100,3 +100,6 @@ called Haven. Different category, but it goes on the trademark checklist with th
 - **Positioning:** brand-neutral. Fujifilm moves from the hero to the cameras block, the FAQ and the cameras
   page, where support is stated honestly.
 - **Copy:** "safely home", never "storage" or "backup service". It's always clear photos go to *your* computer.
+
+**Afterwards:** the owner kept **Ferry** as the name. The audience, positioning and copy decisions above stand;
+the tagline became "Your photos, carried safely home".

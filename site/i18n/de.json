@@ -24,7 +24,7 @@
     "home": "{name} Startseite"
   },
   "hero": {
-    "eyebrow": "Ein sicherer Hafen für deine Fotos",
+    "eyebrow": "Deine Fotos, sicher nach Hause gebracht",
     "h1": "Fotos von der Kamera holen. Ohne Kabel.",
     "lede": "{name} bringt die Fotos von deiner Kamera per WLAN sicher nach Hause auf den Computer: in Fotos, einen Ordner oder Lightroom. Die App merkt sich, was schon importiert ist. Beim nächsten Mal holst du nur die neuen.",
     "cta_mac": "Für Mac laden",
@@ -139,7 +139,7 @@
       },
       {
         "q": "Kann ich RAW-Dateien importieren?",
-        "a": "Die meisten Kameras, auch Fujifilm, senden per WLAN nur JPEGs. Das ist eine Grenze der Kamera, nicht von {name}. Für RAW-Dateien brauchst du weiter einen Kartenleser oder ein Kabel."
+        "a": "{name} importiert alles, was die Kamera anbietet, auch RAW. Fujifilm-Kameras bieten per WLAN nur JPEGs an, für RAF-Dateien brauchst du also weiter einen Kartenleser oder ein Kabel. Andere Marken bieten vielleicht auch RAW an; das ist noch nicht getestet."
       },
       {
         "q": "Ist das etwas für Profis?",
@@ -234,7 +234,7 @@
     "home": "Zur Startseite"
   },
   "foot": {
-    "tagline": "Ein sicherer Hafen für deine Fotos: per WLAN von der Kamera auf den Computer.",
+    "tagline": "Deine Fotos, sicher nach Hause gebracht: per WLAN von der Kamera auf den Computer.",
     "license": "Open Source unter der MIT-Lizenz.",
     "nocookies": "Keine Cookies, kein Tracking.",
     "privacy": "Datenschutz",

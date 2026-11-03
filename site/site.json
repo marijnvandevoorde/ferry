@@ -1,7 +1,7 @@
 {
-  "name": "Haven",
-  "origin": "https://haven-photos.pages.dev",
-  "cloudflare_project": "haven-photos",
+  "name": "Ferry",
+  "origin": "https://ferry-app.pages.dev",
+  "cloudflare_project": "ferry-app",
   "version": "0.2.0",
   "repo": "https://github.com/marijnvandevoorde/fuji-import",
   "contact": "https://github.com/marijnvandevoorde/fuji-import/issues",

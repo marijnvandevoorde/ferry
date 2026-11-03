@@ -24,7 +24,7 @@
     "home": "Inicio de {name}"
   },
   "hero": {
-    "eyebrow": "Un puerto seguro para tus fotos",
+    "eyebrow": "Tus fotos, llevadas a buen puerto",
     "h1": "Saca las fotos de tu cámara. Sin cable.",
     "lede": "{name} lleva las fotos de tu cámara a buen puerto, a tu ordenador, por wifi: a Fotos, una carpeta o Lightroom. Recuerda lo que ya importó, así que la próxima vez solo trae las nuevas.",
     "cta_mac": "Descargar para Mac",
@@ -139,7 +139,7 @@
       },
       {
         "q": "¿Puede importar archivos RAW?",
-        "a": "La mayoría de las cámaras, Fujifilm incluida, solo envían JPEG por wifi. Es un límite de la cámara, no de {name}. Para los RAW sigues necesitando un lector de tarjetas o un cable."
+        "a": "{name} importa lo que ofrezca la cámara, RAW incluido. Las Fujifilm solo ofrecen JPEG por wifi, así que para los RAF sigues necesitando un lector de tarjetas o un cable. Otras marcas quizá ofrezcan también RAW; aún no está probado."
       },
       {
         "q": "¿Es para profesionales?",
@@ -234,7 +234,7 @@
     "home": "Ir a la página de inicio"
   },
   "foot": {
-    "tagline": "Un puerto seguro para tus fotos: de la cámara al ordenador por wifi.",
+    "tagline": "Tus fotos, llevadas a buen puerto: de la cámara al ordenador por wifi.",
     "license": "Código abierto con licencia MIT.",
     "nocookies": "Sin cookies, sin rastreo.",
     "privacy": "Privacidad",

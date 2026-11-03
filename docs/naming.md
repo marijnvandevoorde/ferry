@@ -58,3 +58,6 @@ it later is a one-line change. Renaming the apps themselves is a separate step.
 Working name: **Ferry**. Runner-up: **Offload**, then **Pigeon**.
 
 **Update:** [round 4](roundtable-4.md) replaced Ferry with **Haven**.
+
+**Update 2:** after round 4 the owner chose to keep **Ferry**. The tagline from that round stays in spirit:
+"Your photos, carried safely home".

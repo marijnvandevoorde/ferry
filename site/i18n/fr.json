@@ -24,7 +24,7 @@
     "home": "Accueil {name}"
   },
   "hero": {
-    "eyebrow": "Un port sûr pour vos photos",
+    "eyebrow": "Vos photos, ramenées à bon port",
     "h1": "Sortez les photos de votre appareil. Sans câble.",
     "lede": "{name} ramène les photos de votre appareil à bon port, sur votre ordinateur, en Wi-Fi : dans Photos, un dossier ou Lightroom. Il retient ce qu'il a déjà importé : la fois suivante, vous ne récupérez que les nouvelles.",
     "cta_mac": "Télécharger pour Mac",
@@ -139,7 +139,7 @@
       },
       {
         "q": "Peut-il importer les fichiers RAW ?",
-        "a": "La plupart des appareils, Fujifilm compris, n'envoient que des JPEG en Wi-Fi. C'est une limite de l'appareil, pas de {name}. Pour les fichiers RAW, il faut toujours un lecteur de cartes ou un câble."
+        "a": "{name} importe tout ce que l'appareil propose, RAW compris. Les Fujifilm ne proposent que des JPEG en Wi-Fi : pour les fichiers RAF, il faut toujours un lecteur de cartes ou un câble. D'autres marques proposent peut-être aussi les RAW ; ce n'est pas encore testé."
       },
       {
         "q": "Est-ce pour les professionnels ?",
@@ -234,7 +234,7 @@
     "home": "Aller à la page d'accueil"
   },
   "foot": {
-    "tagline": "Un port sûr pour vos photos : de l'appareil à l'ordinateur en Wi-Fi.",
+    "tagline": "Vos photos, ramenées à bon port : de l'appareil à l'ordinateur en Wi-Fi.",
     "license": "Open source sous licence MIT.",
     "nocookies": "Pas de cookies, pas de suivi.",
     "privacy": "Confidentialité",

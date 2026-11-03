@@ -24,7 +24,7 @@
     "home": "{name} home"
   },
   "hero": {
-    "eyebrow": "A safe haven for your photos",
+    "eyebrow": "Your photos, carried safely home",
     "h1": "Get the photos off your camera. No cable.",
     "lede": "{name} brings the photos on your camera safely home to your computer over Wi-Fi: into Apple Photos, a folder or Lightroom. It remembers what it already imported, so next time you only get the new ones.",
     "cta_mac": "Download for Mac",
@@ -139,7 +139,7 @@
       },
       {
         "q": "Can it import RAW files?",
-        "a": "Most cameras, Fujifilm included, only send JPEGs over Wi-Fi. That is a limit of the camera, not of {name}. For RAW files you still need a card reader or a cable."
+        "a": "{name} imports whatever the camera offers, RAW included. Fujifilm cameras only offer JPEGs over Wi-Fi, so for RAF files you still need a card reader or a cable. Some other brands may offer RAW files too; that isn't tested yet."
       },
       {
         "q": "Is it for professionals?",
@@ -234,7 +234,7 @@
     "home": "Go to the home page"
   },
   "foot": {
-    "tagline": "A safe haven for your photos: Wi-Fi import from your camera to your computer.",
+    "tagline": "Your photos, carried safely home: Wi-Fi import from your camera to your computer.",
     "license": "Open source under the MIT license.",
     "nocookies": "No cookies, no tracking.",
     "privacy": "Privacy",

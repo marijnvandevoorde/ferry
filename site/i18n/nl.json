@@ -24,7 +24,7 @@
     "home": "{name} startpagina"
   },
   "hero": {
-    "eyebrow": "Een veilige haven voor je foto's",
+    "eyebrow": "Je foto's veilig thuisgebracht",
     "h1": "Haal de foto's van je camera. Zonder kabel.",
     "lede": "{name} brengt de foto's op je camera via wifi veilig thuis op je computer: in Apple Foto's, een map of Lightroom. Het onthoudt wat al geïmporteerd is, dus de volgende keer krijg je alleen de nieuwe.",
     "cta_mac": "Downloaden voor Mac",
@@ -139,7 +139,7 @@
       },
       {
         "q": "Kan het RAW-bestanden importeren?",
-        "a": "De meeste camera's, ook Fujifilm, sturen via wifi alleen JPEG's. Dat is een beperking van de camera, niet van {name}. Voor RAW-bestanden heb je nog altijd een kaartlezer of een kabel nodig."
+        "a": "{name} importeert wat de camera aanbiedt, ook RAW. Fujifilm-camera's bieden via wifi alleen JPEG's aan, dus voor RAF-bestanden heb je nog een kaartlezer of kabel nodig. Andere merken bieden misschien ook RAW aan; dat is nog niet getest."
       },
       {
         "q": "Is het voor professionals?",
@@ -234,7 +234,7 @@
     "home": "Naar de startpagina"
   },
   "foot": {
-    "tagline": "Een veilige haven voor je foto's: via wifi van je camera naar je computer.",
+    "tagline": "Je foto's veilig thuisgebracht: via wifi van je camera naar je computer.",
     "license": "Open source onder de MIT-licentie.",
     "nocookies": "Geen cookies, geen tracking.",
     "privacy": "Privacy",
