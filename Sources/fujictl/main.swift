@@ -23,6 +23,7 @@ options:
                        tokens: {yyyy} {MM} {dd} {HH} {mm} {ss} {camera} {original}
   --all                import everything, not only photos that weren't imported before
   --skip-videos        leave out videos
+  --bluetooth          the camera's Wi-Fi was started over Bluetooth (newer Fujifilm cameras: XApp gallery)
   --protocol NAME      fuji, ptpip (Canon, Nikon, …), olympus, ricoh or dlna (Sony, Panasonic); default: try each
   --immich URL         also upload imports to this Immich server (API key in $IMMICH_API_KEY)
   --immich-album NAME  add Immich uploads to this album
@@ -57,6 +58,7 @@ let immichAlbum = option("--immich-album")
 let all = flag("--all")
 let skipVideos = flag("--skip-videos")
 let watchAutoSave = flag("--autosave")
+let afterBluetoothHandoff = flag("--bluetooth")
 let verbose = !flag("--quiet")
 guard let command = args.first else {
     print(usage)
@@ -169,11 +171,13 @@ func connectDirect() throws -> WirelessCamera? {
     let approval = { print("Press OK on the camera to allow the connection…") }
     if let protocolName {
         guard let proto = CameraProtocol(rawValue: protocolName) else { fail("unknown protocol \(protocolName)") }
-        let camera = proto.camera(host: cameraHost, interface: interface, clientName: clientName, log: logLine)
+        let camera = proto.camera(host: cameraHost, interface: interface, clientName: clientName,
+                                  afterBluetoothHandoff: afterBluetoothHandoff, log: logLine)
         try camera.connect(onWaitingForApproval: approval)
         return camera
     }
-    return try CameraProtocol.connect(host: cameraHost, interface: interface, clientName: clientName, log: logLine,
+    return try CameraProtocol.connect(host: cameraHost, interface: interface, clientName: clientName,
+                                      afterBluetoothHandoff: afterBluetoothHandoff, log: logLine,
                                       onWaitingForApproval: approval)
 }
 

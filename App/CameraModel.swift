@@ -69,6 +69,8 @@ enum Prefs {
     static let immichEnabled = "immichEnabled"
     static let immichServer = "immichServer"
     static let immichAlbum = "immichAlbum"
+    /// JSON list of `FujiBluetooth.Pairing`.
+    static let bluetoothPairings = "bluetoothPairings"
 
     static func register() {
         UserDefaults.standard.register(defaults: [
@@ -117,6 +119,9 @@ final class CameraModel {
     /// The camera sent reduced-size JPEGs ("Resize image for smartphone" is on).
     private(set) var showResizeNotice = false
     private var lastSearchFailure: String?
+    /// The Bluetooth link to a newer camera whose Wi-Fi was started over Bluetooth. Kept open while connected,
+    /// because the camera may turn its Wi-Fi off when it drops; cleared on disconnect.
+    private(set) var bluetoothLink: FujiBluetoothCentral?
     var selection: Set<String> = []
 
     private var camera: SerialCamera?
@@ -198,6 +203,7 @@ final class CameraModel {
         let interface = isLoopback || autoSaveHost != nil ? nil : wifi
         let log: (String) -> Void = { [weak self] line in Task { @MainActor in self?.appendLog(line) } }
         let onApproval: () -> Void = { Task { @MainActor [weak self] in self?.phase = .waitingForApproval } }
+        let afterBluetoothHandoff = bluetoothLink != nil
 
         let camera: SerialCamera
         do {
@@ -209,7 +215,8 @@ final class CameraModel {
                     return fuji as WirelessCamera
                 }
                 // Fuji's protocol first, then standard PTP/IP (Canon and others).
-                return try CameraProtocol.connect(host: host, interface: interface, clientName: clientName, log: log,
+                return try CameraProtocol.connect(host: host, interface: interface, clientName: clientName,
+                                                  afterBluetoothHandoff: afterBluetoothHandoff, log: log,
                                                   onWaitingForApproval: onApproval)
             }.value)
         } catch {
@@ -235,7 +242,20 @@ final class CameraModel {
         sessionTask = Task { await runSession(camera) }
     }
 
+    /// Called once a camera's Wi-Fi was started over Bluetooth and this Mac joined it.
+    func connectAfterBluetoothHandoff(_ link: FujiBluetoothCentral) async {
+        bluetoothLink = link
+        // The new network needs a moment to give this Mac an address.
+        for _ in 0..<10 where phase == .searching {
+            await connect()
+            if phase != .searching { return }
+            try? await Task.sleep(for: .seconds(2))
+        }
+    }
+
     func disconnect() {
+        bluetoothLink?.disconnect()
+        bluetoothLink = nil
         pendingImport = []
         importTask?.cancel()
         sessionTask?.cancel()
@@ -652,7 +672,7 @@ final class CameraModel {
 
     // MARK: - Log
 
-    private func appendLog(_ line: String) {
+    func appendLog(_ line: String) {
         let f = DateFormatter()
         f.dateFormat = "HH:mm:ss.SSS"
         log.append("[\(f.string(from: Date()))] \(line)")

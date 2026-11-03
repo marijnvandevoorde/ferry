@@ -10,6 +10,9 @@ public final class FujiCamera: @unchecked Sendable {
     /// Network interface to connect through (e.g. "en0"); nil lets the system route.
     public let interface: String?
     public let clientName: String
+    /// True when the Wi-Fi network was started over Bluetooth (see `FujiBluetooth`). Newer cameras then expect
+    /// the gallery mode of Fujifilm's XApp instead of Camera Remote's.
+    public let afterBluetoothHandoff: Bool
     public var log: (String) -> Void
 
     public private(set) var cameraName: String = ""
@@ -25,13 +28,17 @@ public final class FujiCamera: @unchecked Sendable {
     private var cameraState: UInt32?
     /// Set when the camera announces an image in selection mode.
     private var selectionOffered = false
+    /// XApp gallery mode: the camera lists its photos by handle (D621) instead of numbering them 1...count.
+    public private(set) var usesXAppGallery = false
+    private var xappHandles: [UInt32] = []
     private let queue = DispatchQueue(label: "fujikit.camera")
 
     public init(host: String = "192.168.0.1", interface: String? = nil, clientName: String = "FujiImport",
-                log: @escaping (String) -> Void = { _ in }) {
+                afterBluetoothHandoff: Bool = false, log: @escaping (String) -> Void = { _ in }) {
         self.host = host
         self.interface = interface
         self.clientName = clientName
+        self.afterBluetoothHandoff = afterBluetoothHandoff
         self.log = log
     }
 
@@ -104,7 +111,15 @@ public final class FujiCamera: @unchecked Sendable {
                                 remoteVersion: try propU32(PTP.FujiProp.remoteVersion))
         log("Camera profile: \(profile.summary), state \(hex(cameraState))")
 
+        // libfuji: after a Bluetooth hand-off, cameras before remote version 0x20007 still speak Camera Remote.
+        usesXAppGallery = afterBluetoothHandoff && profile.generation == .remoteNew
         try configureInitialMode()
+        if usesXAppGallery {
+            log("Configuring the XApp gallery")
+            try configureXAppGallery()
+            log("Ready: \(objectCount) objects on the card")
+            return
+        }
 
         if isSendingSelection {
             // libfuji skips the rest of the setup in this mode.
@@ -190,7 +205,8 @@ public final class FujiCamera: @unchecked Sendable {
 
     /// Fuji doesn't support GetObjectHandles over Wi-Fi; objects are numbered 1...count.
     public var objectHandles: [UInt32] {
-        objectCount > 0 ? Array(1...UInt32(objectCount)) : []
+        if usesXAppGallery { return xappHandles }
+        return objectCount > 0 ? Array(1...UInt32(objectCount)) : []
     }
 
     public func objectInfo(_ handle: UInt32) throws -> ObjectInfo {
@@ -212,7 +228,11 @@ public final class FujiCamera: @unchecked Sendable {
     /// Downloads an object to `destination`. Returns the object's info.
     @discardableResult
     public func download(_ handle: UInt32, to destination: URL, progress: (Int64, Int64) -> Void = { _, _ in }) throws -> ObjectInfo {
-        let perDownloadSetup = !isAutoSave
+        let perDownloadSetup = !isAutoSave && !usesXAppGallery
+        if usesXAppGallery {
+            // libfuji: 2 asks for the full-size file (1 would be the smartphone-sized copy).
+            try setProp(PTP.FujiProp.compressSmall, u16: 2)
+        }
         if perDownloadSetup {
             try pollEvents()
             // Without this the camera reports a fake 100kb size in ObjectInfo.
@@ -270,7 +290,7 @@ public final class FujiCamera: @unchecked Sendable {
                 if cameraState != value { log("Camera state -> \(value)") }
                 cameraState = value
                 if value == PTP.CameraState.multipleTransfer { selectionOffered = true }
-            case PTP.FujiProp.objectCount:
+            case PTP.FujiProp.objectCount where !usesXAppGallery:
                 if objectCount != Int(value) { log("Object count -> \(value)") }
                 objectCount = Int(value)
             default:
@@ -283,7 +303,9 @@ public final class FujiCamera: @unchecked Sendable {
 
     private func configureInitialMode() throws {
         let mode: UInt16
-        if cameraState == PTP.CameraState.multipleTransfer {
+        if usesXAppGallery {
+            mode = PTP.ClientState.remoteImageViewXApp
+        } else if cameraState == PTP.CameraState.multipleTransfer {
             mode = PTP.ClientState.viewMultiple
         } else if profile.hasRemoteMode || cameraState == PTP.CameraState.remoteAccess {
             mode = PTP.ClientState.remoteMode
@@ -325,6 +347,32 @@ public final class FujiCamera: @unchecked Sendable {
         // libfuji sets this to 5 for all cameras (X-S10 and X-H1 want at least 4).
         try setProp(PTP.FujiProp.remoteGetObjectVersion, u32: 5)
         try pollEvents()
+    }
+
+    /// The XApp gallery setup, as libfuji's `fuji_xapp_config_gallery` and vcam's GFX100 II regression test do it.
+    private func configureXAppGallery() throws {
+        if let version = try propU32(PTP.FujiProp.remotePhotoViewExVersion) {
+            try setProp(PTP.FujiProp.remotePhotoViewExVersion, u32: version)
+        }
+        try setProp(PTP.FujiProp.compressSmall, u16: 0)
+        try setProp(PTP.FujiProp.enableCorrectFileSize, u16: 0)
+        _ = try? prop(PTP.FujiProp.storageID)
+        // The app asks for the current object and its thumbnail, then the folders and dates, before the list.
+        try transact(PTP.Op.fujiGetExtensionObjectInfo, [PTP.xappCurrentObject], allowFailure: true)
+        try transact(PTP.Op.fujiGetExtensionThumb, [PTP.xappCurrentObject], allowFailure: true)
+        try transact(PTP.Op.fujiGetImageImportFolders, [], allowFailure: true)
+        try transact(PTP.Op.fujiGetImageImportDates, [0, 30000], allowFailure: true)
+
+        guard let data = try prop(PTP.FujiProp.imageImportObjectHandles), data.count >= 4 else {
+            throw FujiError.protocolError("the camera sent no image list")
+        }
+        var r = DataReader(data)
+        let count = Int(try r.u32())
+        xappHandles = []
+        for _ in 0..<count where r.remaining >= 4 {
+            xappHandles.append(try r.u32())
+        }
+        objectCount = xappHandles.count
     }
 
     private func handshake() throws {

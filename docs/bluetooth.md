@@ -39,11 +39,25 @@ Bluetooth, joins that network, and continues with the same PTP-over-TCP protocol
 | `15ca59fe-…` lens | Lens name and firmware |
 | `00001800-…` generic access | Device name |
 
-## What this means for Fuji Import
+## Status (2026-11-03)
 
-- **macOS:** CoreBluetooth can do steps 1–6. Step 7, joining the camera's network automatically, needs CoreWLAN.
-  That may not be allowed in the sandboxed App Store build (see #21); the fallback is to show the network name and
-  password and let the user join it.
-- **Windows and Linux:** the desktop app would need BLE in the sidecar (WinRT Bluetooth APIs, or BlueZ over D-Bus).
-- **Testing:** vcam emulates no Bluetooth. This needs someone with an X-T5-era camera, ideally with packet captures
-  of Fuji's app pairing.
+Implemented, **not yet tested on a real camera** (none with Bluetooth is available; the X-T20 has none).
+
+- **Protocol:** `Sources/FujiKit/FujiBluetooth.swift` (UUIDs, advertisement token, pairing acknowledgement, time
+  packet; unit-tested).
+- **macOS:** `Sources/FujiKit/FujiBluetoothCentral.swift` drives CoreBluetooth; `App/BluetoothPairing.swift` is the
+  sheet behind "Pair over Bluetooth…" on the connect screen. macOS shows its own pairing prompt on the first read of
+  the secure status characteristic. Joining the camera's network uses CoreWLAN; when macOS doesn't allow that (it
+  needs Location access to scan, and may not allow it in the sandbox), the sheet shows the network name and password
+  to join by hand. Pairings are remembered, so later connections don't need pairing mode. The Bluetooth link stays
+  open while connected, in case the camera turns its Wi-Fi off when it drops.
+- **Windows and Linux:** the desktop app pairs with btleplug and joins the network with `netsh` or `nmcli`, then
+  tells `fujictl serve` to connect with `"bluetooth": true`.
+- **After the hand-off** (#45): cameras with remote version 0x20007 or later use the XApp gallery (client state 20,
+  photo list from property D621, full-size downloads with D226 = 2). Tested against vcam's GFX100 II
+  (`scripts/test-vcam.sh fuji_gfx100_ii+bluetooth`), which also offers RAF files in this mode. `fujictl --bluetooth`
+  selects it by hand.
+
+What a first real test should check: the pairing prompt, whether the secure acknowledgement is accepted, whether the
+time request arrives, whether the Wi-Fi status indication says 1, whether the network is hidden, and whether the XApp
+gallery lists RAW files on that camera.

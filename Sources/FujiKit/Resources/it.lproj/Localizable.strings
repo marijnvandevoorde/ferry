@@ -7,3 +7,9 @@
 "Protocol error: %@" = "Errore di protocollo: %@";
 "Camera returned %@ for operation %@" = "La fotocamera ha restituito %@ per l'operazione %@";
 "Cancelled" = "Annullato";
+"Bluetooth is off or not allowed for this app." = "Il Bluetooth è spento o non è consentito per questa app.";
+"The camera isn't in pairing mode. On the camera, choose Bluetooth Settings, then Pairing Registration." = "La fotocamera non è in modalità di abbinamento. Sulla fotocamera scegli Impostazioni Bluetooth, poi Registrazione abbinamento.";
+"This device doesn't look like a Fujifilm camera." = "Questo dispositivo non sembra una fotocamera Fujifilm.";
+"The camera rejected this computer. Remove the pairing on the camera and pair again." = "La fotocamera ha rifiutato questo computer. Rimuovi l'abbinamento sulla fotocamera e abbina di nuovo.";
+"The camera is busy. Switch it to shooting mode and try again." = "La fotocamera è occupata. Passa alla modalità di scatto e riprova.";
+"The camera stopped answering over Bluetooth." = "La fotocamera non risponde più via Bluetooth.";

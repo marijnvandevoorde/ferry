@@ -4,7 +4,8 @@ import Foundation
 /// `fujictl serve`: drives the camera for a desktop UI (the Tauri app) over JSON lines.
 ///
 /// Commands, one JSON object per line on stdin:
-///   {"cmd": "connect"}                          try to connect now (it also retries every few seconds)
+///   {"cmd": "connect", "bluetooth": true?}      try to connect now (it also retries every few seconds); "bluetooth"
+///                                               after a Bluetooth hand-off, kept until "disconnect"
 ///   {"cmd": "import", "ids": [...]?, "folder": "...", "folders": "{yyyy}/{yyyy-MM-dd}", "rename": "...",
 ///    "skipVideos": false, "immich": {"server", "apiKey", "album"}?}
 ///                                               import the given items, or all new ones without "ids";
@@ -35,6 +36,8 @@ final class Server: @unchecked Sendable {
     private var objectCount = 0
     private var cancelRequested = false
     private var stopped = false
+    /// Set by a connect command after a Bluetooth hand-off; newer Fujifilm cameras then use the XApp gallery.
+    private var afterBluetoothHandoff = false
 
     init(host: String?, clientName: String, history: ImportHistory) {
         self.host = host
@@ -61,7 +64,11 @@ final class Server: @unchecked Sendable {
                 queue.sync { disconnect() }
                 exit(0)
             case "connect":
-                queue.async { self.connectIfNeeded(reportFailure: true) }
+                let bluetooth = command["bluetooth"] as? Bool ?? false
+                queue.async {
+                    if bluetooth { self.afterBluetoothHandoff = true }
+                    self.connectIfNeeded(reportFailure: true)
+                }
             case "disconnect":
                 queue.async { self.disconnect() }
             case "import":
@@ -102,6 +109,7 @@ final class Server: @unchecked Sendable {
         do {
             let camera = try CameraProtocol.connect(
                 host: address, interface: host == nil ? wifi : nil, clientName: clientName,
+                afterBluetoothHandoff: afterBluetoothHandoff,
                 log: { [weak self] in self?.emit(["event": "log", "line": $0]) },
                 onWaitingForApproval: { [weak self] in self?.emit(["event": "status", "phase": "waitingForApproval"]) })
             self.camera = camera
@@ -127,6 +135,7 @@ final class Server: @unchecked Sendable {
     }
 
     private func disconnect() {
+        afterBluetoothHandoff = false
         camera?.disconnect()
         camera = nil
         items = [:]

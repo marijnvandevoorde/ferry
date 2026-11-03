@@ -55,11 +55,13 @@ public enum CameraProtocol: String, Sendable, CaseIterable {
 
     /// Connects with each protocol in turn and returns the first camera that accepts. A protocol is skipped only
     /// when nothing listens on its port, so no camera gets a throwaway connection (some accept just one).
-    public static func connect(host: String, interface: String?, clientName: String, log: @escaping (String) -> Void,
-                               onWaitingForApproval: () -> Void = {}) throws -> WirelessCamera {
+    /// `afterBluetoothHandoff`: the camera's Wi-Fi was started over Bluetooth (newer Fujifilm cameras).
+    public static func connect(host: String, interface: String?, clientName: String, afterBluetoothHandoff: Bool = false,
+                               log: @escaping (String) -> Void, onWaitingForApproval: () -> Void = {}) throws -> WirelessCamera {
         var lastError: Error = FujiError.connectionFailed("no camera at \(host)")
         for proto in allCases {
-            let camera = proto.camera(host: host, interface: interface, clientName: clientName, log: log)
+            let camera = proto.camera(host: host, interface: interface, clientName: clientName,
+                                      afterBluetoothHandoff: afterBluetoothHandoff, log: log)
             do {
                 try camera.connect(onWaitingForApproval: onWaitingForApproval)
                 return camera
@@ -70,9 +72,11 @@ public enum CameraProtocol: String, Sendable, CaseIterable {
         throw lastError
     }
 
-    public func camera(host: String, interface: String?, clientName: String, log: @escaping (String) -> Void) -> WirelessCamera {
+    public func camera(host: String, interface: String?, clientName: String, afterBluetoothHandoff: Bool = false,
+                       log: @escaping (String) -> Void) -> WirelessCamera {
         switch self {
-        case .fuji: FujiCamera(host: host, interface: interface, clientName: clientName, log: log)
+        case .fuji: FujiCamera(host: host, interface: interface, clientName: clientName,
+                               afterBluetoothHandoff: afterBluetoothHandoff, log: log)
         case .ptpip: PTPIPCamera(host: host, interface: interface, clientName: clientName, log: log)
         case .olympus: OlympusCamera(host: host, log: log)
         case .ricoh: RicohCamera(host: host, log: log)

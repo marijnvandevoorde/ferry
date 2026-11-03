@@ -7,3 +7,9 @@
 "Protocol error: %@" = "Protocolfout: %@";
 "Camera returned %@ for operation %@" = "De camera gaf %@ terug voor bewerking %@";
 "Cancelled" = "Geannuleerd";
+"Bluetooth is off or not allowed for this app." = "Bluetooth staat uit of is niet toegestaan voor deze app.";
+"The camera isn't in pairing mode. On the camera, choose Bluetooth Settings, then Pairing Registration." = "De camera staat niet in koppelmodus. Kies op de camera Bluetooth-instellingen en dan Koppelingsregistratie.";
+"This device doesn't look like a Fujifilm camera." = "Dit apparaat lijkt geen Fujifilm-camera.";
+"The camera rejected this computer. Remove the pairing on the camera and pair again." = "De camera weigerde deze computer. Verwijder de koppeling op de camera en koppel opnieuw.";
+"The camera is busy. Switch it to shooting mode and try again." = "De camera is bezig. Zet hem in opnamemodus en probeer opnieuw.";
+"The camera stopped answering over Bluetooth." = "De camera antwoordt niet meer via Bluetooth.";

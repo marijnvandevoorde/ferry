@@ -1,6 +1,46 @@
 {
   "sourceLanguage": "en",
   "strings": {
+    "NSBluetoothAlwaysUsageDescription": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Fuji Import pairs with newer Fujifilm cameras over Bluetooth to start their Wi-Fi."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Fuji Import s'appaire en Bluetooth avec les appareils Fujifilm récents pour démarrer leur Wi-Fi."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Fuji Import se empareja por Bluetooth con las cámaras Fujifilm más nuevas para activar su Wi-Fi."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Fuji Import si abbina via Bluetooth alle fotocamere Fujifilm più recenti per avviarne il Wi-Fi."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Fuji Import koppelt sich per Bluetooth mit neueren Fujifilm-Kameras, um ihr WLAN zu starten."
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Fuji Import koppelt via Bluetooth met nieuwere Fujifilm-camera's om hun wifi te starten."
+          }
+        }
+      }
+    },
     "NSLocalNetworkUsageDescription": {
       "localizations": {
         "en": {

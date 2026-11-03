@@ -1167,6 +1167,40 @@
         }
       }
     },
+    "Cancel": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Annuler"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cancelar"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Annulla"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Abbrechen"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Annuleren"
+          }
+        }
+      }
+    },
     "Choose": {
       "localizations": {
         "fr": {
@@ -1537,6 +1571,40 @@
           "stringUnit": {
             "state": "translated",
             "value": "Verbindingslogboek"
+          }
+        }
+      }
+    },
+    "Copy": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Copier"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Copiar"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Copia"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kopieren"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kopiëren"
           }
         }
       }
@@ -2119,6 +2187,40 @@
         }
       }
     },
+    "For cameras that pair with Fujifilm's app over Bluetooth, like the X-T5 and X-S20. On the camera, choose **Bluetooth Settings**, then **Pairing Registration**.": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pour les appareils qui s'appairent avec l'app Fujifilm en Bluetooth, comme le X-T5 et le X-S20. Sur l'appareil, choisissez **Réglages Bluetooth**, puis **Enregistrement d'appairage**."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Para cámaras que se emparejan con la app de Fujifilm por Bluetooth, como la X-T5 y la X-S20. En la cámara, elige **Ajustes Bluetooth** y luego **Registro de emparejamiento**."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Per le fotocamere che si abbinano all'app Fujifilm via Bluetooth, come la X-T5 e la X-S20. Sulla fotocamera scegli **Impostazioni Bluetooth**, poi **Registrazione abbinamento**."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Für Kameras, die sich per Bluetooth mit der Fujifilm-App koppeln, wie die X-T5 und X-S20. Wähle an der Kamera **Bluetooth-Einstellungen**, dann **Kopplungsregistrierung**."
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Voor camera's die via Bluetooth met de Fujifilm-app koppelen, zoals de X-T5 en X-S20. Kies op de camera **Bluetooth-instellingen** en dan **Koppelingsregistratie**."
+          }
+        }
+      }
+    },
     "Forget History": {
       "localizations": {
         "fr": {
@@ -2183,6 +2285,40 @@
           "stringUnit": {
             "state": "translated",
             "value": "Importgeschiedenis vergeten…"
+          }
+        }
+      }
+    },
+    "Forget This Camera": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Oublier cet appareil"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Olvidar esta cámara"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dimentica questa fotocamera"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Diese Kamera vergessen"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Deze camera vergeten"
           }
         }
       }
@@ -2983,6 +3119,74 @@
     "JPEG": {
       "shouldTranslate": false
     },
+    "Join the camera's network in Wi-Fi settings, then click Connect.": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Rejoignez le réseau de l'appareil dans les réglages Wi-Fi, puis cliquez sur Connecter."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Únete a la red de la cámara en los ajustes de Wi-Fi y haz clic en Conectar."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Collegati alla rete della fotocamera nelle impostazioni Wi-Fi, poi fai clic su Collega."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Verbinde dich in den WLAN-Einstellungen mit dem Netzwerk der Kamera und klicke dann auf Verbinden."
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Maak in de wifi-instellingen verbinding met het netwerk van de camera en klik dan op Verbinden."
+          }
+        }
+      }
+    },
+    "Joining %@…": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Connexion à %@…"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Conectando a %@…"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Connessione a %@…"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Verbinde mit %@…"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Verbinden met %@…"
+          }
+        }
+      }
+    },
     "Leave videos out of “Import New”": {
       "localizations": {
         "fr": {
@@ -3051,6 +3255,40 @@
         }
       }
     },
+    "Looking for cameras…": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Recherche d'appareils…"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Buscando cámaras…"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ricerca fotocamere…"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Suche nach Kameras…"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Camera's zoeken…"
+          }
+        }
+      }
+    },
     "Looking for the camera on your Wi-Fi network…": {
       "localizations": {
         "fr": {
@@ -3115,6 +3353,74 @@
           "stringUnit": {
             "state": "translated",
             "value": "Verbinding met de camera verloren."
+          }
+        }
+      }
+    },
+    "Network": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Réseau"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Red"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Rete"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Netzwerk"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Netwerk"
+          }
+        }
+      }
+    },
+    "Newer camera, like the X-T5? Pair over Bluetooth…": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Appareil plus récent, comme le X-T5 ? Appairer en Bluetooth…"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "¿Cámara más nueva, como la X-T5? Emparejar por Bluetooth…"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Fotocamera più recente, come la X-T5? Abbina via Bluetooth…"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Neuere Kamera wie die X-T5? Über Bluetooth koppeln…"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nieuwere camera, zoals de X-T5? Koppelen via Bluetooth…"
           }
         }
       }
@@ -3387,6 +3693,74 @@
           "stringUnit": {
             "state": "translated",
             "value": "Niet genoeg vrije ruimte: het importeren heeft %@ nodig, maar er is maar %@ vrij op de schijf van ‘%@’."
+          }
+        }
+      }
+    },
+    "Not in pairing mode": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pas en mode d'appairage"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No está en modo de emparejamiento"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Non in modalità di abbinamento"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nicht im Kopplungsmodus"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Niet in koppelmodus"
+          }
+        }
+      }
+    },
+    "Not tested on a real camera yet. If you try it, please tell us whether it worked.": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pas encore testé sur un vrai appareil. Si vous l'essayez, dites-nous si ça a marché."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aún no se ha probado con una cámara real. Si lo pruebas, cuéntanos si funcionó."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Non ancora provato su una fotocamera reale. Se lo provi, facci sapere se ha funzionato."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Noch nicht an einer echten Kamera getestet. Wenn du es ausprobierst, sag uns bitte, ob es geklappt hat."
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nog niet getest op een echte camera. Probeer je het, laat ons dan weten of het werkte."
           }
         }
       }
@@ -3836,6 +4210,176 @@
         }
       }
     },
+    "Pair": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Appairer"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Emparejar"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Abbina"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Koppeln"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Koppelen"
+          }
+        }
+      }
+    },
+    "Pair over Bluetooth": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Appairer en Bluetooth"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Emparejar por Bluetooth"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Abbina via Bluetooth"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Über Bluetooth koppeln"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Koppelen via Bluetooth"
+          }
+        }
+      }
+    },
+    "Paired before": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Déjà appairé"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Emparejada antes"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Già abbinata"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bereits gekoppelt"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Eerder gekoppeld"
+          }
+        }
+      }
+    },
+    "Pairing… Allow the pairing if macOS or the camera asks.": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Appairage… Acceptez l'appairage si macOS ou l'appareil le demande."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Emparejando… Acepta el emparejamiento si macOS o la cámara lo piden."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Abbinamento… Consenti l'abbinamento se macOS o la fotocamera lo chiedono."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kopplung… Erlaube die Kopplung, wenn macOS oder die Kamera fragt."
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Koppelen… Sta de koppeling toe als macOS of de camera erom vraagt."
+          }
+        }
+      }
+    },
+    "Password": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mot de passe"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Contraseña"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Password"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Passwort"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wachtwoord"
+          }
+        }
+      }
+    },
     "Photo": {
       "localizations": {
         "fr": {
@@ -4073,6 +4617,40 @@
           "stringUnit": {
             "state": "translated",
             "value": "Kaart lezen… %lld van %lld"
+          }
+        }
+      }
+    },
+    "Ready to pair": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Prêt à appairer"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Lista para emparejar"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pronta per l'abbinamento"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bereit zum Koppeln"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Klaar om te koppelen"
           }
         }
       }
@@ -5197,6 +5775,40 @@
           "stringUnit": {
             "state": "translated",
             "value": "Overdracht voltooid"
+          }
+        }
+      }
+    },
+    "Try Again": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Réessayer"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Reintentar"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Riprova"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Erneut versuchen"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Opnieuw proberen"
           }
         }
       }

@@ -26,6 +26,7 @@ targets:
         NSLocalNetworkUsageDescription: Fuji Import connects to your camera over its Wi-Fi network to read and download photos.
         NSPhotoLibraryUsageDescription: Fuji Import adds the photos you import to an album in your library.
         NSPhotoLibraryAddUsageDescription: Fuji Import saves photos from your camera to your Photos library.
+        NSBluetoothAlwaysUsageDescription: Fuji Import pairs with newer Fujifilm cameras over Bluetooth to start their Wi-Fi.
     entitlements:
       path: App/FujiImport.entitlements
       properties:
@@ -34,6 +35,8 @@ targets:
         com.apple.security.network.client: true
         com.apple.security.network.server: true
         com.apple.security.personal-information.photos-library: true
+        # Pairing with newer cameras, which start their Wi-Fi over Bluetooth.
+        com.apple.security.device.bluetooth: true
         # Folder destinations chosen by the user.
         com.apple.security.files.user-selected.read-write: true
         com.apple.security.files.bookmarks.app-scope: true

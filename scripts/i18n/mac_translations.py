@@ -1,6 +1,24 @@
 # Translations for the Mac app's string catalog (App/Localizable.xcstrings): key -> (fr, es, it, de, nl).
 # Run scripts/i18n/build_catalog.py after editing.
 T = {
+"Pair over Bluetooth": ("Appairer en Bluetooth", "Emparejar por Bluetooth", "Abbina via Bluetooth", "Über Bluetooth koppeln", "Koppelen via Bluetooth"),
+"Newer camera, like the X-T5? Pair over Bluetooth…": ("Appareil plus récent, comme le X-T5 ? Appairer en Bluetooth…", "¿Cámara más nueva, como la X-T5? Emparejar por Bluetooth…", "Fotocamera più recente, come la X-T5? Abbina via Bluetooth…", "Neuere Kamera wie die X-T5? Über Bluetooth koppeln…", "Nieuwere camera, zoals de X-T5? Koppelen via Bluetooth…"),
+"For cameras that pair with Fujifilm's app over Bluetooth, like the X-T5 and X-S20. On the camera, choose **Bluetooth Settings**, then **Pairing Registration**.": ("Pour les appareils qui s'appairent avec l'app Fujifilm en Bluetooth, comme le X-T5 et le X-S20. Sur l'appareil, choisissez **Réglages Bluetooth**, puis **Enregistrement d'appairage**.", "Para cámaras que se emparejan con la app de Fujifilm por Bluetooth, como la X-T5 y la X-S20. En la cámara, elige **Ajustes Bluetooth** y luego **Registro de emparejamiento**.", "Per le fotocamere che si abbinano all'app Fujifilm via Bluetooth, come la X-T5 e la X-S20. Sulla fotocamera scegli **Impostazioni Bluetooth**, poi **Registrazione abbinamento**.", "Für Kameras, die sich per Bluetooth mit der Fujifilm-App koppeln, wie die X-T5 und X-S20. Wähle an der Kamera **Bluetooth-Einstellungen**, dann **Kopplungsregistrierung**.", "Voor camera's die via Bluetooth met de Fujifilm-app koppelen, zoals de X-T5 en X-S20. Kies op de camera **Bluetooth-instellingen** en dan **Koppelingsregistratie**."),
+"Looking for cameras…": ("Recherche d'appareils…", "Buscando cámaras…", "Ricerca fotocamere…", "Suche nach Kameras…", "Camera's zoeken…"),
+"Ready to pair": ("Prêt à appairer", "Lista para emparejar", "Pronta per l'abbinamento", "Bereit zum Koppeln", "Klaar om te koppelen"),
+"Paired before": ("Déjà appairé", "Emparejada antes", "Già abbinata", "Bereits gekoppelt", "Eerder gekoppeld"),
+"Not in pairing mode": ("Pas en mode d'appairage", "No está en modo de emparejamiento", "Non in modalità di abbinamento", "Nicht im Kopplungsmodus", "Niet in koppelmodus"),
+"Pair": ("Appairer", "Emparejar", "Abbina", "Koppeln", "Koppelen"),
+"Forget This Camera": ("Oublier cet appareil", "Olvidar esta cámara", "Dimentica questa fotocamera", "Diese Kamera vergessen", "Deze camera vergeten"),
+"Not tested on a real camera yet. If you try it, please tell us whether it worked.": ("Pas encore testé sur un vrai appareil. Si vous l'essayez, dites-nous si ça a marché.", "Aún no se ha probado con una cámara real. Si lo pruebas, cuéntanos si funcionó.", "Non ancora provato su una fotocamera reale. Se lo provi, facci sapere se ha funzionato.", "Noch nicht an einer echten Kamera getestet. Wenn du es ausprobierst, sag uns bitte, ob es geklappt hat.", "Nog niet getest op een echte camera. Probeer je het, laat ons dan weten of het werkte."),
+"Pairing… Allow the pairing if macOS or the camera asks.": ("Appairage… Acceptez l'appairage si macOS ou l'appareil le demande.", "Emparejando… Acepta el emparejamiento si macOS o la cámara lo piden.", "Abbinamento… Consenti l'abbinamento se macOS o la fotocamera lo chiedono.", "Kopplung… Erlaube die Kopplung, wenn macOS oder die Kamera fragt.", "Koppelen… Sta de koppeling toe als macOS of de camera erom vraagt."),
+"Joining %@…": ("Connexion à %@…", "Conectando a %@…", "Connessione a %@…", "Verbinde mit %@…", "Verbinden met %@…"),
+"Join the camera's network in Wi-Fi settings, then click Connect.": ("Rejoignez le réseau de l'appareil dans les réglages Wi-Fi, puis cliquez sur Connecter.", "Únete a la red de la cámara en los ajustes de Wi-Fi y haz clic en Conectar.", "Collegati alla rete della fotocamera nelle impostazioni Wi-Fi, poi fai clic su Collega.", "Verbinde dich in den WLAN-Einstellungen mit dem Netzwerk der Kamera und klicke dann auf Verbinden.", "Maak in de wifi-instellingen verbinding met het netwerk van de camera en klik dan op Verbinden."),
+"Network": ("Réseau", "Red", "Rete", "Netzwerk", "Netwerk"),
+"Password": ("Mot de passe", "Contraseña", "Password", "Passwort", "Wachtwoord"),
+"Try Again": ("Réessayer", "Reintentar", "Riprova", "Erneut versuchen", "Opnieuw proberen"),
+"Copy": ("Copier", "Copiar", "Copia", "Kopieren", "Kopiëren"),
+"Cancel": ("Annuler", "Cancelar", "Annulla", "Abbrechen", "Annuleren"),
 "%@ · %@ left": ("%@ · encore %@", "%@ · quedan %@", "%@ · mancano %@", "%@ · noch %@", "%@ · nog %@"),
 "All Types": ("Tous les types", "Todos los tipos", "Tutti i tipi", "Alle Typen", "Alle types"),
 "Filter": ("Filtrer", "Filtrar", "Filtra", "Filtern", "Filteren"),
@@ -195,6 +213,12 @@ PLURALS = {
 VERBATIM = ["HEIF", "JPEG", "RAW", "Fujifilm {yyyy}-{MM}", "%@\n%@", "%lld", "Fuji Import", "PC AutoSave", "https://photos.example.com", "{yyyy-MM-dd}_{original}"]
 
 INFO_PLIST = {
+"NSBluetoothAlwaysUsageDescription": ("Fuji Import pairs with newer Fujifilm cameras over Bluetooth to start their Wi-Fi.", (
+  "Fuji Import s'appaire en Bluetooth avec les appareils Fujifilm récents pour démarrer leur Wi-Fi.",
+  "Fuji Import se empareja por Bluetooth con las cámaras Fujifilm más nuevas para activar su Wi-Fi.",
+  "Fuji Import si abbina via Bluetooth alle fotocamere Fujifilm più recenti per avviarne il Wi-Fi.",
+  "Fuji Import koppelt sich per Bluetooth mit neueren Fujifilm-Kameras, um ihr WLAN zu starten.",
+  "Fuji Import koppelt via Bluetooth met nieuwere Fujifilm-camera's om hun wifi te starten.")),
 "NSLocalNetworkUsageDescription": ("Fuji Import connects to your camera over its Wi-Fi network to read and download photos.", (
   "Fuji Import se connecte à votre appareil via son réseau Wi-Fi pour lire et télécharger les photos.",
   "Fuji Import se conecta a tu cámara por su red Wi-Fi para leer y descargar fotos.",

@@ -4,6 +4,7 @@ struct ConnectView: View {
     @Environment(CameraModel.self) private var model
     @AppStorage(Prefs.autoConnect) private var autoConnect = true
     @AppStorage(Prefs.autoSave) private var autoSave = false
+    @State private var showBluetooth = false
 
     var body: some View {
         VStack(spacing: 28) {
@@ -38,6 +39,9 @@ struct ConnectView: View {
                     .buttonStyle(.link)
                     .font(.callout)
                 }
+                Button("Newer camera, like the X-T5? Pair over Bluetooth…") { showBluetooth = true }
+                    .buttonStyle(.link)
+                    .font(.callout)
             }
 
             if let error = model.lastError {
@@ -65,6 +69,7 @@ struct ConnectView: View {
         }
         .padding(40)
         .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .sheet(isPresented: $showBluetooth) { BluetoothPairingView() }
     }
 
     private var steps: some View {

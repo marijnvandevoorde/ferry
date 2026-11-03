@@ -7,8 +7,10 @@ set -euo pipefail
 IMAGE=${VCAM_IMAGE:-vcam-fuji}
 MODELS=("$@")
 [ ${#MODELS[@]} -eq 0 ] && MODELS=(fuji_x_a2 fuji_x30 fuji_x_f10 fuji_x_t2 fuji_x_t4 fuji_x_t20 fuji_x_t30 fuji_x_s10 fuji_x_h1 fuji_gfx100_ii
+    fuji_gfx100_ii+bluetooth
     canon_r canon_90d canon_5d3 canon_200d canon_g7x3)
 # vcam's Nikon and Sony models only support USB so far.
+# "+bluetooth" connects as after a Bluetooth hand-off, which puts newer cameras in the XApp gallery.
 
 cd "$(dirname "$0")/.."
 swift build -q --product fujictl
@@ -48,16 +50,19 @@ start_vcam() {
 
 failed=()
 for model in "${MODELS[@]}"; do
-    printf '%-16s ' "$model"
-    start_vcam "$model"
+    printf '%-26s ' "$model"
+    extra=()
+    [[ $model == *+bluetooth ]] && extra=(--bluetooth)
+    start_vcam "${model%+bluetooth}"
     out=$WORK/out-$model
-    if ! "$FUJICTL" --host 127.0.0.1 --quiet download "$out" > "$WORK/$model.log" 2>&1; then
+    if ! "$FUJICTL" --host 127.0.0.1 --quiet ${extra[@]+"${extra[@]}"} download "$out" > "$WORK/$model.log" 2>&1; then
         echo "FAIL (fujictl)"; tail -5 "$WORK/$model.log"; failed+=("$model"); continue
     fi
     ok=1
     # vcam's Fuji mode lists folders as objects but leaves one entry out of the count, so one file is never listed.
     EXPECTED=$FILES
-    [[ $model == fuji_* ]] && EXPECTED=$((FILES - 1))
+    # The XApp gallery lists every file.
+    [[ $model == fuji_* && $model != *+bluetooth ]] && EXPECTED=$((FILES - 1))
     got=$(ls "$out" | wc -l)
     [ "$got" -eq "$EXPECTED" ] || { ok=0; echo "FAIL (downloaded $got files, expected $EXPECTED)"; }
     for f in "$out"/*; do

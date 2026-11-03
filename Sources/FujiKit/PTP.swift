@@ -71,6 +71,11 @@ enum PTP {
         static let terminateOpenCapture: UInt16 = 0x1018
         static let getPartialObject: UInt16 = 0x101B
         static let initiateOpenCapture: UInt16 = 0x101C
+        // Fujifilm's XApp gallery
+        static let fujiGetImageImportFolders: UInt16 = 0x9050
+        static let fujiGetImageImportDates: UInt16 = 0x9053
+        static let fujiGetExtensionObjectInfo: UInt16 = 0x9054
+        static let fujiGetExtensionThumb: UInt16 = 0x9055
     }
 
     enum Response {
@@ -82,6 +87,7 @@ enum PTP {
     enum FujiProp {
         static let eventsList: UInt16 = 0xD212
         static let objectCount: UInt16 = 0xD222
+        static let compressSmall: UInt16 = 0xD226
         static let enableCorrectFileSize: UInt16 = 0xD227
         static let storageID: UInt16 = 0xD244
         static let cameraState: UInt16 = 0xDF00
@@ -91,6 +97,9 @@ enum PTP {
         static let autoSaveVersion: UInt16 = 0xDF23
         static let remoteVersion: UInt16 = 0xDF24
         static let remoteGetObjectVersion: UInt16 = 0xDF25
+        static let remotePhotoViewExVersion: UInt16 = 0xDF28
+        static let imageImportObjectCount: UInt16 = 0xD620
+        static let imageImportObjectHandles: UInt16 = 0xD621
     }
 
     /// Values of 0xDF00
@@ -109,10 +118,13 @@ enum PTP {
         static let oldRemote: UInt16 = 3
         static let remoteMode: UInt16 = 5
         static let remoteImageView: UInt16 = 11
+        static let remoteImageViewXApp: UInt16 = 20
     }
 
     static let fujiProtocolVersion: UInt32 = 0x8F53_E4F2
     static let camConnectRemoteVersion: UInt32 = 0x2000C
+    /// The XApp gallery's handle for "the photo shown on the camera".
+    static let xappCurrentObject: UInt32 = 0x1000_0001
     static let commandPort: UInt16 = 55740
     static let eventPort: UInt16 = 55741
     static let liveviewPort: UInt16 = 55742
