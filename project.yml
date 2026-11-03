@@ -1,20 +1,20 @@
-name: FujiImport
+name: Ferry
 options:
   bundleIdPrefix: io.github.fujiimport
   developmentLanguage: en
   deploymentTarget:
     macOS: "14.0"
 packages:
-  FujiKit:
+  FerryKit:
     path: .
 targets:
-  FujiImport:
+  Ferry:
     type: application
     platform: macOS
     sources: [App]
     dependencies:
-      - package: FujiKit
-        product: FujiKit
+      - package: FerryKit
+        product: FerryKit
     info:
       path: App/Info.plist
       properties:
@@ -28,7 +28,7 @@ targets:
         NSPhotoLibraryAddUsageDescription: Ferry saves photos from your camera to your Photos library.
         NSBluetoothAlwaysUsageDescription: Ferry pairs with newer Fujifilm cameras over Bluetooth to start their Wi-Fi.
     entitlements:
-      path: App/FujiImport.entitlements
+      path: App/Ferry.entitlements
       properties:
         com.apple.security.app-sandbox: true
         # Talking to the camera; PC AutoSave will also need to accept connections.

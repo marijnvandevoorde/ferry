@@ -17,7 +17,7 @@ jobs:
       - name: Build app
         run: |
           xcodegen generate
-          xcodebuild -project FujiImport.xcodeproj -scheme FujiImport -configuration Release \
+          xcodebuild -project Ferry.xcodeproj -scheme Ferry -configuration Release \
             -derivedDataPath .build/xcode CODE_SIGNING_ALLOWED=NO build
 
   linux:

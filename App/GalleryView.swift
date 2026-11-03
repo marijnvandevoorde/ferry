@@ -1,4 +1,4 @@
-import FujiKit
+import FerryKit
 import QuickLook
 import SwiftUI
 

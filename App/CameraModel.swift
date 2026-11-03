@@ -1,6 +1,6 @@
 import AppKit
 import ImageIO
-import FujiKit
+import FerryKit
 import Foundation
 import Observation
 import Photos
@@ -163,8 +163,8 @@ final class CameraModel {
         DebugSnapshot.startIfRequested()
         // Lets scripts test folder imports without the open panel.
         let env = ProcessInfo.processInfo.environment
-        if let path = env["FUJIIMPORT_TEST_FOLDER"] { FolderBookmark.save(URL(fileURLWithPath: path), for: Prefs.folderBookmark) }
-        if let path = env["FUJIIMPORT_TEST_BACKUP"] { FolderBookmark.save(URL(fileURLWithPath: path), for: Prefs.backupBookmark) }
+        if let path = env["FERRY_TEST_FOLDER"] { FolderBookmark.save(URL(fileURLWithPath: path), for: Prefs.folderBookmark) }
+        if let path = env["FERRY_TEST_BACKUP"] { FolderBookmark.save(URL(fileURLWithPath: path), for: Prefs.backupBookmark) }
         #endif
         startSearching()
         updateAutoSave()
@@ -466,7 +466,7 @@ final class CameraModel {
     /// Downloads one object, imports it into Photos and records it. Returns the imported item's info.
     private func importObject(_ handle: UInt32, filename: String, camera: SerialCamera, destinations: [Destination],
                               thumbnail: Bool = false, skipIfImported: Bool = false) async throws -> (ObjectInfo, NSImage?) {
-        let tmpDir = FileManager.default.temporaryDirectory.appendingPathComponent("FujiImport", isDirectory: true)
+        let tmpDir = FileManager.default.temporaryDirectory.appendingPathComponent("Ferry", isDirectory: true)
         try? FileManager.default.createDirectory(at: tmpDir, withIntermediateDirectories: true)
         let file = tmpDir.appendingPathComponent(UUID().uuidString + "-" + filename)
         defer { try? FileManager.default.removeItem(at: file) }

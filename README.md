@@ -30,7 +30,7 @@ Over Wi-Fi the camera only offers JPEGs (no RAF files).
 | Olympus / OM System (OI.Share), Ricoh GR II / III | not yet | mock API only |
 
 "Emulator" means the protocol works against [vcam](https://github.com/petabyt/vcam)'s model of that camera.
-Tried it with your camera? Please [file a camera report](https://github.com/marijnvandevoorde/fuji-import/issues/new?template=camera-report.yml),
+Tried it with your camera? Please [file a camera report](https://github.com/marijnvandevoorde/ferry/issues/new?template=camera-report.yml),
 whether it worked or not.
 
 ## Windows and Linux
@@ -43,7 +43,7 @@ watches), optionally also to Immich. To run it from source you need Swift, Rust 
 cd apps/desktop
 pnpm install
 pnpm run sidecar     # builds ferryctl and puts it where Tauri expects it
-pnpm tauri dev       # FUJIIMPORT_HOST=127.0.0.1 points it at the emulator
+pnpm tauri dev       # FERRY_HOST=127.0.0.1 points it at the emulator
 ```
 
 See [importing into other photo apps](docs/other-apps.md).
@@ -69,12 +69,12 @@ Requires Xcode 16+ and [XcodeGen](https://github.com/yonaskolb/XcodeGen).
 
 ```sh
 xcodegen generate
-open FujiImport.xcodeproj
+open Ferry.xcodeproj
 ```
 
 The project is laid out as:
 
-- `Sources/FujiKit` – Swift implementation of Fujifilm's Wi-Fi protocol (PTP over TCP, port 55740).
+- `Sources/FerryKit` – Swift implementation of Fujifilm's Wi-Fi protocol (PTP over TCP, port 55740).
 - `Sources/ferryctl` – command-line tool for macOS and Linux (see below).
 - `App` – the SwiftUI app.
 

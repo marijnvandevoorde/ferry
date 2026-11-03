@@ -43,9 +43,9 @@ Bluetooth, joins that network, and continues with the same PTP-over-TCP protocol
 
 Implemented, **not yet tested on a real camera** (none with Bluetooth is available; the X-T20 has none).
 
-- **Protocol:** `Sources/FujiKit/FujiBluetooth.swift` (UUIDs, advertisement token, pairing acknowledgement, time
+- **Protocol:** `Sources/FerryKit/FujiBluetooth.swift` (UUIDs, advertisement token, pairing acknowledgement, time
   packet; unit-tested).
-- **macOS:** `Sources/FujiKit/FujiBluetoothCentral.swift` drives CoreBluetooth; `App/BluetoothPairing.swift` is the
+- **macOS:** `Sources/FerryKit/FujiBluetoothCentral.swift` drives CoreBluetooth; `App/BluetoothPairing.swift` is the
   sheet behind "Pair over Bluetooth…" on the connect screen. macOS shows its own pairing prompt on the first read of
   the secure status characteristic. Joining the camera's network uses CoreWLAN; when macOS doesn't allow that (it
   needs Location access to scan, and may not allow it in the sandbox), the sheet shows the network name and password

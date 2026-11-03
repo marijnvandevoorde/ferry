@@ -1,5 +1,5 @@
 import CoreWLAN
-import FujiKit
+import FerryKit
 import SwiftUI
 
 /// Pairs with a newer Fujifilm camera over Bluetooth, joins the Wi-Fi network it starts, and hands over to

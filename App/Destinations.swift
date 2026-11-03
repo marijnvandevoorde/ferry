@@ -1,5 +1,5 @@
 import AppKit
-import FujiKit
+import FerryKit
 import Photos
 
 /// Somewhere imported photos end up.

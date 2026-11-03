@@ -1,4 +1,4 @@
-@testable import FujiKit
+@testable import FerryKit
 import XCTest
 
 final class CameraProfileTests: XCTestCase {

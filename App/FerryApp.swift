@@ -1,7 +1,7 @@
 import SwiftUI
 
 @main
-struct FujiImportApp: App {
+struct FerryApp: App {
     @NSApplicationDelegateAdaptor(AppDelegate.self) private var appDelegate
     @State private var model = CameraModel()
     @AppStorage(Prefs.showMenuBarIcon) private var showMenuBarIcon = true

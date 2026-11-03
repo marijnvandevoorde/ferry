@@ -1,6 +1,6 @@
 import Foundation
 import XCTest
-@testable import FujiKit
+@testable import FerryKit
 
 final class FujiBluetoothTests: XCTestCase {
     func testPairingToken() {

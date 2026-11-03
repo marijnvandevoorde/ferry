@@ -1,4 +1,4 @@
-import FujiKit
+import FerryKit
 import SwiftUI
 
 /// How to put a camera into the right Wi-Fi mode. Menu names differ between camera generations, so once a

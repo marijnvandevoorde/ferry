@@ -4,7 +4,7 @@
 Not a Lightroom replacement: no editing, no catalog, no ratings, no remote shooting.
 See the [round table](docs/roundtable.md) for the reasoning.
 
-Each step is a small GitHub issue, grouped into [milestones](https://github.com/marijnvandevoorde/fuji-import/milestones).
+Each step is a small GitHub issue, grouped into [milestones](https://github.com/marijnvandevoorde/ferry/milestones).
 The order below is the order of work.
 
 ## ✅ v0.1: X-T20 to Apple Photos
@@ -48,7 +48,7 @@ Fuji's *PC AutoSave* lets the camera join your home network and send photos to t
 
 ## v0.5: Portable core
 
-- FujiKit builds on Linux and Windows
+- FerryKit builds on Linux and Windows
 - `ferryctl import` and `ferryctl watch`: import new photos into a folder from the command line, or automatically when the camera appears
 - CI on Linux and Windows, protocol tests against the emulator
 

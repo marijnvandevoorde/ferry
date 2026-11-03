@@ -11,7 +11,7 @@ import Foundation
 typealias sa_family_t = ADDRESS_FAMILY
 #endif
 
-/// The socket calls FujiKit needs, with the differences between macOS, Linux and Windows kept in one place.
+/// The socket calls FerryKit needs, with the differences between macOS, Linux and Windows kept in one place.
 enum Sys {
     #if os(Windows)
     typealias Handle = SOCKET

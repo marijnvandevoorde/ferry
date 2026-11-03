@@ -1,9 +1,9 @@
 .build/
 .swiftpm/
-FujiImport.xcodeproj/
+Ferry.xcodeproj/
 App/Info.plist
 xcuserdata/
 .DS_Store
-App/FujiImport.entitlements
+App/Ferry.entitlements
 site/dist/
 apps/desktop/src-tauri/THIRD-PARTY-NOTICES.txt

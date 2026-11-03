@@ -1,4 +1,4 @@
-import FujiKit
+import FerryKit
 import Foundation
 
 /// `ferryctl serve`: drives the camera for a desktop UI (the Tauri app) over JSON lines.

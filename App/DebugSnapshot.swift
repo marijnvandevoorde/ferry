@@ -1,11 +1,11 @@
 #if DEBUG
 import AppKit
 
-/// Development aid: `FUJIIMPORT_SNAPSHOT=/path/prefix` saves PNGs of the main window every few seconds,
+/// Development aid: `FERRY_SNAPSHOT=/path/prefix` saves PNGs of the main window every few seconds,
 /// for checking the UI against the vcam emulator without screen-recording permissions.
 enum DebugSnapshot {
     static func startIfRequested() {
-        guard let prefix = ProcessInfo.processInfo.environment["FUJIIMPORT_SNAPSHOT"] else { return }
+        guard let prefix = ProcessInfo.processInfo.environment["FERRY_SNAPSHOT"] else { return }
         var n = 0
         Timer.scheduledTimer(withTimeInterval: 3, repeats: true) { _ in
             MainActor.assumeIsolated {

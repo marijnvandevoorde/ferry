@@ -34,16 +34,16 @@ public enum FujiError: Error, LocalizedError, Equatable {
     }
 }
 
-/// Looks up `key` in FujiKit's translations and fills in `%@` arguments; English when they aren't shipped.
+/// Looks up `key` in FerryKit's translations and fills in `%@` arguments; English when they aren't shipped.
 func localized(_ key: String, _ args: String...) -> String {
     let format = translations.map { NSLocalizedString(key, bundle: $0, comment: "") } ?? key
     return String(format: format, arguments: args)
 }
 
-/// FujiKit's resource bundle. Not `Bundle.module`: that crashes when the bundle wasn't shipped next to the binary,
+/// FerryKit's resource bundle. Not `Bundle.module`: that crashes when the bundle wasn't shipped next to the binary,
 /// as with the desktop app's single-file ferryctl sidecar.
 private let translations: Bundle? = {
-    let names = ["FujiKit_FujiKit.bundle", "FujiKit_FujiKit.resources"]
+    let names = ["FerryKit_FerryKit.bundle", "FerryKit_FerryKit.resources"]
     let places = [Bundle.main.resourceURL, Bundle.main.bundleURL, Bundle.main.executableURL?.deletingLastPathComponent()]
     for place in places.compactMap({ $0 }) {
         for name in names {

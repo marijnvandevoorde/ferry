@@ -2,16 +2,16 @@
 import PackageDescription
 
 let package = Package(
-    name: "FujiKit",
+    name: "FerryKit",
     defaultLocalization: "en",
     platforms: [.macOS(.v14)],
     products: [
-        .library(name: "FujiKit", targets: ["FujiKit"]),
+        .library(name: "FerryKit", targets: ["FerryKit"]),
         .executable(name: "ferryctl", targets: ["ferryctl"]),
     ],
     targets: [
-        .target(name: "FujiKit", resources: [.process("Resources")]),
-        .executableTarget(name: "ferryctl", dependencies: ["FujiKit"]),
-        .testTarget(name: "FujiKitTests", dependencies: ["FujiKit"]),
+        .target(name: "FerryKit", resources: [.process("Resources")]),
+        .executableTarget(name: "ferryctl", dependencies: ["FerryKit"]),
+        .testTarget(name: "FerryKitTests", dependencies: ["FerryKit"]),
     ]
 )

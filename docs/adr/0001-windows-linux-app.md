@@ -6,8 +6,8 @@
 
 ## Context
 
-The Mac app is SwiftUI on top of FujiKit, a Swift implementation of Fuji's Wi-Fi protocol and PC AutoSave.
-FujiKit and `ferryctl` already build and pass their tests on Linux. The protocol is the risky part of the
+The Mac app is SwiftUI on top of FerryKit, a Swift implementation of Fuji's Wi-Fi protocol and PC AutoSave.
+FerryKit and `ferryctl` already build and pass their tests on Linux. The protocol is the risky part of the
 project: it was reverse-engineered and has to be checked against the emulator and real cameras.
 
 The Windows and Linux app needs: auto-connect, a gallery with thumbnails, import to folders and app hand-offs,
@@ -33,14 +33,14 @@ AppImage). It should feel at home on each platform, and stay small: this is an i
   thumbnails (as files in a cache folder), import progress, and commands (connect, import, cancel).
 - The Tauri shell (TypeScript UI, minimal Rust) handles windows, tray, autostart, notifications, folder
   pickers, packaging and signing.
-- FujiKit stays the only protocol implementation, so the emulator tests and real-camera fixes apply to every
+- FerryKit stays the only protocol implementation, so the emulator tests and real-camera fixes apply to every
   platform.
 
-This needs FujiKit on Windows (#30). Linux already works; `--static-swift-stdlib` gives a self-contained binary.
+This needs FerryKit on Windows (#30). Linux already works; `--static-swift-stdlib` gives a self-contained binary.
 
 ## Consequences
 
-- #30 (FujiKit on Windows) becomes a prerequisite of the Windows app.
+- #30 (FerryKit on Windows) becomes a prerequisite of the Windows app.
 - The Swift runtime DLLs ship with the Windows app (around 30–50 MB). Acceptable for a desktop app.
 - The JSON protocol between `ferryctl serve` and the UI gets its own tests, independent of the GUI.
 - **Fallback:** if Swift on Windows turns out to be too fragile, port the protocol to Rust inside the same

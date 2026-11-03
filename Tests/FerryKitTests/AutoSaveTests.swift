@@ -1,4 +1,4 @@
-@testable import FujiKit
+@testable import FerryKit
 #if canImport(Darwin)
 import Darwin
 #elseif canImport(Glibc)

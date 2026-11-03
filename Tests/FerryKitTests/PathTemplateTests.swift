@@ -1,4 +1,4 @@
-import FujiKit
+import FerryKit
 import XCTest
 
 final class PathTemplateTests: XCTestCase {

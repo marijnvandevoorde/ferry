@@ -1,4 +1,4 @@
-/* FujiKit error messages. */
+/* FerryKit error messages. */
 "Could not connect: %@" = "Verbindung fehlgeschlagen: %@";
 "The camera rejected the connection. Restart Wi-Fi on the camera and try again." = "Die Kamera hat die Verbindung abgelehnt. Starte das WLAN der Kamera neu und versuche es noch einmal.";
 "The camera closed the connection." = "Die Kamera hat die Verbindung beendet.";

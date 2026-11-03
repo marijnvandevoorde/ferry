@@ -17,7 +17,7 @@ public enum NetworkInfo {
 
     /// IPv4 router of `interface`, regardless of which interface (e.g. a VPN) is the primary route.
     public static func router(for interface: String) -> String? {
-        guard let store = SCDynamicStoreCreate(nil, "FujiKit" as CFString, nil, nil),
+        guard let store = SCDynamicStoreCreate(nil, "FerryKit" as CFString, nil, nil),
               let keys = SCDynamicStoreCopyKeyList(store, "State:/Network/Service/.*/IPv4" as CFString) as? [String]
         else { return nil }
         for key in keys {

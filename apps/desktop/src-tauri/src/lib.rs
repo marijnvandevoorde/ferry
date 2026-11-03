@@ -1,5 +1,5 @@
 //! The desktop shell: runs `ferryctl serve` as a sidecar and relays its JSON lines to the UI.
-//! All camera logic lives in ferryctl (FujiKit); see docs/adr/0001-windows-linux-app.md.
+//! All camera logic lives in ferryctl (FerryKit); see docs/adr/0001-windows-linux-app.md.
 
 mod bluetooth;
 mod wifi;
@@ -27,8 +27,8 @@ fn send(command: serde_json::Value, sidecar: State<Sidecar>) -> Result<(), Strin
 
 fn start_sidecar(app: &AppHandle) -> Result<(), Box<dyn std::error::Error>> {
     let mut args = vec!["serve".to_string()];
-    // FUJIIMPORT_HOST points the app at a camera emulator during development.
-    if let Ok(host) = std::env::var("FUJIIMPORT_HOST") {
+    // FERRY_HOST points the app at a camera emulator during development.
+    if let Ok(host) = std::env::var("FERRY_HOST") {
         args.insert(0, host);
         args.insert(0, "--host".into());
     }

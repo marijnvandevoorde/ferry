@@ -15,6 +15,7 @@ public final class ImportHistory: @unchecked Sendable {
         keys = (try? JSONDecoder().decode(Set<String>.self, from: data)) ?? []
     }
 
+    /// The folder names are the app's old name, kept so existing import histories are still found.
     public static var defaultURL: URL {
         #if os(macOS)
         let dir = FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask)[0]

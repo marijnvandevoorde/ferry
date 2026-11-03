@@ -6,7 +6,7 @@ license = "MIT"
 edition = "2021"
 
 [lib]
-name = "fuji_import_lib"
+name = "ferry_lib"
 crate-type = ["staticlib", "cdylib", "rlib"]
 
 [build-dependencies]

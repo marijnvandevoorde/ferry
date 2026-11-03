@@ -11,6 +11,7 @@ public struct ImmichUpload: Sendable {
     /// Identifies this computer to Immich, which uses it with the file key to recognize duplicates.
     public var deviceID: String
 
+    // "fuji-import" is the app's old name, kept so Immich sees the same device as before.
     public init(server: URL, apiKey: String, albumName: String? = nil, deviceID: String = "fuji-import") {
         self.server = server
         self.apiKey = apiKey
@@ -25,7 +26,7 @@ public struct ImmichUpload: Sendable {
     /// Uploads `file`; returns the Immich asset ID. Duplicates Immich already has count as success.
     @discardableResult
     public func upload(_ file: URL, info: ObjectInfo, key: String) async throws -> String {
-        let boundary = "fuji-import-\(UUID().uuidString)"
+        let boundary = "ferry-\(UUID().uuidString)"
         let date = ISO8601DateFormatter().string(from: info.date ?? Date())
         let body = FileManager.default.temporaryDirectory.appendingPathComponent("immich-\(UUID().uuidString)")
         defer { try? FileManager.default.removeItem(at: body) }
