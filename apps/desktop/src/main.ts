@@ -300,7 +300,10 @@ $("connect-now").onclick = () => {
   showError("");
   send({ cmd: "connect" });
 };
-$("disconnect").onclick = () => send({ cmd: "disconnect" });
+$("disconnect").onclick = () => {
+  send({ cmd: "disconnect" });
+  invoke("bluetooth_disconnect").catch(() => {});
+};
 $("filter").onchange = render;
 $("kind").onchange = render;
 $("order").onchange = render;
@@ -346,6 +349,172 @@ $("immich-key").onchange = (e) => (settings.immichKey = (e.target as HTMLInputEl
 $("immich-album").onchange = (e) => (settings.immichAlbum = (e.target as HTMLInputElement).value.trim());
 $("autostart").onchange = (e) => ((e.target as HTMLInputElement).checked ? enableAutostart() : disableAutostart());
 $("settings").addEventListener("close", render);
+
+// MARK: - Bluetooth
+// Newer cameras hand over their Wi-Fi network over Bluetooth (src-tauri/src/bluetooth.rs); the computer joins it
+// (wifi.rs) and fujictl connects as usual.
+
+type BtCamera = { id: string; name: string; pairing: boolean; saved: boolean; nearby: boolean };
+type Credentials = { ssid: string; password: string };
+
+/** Bumped whenever the flow restarts or the dialog closes, so late answers from an older run are ignored. */
+let btRun = 0;
+
+/** Rust errors are `{ message, detail }`: fixed English text to translate, and what the OS said. */
+function btErrorText(e: unknown): string {
+  if (e && typeof e === "object" && "message" in e) {
+    const { message, detail } = e as { message: string; detail?: string | null };
+    return t(message) + (detail ? ` (${detail})` : "");
+  }
+  return String(e);
+}
+
+function btView(view: "scan" | "busy" | "manual", error = "") {
+  $("bt-scan").hidden = view !== "scan";
+  $("bt-busy").hidden = view !== "busy";
+  $("bt-manual").hidden = view !== "manual";
+  const el = $("bt-error");
+  el.textContent = error;
+  el.hidden = !error;
+}
+
+function btCameraRow(camera: BtCamera, inDialog: boolean): HTMLLIElement {
+  const row = document.createElement("li");
+  const name = document.createElement("span");
+  name.className = "name";
+  name.textContent = camera.name;
+  row.append(name);
+  if (inDialog && (camera.pairing || !camera.nearby)) {
+    const note = document.createElement("span");
+    note.className = "muted";
+    note.textContent = camera.pairing ? t("Ready to pair") : t("Not nearby");
+    row.append(note);
+  }
+  if (inDialog && camera.saved) {
+    const forget = document.createElement("button");
+    forget.type = "button";
+    forget.textContent = t("Forget");
+    forget.onclick = async () => {
+      await invoke("bluetooth_forget", { id: camera.id }).catch(() => {});
+      row.remove();
+      btRenderSaved();
+    };
+    row.append(forget);
+  }
+  const go = document.createElement("button");
+  go.type = "button";
+  go.className = "primary";
+  go.textContent = camera.pairing ? t("Pair") : t("Connect");
+  go.onclick = () => btConnect(camera);
+  row.append(go);
+  return row;
+}
+
+/** Saved cameras get a one-click Connect on the connect screen. */
+async function btRenderSaved() {
+  const saved = (await invoke<BtCamera[]>("bluetooth_saved").catch(() => undefined)) ?? [];
+  $("bt-saved").replaceChildren(...saved.map((c) => btCameraRow(c, false)));
+  $("bt-saved").hidden = saved.length === 0;
+}
+
+async function btScan() {
+  const run = ++btRun;
+  const dialog = $<HTMLDialogElement>("bluetooth");
+  if (!dialog.open) dialog.showModal();
+  btView("scan");
+  const status = $("bt-scan-status");
+  const rescan = $<HTMLButtonElement>("bt-rescan");
+  status.textContent = t("Looking for cameras in pairing mode…");
+  rescan.disabled = true;
+  $("bt-cameras").replaceChildren();
+  try {
+    const cameras = (await invoke<BtCamera[]>("bluetooth_scan")) ?? [];
+    if (run !== btRun) return;
+    $("bt-cameras").replaceChildren(...cameras.map((c) => btCameraRow(c, true)));
+    status.textContent = cameras.some((c) => c.pairing || c.nearby) ? "" : t("No camera found. Make sure it's in pairing mode and close by.");
+  } catch (e) {
+    if (run !== btRun) return;
+    status.textContent = "";
+    btView("scan", btErrorText(e));
+  } finally {
+    if (run === btRun) rescan.disabled = false;
+  }
+}
+
+async function btConnect(camera: BtCamera) {
+  const run = ++btRun;
+  const dialog = $<HTMLDialogElement>("bluetooth");
+  if (!dialog.open) dialog.showModal();
+  btView("busy");
+  $("bt-step").textContent = t("Looking for {camera}…", { camera: camera.name });
+  let credentials: Credentials;
+  try {
+    credentials = await invoke<Credentials>("bluetooth_connect", { id: camera.id });
+  } catch (e) {
+    if (run !== btRun) return;
+    $("bt-scan-status").textContent = "";
+    $<HTMLButtonElement>("bt-rescan").disabled = false;
+    btView("scan", btErrorText(e));
+    return;
+  }
+  btRenderSaved();
+  if (run !== btRun) return;
+  try {
+    await invoke("wifi_join", { ssid: credentials.ssid, password: credentials.password });
+  } catch (e) {
+    if (run !== btRun) return;
+    // Show the network so the user can join it by hand.
+    $("bt-ssid").textContent = credentials.ssid;
+    $("bt-password").textContent = credentials.password;
+    btView("manual", btErrorText(e));
+    return;
+  }
+  if (run !== btRun) return;
+  dialog.close();
+  btHandOver();
+}
+
+/** The computer is on the camera's network: fujictl takes it from here. */
+function btHandOver() {
+  showError("");
+  send({ cmd: "connect", bluetooth: true });
+}
+
+async function copyText(source: string, button: HTMLButtonElement) {
+  const text = $(source).textContent ?? "";
+  try {
+    await navigator.clipboard.writeText(text);
+    button.textContent = t("Copied");
+    setTimeout(() => (button.textContent = t("Copy")), 1500);
+  } catch {
+    getSelection()?.selectAllChildren($(source)); // the user can still press Ctrl+C
+  }
+}
+
+listen<{ step: string; ssid?: string }>("bluetooth", ({ payload: p }) => {
+  const text: Record<string, string> = {
+    connecting: t("Connecting over Bluetooth…"),
+    pairing: t("Pairing with the camera…"),
+    wifi: t("Asking the camera to turn on its Wi-Fi…"),
+    joining: t("Joining {ssid}…", { ssid: p.ssid ?? "" }),
+  };
+  if (text[p.step]) $("bt-step").textContent = text[p.step];
+});
+
+$("bt-open").onclick = btScan;
+$("bt-rescan").onclick = btScan;
+$("bt-copy-ssid").onclick = (e) => copyText("bt-ssid", e.currentTarget as HTMLButtonElement);
+$("bt-copy-password").onclick = (e) => copyText("bt-password", e.currentTarget as HTMLButtonElement);
+$("bt-manual-connect").onclick = () => {
+  $<HTMLDialogElement>("bluetooth").close();
+  btHandOver();
+};
+$("bluetooth").addEventListener("close", () => {
+  btRun++;
+  // Don't leave the password on screen.
+  $("bt-password").textContent = "";
+});
+btRenderSaved();
 
 translatePage();
 render();

@@ -47,6 +47,8 @@
         </ol>
         <button id="connect-now" type="button" data-i18n>Connect</button>
         <p id="error" class="error" role="alert" hidden></p>
+        <ul id="bt-saved" class="bt-list" hidden></ul>
+        <p><button id="bt-open" type="button" data-i18n>Pair over Bluetooth</button></p>
       </section>
       <section id="gallery" hidden></section>
     </main>
@@ -89,6 +91,39 @@
         </fieldset>
         <p id="preset-help" class="muted small" data-i18n>Windows Photos, OneDrive, Shotwell and GNOME Photos pick up photos in your Pictures folder. Lightroom Classic (Auto Import), Photoshop Elements (watched folders), digiKam and darktable can watch a folder: choose it here and set Subfolders to “No subfolders” for Lightroom. Tokens: {yyyy} {MM} {dd} {HH} {mm} {ss} {camera} {original}.</p>
         <menu><button value="close" class="primary" data-i18n>Done</button></menu>
+      </form>
+    </dialog>
+
+    <!-- Newer cameras: Bluetooth hands over the camera's Wi-Fi network, then fujictl connects as usual. -->
+    <dialog id="bluetooth">
+      <form method="dialog">
+        <h2 data-i18n>Pair over Bluetooth</h2>
+        <div id="bt-scan">
+          <ol class="steps">
+            <li data-i18n>On the camera, open <b>Bluetooth/Smartphone Setting</b> and choose <b>Pairing Registration</b>.</li>
+            <li data-i18n>Choose the camera below. Your computer may ask you to confirm the pairing.</li>
+          </ol>
+          <p id="bt-scan-status" class="muted"></p>
+          <ul id="bt-cameras" class="bt-list"></ul>
+          <button id="bt-rescan" type="button" data-i18n>Search again</button>
+        </div>
+        <div id="bt-busy" hidden>
+          <p id="bt-step"></p>
+          <progress></progress>
+        </div>
+        <div id="bt-manual" hidden>
+          <p data-i18n>Join this Wi-Fi network on your computer, then press Connect.</p>
+          <dl class="bt-credentials">
+            <dt data-i18n>Network</dt>
+            <dd><code id="bt-ssid"></code><button id="bt-copy-ssid" type="button" data-i18n>Copy</button></dd>
+            <dt data-i18n>Password</dt>
+            <dd><code id="bt-password"></code><button id="bt-copy-password" type="button" data-i18n>Copy</button></dd>
+          </dl>
+          <p class="muted small" data-i18n>The network may be hidden: add it by name rather than picking it from the list.</p>
+          <button id="bt-manual-connect" type="button" class="primary" data-i18n>Connect</button>
+        </div>
+        <p id="bt-error" class="error" role="alert" hidden></p>
+        <menu><button value="close" data-i18n>Close</button></menu>
       </form>
     </dialog>
   </body>

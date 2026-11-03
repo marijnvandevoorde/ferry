@@ -66,4 +66,16 @@ dialog .presets { align-items: center; margin: -4px 0 8px; }
 dialog .presets button { padding: 2px 8px; font-size: 12px; }
 dialog .check { display: flex; gap: 8px; align-items: center; }
 dialog fieldset { border: 1px solid var(--border); border-radius: 8px; padding: 4px 12px; }
+dialog .steps { padding-left: 20px; }
+dialog progress { width: 100%; }
+
+.bt-list { list-style: none; padding: 0; margin: 12px 0; text-align: left; }
+.bt-list li { display: flex; align-items: center; gap: 8px; padding: 8px 12px; margin: 6px 0; background: var(--surface); border: 1px solid var(--border); border-radius: 8px; }
+.bt-list .name { flex: 1; font-weight: 600; }
+.bt-list .muted { font-size: 12px; }
+.bt-credentials { display: grid; grid-template-columns: auto 1fr; gap: 8px 12px; align-items: center; }
+.bt-credentials dd { display: flex; align-items: center; gap: 8px; margin: 0; }
+.bt-credentials code { flex: 1; font: 13px ui-monospace, Consolas, monospace; user-select: all; }
+.bt-credentials button { padding: 2px 8px; font-size: 12px; }
+#bt-manual .small { margin: 12px 0; }
 dialog menu { display: flex; justify-content: flex-end; padding: 0; margin: 16px 0 0; }

@@ -25,6 +25,11 @@
     "externalBin": ["binaries/fujictl"],
     "category": "Photography",
     "shortDescription": "Import photos from your camera over Wi-Fi",
-    "linux": { "deb": { "depends": [] } }
+    "linux": {
+      "deb": {
+        "depends": ["libdbus-1-3"],
+        "recommends": ["bluez", "network-manager"]
+      }
+    }
   }
 }

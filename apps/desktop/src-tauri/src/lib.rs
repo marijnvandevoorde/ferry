@@ -1,6 +1,9 @@
 //! The desktop shell: runs `fujictl serve` as a sidecar and relays its JSON lines to the UI.
 //! All camera logic lives in fujictl (FujiKit); see docs/adr/0001-windows-linux-app.md.
 
+mod bluetooth;
+mod wifi;
+
 use std::sync::Mutex;
 
 use tauri::menu::{Menu, MenuItem};
@@ -81,7 +84,16 @@ pub fn run() {
             Some(vec!["--minimized"]),
         ))
         .manage(Sidecar::default())
-        .invoke_handler(tauri::generate_handler![send])
+        .manage(bluetooth::Bluetooth::default())
+        .invoke_handler(tauri::generate_handler![
+            send,
+            bluetooth::bluetooth_saved,
+            bluetooth::bluetooth_scan,
+            bluetooth::bluetooth_connect,
+            bluetooth::bluetooth_disconnect,
+            bluetooth::bluetooth_forget,
+            wifi::wifi_join,
+        ])
         .setup(|app| {
             start_sidecar(app.handle())?;
 
