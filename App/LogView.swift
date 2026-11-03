@@ -17,6 +17,11 @@ struct LogView: View {
         }
         .toolbar {
             Button {
+                NSWorkspace.shared.activateFileViewerSelecting([LogFile.url])
+            } label: {
+                Label("Show Log File", systemImage: "folder")
+            }
+            Button {
                 NSPasteboard.general.clearContents()
                 NSPasteboard.general.setString(model.logText, forType: .string)
             } label: {

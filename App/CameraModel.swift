@@ -179,7 +179,8 @@ final class CameraModel {
         searchTask?.cancel()
         searchTask = Task {
             while !Task.isCancelled {
-                if phase == .searching && UserDefaults.standard.bool(forKey: Prefs.autoConnect) {
+                // An import the connection dropped in the middle of reconnects even without auto-connect.
+                if phase == .searching && (UserDefaults.standard.bool(forKey: Prefs.autoConnect) || !pendingImport.isEmpty) {
                     await connect(quiet: true)
                 }
                 try? await Task.sleep(for: .seconds(3))
@@ -489,6 +490,9 @@ final class CameraModel {
         let image = thumbnail ? NSImage(contentsOf: file) : nil
         if !info.isVideo { checkForResizedImage(file) }
         if !(skipIfImported && history.contains(key)) {
+            // Storing can take a while (Photos, Immich); the camera hangs up on a connection that goes quiet.
+            let keepAlive = keepAlive(camera)
+            defer { keepAlive?.cancel() }
             for (i, destination) in destinations.enumerated() {
                 try await destination.store(file, info: info, camera: cameraName, move: i == destinations.count - 1)
             }
@@ -497,6 +501,17 @@ final class CameraModel {
         if let i = items.firstIndex(where: { $0.id == key }) { items[i].imported = true }
         selection.remove(key)
         return (info, image)
+    }
+
+    /// Polls a Fuji camera every few seconds until cancelled. Other cameras' polls list the whole card, so they're left alone.
+    private func keepAlive(_ camera: SerialCamera) -> Task<Void, Never>? {
+        guard camera.fuji != nil else { return nil }
+        return Task {
+            while (try? await Task.sleep(for: .seconds(3))) != nil {
+                // A lost connection shows up in the next download.
+                _ = try? await camera.run { try $0.refreshObjectCount() }
+            }
+        }
     }
 
     /// Bytes of the current batch that finished before the file being downloaded.
@@ -696,9 +711,12 @@ final class CameraModel {
     // MARK: - Log
 
     func appendLog(_ line: String) {
+        let now = Date()
         let f = DateFormatter()
         f.dateFormat = "HH:mm:ss.SSS"
-        log.append("[\(f.string(from: Date()))] \(line)")
+        log.append("[\(f.string(from: now))] \(line)")
+        f.dateFormat = "yyyy-MM-dd HH:mm:ss.SSS"
+        LogFile.append("[\(f.string(from: now))] \(line)")
         if log.count > 2000 { log.removeFirst(log.count - 2000) }
         #if DEBUG
         print(log.last!)
