@@ -1,17 +1,23 @@
 # Response headers for Cloudflare Pages.
 # The site has no JavaScript and loads nothing from other origins, and the CSP says so. The JSON-LD blocks are
-# data, not scripts, so script-src 'none' doesn't block them.
+# data, not scripts, so script-src 'none' doesn't block them. build.py swaps style-src 'self' for the hash of the
+# stylesheet every page inlines.
 /*
   Content-Security-Policy: default-src 'none'; img-src 'self'; style-src 'self'; font-src 'self'; connect-src 'self'; base-uri 'none'; form-action 'none'; frame-ancestors 'none'
   Referrer-Policy: strict-origin-when-cross-origin
   X-Content-Type-Options: nosniff
   Permissions-Policy: camera=(), microphone=(), geolocation=(), interest-cohort=()
 
-/css/*
-  Cache-Control: public, max-age=3600
-
+# Pages link images with ?v=<content hash> (build.py), so a changed image gets a new URL.
 /img/*
-  Cache-Control: public, max-age=86400
+  Cache-Control: public, max-age=31536000, immutable
 
 /fonts/*
   Cache-Control: public, max-age=31536000, immutable
+
+# Only the real domain belongs in search results, not the pages.dev addresses of the project or its previews.
+https://:project.pages.dev/*
+  X-Robots-Tag: noindex
+
+https://:version.:project.pages.dev/*
+  X-Robots-Tag: noindex

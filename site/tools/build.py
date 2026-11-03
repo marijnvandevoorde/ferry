@@ -10,6 +10,8 @@ site/i18n/<lang>.json, where {name} and {version} are filled in. Templates in si
 {{#if key}}…{{/if}}; nest a block in one of the same kind
 by numbering it ({{#each2 .links}}…{{/each2}}). Values are HTML-escaped. Standard library only, so Cloudflare Pages can run it.
 """
+import base64
+import hashlib
 import html
 import json
 import re
@@ -27,6 +29,11 @@ TODAY = date.today().isoformat()
 
 # Pages: template name -> path below the language prefix ("" is the home page).
 PAGES = {"home": "", "cameras": "cameras/", "privacy": "privacy/"}
+
+# The stylesheet is small, so every page inlines it: no request blocks the first paint. _headers allows
+# exactly this text by its hash.
+CSS = (SITE / "css" / "site.css").read_text()
+CSS_HASH = "sha256-" + base64.b64encode(hashlib.sha256(CSS.encode()).digest()).decode()
 
 
 def fill(value, extra=None):
@@ -172,7 +179,13 @@ def build_page(lang, page, strings, base):
     body = (SITE / "templates" / f"{page}.html").read_text()
     ctx = page_context(lang, page, strings)
     ctx["content"] = render(body, ctx)
-    return render(base, ctx)
+    page_html = render(base, ctx).replace('<link rel="stylesheet" href="/css/site.css">', f"<style>{CSS}</style>")
+    return re.sub(r"/img/[\w.-]+\.(?:png|webp|svg)", lambda m: f"{m.group()}?v={version(m.group())}", page_html)
+
+
+def version(path):
+    """A short content hash, so /img/ can be cached for a year and still change on the next deploy."""
+    return hashlib.sha256((SITE / path.lstrip("/")).read_bytes()).hexdigest()[:8]
 
 
 def llms(strings, full=False):
@@ -249,11 +262,10 @@ def main():
     if DIST.exists():
         shutil.rmtree(DIST)
     DIST.mkdir()
-    for folder in ("css", "fonts", "img"):
+    for folder in ("fonts", "img"):
         shutil.copytree(SITE / folder, DIST / folder)
-    for name in ("_headers", "_redirects"):
-        if (SITE / name).exists():
-            shutil.copy(SITE / name, DIST / name)
+    shutil.copy(SITE / "_redirects", DIST / "_redirects")
+    (DIST / "_headers").write_text((SITE / "_headers").read_text().replace("style-src 'self'", f"style-src '{CSS_HASH}'"))
     base = (SITE / "templates" / "base.html").read_text()
     for lang in LANGS:
         prefix = DIST if lang == "en" else DIST / lang

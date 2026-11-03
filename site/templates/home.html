@@ -11,7 +11,7 @@
       <p class="hero-note">{{hero.note}}</p>
     </div>
     <figure class="hero-shot">
-      <img src="/img/screenshot-mac.png" alt="{{shots.mac_alt}}" width="1600" height="1100" fetchpriority="high">
+      <picture><source type="image/webp" srcset="/img/screenshot-mac-800.webp 800w, /img/screenshot-mac-1200.webp 1200w, /img/screenshot-mac-1600.webp 1600w" sizes="(max-width: 52rem) 100vw, 38rem"><img src="/img/screenshot-mac.png" alt="{{shots.mac_alt}}" width="1600" height="1100" fetchpriority="high"></picture>
     </figure>
   </div>
   <div class="horizon" aria-hidden="true"></div>
@@ -47,11 +47,11 @@
 <section class="screens" id="screenshots">
   <div class="wrap shots-grid">
     <figure>
-      <img src="/img/screenshot-mac.png" alt="{{shots.mac_alt}}" width="1600" height="1100" loading="lazy">
+      <picture><source type="image/webp" srcset="/img/screenshot-mac-800.webp 800w, /img/screenshot-mac-1200.webp 1200w, /img/screenshot-mac-1600.webp 1600w" sizes="(max-width: 52rem) 100vw, 34rem"><img src="/img/screenshot-mac.png" alt="{{shots.mac_alt}}" width="1600" height="1100" loading="lazy"></picture>
       <figcaption>{{shots.mac_caption}}</figcaption>
     </figure>
     <figure>
-      <img src="/img/screenshot-desktop.png" alt="{{shots.desktop_alt}}" width="2200" height="1440" loading="lazy">
+      <picture><source type="image/webp" srcset="/img/screenshot-desktop-1100.webp 1100w, /img/screenshot-desktop-1650.webp 1650w, /img/screenshot-desktop-2200.webp 2200w" sizes="(max-width: 52rem) 100vw, 34rem"><img src="/img/screenshot-desktop.png" alt="{{shots.desktop_alt}}" width="2200" height="1440" loading="lazy"></picture>
       <figcaption>{{shots.desktop_caption}}</figcaption>
     </figure>
   </div>
