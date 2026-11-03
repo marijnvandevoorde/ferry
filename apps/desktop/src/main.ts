@@ -75,6 +75,11 @@ function itemsToImport(): Item[] {
   return state.items.filter((i) => !i.imported && !(settings.skipVideos && i.isVideo) && matchesFilters(i));
 }
 
+/** What "Import New" imports: new items the filters show, oldest first. */
+function importNew() {
+  startImport(itemsToImport().map((i) => i.id).reverse());
+}
+
 function startImport(ids?: string[]) {
   if (!settings.folder) {
     openSettings();
@@ -141,7 +146,7 @@ listen<ServeEvent>("ferryctl", ({ payload: e }) => {
         const ids = resume === "new" ? undefined : resume.filter((id) => known.has(id));
         if (!ids || ids.length > 0) startImport(ids);
       } else if (firstList && fresh.length > 0) {
-        if (settings.autoImport) startImport();
+        if (settings.autoImport) importNew();
         else notify(state.camera || t("Camera connected"), t("{n} new items to import", { n: fresh.length }, fresh.length));
       }
       break;
@@ -338,7 +343,7 @@ $("thumb-size").oninput = applyThumbSize;
 applyThumbSize();
 $("show-folder").onclick = () => settings.folder && openPath(settings.folder);
 $("show-log").onclick = () => invoke<string>("log_dir").then((dir) => openPath(dir)).catch((e) => showError(String(e)));
-$("import-new").onclick = () => startImport();
+$("import-new").onclick = () => importNew();
 $("import-selected").onclick = () => startImport([...state.selection]);
 $("stop").onclick = () => {
   state.batch = null;
