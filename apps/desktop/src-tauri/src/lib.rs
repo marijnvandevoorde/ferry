@@ -4,6 +4,7 @@
 mod bluetooth;
 mod wifi;
 
+use std::io::Write;
 use std::sync::Mutex;
 
 use tauri::menu::{Menu, MenuItem};
@@ -23,6 +24,40 @@ fn send(command: serde_json::Value, sidecar: State<Sidecar>) -> Result<(), Strin
     let mut line = command.to_string();
     line.push('\n');
     child.write(line.as_bytes()).map_err(|e| e.to_string())
+}
+
+/// The folder that holds the connection log.
+#[tauri::command]
+fn log_dir(app: AppHandle) -> Result<String, String> {
+    let dir = app.path().app_log_dir().map_err(|e| e.to_string())?;
+    std::fs::create_dir_all(&dir).map_err(|e| e.to_string())?;
+    Ok(dir.to_string_lossy().into_owned())
+}
+
+/// Appends to the connection log on disk (ferry.log in the app's log folder), so a dropped connection can be looked
+/// into afterwards. Starts over past 5 MB, keeping the previous file as ferry.old.log.
+fn append_log(app: &AppHandle, line: &str) {
+    let Ok(dir) = app.path().app_log_dir() else { return };
+    let _ = std::fs::create_dir_all(&dir);
+    let path = dir.join("ferry.log");
+    if std::fs::metadata(&path).map(|m| m.len() > 5_000_000).unwrap_or(false) {
+        let _ = std::fs::rename(&path, dir.join("ferry.old.log"));
+    }
+    if let Ok(mut file) = std::fs::OpenOptions::new().create(true).append(true).open(&path) {
+        let _ = writeln!(file, "[{}] {}", chrono::Local::now().format("%Y-%m-%d %H:%M:%S%.3f"), line);
+    }
+}
+
+/// The line an event adds to the log file, if any (progress and thumbnails would drown the rest).
+fn log_line(event: &serde_json::Value) -> Option<String> {
+    let text = |key: &str| event.get(key).and_then(|v| v.as_str()).unwrap_or("").to_string();
+    match event.get("event")?.as_str()? {
+        "log" => Some(text("line")),
+        "error" => Some(format!("Error: {}", text("message"))),
+        "status" => Some(format!("Status: {} {} {}", text("phase"), text("camera"), text("address")).trim_end().to_string()),
+        "done" => Some(format!("Import done: {}", event)),
+        _ => None,
+    }
 }
 
 fn start_sidecar(app: &AppHandle) -> Result<(), Box<dyn std::error::Error>> {
@@ -46,16 +81,21 @@ fn start_sidecar(app: &AppHandle) -> Result<(), Box<dyn std::error::Error>> {
                     while let Some(pos) = pending.iter().position(|&b| b == b'\n') {
                         let line: Vec<u8> = pending.drain(..=pos).collect();
                         if let Ok(value) = serde_json::from_slice::<serde_json::Value>(&line) {
+                            if let Some(line) = log_line(&value) {
+                                append_log(&app, &line);
+                            }
                             let _ = app.emit("ferryctl", value);
                         }
                     }
                 }
                 CommandEvent::Stderr(bytes) => {
                     let line = String::from_utf8_lossy(&bytes).trim().to_string();
+                    append_log(&app, &line);
                     let _ = app.emit("ferryctl", serde_json::json!({ "event": "log", "line": line }));
                 }
                 CommandEvent::Terminated(status) => {
                     let message = format!("ferryctl stopped ({:?})", status.code);
+                    append_log(&app, &message);
                     let _ = app.emit("ferryctl", serde_json::json!({ "event": "error", "message": message }));
                     break;
                 }
@@ -87,6 +127,7 @@ pub fn run() {
         .manage(bluetooth::Bluetooth::default())
         .invoke_handler(tauri::generate_handler![
             send,
+            log_dir,
             bluetooth::bluetooth_saved,
             bluetooth::bluetooth_scan,
             bluetooth::bluetooth_connect,

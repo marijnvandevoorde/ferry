@@ -50,6 +50,10 @@ const state = {
   importing: false,
   lastError: "",
   importStarted: 0,
+  /** The running import: the ids still to do, or "new" for all new items. */
+  batch: null as string[] | "new" | null,
+  /** An import the connection dropped in the middle of; it continues after reconnecting. */
+  resume: null as string[] | "new" | null,
 };
 
 /** Filters shown in the toolbar; "Import New" imports what they show. */
@@ -79,6 +83,7 @@ function startImport(ids?: string[]) {
   }
   state.importing = true;
   state.importStarted = Date.now();
+  state.batch = ids ?? "new";
   $("show-folder").hidden = true;
   const immich = settings.immichServer && settings.immichKey
     ? { server: settings.immichServer, apiKey: settings.immichKey, album: settings.immichAlbum }
@@ -112,6 +117,8 @@ listen<ServeEvent>("ferryctl", ({ payload: e }) => {
       if (e.camera) state.camera = e.camera;
       if (e.phase === "connected") showError("");
       if (e.phase === "searching" && wasConnected) {
+        if (state.batch) state.resume = state.batch;
+        state.batch = null;
         state.items = [];
         state.selection.clear();
         state.importing = false;
@@ -128,7 +135,12 @@ listen<ServeEvent>("ferryctl", ({ payload: e }) => {
       const known = new Set(state.items.map((i) => i.id));
       state.selection.forEach((id) => known.has(id) || state.selection.delete(id));
       const fresh = itemsToImport();
-      if (firstList && fresh.length > 0) {
+      if (firstList && state.resume) {
+        const resume = state.resume;
+        state.resume = null;
+        const ids = resume === "new" ? undefined : resume.filter((id) => known.has(id));
+        if (!ids || ids.length > 0) startImport(ids);
+      } else if (firstList && fresh.length > 0) {
         if (settings.autoImport) startImport();
         else notify(state.camera || t("Camera connected"), t("{n} new items to import", { n: fresh.length }, fresh.length));
       }
@@ -155,10 +167,17 @@ listen<ServeEvent>("ferryctl", ({ payload: e }) => {
       const item = state.items.find((i) => i.id === e.id);
       if (item) item.imported = true;
       state.selection.delete(e.id);
+      if (Array.isArray(state.batch)) state.batch = state.batch.filter((id) => id !== e.id);
       break;
     }
     case "done": {
       state.importing = false;
+      state.batch = null;
+      // Cut off by a lost connection: it continues after reconnecting.
+      if (state.resume) {
+        render();
+        return;
+      }
       let summary = t("Imported {n} items", { n: e.imported }, e.imported);
       if (e.cancelled) summary += t(" (stopped)");
       if (e.failed.length) summary += t(". {n} failed: {list}", { n: e.failed.length, list: e.failed.slice(0, 3).join(", ") });
@@ -301,6 +320,8 @@ $("connect-now").onclick = () => {
   send({ cmd: "connect" });
 };
 $("disconnect").onclick = () => {
+  state.resume = null;
+  state.batch = null;
   send({ cmd: "disconnect" });
   invoke("bluetooth_disconnect").catch(() => {});
 };
@@ -316,9 +337,13 @@ const applyThumbSize = () => {
 $("thumb-size").oninput = applyThumbSize;
 applyThumbSize();
 $("show-folder").onclick = () => settings.folder && openPath(settings.folder);
+$("show-log").onclick = () => invoke<string>("log_dir").then((dir) => openPath(dir)).catch((e) => showError(String(e)));
 $("import-new").onclick = () => startImport();
 $("import-selected").onclick = () => startImport([...state.selection]);
-$("stop").onclick = () => send({ cmd: "cancel" });
+$("stop").onclick = () => {
+  state.batch = null;
+  send({ cmd: "cancel" });
+};
 $("settings-button").onclick = openSettings;
 function setFolder(folder: string) {
   settings.folder = folder;

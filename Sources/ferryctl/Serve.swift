@@ -255,7 +255,10 @@ final class Server: @unchecked Sendable {
                         do { try await immich.upload(url, info: downloaded, key: id) } catch { uploadError = error }
                         semaphore.signal()
                     }
-                    semaphore.wait()
+                    // Uploads can take a while; Fuji cameras hang up on a connection that goes quiet.
+                    while semaphore.wait(timeout: .now() + 3) == .timedOut {
+                        if camera is FujiCamera { _ = try? camera.refreshObjectCount() }
+                    }
                     if let uploadError { throw uploadError }
                 }
                 history.insert(id)

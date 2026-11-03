@@ -12,6 +12,7 @@ const strings: Record<string, Record<Lang, string>> = {
   "Type": { fr: "Type", es: "Tipo", it: "Tipo", de: "Typ", nl: "Type" },
   "Order": { fr: "Ordre", es: "Orden", it: "Ordine", de: "Reihenfolge", nl: "Volgorde" },
   "Thumbnail size": { fr: "Taille des vignettes", es: "Tamaño de las miniaturas", it: "Dimensione miniature", de: "Miniaturgröße", nl: "Miniatuurgrootte" },
+  "Open log folder": { fr: "Ouvrir le dossier des journaux", es: "Abrir carpeta de registros", it: "Apri cartella dei registri", de: "Protokollordner öffnen", nl: "Logmap openen" },
   "Open folder": { fr: "Ouvrir le dossier", es: "Abrir carpeta", it: "Apri cartella", de: "Ordner öffnen", nl: "Map openen" },
   "{speed}/s · {left} left": { fr: "{speed}/s · encore {left}", es: "{speed}/s · quedan {left}", it: "{speed}/s · mancano {left}", de: "{speed}/s · noch {left}", nl: "{speed}/s · nog {left}" },
   "Settings": { fr: "Réglages", es: "Ajustes", it: "Impostazioni", de: "Einstellungen", nl: "Instellingen" },
