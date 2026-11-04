@@ -7,7 +7,7 @@
     "cameras_title": "Supported cameras: Fujifilm X and GFX, Canon, Olympus, Ricoh | {name}",
     "cameras_description": "Which cameras work with {name} for wireless photo import: Fujifilm X-T20, X-T2, X-T4, X-T30, X-S10 and more, plus Canon, Olympus, Ricoh, Sony and Panasonic.",
     "privacy_title": "Privacy | {name}",
-    "privacy_description": "{name} collects nothing. It talks to your camera and to the places you import into, and to nothing else. This website has no cookies and no tracking.",
+    "privacy_description": "{name} collects nothing: it only talks to your camera and where you import to. This website counts visits anonymously, without cookies.",
     "notfound_title": "Page not found | {name}",
     "og_image_alt": "{name} on a Mac, showing photos on a camera ready to import."
   },
@@ -205,7 +205,7 @@
     "sections": [
       {
         "h": "The short version",
-        "p": "{name} collects nothing about you. It has no account, no analytics, no crash reporting and no servers. This website has no cookies, no JavaScript and no tracking."
+        "p": "{name} collects nothing about you. It has no account, no analytics, no crash reporting and no servers. Only this website collects some data: it counts visits with Cloudflare Web Analytics, without cookies."
       },
       {
         "h": "What the app does with your photos",
@@ -221,7 +221,7 @@
       },
       {
         "h": "This website",
-        "p": "This site is hosted by Cloudflare Pages. Cloudflare processes requests to deliver pages and may keep short-lived logs; we don't receive or use them. There are no third-party scripts."
+        "p": "This site is hosted by Cloudflare Pages. Cloudflare processes requests to deliver pages and may keep short-lived logs; we don't receive or use them. To see how many people visit, the site uses Cloudflare Web Analytics: it records which pages are viewed, the site you came from, your browser, country and how fast the page loaded. It sets no cookies and doesn't identify you. It's the only script on the site."
       },
       {
         "h": "Camera reports",
@@ -241,7 +241,7 @@
   "foot": {
     "tagline": "Your photos, carried safely home: Wi-Fi import from your camera to your computer.",
     "license": "Open source under the MIT license.",
-    "nocookies": "No cookies, no tracking.",
+    "nocookies": "No cookies. Anonymous visit counts only.",
     "privacy": "Privacy",
     "trademark": "Fujifilm, Canon, Olympus, OM System, Ricoh, Sony, Panasonic and Nikon are trademarks of their owners. {name} is not affiliated with them."
   }

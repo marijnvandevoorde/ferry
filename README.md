@@ -96,7 +96,7 @@ vcam only supports one connection per run; restart it between sessions.
 
 ## Website
 
-`site/` is the marketing site (Cloudflare Pages, six languages, no JavaScript). See [site/README.md](site/README.md).
+`site/` is the marketing site (Cloudflare Pages, six languages, no JavaScript of its own). See [site/README.md](site/README.md).
 The working name for the app is Ferry ([how we got there](docs/roundtable-4.md)); the site reads it from `site/site.json`.
 
 ## Credits

@@ -7,7 +7,7 @@
     "cameras_title": "Appareils compatibles : Fujifilm, Canon, Olympus, Ricoh | {name}",
     "cameras_description": "Les appareils compatibles avec {name} : Fujifilm X-T20, X-T2, X-T4, X-T30, X-S10 et d'autres, ainsi que Canon, Olympus, Ricoh, Sony et Panasonic.",
     "privacy_title": "Confidentialité | {name}",
-    "privacy_description": "{name} ne collecte rien. Il communique avec votre appareil photo et avec les destinations d'importation, et rien d'autre. Ce site n'utilise ni cookies ni traceurs.",
+    "privacy_description": "{name} ne collecte rien : il ne parle qu'à votre appareil photo et à vos destinations d'import. Ce site compte les visites anonymement, sans cookies.",
     "notfound_title": "Page introuvable | {name}",
     "og_image_alt": "{name} sur un Mac, avec les photos d'un appareil prêtes à importer."
   },
@@ -205,7 +205,7 @@
     "sections": [
       {
         "h": "En bref",
-        "p": "{name} ne collecte rien sur vous. Il n'a ni compte, ni outil d'analyse, ni rapport de plantage, ni serveur. Ce site n'utilise ni cookies, ni JavaScript, ni traceurs."
+        "p": "{name} ne collecte rien sur vous. Il n'a ni compte, ni outil d'analyse, ni rapport de plantage, ni serveur. Seul ce site collecte quelques données : il compte les visites avec Cloudflare Web Analytics, sans cookies."
       },
       {
         "h": "Ce que l'app fait de vos photos",
@@ -221,7 +221,7 @@
       },
       {
         "h": "Ce site",
-        "p": "Ce site est hébergé par Cloudflare Pages. Cloudflare traite les requêtes pour servir les pages et peut conserver brièvement des journaux ; nous ne les recevons ni ne les utilisons. Aucun script tiers n'est utilisé."
+        "p": "Ce site est hébergé par Cloudflare Pages. Cloudflare traite les requêtes pour servir les pages et peut conserver brièvement des journaux ; nous ne les recevons ni ne les utilisons. Pour savoir combien de personnes le visitent, le site utilise Cloudflare Web Analytics : il enregistre les pages consultées, le site d'où vous venez, votre navigateur, votre pays et la vitesse de chargement. Il ne dépose aucun cookie et ne vous identifie pas. C'est le seul script du site."
       },
       {
         "h": "Rapports d'appareil",
@@ -241,7 +241,7 @@
   "foot": {
     "tagline": "Vos photos, ramenées à bon port : de l'appareil à l'ordinateur en Wi-Fi.",
     "license": "Open source sous licence MIT.",
-    "nocookies": "Pas de cookies, pas de suivi.",
+    "nocookies": "Pas de cookies. Seulement un comptage anonyme des visites.",
     "privacy": "Confidentialité",
     "trademark": "Fujifilm, Canon, Olympus, OM System, Ricoh, Sony, Panasonic et Nikon sont des marques de leurs propriétaires. {name} n'est affilié à aucun d'entre eux."
   }

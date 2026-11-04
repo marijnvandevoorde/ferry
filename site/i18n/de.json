@@ -7,7 +7,7 @@
     "cameras_title": "Unterstützte Kameras: Fujifilm, Canon, Olympus, Ricoh | {name}",
     "cameras_description": "Diese Kameras funktionieren mit {name} per WLAN: Fujifilm X-T20, X-T2, X-T4, X-T30, X-S10 und mehr, dazu Canon, Olympus, Ricoh, Sony, Panasonic.",
     "privacy_title": "Datenschutz | {name}",
-    "privacy_description": "{name} sammelt nichts. Die App spricht nur mit deiner Kamera und den Orten, in die du importierst. Diese Website nutzt keine Cookies und kein Tracking.",
+    "privacy_description": "{name} sammelt nichts: Die App spricht nur mit deiner Kamera und deinen Importzielen. Diese Website zählt Besuche anonym, ohne Cookies.",
     "notfound_title": "Seite nicht gefunden | {name}",
     "og_image_alt": "{name} auf einem Mac mit Fotos auf einer Kamera, bereit zum Import."
   },
@@ -205,7 +205,7 @@
     "sections": [
       {
         "h": "Kurz gesagt",
-        "p": "{name} sammelt nichts über dich. Es gibt kein Konto, keine Analyse, keine Absturzberichte und keine Server. Diese Website nutzt keine Cookies, kein JavaScript und kein Tracking."
+        "p": "{name} sammelt nichts über dich. Es gibt kein Konto, keine Analyse, keine Absturzberichte und keine Server. Nur diese Website erhebt einige Daten: Sie zählt Besuche mit Cloudflare Web Analytics, ohne Cookies."
       },
       {
         "h": "Was die App mit deinen Fotos macht",
@@ -221,7 +221,7 @@
       },
       {
         "h": "Diese Website",
-        "p": "Diese Seite wird von Cloudflare Pages gehostet. Cloudflare verarbeitet Anfragen, um Seiten auszuliefern, und speichert eventuell kurzlebige Protokolle. Wir erhalten oder nutzen sie nicht. Es gibt keine Skripte von Drittanbietern."
+        "p": "Diese Seite wird von Cloudflare Pages gehostet. Cloudflare verarbeitet Anfragen, um Seiten auszuliefern, und speichert eventuell kurzlebige Protokolle. Wir erhalten oder nutzen sie nicht. Um zu sehen, wie viele Menschen die Seite besuchen, nutzt sie Cloudflare Web Analytics: Es erfasst, welche Seiten aufgerufen werden, von welcher Seite du kommst, deinen Browser, dein Land und wie schnell die Seite geladen hat. Es setzt keine Cookies und identifiziert dich nicht. Es ist das einzige Skript auf der Seite."
       },
       {
         "h": "Kameraberichte",
@@ -241,7 +241,7 @@
   "foot": {
     "tagline": "Deine Fotos, sicher nach Hause gebracht: per WLAN von der Kamera auf den Computer.",
     "license": "Open Source unter der MIT-Lizenz.",
-    "nocookies": "Keine Cookies, kein Tracking.",
+    "nocookies": "Keine Cookies. Nur anonyme Besucherzahlen.",
     "privacy": "Datenschutz",
     "trademark": "Fujifilm, Canon, Olympus, OM System, Ricoh, Sony, Panasonic und Nikon sind Marken ihrer jeweiligen Inhaber. {name} steht in keiner Verbindung zu ihnen."
   }

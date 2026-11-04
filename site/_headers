@@ -1,9 +1,10 @@
 # Response headers for Cloudflare Pages.
-# The site has no JavaScript and loads nothing from other origins, and the CSP says so. The JSON-LD blocks are
-# data, not scripts, so script-src 'none' doesn't block them. build.py swaps style-src 'self' for the hash of the
-# stylesheet every page inlines.
+# The site's only script is Cloudflare Web Analytics, which Cloudflare adds to proxied pages (see the privacy page);
+# it loads from static.cloudflareinsights.com and reports to /cdn-cgi/rum or cloudflareinsights.com. Nothing else
+# runs or loads from other origins, and the CSP says so. The JSON-LD blocks are data, not scripts. build.py swaps
+# style-src 'self' for the hash of the stylesheet every page inlines.
 /*
-  Content-Security-Policy: default-src 'none'; img-src 'self'; style-src 'self'; font-src 'self'; connect-src 'self'; base-uri 'none'; form-action 'none'; frame-ancestors 'none'
+  Content-Security-Policy: default-src 'none'; script-src https://static.cloudflareinsights.com; img-src 'self'; style-src 'self'; font-src 'self'; connect-src 'self' https://cloudflareinsights.com; base-uri 'none'; form-action 'none'; frame-ancestors 'none'
   Referrer-Policy: strict-origin-when-cross-origin
   X-Content-Type-Options: nosniff
   Permissions-Policy: camera=(), microphone=(), geolocation=(), interest-cohort=()

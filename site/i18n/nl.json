@@ -7,7 +7,7 @@
     "cameras_title": "Ondersteunde camera's: Fujifilm, Canon, Olympus, Ricoh | {name}",
     "cameras_description": "Welke camera's werken met {name}: Fujifilm X-T20, X-T2, X-T4, X-T30, X-S10 en meer, plus Canon, Olympus, Ricoh, Sony en Panasonic.",
     "privacy_title": "Privacy | {name}",
-    "privacy_description": "{name} verzamelt niets. Het praat met je camera en met de plekken waar je naartoe importeert, en met niets anders. Deze website gebruikt geen cookies en geen tracking.",
+    "privacy_description": "{name} verzamelt niets: het praat alleen met je camera en waar je naartoe importeert. Deze website telt bezoeken anoniem, zonder cookies.",
     "notfound_title": "Pagina niet gevonden | {name}",
     "og_image_alt": "{name} op een Mac, met foto's op een camera klaar om te importeren."
   },
@@ -205,7 +205,7 @@
     "sections": [
       {
         "h": "De korte versie",
-        "p": "{name} verzamelt niets over jou. Er is geen account, geen analyse, geen crashrapportage en geen server. Deze website gebruikt geen cookies, geen JavaScript en geen tracking."
+        "p": "{name} verzamelt niets over jou. Er is geen account, geen analyse, geen crashrapportage en geen server. Alleen deze website verzamelt wat gegevens: ze telt bezoeken met Cloudflare Web Analytics, zonder cookies."
       },
       {
         "h": "Wat de app met je foto's doet",
@@ -221,7 +221,7 @@
       },
       {
         "h": "Deze website",
-        "p": "Deze site wordt gehost door Cloudflare Pages. Cloudflare verwerkt verzoeken om pagina's te leveren en bewaart mogelijk kortstondig logbestanden; wij ontvangen of gebruiken die niet. Er zijn geen scripts van derden."
+        "p": "Deze site wordt gehost door Cloudflare Pages. Cloudflare verwerkt verzoeken om pagina's te leveren en bewaart mogelijk kortstondig logbestanden; wij ontvangen of gebruiken die niet. Om te zien hoeveel mensen de site bezoeken, gebruikt ze Cloudflare Web Analytics: dat registreert welke pagina's bekeken worden, de site waar je vandaan komt, je browser, je land en hoe snel de pagina laadde. Het plaatst geen cookies en identificeert je niet. Het is het enige script op de site."
       },
       {
         "h": "Camerameldingen",
@@ -241,7 +241,7 @@
   "foot": {
     "tagline": "Je foto's veilig thuisgebracht: via wifi van je camera naar je computer.",
     "license": "Open source onder de MIT-licentie.",
-    "nocookies": "Geen cookies, geen tracking.",
+    "nocookies": "Geen cookies. Alleen anonieme bezoekersaantallen.",
     "privacy": "Privacy",
     "trademark": "Fujifilm, Canon, Olympus, OM System, Ricoh, Sony, Panasonic en Nikon zijn handelsmerken van hun eigenaars. {name} is niet aan hen gelieerd."
   }

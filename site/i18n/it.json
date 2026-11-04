@@ -7,7 +7,7 @@
     "cameras_title": "Fotocamere supportate: Fujifilm, Canon, Olympus, Ricoh | {name}",
     "cameras_description": "Quali fotocamere funzionano con {name} per trasferire le foto via Wi-Fi: Fujifilm X-T20, X-T2, X-T4, X-T30, X-S10 e altre, più Canon, Olympus, Ricoh, Sony e Panasonic.",
     "privacy_title": "Privacy | {name}",
-    "privacy_description": "{name} non raccoglie nulla. Comunica con la tua fotocamera e con i luoghi in cui importi le foto, e con nient'altro. Questo sito non usa cookie né tracciamento.",
+    "privacy_description": "{name} non raccoglie nulla: parla solo con la tua fotocamera e con dove importi. Questo sito conta le visite in modo anonimo, senza cookie.",
     "notfound_title": "Pagina non trovata | {name}",
     "og_image_alt": "{name} su un Mac, con le foto di una fotocamera pronte da importare."
   },
@@ -205,7 +205,7 @@
     "sections": [
       {
         "h": "In breve",
-        "p": "{name} non raccoglie nulla su di te. Non ha account, analisi d'uso, segnalazione dei crash né server. Questo sito non usa cookie, JavaScript né tracciamento."
+        "p": "{name} non raccoglie nulla su di te. Non ha account, analisi d'uso, segnalazione dei crash né server. Solo questo sito raccoglie alcuni dati: conta le visite con Cloudflare Web Analytics, senza cookie."
       },
       {
         "h": "Cosa fa l'app con le tue foto",
@@ -221,7 +221,7 @@
       },
       {
         "h": "Questo sito",
-        "p": "Questo sito è ospitato su Cloudflare Pages. Cloudflare elabora le richieste per consegnare le pagine e può conservare log di breve durata; noi non li riceviamo né li usiamo. Non ci sono script di terze parti."
+        "p": "Questo sito è ospitato su Cloudflare Pages. Cloudflare elabora le richieste per consegnare le pagine e può conservare log di breve durata; noi non li riceviamo né li usiamo. Per sapere quante persone lo visitano, il sito usa Cloudflare Web Analytics: registra quali pagine vengono viste, il sito da cui arrivi, il browser, il paese e la velocità di caricamento. Non usa cookie e non ti identifica. È l'unico script del sito."
       },
       {
         "h": "Segnalazioni sulle fotocamere",
@@ -241,7 +241,7 @@
   "foot": {
     "tagline": "Le tue foto, portate al sicuro: dalla fotocamera al computer via Wi-Fi.",
     "license": "Open source con licenza MIT.",
-    "nocookies": "Niente cookie, niente tracciamento.",
+    "nocookies": "Niente cookie. Solo un conteggio anonimo delle visite.",
     "privacy": "Privacy",
     "trademark": "Fujifilm, Canon, Olympus, OM System, Ricoh, Sony, Panasonic e Nikon sono marchi dei rispettivi proprietari. {name} non è affiliato a nessuno di essi."
   }

@@ -1,7 +1,7 @@
 # The website
 
-A static site in six languages for Cloudflare Pages. No JavaScript, no cookies, nothing loaded from other
-origins; the CSP in `_headers` enforces that.
+A static site in six languages for Cloudflare Pages. No cookies and no JavaScript of its own; the only script is
+Cloudflare Web Analytics, which Cloudflare adds to the pages. The CSP in `_headers` allows that and nothing else.
 
 ```sh
 python3 site/tools/build.py        # builds site/dist
