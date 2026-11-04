@@ -142,10 +142,10 @@ final class CameraModel {
     /// What "Import New" imports: new items, without videos if the user chose to skip them.
     var itemsToImport: [PhotoItem] {
         let skipVideos = UserDefaults.standard.bool(forKey: Prefs.skipVideos)
-        return newItems.filter { !(skipVideos && $0.info.isVideo) && matchesFilters($0) }
+        return newItems.filter { !(skipVideos && $0.info.isVideo) }
     }
 
-    /// Gallery filters; "Import New" imports what the filters show.
+    /// Gallery filters, for finding and selecting; "Import New" ignores them.
     var kindFilter: ObjectInfo.Kind?
     var protectedOnly = UserDefaults.standard.bool(forKey: Prefs.protectedOnly) {
         didSet { UserDefaults.standard.set(protectedOnly, forKey: Prefs.protectedOnly) }

@@ -56,7 +56,7 @@ const state = {
   resume: null as string[] | "new" | null,
 };
 
-/** Filters shown in the toolbar; "Import New" imports what they show. */
+/** Filters shown in the toolbar, for finding and selecting; "Import New" ignores them. */
 function matchesFilters(item: Item): boolean {
   const kind = $<HTMLSelectElement>("kind").value;
   return (!kind || item.kind === kind) && ($<HTMLSelectElement>("filter").value !== "protected" || item.protected);
@@ -72,10 +72,10 @@ function formatBytes(n: number): string {
 const send = (command: Record<string, unknown>) => invoke("send", { command });
 
 function itemsToImport(): Item[] {
-  return state.items.filter((i) => !i.imported && !(settings.skipVideos && i.isVideo) && matchesFilters(i));
+  return state.items.filter((i) => !i.imported && !(settings.skipVideos && i.isVideo));
 }
 
-/** What "Import New" imports: new items the filters show, oldest first. */
+/** What "Import New" imports: every new item, oldest first. */
 function importNew() {
   startImport(itemsToImport().map((i) => i.id).reverse());
 }
