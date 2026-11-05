@@ -10,6 +10,10 @@ Pushing a tag such as `v0.2.0` runs `.github/workflows/release.yml`, which:
 5. builds the Windows (MSI, setup .exe) and Linux (AppImage, .deb, signed when `LINUX_GPG_KEY` is set)
    installers and attaches them.
 
+Before tagging, set the new version in `project.yml` (`MARKETING_VERSION`), `apps/desktop/package.json`,
+`apps/desktop/src-tauri/tauri.conf.json`, `apps/desktop/src-tauri/Cargo.toml`, `Sources/ferryctl/main.swift` and
+`site/site.json`. After the release, update the version, URL and checksum in `packaging/` (Flathub, Homebrew).
+
 ## One-time setup
 
 In App Store Connect → Users and Access → Integrations, create a team API key with the **Admin** role

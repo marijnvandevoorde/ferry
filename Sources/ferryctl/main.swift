@@ -1,6 +1,9 @@
 import FerryKit
 import Foundation
 
+/// Matches the apps' version; bumped with them on a release (docs/releasing.md).
+let version = "0.2.0"
+
 let usage = """
 usage: ferryctl [options] <command>
 
@@ -29,12 +32,24 @@ options:
   --immich-album NAME  add Immich uploads to this album
   --history FILE       import history file (default: \(ImportHistory.defaultURL.path))
   --quiet              no protocol log on stderr
+  --help, --version
 """
 
 // Line-buffered, so `watch` output shows up promptly in logs (systemd, launchd).
 setvbuf(stdout, nil, _IOLBF, 0)
 
 var args = Array(CommandLine.arguments.dropFirst())
+
+// Before anything else: an unknown command would otherwise go looking for a camera first.
+if args.contains(where: { ["--help", "-h", "help"].contains($0) }) {
+    print(usage)
+    exit(0)
+}
+if args.contains(where: { ["--version", "version"].contains($0) }) {
+    print("ferryctl \(version)")
+    exit(0)
+}
+let commands: Set = ["import", "watch", "autosave", "serve", "info", "list", "download", "thumbs"]
 
 func option(_ name: String) -> String? {
     guard let i = args.firstIndex(of: name), i + 1 < args.count else { return nil }
@@ -60,7 +75,8 @@ let skipVideos = flag("--skip-videos")
 let watchAutoSave = flag("--autosave")
 let afterBluetoothHandoff = flag("--bluetooth")
 let verbose = !flag("--quiet")
-guard let command = args.first else {
+guard let command = args.first, commands.contains(command) else {
+    if let unknown = args.first { FileHandle.standardError.write(Data("ferryctl: unknown command \(unknown)\n".utf8)) }
     print(usage)
     exit(2)
 }
