@@ -34,6 +34,7 @@ final class Server: @unchecked Sendable {
     private var camera: WirelessCamera?
     private var items: [String: (handle: UInt32, info: ObjectInfo)] = [:]
     private var objectCount = 0
+    private var thumbnailQueue: [String] = []
     private var cancelRequested = false
     private var stopped = false
     /// Set by a connect command after a Bluetooth hand-off; newer Fujifilm cameras then use the XApp gallery.
@@ -139,6 +140,7 @@ final class Server: @unchecked Sendable {
         camera?.disconnect()
         camera = nil
         items = [:]
+        thumbnailQueue = []
         emit(["event": "status", "phase": "searching"])
     }
 
@@ -154,24 +156,44 @@ final class Server: @unchecked Sendable {
         objectCount = camera.objectHandles.count
         var list: [[String: Any]] = []
         var loaded: [String: (UInt32, ObjectInfo)] = [:]
-        for handle in camera.objectHandles {
+        var order: [String] = []
+        // Newest first: new photos are at the end of the card.
+        for handle in camera.objectHandles.reversed() {
             let info = try camera.objectInfo(handle)
             if info.isFolder { continue }
             let id = ImportHistory.key(camera: camera.cameraName, info: info)
             loaded[id] = (handle, info)
+            order.append(id)
             list.append(item(id: id, info: info))
         }
         items = loaded.mapValues { (handle: $0.0, info: $0.1) }
         emit(["event": "items", "items": list])
 
-        for (id, entry) in loaded {
+        // Thumbnails of the photos not imported yet first.
+        thumbnailQueue = order.filter { !history.contains($0) } + order.filter { history.contains($0) }
+        loadThumbnails()
+    }
+
+    /// Loads a few thumbnails, then queues the rest behind any command that came in, so an import doesn't wait
+    /// for every thumbnail.
+    private func loadThumbnails() {
+        guard let camera, !thumbnailQueue.isEmpty else { return }
+        for id in thumbnailQueue.prefix(8) {
+            thumbnailQueue.removeFirst()
+            guard let handle = items[id]?.handle else { continue }
             let file = thumbnails.appendingPathComponent(PathTemplate.sanitize(id) + ".jpg")
             if !FileManager.default.fileExists(atPath: file.path) {
-                guard let data = try camera.thumbnail(entry.0) else { continue }
-                try? data.write(to: file)
+                do {
+                    guard let data = try camera.thumbnail(handle) else { continue }
+                    try? data.write(to: file)
+                } catch {
+                    lost(error)
+                    return
+                }
             }
             emit(["event": "thumbnail", "id": id, "path": file.path])
         }
+        queue.async { self.loadThumbnails() }
     }
 
     private func item(id: String, info: ObjectInfo) -> [String: Any] {

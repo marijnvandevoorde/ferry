@@ -344,7 +344,7 @@ private struct ImportBar: View {
                             .frame(minWidth: 120)
                     }
                     .buttonStyle(.borderedProminent)
-                    .disabled(model.itemsToImport.isEmpty || model.isListing)
+                    .disabled(model.itemsToImport.isEmpty)
 
                 }
             }

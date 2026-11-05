@@ -117,6 +117,8 @@ final class CameraModel {
     private(set) var items: [PhotoItem] = []
     private(set) var listProgress: (loaded: Int, total: Int) = (0, 0)
     private(set) var isListing = false
+    /// "Import New" was pressed while the card was still being read: import what turns up after it too.
+    private var importNewWhenListed = false
     private(set) var importProgress: ImportProgress?
     private(set) var lastError: String?
     private(set) var importSummary: String?
@@ -279,6 +281,7 @@ final class CameraModel {
         selection = []
         listProgress = (0, 0)
         isListing = false
+        importNewWhenListed = false
         importProgress = nil
         phase = .searching
     }
@@ -394,7 +397,8 @@ final class CameraModel {
         let handles = camera.camera.objectHandles
         listProgress = (0, handles.count)
         var loaded: [PhotoItem] = []
-        for handle in handles {
+        // Newest first: new photos are at the end of the card, so they can be imported before the rest is read.
+        for handle in handles.reversed() {
             try Task.checkCancellation()
             try await waitWhileImporting()
             let info = try await camera.run { try $0.objectInfo(handle) }
@@ -408,10 +412,13 @@ final class CameraModel {
         }
         items = sorted(loaded)
         selection = selection.intersection(items.map(\.id))
+        isListing = false
+        continueImportNew()
     }
 
     private func loadThumbnails(_ camera: SerialCamera) async throws {
-        for item in items where item.thumbnail == nil {
+        // The ones not imported yet first.
+        for item in items.sorted(by: { !$0.imported && $1.imported }) where item.thumbnail == nil {
             try Task.checkCancellation()
             try await waitWhileImporting()
             let handle = item.handle
@@ -437,7 +444,14 @@ final class CameraModel {
     // MARK: - Importing
 
     func importNew() {
+        if isListing { importNewWhenListed = true }
         startImport(itemsToImport)
+    }
+
+    private func continueImportNew() {
+        guard importNewWhenListed, !isListing, !isImporting else { return }
+        importNewWhenListed = false
+        importNew()
     }
 
     func importSelected() {
@@ -446,6 +460,7 @@ final class CameraModel {
 
     func cancelImport() {
         pendingImport = []
+        importNewWhenListed = false
         importTask?.cancel()
         // Receiving a selection from the camera runs as part of the session.
         if importTask == nil { sessionTask?.cancel() }
@@ -455,7 +470,10 @@ final class CameraModel {
         guard let camera, !batch.isEmpty, !isImporting else { return }
         importSummary = nil
         importProgress = ImportProgress(index: 0, total: batch.count, filename: "", fraction: 0)
-        importTask = Task { await runImport(batch, camera: camera) }
+        importTask = Task {
+            await runImport(batch, camera: camera)
+            if !Task.isCancelled { continueImportNew() }
+        }
     }
 
     /// The configured destinations, ready to use, or nil (with `lastError` set) when one can't be used.

@@ -16,7 +16,7 @@ struct MenuBarContent: View {
             Button(model.itemsToImport.isEmpty ? "No New Items" : "Import \(model.itemsToImport.count) New") {
                 model.importNew()
             }
-            .disabled(model.itemsToImport.isEmpty || model.isListing)
+            .disabled(model.itemsToImport.isEmpty)
         }
         if let summary = model.importSummary {
             Text(summary)
