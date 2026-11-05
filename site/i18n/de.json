@@ -113,7 +113,7 @@
   },
   "download": {
     "h2": "{name} laden",
-    "lede": "Kostenlos, Open Source (MIT) und für jede Plattform signiert. Version {version}.",
+    "lede": "Kostenlos und Open Source (MIT). Version {version}.",
     "soon": "Bald verfügbar",
     "mac": "Mac",
     "mac_req": "macOS 14 Sonoma oder neuer, Apple Silicon und Intel.",

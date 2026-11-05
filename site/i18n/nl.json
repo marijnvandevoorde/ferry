@@ -113,7 +113,7 @@
   },
   "download": {
     "h2": "{name} downloaden",
-    "lede": "Gratis, open source (MIT) en ondertekend voor elk platform. Versie {version}.",
+    "lede": "Gratis en open source (MIT). Versie {version}.",
     "soon": "Binnenkort beschikbaar",
     "mac": "Mac",
     "mac_req": "macOS 14 Sonoma of nieuwer, Apple silicon en Intel.",

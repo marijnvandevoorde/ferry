@@ -113,7 +113,7 @@
   },
   "download": {
     "h2": "Download {name}",
-    "lede": "Free, open source (MIT) and signed for each platform. Version {version}.",
+    "lede": "Free and open source (MIT). Version {version}.",
     "soon": "Coming soon",
     "mac": "Mac",
     "mac_req": "macOS 14 Sonoma or later, Apple silicon and Intel.",

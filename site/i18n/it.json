@@ -113,7 +113,7 @@
   },
   "download": {
     "h2": "Scarica {name}",
-    "lede": "Gratis, open source (MIT) e firmato per ogni piattaforma. Versione {version}.",
+    "lede": "Gratis e open source (MIT). Versione {version}.",
     "soon": "Presto disponibile",
     "mac": "Mac",
     "mac_req": "macOS 14 Sonoma o successivo, Apple silicon e Intel.",

@@ -10,10 +10,10 @@
   "downloads": {
     "mac_app_store": "https://apps.apple.com/app/id0000000000",
     "mac_dmg": "https://github.com/marijnvandevoorde/ferry/releases/latest",
-    "windows_msi": "https://github.com/marijnvandevoorde/ferry/releases/latest",
-    "linux_appimage": "https://github.com/marijnvandevoorde/ferry/releases/latest",
-    "linux_deb": "https://github.com/marijnvandevoorde/ferry/releases/latest",
+    "windows_msi": "https://github.com/marijnvandevoorde/ferry/releases/download/v0.2.0/Ferry_0.2.0_x64-setup.exe",
+    "linux_appimage": "https://github.com/marijnvandevoorde/ferry/releases/download/v0.2.0/Ferry_0.2.0_amd64.AppImage",
+    "linux_deb": "https://github.com/marijnvandevoorde/ferry/releases/download/v0.2.0/Ferry_0.2.0_amd64.deb",
     "cli": "https://github.com/marijnvandevoorde/ferry#command-line-macos-linux-windows"
   },
-  "placeholders": ["mac_app_store", "mac_dmg", "windows_msi", "linux_appimage", "linux_deb"]
+  "placeholders": ["mac_app_store", "mac_dmg"]
 }
