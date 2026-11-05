@@ -28,7 +28,7 @@ Fujifilm cameras can also join your home Wi-Fi and send photos from there (PC Au
 | Fujifilm X-T20 | ✅ | ✅ |
 | Fujifilm X-A2, X30, X-F10, X-T2, X-T4, X-T30, X-S10, X-H1, GFX100 II | not yet | ✅ |
 | Fujifilm X-T5, X-S20, X100VI and others that pair over Bluetooth | ❌ planned | |
-| Canon EOS R, 90D, 5D Mark III, Rebel SL2, PowerShot G7 X III (standard PTP/IP) | not yet | ✅ |
+| Canon EOS R, 90D, 5D Mark III, Rebel SL2, Rebel T6, PowerShot G7 X III (standard PTP/IP) | not yet | ✅ |
 | Olympus / OM System (OI.Share), Ricoh GR II / III | not yet | mock API only |
 | GoPro HERO9 Black and later (Open GoPro) | not yet | mock API only |
 | Older Sony Alpha and Panasonic Lumix with Wi-Fi sharing (DLNA) | not yet | mock API only |

@@ -9,6 +9,7 @@
         ["EOS 90D", "emulator", "ptpip"],
         ["EOS 5D Mark III", "emulator", "ptpip"],
         ["EOS Rebel SL2 / 200D", "emulator", "ptpip"],
+        ["EOS Rebel T6 / 1300D", "emulator", "ptpip"],
         ["PowerShot G7 X Mark III", "emulator", "ptpip"]
       ]
     },

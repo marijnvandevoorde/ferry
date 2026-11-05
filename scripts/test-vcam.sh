@@ -8,7 +8,7 @@ IMAGE=${VCAM_IMAGE:-vcam-fuji}
 MODELS=("$@")
 [ ${#MODELS[@]} -eq 0 ] && MODELS=(fuji_x_a2 fuji_x30 fuji_x_f10 fuji_x_t2 fuji_x_t4 fuji_x_t20 fuji_x_t30 fuji_x_s10 fuji_x_h1 fuji_gfx100_ii
     fuji_gfx100_ii+bluetooth
-    canon_r canon_90d canon_5d3 canon_200d canon_g7x3)
+    canon_r canon_90d canon_5d3 canon_200d canon_1300d canon_g7x3)
 # vcam's Nikon and Sony models only support USB so far.
 # "+bluetooth" connects as after a Bluetooth hand-off, which puts newer cameras in the XApp gallery.
 
