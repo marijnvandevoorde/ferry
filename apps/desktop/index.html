@@ -92,6 +92,12 @@
         <label class="check"><input id="skip-videos" type="checkbox" /> <span data-i18n>Leave videos out of “Import New”</span></label>
         <label class="check"><input id="autostart" type="checkbox" /> <span data-i18n>Start at login</span></label>
         <fieldset>
+          <legend>PC AutoSave</legend>
+          <label class="check"><input id="autosave" type="checkbox" /> <span data-i18n>Receive photos over the home network (Fujifilm PC AutoSave)</span></label>
+          <p id="autosave-status" class="muted small" role="status"></p>
+          <p class="muted small" data-i18n>Fujifilm cameras: the camera joins your Wi-Fi and sends new photos to this computer, so the computer stays online. Once, on the camera: Set Up → Connection Setting → PC AutoSave Setting. Join your network (Simple Setup uses your router's WPS button, no password to type), then register this computer. After that, choose PC AutoSave in the camera's playback menu to send photos.</p>
+        </fieldset>
+        <fieldset>
           <legend data-i18n>Also upload to Immich (optional)</legend>
           <label><span data-i18n>Server</span> <input id="immich-server" placeholder="https://photos.example.com" /></label>
           <label><span data-i18n>API key</span> <input id="immich-key" type="password" autocomplete="off" /></label>

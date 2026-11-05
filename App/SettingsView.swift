@@ -64,7 +64,7 @@ struct SettingsView: View {
             } header: {
                 Text("PC AutoSave")
             } footer: {
-                Text("The camera joins your Wi-Fi and sends new photos to this Mac, so the Mac stays online. Once, on the camera: Set Up → Connection Setting → PC AutoSave Setting, join your network, then register this Mac. After that, choose PC AutoSave in the camera's playback menu to send photos.")
+                Text("Fujifilm cameras: the camera joins your Wi-Fi and sends new photos to this Mac, so the Mac stays online. Once, on the camera: Set Up → Connection Setting → PC AutoSave Setting. Join your network (Simple Setup uses your router's WPS button, no password to type), then register this Mac. After that, choose PC AutoSave in the camera's playback menu to send photos.")
                     .foregroundStyle(.secondary)
             }
             Section {

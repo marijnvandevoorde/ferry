@@ -4,6 +4,48 @@
 type Lang = "fr" | "es" | "it" | "de" | "nl";
 
 const strings: Record<string, Record<Lang, string>> = {
+  "Reading card… {n} of {total}": {
+    fr: "Lecture de la carte… {n} sur {total}",
+    es: "Leyendo la tarjeta… {n} de {total}",
+    it: "Lettura della scheda… {n} di {total}",
+    de: "Karte wird gelesen… {n} von {total}",
+    nl: "Kaart lezen… {n} van {total}" },
+  "Receive photos over the home network (Fujifilm PC AutoSave)": {
+    fr: "Recevoir les photos via le réseau domestique (PC AutoSave de Fujifilm)",
+    es: "Recibir fotos por la red de casa (PC AutoSave de Fujifilm)",
+    it: "Ricevi foto tramite la rete di casa (PC AutoSave di Fujifilm)",
+    de: "Fotos über das Heimnetzwerk empfangen (Fujifilm PC AutoSave)",
+    nl: "Foto's ontvangen via het thuisnetwerk (PC AutoSave van Fujifilm)" },
+  "Fujifilm cameras: the camera joins your Wi-Fi and sends new photos to this computer, so the computer stays online. Once, on the camera: Set Up → Connection Setting → PC AutoSave Setting. Join your network (Simple Setup uses your router's WPS button, no password to type), then register this computer. After that, choose PC AutoSave in the camera's playback menu to send photos.": {
+    fr: "Appareils Fujifilm : l'appareil rejoint votre Wi-Fi et envoie les nouvelles photos à cet ordinateur, qui reste en ligne. Une seule fois, sur l'appareil : Configuration → Paramètres de connexion → Réglage PC AutoSave. Rejoignez votre réseau (la configuration simple utilise le bouton WPS de votre box, sans mot de passe à saisir), puis enregistrez cet ordinateur. Ensuite, choisissez PC AutoSave dans le menu de lecture pour envoyer les photos.",
+    es: "Cámaras Fujifilm: la cámara se conecta a tu Wi-Fi y envía las fotos nuevas a este ordenador, que sigue conectado a internet. Una sola vez, en la cámara: Configuración → Ajustes de conexión → Ajuste PC AutoSave. Conéctate a tu red (la configuración sencilla usa el botón WPS del router, sin escribir contraseña) y registra este ordenador. Después, elige PC AutoSave en el menú de reproducción para enviar fotos.",
+    it: "Fotocamere Fujifilm: la fotocamera si collega al tuo Wi-Fi e invia le nuove foto a questo computer, che resta online. Una sola volta, sulla fotocamera: Impostazione → Impostazioni connessione → Impostazione PC AutoSave. Collegati alla rete (la configurazione semplice usa il tasto WPS del router, senza digitare password) e registra questo computer. Poi scegli PC AutoSave nel menu di riproduzione per inviare le foto.",
+    de: "Fujifilm-Kameras: Die Kamera verbindet sich mit deinem WLAN und sendet neue Fotos an diesen Computer, der online bleibt. Einmalig an der Kamera: Einrichtung → Verbindungseinstellungen → PC AutoSave-Einstellung. Mit dem Netzwerk verbinden (die einfache Einrichtung nutzt die WPS-Taste deines Routers, ohne Passworteingabe), dann diesen Computer registrieren. Danach im Wiedergabemenü PC AutoSave wählen, um Fotos zu senden.",
+    nl: "Fujifilm-camera's: de camera maakt verbinding met je wifi en stuurt nieuwe foto's naar deze computer, die online blijft. Eenmalig op de camera: Instellingen → Verbindingsinstellingen → PC AutoSave-instelling. Verbind met je netwerk (de eenvoudige instelling gebruikt de WPS-knop van je router, zonder wachtwoord te typen) en registreer deze computer. Kies daarna PC AutoSave in het weergavemenu om foto's te sturen." },
+  "Listening for cameras on this network": {
+    fr: "À l'écoute des appareils sur ce réseau",
+    es: "Esperando cámaras en esta red",
+    it: "In ascolto di fotocamere su questa rete",
+    de: "Wartet auf Kameras in diesem Netzwerk",
+    nl: "Luistert naar camera's op dit netwerk" },
+  "Registered with {camera}": {
+    fr: "Enregistré auprès de {camera}",
+    es: "Registrado con {camera}",
+    it: "Registrato con {camera}",
+    de: "Bei {camera} registriert",
+    nl: "Geregistreerd bij {camera}" },
+  "Camera registered": {
+    fr: "Appareil enregistré",
+    es: "Cámara registrada",
+    it: "Fotocamera registrata",
+    de: "Kamera registriert",
+    nl: "Camera geregistreerd" },
+  "{camera} can now send photos to this computer.": {
+    fr: "{camera} peut maintenant envoyer des photos à cet ordinateur.",
+    es: "{camera} ya puede enviar fotos a este ordenador.",
+    it: "{camera} ora può inviare foto a questo computer.",
+    de: "{camera} kann jetzt Fotos an diesen Computer senden.",
+    nl: "{camera} kan nu foto's naar deze computer sturen." },
   "Protected": { fr: "Protégées", es: "Protegidas", it: "Protette", de: "Geschützt", nl: "Beveiligd" },
   "All types": { fr: "Tous les types", es: "Todos los tipos", it: "Tutti i tipi", de: "Alle Typen", nl: "Alle types" },
   "Videos": { fr: "Vidéos", es: "Vídeos", it: "Video", de: "Videos", nl: "Video's" },

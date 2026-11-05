@@ -10,8 +10,9 @@ import { isPermissionGranted, requestPermission, sendNotification } from "@tauri
 // Events from `ferryctl serve` (see Sources/ferryctl/Serve.swift).
 type Item = { id: string; filename: string; date: string; isVideo: boolean; kind: string; protected: boolean; size: number; imported: boolean };
 type ServeEvent =
-  | { event: "status"; phase: "searching" | "connecting" | "waitingForApproval" | "connected"; camera?: string; address?: string }
-  | { event: "items"; items: Item[] }
+  | { event: "status"; phase: "searching" | "connecting" | "waitingForApproval" | "connected"; camera?: string; address?: string; autoSave?: boolean }
+  | { event: "items"; items: Item[]; complete?: boolean; total?: number }
+  | { event: "autosave"; status: "off" | "listening" | "registered" | "error"; camera?: string; message?: string }
   | { event: "thumbnail"; id: string; path: string }
   | { event: "progress"; index: number; total: number; filename: string; fraction: number; bytes: number; totalBytes: number }
   | { event: "imported"; id: string; path: string }
@@ -39,6 +40,8 @@ const settings = {
   get immichAlbum() { return localStorage.getItem("immichAlbum") ?? ""; },
   set immichAlbum(v: string) { localStorage.setItem("immichAlbum", v); },
   set skipVideos(v: boolean) { localStorage.setItem("skipVideos", String(v)); },
+  get autoSave() { return localStorage.getItem("autoSave") === "true"; },
+  set autoSave(v: boolean) { localStorage.setItem("autoSave", String(v)); },
 };
 
 const state = {
@@ -54,6 +57,15 @@ const state = {
   batch: null as string[] | "new" | null,
   /** An import the connection dropped in the middle of; it continues after reconnecting. */
   resume: null as string[] | "new" | null,
+  /** The card is still being read; `listed` once it has been read completely in this session. */
+  listing: false,
+  listed: false,
+  listTotal: 0,
+  /** "Import New" was pressed while the card was still being read: import what turns up after it too. */
+  importNewWhenListed: false,
+  /** The camera came over the home network (PC AutoSave): import everything new, then let it go. */
+  autoSaveSession: false,
+  autoSaveStatus: "",
 };
 
 /** Filters shown in the toolbar, for finding and selecting; "Import New" ignores them. */
@@ -77,7 +89,15 @@ function itemsToImport(): Item[] {
 
 /** What "Import New" imports: every new item, oldest first. */
 function importNew() {
+  if (state.listing) state.importNewWhenListed = true;
   startImport(itemsToImport().map((i) => i.id).reverse());
+}
+
+/** After an import or once the card is read: import what turned up since "Import New" was pressed. */
+function continueImportNew() {
+  if (!state.importNewWhenListed || state.listing || state.importing) return;
+  state.importNewWhenListed = false;
+  if (itemsToImport().length > 0) importNew();
 }
 
 function startImport(ids?: string[]) {
@@ -120,7 +140,18 @@ listen<ServeEvent>("ferryctl", ({ payload: e }) => {
       const wasConnected = state.phase === "connected";
       state.phase = e.phase;
       if (e.camera) state.camera = e.camera;
-      if (e.phase === "connected") showError("");
+      if (e.phase === "connected") {
+        showError("");
+        if (!wasConnected) {
+          state.listed = false;
+          state.autoSaveSession = e.autoSave === true;
+        }
+      }
+      if (e.phase === "searching") {
+        state.listing = false;
+        state.importNewWhenListed = false;
+        state.autoSaveSession = false;
+      }
       if (e.phase === "searching" && wasConnected) {
         if (state.batch) state.resume = state.batch;
         state.batch = null;
@@ -135,7 +166,11 @@ listen<ServeEvent>("ferryctl", ({ payload: e }) => {
       break;
     }
     case "items": {
-      const firstList = state.items.length === 0;
+      const complete = e.complete ?? true;
+      const firstList = complete && !state.listed;
+      state.listing = !complete;
+      state.listTotal = e.total ?? e.items.length;
+      if (complete) state.listed = true;
       state.items = e.items.sort((a, b) => b.date.localeCompare(a.date) || b.filename.localeCompare(a.filename));
       const known = new Set(state.items.map((i) => i.id));
       state.selection.forEach((id) => known.has(id) || state.selection.delete(id));
@@ -145,12 +180,30 @@ listen<ServeEvent>("ferryctl", ({ payload: e }) => {
         state.resume = null;
         const ids = resume === "new" ? undefined : resume.filter((id) => known.has(id));
         if (!ids || ids.length > 0) startImport(ids);
-      } else if (firstList && fresh.length > 0) {
-        if (settings.autoImport) importNew();
-        else notify(state.camera || t("Camera connected"), t("{n} new items to import", { n: fresh.length }, fresh.length));
+      } else if (firstList && state.autoSaveSession) {
+        if (state.importing) state.importNewWhenListed = true;
+        else if (fresh.length > 0 && settings.folder) importNew();
+        else send({ cmd: "disconnect" });
+      } else if (firstList && fresh.length > 0 && settings.autoImport) {
+        if (state.importing) state.importNewWhenListed = true;
+        else importNew();
+      } else if (firstList && fresh.length > 0 && !state.importing) {
+        notify(state.camera || t("Camera connected"), t("{n} new items to import", { n: fresh.length }, fresh.length));
+      } else if (complete) {
+        continueImportNew();
       }
       break;
     }
+    case "autosave":
+      state.autoSaveStatus =
+        e.status === "listening" ? t("Listening for cameras on this network") :
+        e.status === "registered" ? t("Registered with {camera}", { camera: e.camera ?? "" }) :
+        e.status === "error" ? e.message ?? "" : "";
+      $("autosave-status").textContent = state.autoSaveStatus;
+      if (e.status === "registered") {
+        notify(t("Camera registered"), t("{camera} can now send photos to this computer.", { camera: e.camera ?? "" }));
+      }
+      return;
     case "thumbnail":
       state.thumbnails.set(e.id, convertFileSrc(e.path));
       break;
@@ -183,6 +236,10 @@ listen<ServeEvent>("ferryctl", ({ payload: e }) => {
         render();
         return;
       }
+      continueImportNew();
+      if (state.importing) return;
+      // PC AutoSave: the camera sent what it had; let it go.
+      if (state.autoSaveSession && !state.listing) send({ cmd: "disconnect" });
       let summary = t("Imported {n} items", { n: e.imported }, e.imported);
       if (e.cancelled) summary += t(" (stopped)");
       if (e.failed.length) summary += t(". {n} failed: {list}", { n: e.failed.length, list: e.failed.slice(0, 3).join(", ") });
@@ -229,7 +286,9 @@ function render() {
   importNew.hidden = state.importing;
   importNew.disabled = toImport.length === 0;
   importNew.textContent = toImport.length ? t("Import {n} New", { n: toImport.length }) : t("No New Items");
-  if (!state.importing && !state.lastError) $("status").textContent = settings.folder ? t("Importing into {folder}", { folder: settings.folder }) : t("No import folder chosen");
+  if (!state.importing && !state.lastError && state.listing) {
+    $("status").textContent = t("Reading card… {n} of {total}", { n: state.items.length, total: state.listTotal });
+  } else if (!state.importing && !state.lastError) $("status").textContent = settings.folder ? t("Importing into {folder}", { folder: settings.folder }) : t("No import folder chosen");
 
   // Gallery, grouped by day
   const filter = $<HTMLSelectElement>("filter").value;
@@ -313,6 +372,8 @@ function openSettings() {
   $<HTMLInputElement>("rename").value = settings.rename;
   $<HTMLInputElement>("auto-import").checked = settings.autoImport;
   $<HTMLInputElement>("skip-videos").checked = settings.skipVideos;
+  $<HTMLInputElement>("autosave").checked = settings.autoSave;
+  $("autosave-status").textContent = settings.autoSave ? state.autoSaveStatus : "";
   $<HTMLInputElement>("immich-server").value = settings.immichServer;
   $<HTMLInputElement>("immich-key").value = settings.immichKey;
   $<HTMLInputElement>("immich-album").value = settings.immichAlbum;
@@ -347,6 +408,7 @@ $("import-new").onclick = () => importNew();
 $("import-selected").onclick = () => startImport([...state.selection]);
 $("stop").onclick = () => {
   state.batch = null;
+  state.importNewWhenListed = false;
   send({ cmd: "cancel" });
 };
 $("settings-button").onclick = openSettings;
@@ -374,6 +436,13 @@ $("skip-videos").onchange = (e) => {
   settings.skipVideos = (e.target as HTMLInputElement).checked;
   render();
 };
+$("autosave").onchange = (e) => {
+  settings.autoSave = (e.target as HTMLInputElement).checked;
+  if (!settings.autoSave) state.autoSaveStatus = "";
+  $("autosave-status").textContent = "";
+  send({ cmd: "autosave", enabled: settings.autoSave });
+};
+if (settings.autoSave) send({ cmd: "autosave", enabled: true });
 $("immich-server").onchange = (e) => (settings.immichServer = (e.target as HTMLInputElement).value.trim());
 $("immich-key").onchange = (e) => (settings.immichKey = (e.target as HTMLInputElement).value.trim());
 $("immich-album").onchange = (e) => (settings.immichAlbum = (e.target as HTMLInputElement).value.trim());

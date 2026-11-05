@@ -5949,36 +5949,36 @@
         }
       }
     },
-    "The camera joins your Wi-Fi and sends new photos to this Mac, so the Mac stays online. Once, on the camera: Set Up → Connection Setting → PC AutoSave Setting, join your network, then register this Mac. After that, choose PC AutoSave in the camera's playback menu to send photos.": {
+    "Fujifilm cameras: the camera joins your Wi-Fi and sends new photos to this Mac, so the Mac stays online. Once, on the camera: Set Up → Connection Setting → PC AutoSave Setting. Join your network (Simple Setup uses your router's WPS button, no password to type), then register this Mac. After that, choose PC AutoSave in the camera's playback menu to send photos.": {
       "localizations": {
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "L'appareil rejoint votre Wi-Fi et envoie les nouvelles photos à ce Mac, qui reste en ligne. Une seule fois, sur l'appareil : Configuration → Paramètres de connexion → Réglage PC AutoSave, rejoignez votre réseau, puis enregistrez ce Mac. Ensuite, choisissez PC AutoSave dans le menu de lecture pour envoyer les photos."
+            "value": "Appareils Fujifilm : l'appareil rejoint votre Wi-Fi et envoie les nouvelles photos à ce Mac, qui reste en ligne. Une seule fois, sur l'appareil : Configuration → Paramètres de connexion → Réglage PC AutoSave. Rejoignez votre réseau (la configuration simple utilise le bouton WPS de votre box, sans mot de passe à saisir), puis enregistrez ce Mac. Ensuite, choisissez PC AutoSave dans le menu de lecture pour envoyer les photos."
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "La cámara se conecta a tu Wi-Fi y envía las fotos nuevas a este Mac, que sigue conectado a internet. Una sola vez, en la cámara: Configuración → Ajustes de conexión → Ajuste PC AutoSave, conéctate a tu red y registra este Mac. Después, elige PC AutoSave en el menú de reproducción para enviar fotos."
+            "value": "Cámaras Fujifilm: la cámara se conecta a tu Wi-Fi y envía las fotos nuevas a este Mac, que sigue conectado a internet. Una sola vez, en la cámara: Configuración → Ajustes de conexión → Ajuste PC AutoSave. Conéctate a tu red (la configuración sencilla usa el botón WPS del router, sin escribir contraseña) y registra este Mac. Después, elige PC AutoSave en el menú de reproducción para enviar fotos."
           }
         },
         "it": {
           "stringUnit": {
             "state": "translated",
-            "value": "La fotocamera si collega al tuo Wi-Fi e invia le nuove foto a questo Mac, che resta online. Una sola volta, sulla fotocamera: Impostazione → Impostazioni connessione → Impostazione PC AutoSave, collegati alla rete e registra questo Mac. Poi scegli PC AutoSave nel menu di riproduzione per inviare le foto."
+            "value": "Fotocamere Fujifilm: la fotocamera si collega al tuo Wi-Fi e invia le nuove foto a questo Mac, che resta online. Una sola volta, sulla fotocamera: Impostazione → Impostazioni connessione → Impostazione PC AutoSave. Collegati alla rete (la configurazione semplice usa il tasto WPS del router, senza digitare password) e registra questo Mac. Poi scegli PC AutoSave nel menu di riproduzione per inviare le foto."
           }
         },
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Die Kamera verbindet sich mit deinem WLAN und sendet neue Fotos an diesen Mac, der online bleibt. Einmalig an der Kamera: Einrichtung → Verbindungseinstellungen → PC AutoSave-Einstellung, mit dem Netzwerk verbinden und diesen Mac registrieren. Danach im Wiedergabemenü PC AutoSave wählen, um Fotos zu senden."
+            "value": "Fujifilm-Kameras: Die Kamera verbindet sich mit deinem WLAN und sendet neue Fotos an diesen Mac, der online bleibt. Einmalig an der Kamera: Einrichtung → Verbindungseinstellungen → PC AutoSave-Einstellung. Mit dem Netzwerk verbinden (die einfache Einrichtung nutzt die WPS-Taste deines Routers, ohne Passworteingabe), dann diesen Mac registrieren. Danach im Wiedergabemenü PC AutoSave wählen, um Fotos zu senden."
           }
         },
         "nl": {
           "stringUnit": {
             "state": "translated",
-            "value": "De camera maakt verbinding met je wifi en stuurt nieuwe foto's naar deze Mac, die online blijft. Eenmalig op de camera: Instellingen → Verbindingsinstellingen → PC AutoSave-instelling, verbind met je netwerk en registreer deze Mac. Kies daarna PC AutoSave in het weergavemenu om foto's te sturen."
+            "value": "Fujifilm-camera's: de camera maakt verbinding met je wifi en stuurt nieuwe foto's naar deze Mac, die online blijft. Eenmalig op de camera: Instellingen → Verbindingsinstellingen → PC AutoSave-instelling. Verbind met je netwerk (de eenvoudige instelling gebruikt de WPS-knop van je router, zonder wachtwoord te typen) en registreer deze Mac. Kies daarna PC AutoSave in het weergavemenu om foto's te sturen."
           }
         }
       }
