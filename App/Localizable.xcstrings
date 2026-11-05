@@ -487,6 +487,244 @@
         }
       }
     },
+    "**Canon:** the Wi-Fi menu, as for the Camera Connect app.": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "**Canon :** le menu Wi-Fi, comme pour l'app Camera Connect."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "**Canon:** el menú Wi-Fi, como para la app Camera Connect."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "**Canon:** il menu Wi-Fi, come per l'app Camera Connect."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "**Canon:** das WLAN-Menü, wie für die App Camera Connect."
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "**Canon:** het wifimenu, zoals voor de app Camera Connect."
+          }
+        }
+      }
+    },
+    "**Fujifilm:** Playback, then Wireless Communication (on some models the Wi-Fi button).": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "**Fujifilm :** Lecture, puis Communication sans fil (sur certains modèles, le bouton Wi-Fi)."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "**Fujifilm:** Reproducción y luego Comunicación inalámbrica (en algunos modelos, el botón Wi-Fi)."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "**Fujifilm:** Riproduzione, poi Comunicazione wireless (su alcuni modelli il tasto Wi-Fi)."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "**Fujifilm:** Wiedergabe, dann Drahtlose Kommunikation (bei manchen Modellen die WLAN-Taste)."
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "**Fujifilm:** Weergave, dan Draadloze communicatie (op sommige modellen de wifiknop)."
+          }
+        }
+      }
+    },
+    "**GoPro:** Preferences → Connections → Connect Device → GoPro Quik. The network name and password are under Camera Info.": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "**GoPro :** Préférences → Connexions → Connecter l'appareil → GoPro Quik. Le nom du réseau et le mot de passe sont dans Infos caméra."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "**GoPro:** Preferencias → Conexiones → Conectar dispositivo → GoPro Quik. El nombre de la red y la contraseña están en Información de la cámara."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "**GoPro:** Preferenze → Connessioni → Collega dispositivo → GoPro Quik. Nome della rete e password sono in Info fotocamera."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "**GoPro:** Einstellungen → Verbindungen → Gerät verbinden → GoPro Quik. Netzwerkname und Passwort stehen unter Kamerainfo."
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "**GoPro:** Voorkeuren → Verbindingen → Apparaat verbinden → GoPro Quik. De netwerknaam en het wachtwoord staan onder Camera-info."
+          }
+        }
+      }
+    },
+    "**Olympus / OM System:** as for the OI.Share or OM Image Share app.": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "**Olympus / OM System :** comme pour l'app OI.Share ou OM Image Share."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "**Olympus / OM System:** como para la app OI.Share u OM Image Share."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "**Olympus / OM System:** come per l'app OI.Share o OM Image Share."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "**Olympus / OM System:** wie für die App OI.Share oder OM Image Share."
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "**Olympus / OM System:** zoals voor de app OI.Share of OM Image Share."
+          }
+        }
+      }
+    },
+    "**Panasonic Lumix:** as for the Image App or LUMIX Sync app.": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "**Panasonic Lumix :** comme pour l'app Image App ou LUMIX Sync."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "**Panasonic Lumix:** como para la app Image App o LUMIX Sync."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "**Panasonic Lumix:** come per l'app Image App o LUMIX Sync."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "**Panasonic Lumix:** wie für die App Image App oder LUMIX Sync."
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "**Panasonic Lumix:** zoals voor de app Image App of LUMIX Sync."
+          }
+        }
+      }
+    },
+    "**Ricoh GR:** as for the GR WORLD or Image Sync app.": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "**Ricoh GR :** comme pour l'app GR WORLD ou Image Sync."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "**Ricoh GR:** como para la app GR WORLD o Image Sync."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "**Ricoh GR:** come per l'app GR WORLD o Image Sync."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "**Ricoh GR:** wie für die App GR WORLD oder Image Sync."
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "**Ricoh GR:** zoals voor de app GR WORLD of Image Sync."
+          }
+        }
+      }
+    },
+    "**Sony:** Send to Smartphone in the playback menu.": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "**Sony :** Envoyer vers smartphone dans le menu de lecture."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "**Sony:** Enviar a smartphone en el menú de reproducción."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "**Sony:** Invia a smartphone nel menu di riproduzione."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "**Sony:** An Smartphone senden im Wiedergabemenü."
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "**Sony:** Naar smartphone verzenden in het weergavemenu."
+          }
+        }
+      }
+    },
     ". %lld failed: %@": {
       "localizations": {
         "fr": {
@@ -6319,6 +6557,40 @@
           "stringUnit": {
             "state": "translated",
             "value": "Wachten tot de camera beelden stuurt…"
+          }
+        }
+      }
+    },
+    "Where is Wi-Fi on my camera?": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Où se trouve le Wi-Fi sur mon appareil ?"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "¿Dónde está el Wi-Fi en mi cámara?"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dov'è il Wi-Fi sulla mia fotocamera?"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wo finde ich das WLAN an meiner Kamera?"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Waar zit wifi op mijn camera?"
           }
         }
       }

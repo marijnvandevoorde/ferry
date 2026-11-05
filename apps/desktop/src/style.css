@@ -41,6 +41,9 @@ button:disabled { opacity: 0.5; cursor: default; }
 #connect { max-width: 520px; margin: 80px auto; text-align: center; }
 #connect ol { text-align: left; background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 16px 16px 16px 36px; margin: 24px 0; }
 #connect li { margin: 6px 0; }
+#connect .brands { text-align: left; margin: -8px 0 24px; }
+#connect .brands summary { cursor: pointer; color: var(--muted); }
+#connect .brands ul { padding-left: 20px; margin: 8px 0 0; }
 
 #gallery { padding: 0 20px 20px; }
 .day { position: sticky; top: 0; background: var(--bg); padding: 14px 0 8px; display: flex; justify-content: space-between; align-items: baseline; font-weight: 600; z-index: 1; }

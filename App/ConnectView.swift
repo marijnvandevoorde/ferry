@@ -87,6 +87,20 @@ struct ConnectView: View {
             StepRow(number: 3, text: autoConnect
                     ? "Ferry connects automatically. Press **OK** on the camera if it asks."
                     : "Click **Connect**. Press **OK** on the camera if it asks.")
+            DisclosureGroup("Where is Wi-Fi on my camera?") {
+                VStack(alignment: .leading, spacing: 6) {
+                    Text("**Canon:** the Wi-Fi menu, as for the Camera Connect app.")
+                    Text("**Fujifilm:** Playback, then Wireless Communication (on some models the Wi-Fi button).")
+                    Text("**GoPro:** Preferences → Connections → Connect Device → GoPro Quik. The network name and password are under Camera Info.")
+                    Text("**Olympus / OM System:** as for the OI.Share or OM Image Share app.")
+                    Text("**Panasonic Lumix:** as for the Image App or LUMIX Sync app.")
+                    Text("**Ricoh GR:** as for the GR WORLD or Image Sync app.")
+                    Text("**Sony:** Send to Smartphone in the playback menu.")
+                }
+                .fixedSize(horizontal: false, vertical: true)
+                .padding(.top, 6)
+            }
+            .font(.callout)
             Label("While this Mac is on the camera's network it has no internet. It goes back to your usual Wi-Fi when you turn the camera off.", systemImage: "wifi.exclamationmark")
                 .font(.callout)
                 .foregroundStyle(.secondary)

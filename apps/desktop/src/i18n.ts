@@ -4,6 +4,60 @@
 type Lang = "fr" | "es" | "it" | "de" | "nl";
 
 const strings: Record<string, Record<Lang, string>> = {
+  "Newer Fujifilm, like the X-T5? Pair over Bluetooth…": {
+    fr: "Fujifilm récent, comme le X-T5 ? Appairer en Bluetooth…",
+    es: "¿Fujifilm reciente, como la X-T5? Emparejar por Bluetooth…",
+    it: "Fujifilm recente, come la X-T5? Abbina via Bluetooth…",
+    de: "Neuere Fujifilm wie die X-T5? Über Bluetooth koppeln…",
+    nl: "Nieuwere Fujifilm, zoals de X-T5? Koppelen via Bluetooth…" },
+  "Where is Wi-Fi on my camera?": {
+    fr: "Où se trouve le Wi-Fi sur mon appareil ?",
+    es: "¿Dónde está el Wi-Fi en mi cámara?",
+    it: "Dov'è il Wi-Fi sulla mia fotocamera?",
+    de: "Wo finde ich das WLAN an meiner Kamera?",
+    nl: "Waar zit wifi op mijn camera?" },
+  "<b>Canon:</b> the Wi-Fi menu, as for the Camera Connect app.": {
+    fr: "<b>Canon :</b> le menu Wi-Fi, comme pour l'app Camera Connect.",
+    es: "<b>Canon:</b> el menú Wi-Fi, como para la app Camera Connect.",
+    it: "<b>Canon:</b> il menu Wi-Fi, come per l'app Camera Connect.",
+    de: "<b>Canon:</b> das WLAN-Menü, wie für die App Camera Connect.",
+    nl: "<b>Canon:</b> het wifimenu, zoals voor de app Camera Connect." },
+  "<b>Fujifilm:</b> Playback, then Wireless Communication (on some models the Wi-Fi button).": {
+    fr: "<b>Fujifilm :</b> Lecture, puis Communication sans fil (sur certains modèles, le bouton Wi-Fi).",
+    es: "<b>Fujifilm:</b> Reproducción y luego Comunicación inalámbrica (en algunos modelos, el botón Wi-Fi).",
+    it: "<b>Fujifilm:</b> Riproduzione, poi Comunicazione wireless (su alcuni modelli il tasto Wi-Fi).",
+    de: "<b>Fujifilm:</b> Wiedergabe, dann Drahtlose Kommunikation (bei manchen Modellen die WLAN-Taste).",
+    nl: "<b>Fujifilm:</b> Weergave, dan Draadloze communicatie (op sommige modellen de wifiknop)." },
+  "<b>GoPro:</b> Preferences → Connections → Connect Device → GoPro Quik. The network name and password are under Camera Info.": {
+    fr: "<b>GoPro :</b> Préférences → Connexions → Connecter l'appareil → GoPro Quik. Le nom du réseau et le mot de passe sont dans Infos caméra.",
+    es: "<b>GoPro:</b> Preferencias → Conexiones → Conectar dispositivo → GoPro Quik. El nombre de la red y la contraseña están en Información de la cámara.",
+    it: "<b>GoPro:</b> Preferenze → Connessioni → Collega dispositivo → GoPro Quik. Nome della rete e password sono in Info fotocamera.",
+    de: "<b>GoPro:</b> Einstellungen → Verbindungen → Gerät verbinden → GoPro Quik. Netzwerkname und Passwort stehen unter Kamerainfo.",
+    nl: "<b>GoPro:</b> Voorkeuren → Verbindingen → Apparaat verbinden → GoPro Quik. De netwerknaam en het wachtwoord staan onder Camera-info." },
+  "<b>Olympus / OM System:</b> as for the OI.Share or OM Image Share app.": {
+    fr: "<b>Olympus / OM System :</b> comme pour l'app OI.Share ou OM Image Share.",
+    es: "<b>Olympus / OM System:</b> como para la app OI.Share u OM Image Share.",
+    it: "<b>Olympus / OM System:</b> come per l'app OI.Share o OM Image Share.",
+    de: "<b>Olympus / OM System:</b> wie für die App OI.Share oder OM Image Share.",
+    nl: "<b>Olympus / OM System:</b> zoals voor de app OI.Share of OM Image Share." },
+  "<b>Panasonic Lumix:</b> as for the Image App or LUMIX Sync app.": {
+    fr: "<b>Panasonic Lumix :</b> comme pour l'app Image App ou LUMIX Sync.",
+    es: "<b>Panasonic Lumix:</b> como para la app Image App o LUMIX Sync.",
+    it: "<b>Panasonic Lumix:</b> come per l'app Image App o LUMIX Sync.",
+    de: "<b>Panasonic Lumix:</b> wie für die App Image App oder LUMIX Sync.",
+    nl: "<b>Panasonic Lumix:</b> zoals voor de app Image App of LUMIX Sync." },
+  "<b>Ricoh GR:</b> as for the GR WORLD or Image Sync app.": {
+    fr: "<b>Ricoh GR :</b> comme pour l'app GR WORLD ou Image Sync.",
+    es: "<b>Ricoh GR:</b> como para la app GR WORLD o Image Sync.",
+    it: "<b>Ricoh GR:</b> come per l'app GR WORLD o Image Sync.",
+    de: "<b>Ricoh GR:</b> wie für die App GR WORLD oder Image Sync.",
+    nl: "<b>Ricoh GR:</b> zoals voor de app GR WORLD of Image Sync." },
+  "<b>Sony:</b> Send to Smartphone in the playback menu.": {
+    fr: "<b>Sony :</b> Envoyer vers smartphone dans le menu de lecture.",
+    es: "<b>Sony:</b> Enviar a smartphone en el menú de reproducción.",
+    it: "<b>Sony:</b> Invia a smartphone nel menu di riproduzione.",
+    de: "<b>Sony:</b> An Smartphone senden im Wiedergabemenü.",
+    nl: "<b>Sony:</b> Naar smartphone verzenden in het weergavemenu." },
   "Reading card… {n} of {total}": {
     fr: "Lecture de la carte… {n} sur {total}",
     es: "Leyendo la tarjeta… {n} de {total}",
