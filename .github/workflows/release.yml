@@ -8,11 +8,28 @@ on:
   workflow_dispatch:
 
 jobs:
+  # Creates the GitHub release the other jobs attach their builds to.
+  release:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Create the release
+        if: github.ref_type == 'tag'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release view "$GITHUB_REF_NAME" -R "$GITHUB_REPOSITORY" >/dev/null 2>&1 || \
+            gh release create "$GITHUB_REF_NAME" -R "$GITHUB_REPOSITORY" --title "Ferry ${GITHUB_REF_NAME#v}" --generate-notes
+
   mac:
+    needs: release
     runs-on: macos-15
     permissions:
       contents: write
     env:
+      # Without the Developer ID certificate there is no DMG; the rest of the release still goes out.
+      DEVELOPER_ID_P12: ${{ secrets.DEVELOPER_ID_P12 }}
       TEAM_ID: ${{ vars.APPLE_TEAM_ID }}
       ASC_KEY_ID: ${{ secrets.ASC_KEY_ID }}
       ASC_ISSUER_ID: ${{ secrets.ASC_ISSUER_ID }}
@@ -57,6 +74,7 @@ jobs:
 
       # API keys can't use cloud-managed Developer ID certificates, so this one comes from secrets.
       - name: Import Developer ID certificate
+        if: env.DEVELOPER_ID_P12 != ''
         env:
           P12: ${{ secrets.DEVELOPER_ID_P12 }}
           P12_PASSWORD: ${{ secrets.DEVELOPER_ID_P12_PASSWORD }}
@@ -71,6 +89,7 @@ jobs:
           security list-keychains -d user -s "$KEYCHAIN" login.keychain
 
       - name: Export Developer ID build
+        if: env.DEVELOPER_ID_P12 != ''
         run: |
           cat > build/developer-id.plist <<EOF
           <?xml version="1.0" encoding="UTF-8"?>
@@ -87,6 +106,7 @@ jobs:
             -authenticationKeyPath "$KEY_PATH" -authenticationKeyID "$ASC_KEY_ID" -authenticationKeyIssuerID "$ASC_ISSUER_ID"
 
       - name: Notarize and package
+        if: env.DEVELOPER_ID_P12 != ''
         run: |
           APP="build/developer-id/Ferry.app"
           DMG="build/Ferry-$MARKETING_VERSION.dmg"
@@ -96,18 +116,18 @@ jobs:
           echo "DMG=$DMG" >> $GITHUB_ENV
 
       - name: Keep the DMG (dry run)
-        if: github.ref_type != 'tag'
+        if: github.ref_type != 'tag' && env.DEVELOPER_ID_P12 != ''
         uses: actions/upload-artifact@v4
         with:
           name: dmg
           path: ${{ env.DMG }}
           retention-days: 3
 
-      - name: Publish GitHub release
-        if: github.ref_type == 'tag'
+      - name: Attach the DMG to the release
+        if: github.ref_type == 'tag' && env.DEVELOPER_ID_P12 != ''
         env:
           GH_TOKEN: ${{ github.token }}
-        run: gh release create "$VERSION" "$DMG" --title "Ferry $MARKETING_VERSION" --generate-notes
+        run: gh release upload "$VERSION" "$DMG" --clobber
 
       - name: Upload to App Store Connect
         if: github.ref_type == 'tag' && vars.APP_STORE_UPLOAD == 'true'
@@ -127,6 +147,7 @@ jobs:
             -authenticationKeyPath "$KEY_PATH" -authenticationKeyID "$ASC_KEY_ID" -authenticationKeyIssuerID "$ASC_ISSUER_ID"
 
   desktop:
+    needs: release
     strategy:
       fail-fast: false
       matrix:
@@ -190,7 +211,5 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          # The mac job creates the release; wait for it.
-          for i in $(seq 60); do gh release view "$GITHUB_REF_NAME" >/dev/null 2>&1 && break; sleep 20; done
           gh release upload "$GITHUB_REF_NAME" src-tauri/target/release/bundle/*/*.{AppImage,deb,msi,exe,asc} --clobber 2>/dev/null || \
             gh release upload "$GITHUB_REF_NAME" $(ls src-tauri/target/release/bundle/*/* | grep -E '\.(AppImage|deb|msi|exe|asc)$') --clobber

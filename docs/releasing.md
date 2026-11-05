@@ -2,9 +2,13 @@
 
 Pushing a tag such as `v0.2.0` runs `.github/workflows/release.yml`, which:
 
-1. archives the Mac app, signed with Xcode cloud signing,
-2. exports a Developer ID build, notarizes it and publishes a DMG on the GitHub release,
-3. uploads the same archive to App Store Connect when `APP_STORE_UPLOAD` is `true`.
+1. creates the GitHub release,
+2. archives the Mac app, signed with Xcode cloud signing,
+3. exports a Developer ID build, notarizes it and attaches a DMG to the release (skipped while
+   `DEVELOPER_ID_P12` isn't set),
+4. uploads the same archive to App Store Connect when `APP_STORE_UPLOAD` is `true`,
+5. builds the Windows (MSI, setup .exe) and Linux (AppImage, .deb, signed when `LINUX_GPG_KEY` is set)
+   installers and attaches them.
 
 ## One-time setup
 
