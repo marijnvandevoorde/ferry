@@ -19,6 +19,12 @@ public protocol WirelessCamera: AnyObject, Sendable {
     func download(_ handle: UInt32, to destination: URL, progress: (Int64, Int64) -> Void) throws -> ObjectInfo
     /// Keeps the connection alive and picks up new photos; returns the current number of objects.
     func refreshObjectCount() throws -> Int
+    /// The battery charge in percent, when the camera reports it; updated by `connect()` and `refreshObjectCount()`.
+    var batteryPercent: Int? { get }
+}
+
+extension WirelessCamera {
+    public var batteryPercent: Int? { nil }
 }
 
 /// Serializes calls to a camera on its own queue, for use from async code.

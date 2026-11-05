@@ -1371,6 +1371,40 @@
         }
       }
     },
+    "Camera battery low: %lld%%": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Batterie de l'appareil faible : %lld %%"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Batería de la cámara baja: %lld %%"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Batteria della fotocamera scarica: %lld%%"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kamera-Akku schwach: %lld %%"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Camerabatterij bijna leeg: %lld%%"
+          }
+        }
+      }
+    },
     "Camera connected": {
       "localizations": {
         "fr": {

@@ -110,6 +110,7 @@ public final class FujiCamera: @unchecked Sendable {
                                 imageGetVersion: try propU32(PTP.FujiProp.imageGetVersion),
                                 remoteVersion: try propU32(PTP.FujiProp.remoteVersion))
         log("Camera profile: \(profile.summary), state \(hex(cameraState))")
+        if let battery = try propU32(PTP.FujiProp.batteryLevel) { log("Battery level (raw): \(battery)") }
 
         // libfuji: after a Bluetooth hand-off, cameras before remote version 0x20007 still speak Camera Remote.
         usesXAppGallery = afterBluetoothHandoff && profile.generation == .remoteNew
@@ -290,6 +291,8 @@ public final class FujiCamera: @unchecked Sendable {
                 if cameraState != value { log("Camera state -> \(value)") }
                 cameraState = value
                 if value == PTP.CameraState.multipleTransfer { selectionOffered = true }
+            case PTP.FujiProp.batteryLevel:
+                log("Battery level (raw) -> \(value)")
             case PTP.FujiProp.objectCount where !usesXAppGallery:
                 if objectCount != Int(value) { log("Object count -> \(value)") }
                 objectCount = Int(value)

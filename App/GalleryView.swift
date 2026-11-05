@@ -390,6 +390,9 @@ private struct ImportBar: View {
                 ProgressView().controlSize(.small)
                 Text("Reading card…").foregroundStyle(.secondary)
             }
+        } else if let battery = model.batteryPercent, battery < 20 {
+            Label("Camera battery low: \(battery)%", systemImage: "battery.25percent")
+                .foregroundStyle(.orange)
         }
     }
 }

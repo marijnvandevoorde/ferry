@@ -85,6 +85,8 @@ enum PTP {
     }
 
     enum FujiProp {
+        /// The standard PTP BatteryLevel property. Its scale on Fuji cameras isn't known yet, so it is only logged.
+        static let batteryLevel: UInt16 = 0x5001
         static let eventsList: UInt16 = 0xD212
         static let objectCount: UInt16 = 0xD222
         static let compressSmall: UInt16 = 0xD226

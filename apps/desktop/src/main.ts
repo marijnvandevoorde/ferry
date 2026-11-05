@@ -17,6 +17,7 @@ type ServeEvent =
   | { event: "progress"; index: number; total: number; filename: string; fraction: number; bytes: number; totalBytes: number }
   | { event: "imported"; id: string; path: string }
   | { event: "done"; imported: number; failed: string[]; cancelled: boolean }
+  | { event: "battery"; percent: number }
   | { event: "error"; message: string }
   | { event: "log"; line: string };
 
@@ -66,6 +67,8 @@ const state = {
   /** The camera came over the home network (PC AutoSave): import everything new, then let it go. */
   autoSaveSession: false,
   autoSaveStatus: "",
+  /** The camera's battery in percent, when it reports it. */
+  battery: null as number | null,
 };
 
 /** Filters shown in the toolbar, for finding and selecting; "Import New" ignores them. */
@@ -148,6 +151,7 @@ listen<ServeEvent>("ferryctl", ({ payload: e }) => {
         }
       }
       if (e.phase === "searching") {
+        state.battery = null;
         state.listing = false;
         state.importNewWhenListed = false;
         state.autoSaveSession = false;
@@ -194,6 +198,9 @@ listen<ServeEvent>("ferryctl", ({ payload: e }) => {
       }
       break;
     }
+    case "battery":
+      state.battery = e.percent;
+      break;
     case "autosave":
       state.autoSaveStatus =
         e.status === "listening" ? t("Listening for cameras on this network") :
@@ -288,6 +295,8 @@ function render() {
   importNew.textContent = toImport.length ? t("Import {n} New", { n: toImport.length }) : t("No New Items");
   if (!state.importing && !state.lastError && state.listing) {
     $("status").textContent = t("Reading card… {n} of {total}", { n: state.items.length, total: state.listTotal });
+  } else if (!state.importing && !state.lastError && state.battery !== null && state.battery < 20) {
+    $("status").textContent = t("Camera battery low: {n}%", { n: state.battery });
   } else if (!state.importing && !state.lastError) $("status").textContent = settings.folder ? t("Importing into {folder}", { folder: settings.folder }) : t("No import folder chosen");
 
   // Gallery, grouped by day

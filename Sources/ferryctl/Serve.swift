@@ -25,6 +25,7 @@ import Foundation
 ///   {"event": "done", "imported", "failed", "cancelled"}
 ///   {"event": "autosave", "status": "off|listening|registered|error", "camera"?, "message"?}
 ///   {"event": "status", ..., "autoSave": true}  connected because the camera came over the home network
+///   {"event": "battery", "percent"}             the camera's charge, when it reports it
 ///   {"event": "error", "message"}
 ///   {"event": "log", "line"}
 final class Server: @unchecked Sendable {
@@ -130,6 +131,7 @@ final class Server: @unchecked Sendable {
                 onWaitingForApproval: { [weak self] in self?.emit(["event": "status", "phase": "waitingForApproval"]) })
             self.camera = camera
             emit(["event": "status", "phase": "connected", "camera": camera.cameraName, "address": address])
+            emitBattery()
             try loadItems()
         } catch {
             camera?.disconnect()
@@ -144,6 +146,7 @@ final class Server: @unchecked Sendable {
         guard let camera, (camera as? FujiCamera)?.isSendingSelection != true else { return }
         do {
             let count = try camera.refreshObjectCount()
+            emitBattery()
             if count != objectCount { try loadItems() }
         } catch {
             lost(error)
@@ -154,6 +157,7 @@ final class Server: @unchecked Sendable {
         afterBluetoothHandoff = false
         camera?.disconnect()
         camera = nil
+        lastBattery = nil
         items = [:]
         thumbnailQueue = []
         pendingHandles = []
@@ -245,6 +249,14 @@ final class Server: @unchecked Sendable {
             "size": Int(info.compressedSize),
             "imported": history.contains(id),
         ]
+    }
+
+    private var lastBattery: Int?
+
+    private func emitBattery() {
+        guard let percent = camera?.batteryPercent, percent != lastBattery else { return }
+        lastBattery = percent
+        emit(["event": "battery", "percent": percent])
     }
 
     // MARK: - PC AutoSave

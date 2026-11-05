@@ -122,6 +122,8 @@ final class CameraModel {
     private(set) var importProgress: ImportProgress?
     private(set) var lastError: String?
     private(set) var importSummary: String?
+    /// The camera's battery in percent, when it reports it.
+    private(set) var batteryPercent: Int?
     private(set) var log: [String] = []
     /// Address the app is trying, for display.
     private(set) var cameraAddress = ""
@@ -245,6 +247,7 @@ final class CameraModel {
         self.camera = camera
         lastSearchFailure = nil
         cameraName = camera.camera.cameraName
+        batteryPercent = camera.camera.batteryPercent
         if let fuji = camera.fuji { CameraGuide.remember(fuji.profile) }
         lastError = nil
         importSummary = nil
@@ -379,6 +382,7 @@ final class CameraModel {
                 try await Task.sleep(for: .seconds(4))
                 if isImporting { continue }
                 let newCount = try await camera.run { try $0.refreshObjectCount() }
+                batteryPercent = camera.camera.batteryPercent
                 if newCount != count {
                     count = newCount
                     try await loadList(camera)

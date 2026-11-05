@@ -4,6 +4,12 @@
 type Lang = "fr" | "es" | "it" | "de" | "nl";
 
 const strings: Record<string, Record<Lang, string>> = {
+  "Camera battery low: {n}%": {
+    fr: "Batterie de l'appareil faible : {n} %",
+    es: "Batería de la cámara baja: {n} %",
+    it: "Batteria della fotocamera scarica: {n}%",
+    de: "Kamera-Akku schwach: {n} %",
+    nl: "Camerabatterij bijna leeg: {n}%" },
   "Newer Fujifilm, like the X-T5? Pair over Bluetooth…": {
     fr: "Fujifilm récent, comme le X-T5 ? Appairer en Bluetooth…",
     es: "¿Fujifilm reciente, como la X-T5? Emparejar por Bluetooth…",

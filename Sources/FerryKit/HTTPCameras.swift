@@ -207,6 +207,7 @@ public final class OlympusCamera: HTTPCamera {
 /// Ricoh GR II / GR III / GR IIIx: camera at 192.168.0.1, JSON API under /v1.
 public final class RicohCamera: HTTPCamera {
     public static let defaultHost = "192.168.0.1"
+    public private(set) var batteryPercent: Int?
 
     public override init(host: String = RicohCamera.defaultHost, port: Int? = nil, log: @escaping (String) -> Void = { _ in }) {
         super.init(host: host, port: port, log: log)
@@ -220,6 +221,7 @@ public final class RicohCamera: HTTPCamera {
             throw FujiError.connectionFailed("\(host) is not a Ricoh camera")
         }
         cameraName = model
+        batteryPercent = (props["battery"] as? NSNumber)?.intValue
         try loadList()
         isConnected = true
         log("Connected to \(cameraName): \(files.count) files")
@@ -267,6 +269,10 @@ public final class RicohCamera: HTTPCamera {
     }
 
     public func refreshObjectCount() throws -> Int {
+        if let (data, status) = try? get("/v1/props", timeout: 5), status == 200,
+           let props = try? JSONSerialization.jsonObject(with: data) as? [String: Any] {
+            batteryPercent = (props["battery"] as? NSNumber)?.intValue
+        }
         try loadList()
         return files.count
     }
@@ -278,6 +284,7 @@ public final class RicohCamera: HTTPCamera {
 /// See https://gopro.github.io/OpenGoPro/http. Not yet tested on a real camera.
 public final class GoProCamera: HTTPCamera {
     public static let defaultHost = "10.5.5.9"
+    public private(set) var batteryPercent: Int?
 
     public init(host: String = GoProCamera.defaultHost, log: @escaping (String) -> Void = { _ in }) {
         // A host with its own port (the mock camera in tests) keeps it; otherwise the API's port 8080.
@@ -295,6 +302,7 @@ public final class GoProCamera: HTTPCamera {
             guard status == 200 else { throw FujiError.connectionFailed("\(host) is not a GoPro") }
             cameraName = "GoPro"
         }
+        readBattery()
         try loadList()
         isConnected = true
         log("Connected to \(cameraName): \(files.count) files")
@@ -344,6 +352,14 @@ public final class GoProCamera: HTTPCamera {
         return result
     }
 
+    /// Status 70 of the camera state is the internal battery's charge in percent.
+    private func readBattery() {
+        guard let (data, status) = try? get("/gopro/camera/state", timeout: 5), status == 200,
+              let json = try? JSONSerialization.jsonObject(with: data) as? [String: Any],
+              let values = json["status"] as? [String: Any] else { return }
+        batteryPercent = (values["70"] as? NSNumber)?.intValue
+    }
+
     /// GoPro timestamps are the camera's local clock counted as if it were UTC.
     static func localDate(_ seconds: TimeInterval) -> Date? {
         var utc = Calendar(identifier: .gregorian)
@@ -375,6 +391,7 @@ public final class GoProCamera: HTTPCamera {
     public func refreshObjectCount() throws -> Int {
         // Without it the camera may turn its Wi-Fi off.
         _ = try? get("/gopro/camera/keep_alive", timeout: 5)
+        readBattery()
         try loadList()
         return files.count
     }
