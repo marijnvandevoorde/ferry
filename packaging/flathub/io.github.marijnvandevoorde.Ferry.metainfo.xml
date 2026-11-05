@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component type="desktop-application">
+  <id>io.github.marijnvandevoorde.Ferry</id>
+  <name>Ferry</name>
+  <summary>Get the photos off your camera over Wi-Fi</summary>
+  <metadata_license>CC0-1.0</metadata_license>
+  <project_license>MIT</project_license>
+  <developer id="io.github.marijnvandevoorde">
+    <name>Marijn Vandevoorde</name>
+  </developer>
+  <description>
+    <p>
+      Ferry copies photos and videos from your camera to your computer over Wi-Fi, without a cable or card reader.
+      Turn on the camera's Wi-Fi the way you would for its phone app, join its network, and Ferry finds the camera,
+      shows what is on the card and imports what's new into a folder.
+    </p>
+    <ul>
+      <li>Remembers what it imported, so next time only new photos are offered</li>
+      <li>Folders by date, optional file renaming, and an optional upload to Immich</li>
+      <li>Works with a folder your photo app watches, such as digiKam, darktable or Shotwell</li>
+      <li>Fujifilm cameras can also send photos over your home Wi-Fi (PC AutoSave)</li>
+    </ul>
+    <p>
+      Tested on the Fujifilm X-T20 and, in an emulator, on more Fujifilm and Canon models. Other Fujifilm, Canon,
+      GoPro, Olympus / OM System, Ricoh, Sony and Panasonic cameras with Wi-Fi are supported experimentally.
+    </p>
+  </description>
+  <launchable type="desktop-id">io.github.marijnvandevoorde.Ferry.desktop</launchable>
+  <url type="homepage">https://ferry.small-victories.co</url>
+  <url type="bugtracker">https://github.com/marijnvandevoorde/ferry/issues</url>
+  <url type="vcs-browser">https://github.com/marijnvandevoorde/ferry</url>
+  <screenshots>
+    <screenshot type="default">
+      <image>https://ferry.small-victories.co/img/screenshot-desktop.png</image>
+      <caption>Photos on the camera, with the ones already imported marked</caption>
+    </screenshot>
+  </screenshots>
+  <branding>
+    <color type="primary" scheme_preference="light">#f2efe8</color>
+    <color type="primary" scheme_preference="dark">#1b2440</color>
+  </branding>
+  <content_rating type="oars-1.1"/>
+  <requires>
+    <display_length compare="ge">720</display_length>
+  </requires>
+  <supports>
+    <control>pointing</control>
+    <control>keyboard</control>
+  </supports>
+  <releases>
+    <release version="0.2.0" date="2026-11-05">
+      <url type="details">https://github.com/marijnvandevoorde/ferry/releases/tag/v0.2.0</url>
+    </release>
+  </releases>
+</component>

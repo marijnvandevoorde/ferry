@@ -1,0 +1,21 @@
+name: Flatpak
+
+# Builds the Flathub manifest in packaging/flathub, as Flathub would.
+on:
+  push:
+    paths: ["packaging/flathub/**", ".github/workflows/flatpak.yml"]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    container:
+      image: ghcr.io/flathub-infra/flatpak-github-actions:gnome-48
+      options: --privileged
+    steps:
+      - uses: actions/checkout@v4
+      - uses: flatpak/flatpak-github-actions/flatpak-builder@v6
+        with:
+          bundle: ferry.flatpak
+          manifest-path: packaging/flathub/io.github.marijnvandevoorde.Ferry.yml
+          cache-key: flatpak-${{ github.sha }}
