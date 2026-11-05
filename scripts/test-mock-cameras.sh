@@ -1,5 +1,5 @@
 #!/bin/bash
-# Imports from mock Olympus, Ricoh and DLNA (Sony/Panasonic) cameras (scripts/mock-cameras) and checks the files are byte-identical.
+# Imports from mock Olympus, Ricoh, GoPro and DLNA (Sony/Panasonic) cameras (scripts/mock-cameras) and checks the files are byte-identical.
 set -euo pipefail
 cd "$(dirname "$0")/.."
 swift build -q --product ferryctl
@@ -8,12 +8,13 @@ WORK=$(mktemp -d)
 PIDS=()
 trap 'kill "${PIDS[@]}" 2>/dev/null || true; rm -rf "$WORK"' EXIT
 
-for kind in olympus ricoh dlna; do
-    folder=100OLYMP; [ $kind = ricoh ] && folder=100RICOH; [ $kind = dlna ] && folder=100MSDCF
+for kind in olympus ricoh gopro dlna; do
+    folder=100OLYMP; [ $kind = ricoh ] && folder=100RICOH; [ $kind = dlna ] && folder=100MSDCF; [ $kind = gopro ] && folder=100GOPRO
     CARD=$WORK/$kind/DCIM/$folder
     mkdir -p "$CARD"
     head -c 2500000 /dev/urandom > "$CARD/P0000001.JPG"
     head -c 9353 /dev/urandom > "$CARD/P0000002.JPG"
+    if [ $kind = gopro ]; then for i in 1 2 3; do head -c 40000 /dev/urandom > "$CARD/G001000$i.JPG"; done; fi
     port=$((18000 + RANDOM % 1000))
     python3 -I scripts/mock-cameras/server.py $kind $port "$WORK/$kind" & PIDS+=($!); disown
     sleep 1

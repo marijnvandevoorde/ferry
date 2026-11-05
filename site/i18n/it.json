@@ -4,8 +4,8 @@
   "meta": {
     "home_title": "{name}: le foto dalla fotocamera via Wi-Fi, senza cavo",
     "home_description": "{name} copia le foto dalla fotocamera al computer via Wi-Fi: in Foto, in una cartella o in Lightroom. Senza cavo né lettore di schede. Gratis per Mac, Windows e Linux.",
-    "cameras_title": "Fotocamere supportate: Canon, Fujifilm, Olympus, Ricoh, Sony, Panasonic | {name}",
-    "cameras_description": "Quali fotocamere funzionano con {name} per importare foto senza fili: Canon, Fujifilm, Olympus / OM System, Ricoh, Sony e Panasonic, modello per modello.",
+    "cameras_title": "Fotocamere supportate: Canon, Fujifilm, GoPro, Olympus, Ricoh, Sony, Panasonic | {name}",
+    "cameras_description": "Quali fotocamere funzionano con {name} per importare foto senza fili: Canon, Fujifilm, GoPro, Olympus / OM System, Ricoh, Sony e Panasonic, modello per modello.",
     "privacy_title": "Privacy | {name}",
     "privacy_description": "{name} non raccoglie nulla: parla solo con la tua fotocamera e con dove importi. Questo sito conta le visite in modo anonimo, senza cookie.",
     "notfound_title": "Pagina non trovata | {name}",
@@ -108,7 +108,7 @@
   },
   "camerasblock": {
     "h2": "Funziona con la tua fotocamera",
-    "p": "Funziona con le fotocamere Wi-Fi di Canon, Fujifilm, Olympus / OM System, Ricoh, Sony e Panasonic. Alcuni modelli sono provati su una fotocamera reale, altri in un emulatore, e alcuni sono ancora sperimentali. L'elenco delle fotocamere mostra a che punto è ogni modello.",
+    "p": "Funziona con le fotocamere Wi-Fi di Canon, Fujifilm, GoPro, Olympus / OM System, Ricoh, Sony e Panasonic. Alcuni modelli sono provati su una fotocamera reale, altri in un emulatore, e alcuni sono ancora sperimentali. L'elenco delle fotocamere mostra a che punto è ogni modello.",
     "link": "Vedi tutte le fotocamere supportate"
   },
   "download": {
@@ -135,7 +135,7 @@
     "items": [
       {
         "q": "{name} funziona con la mia fotocamera?",
-        "a": "Se la tua fotocamera ha il Wi-Fi ed è Canon, Fujifilm, Olympus / OM System, Ricoh, Sony o Panasonic, probabilmente sì: {name} le parla come fa la sua app per smartphone. Quanto è provato ogni modello varia, quindi controlla l'elenco delle fotocamere. Le fotocamere che devono prima abbinarsi via Bluetooth, come le Fujifilm più recenti, non sono ancora supportate."
+        "a": "Se la tua fotocamera ha il Wi-Fi ed è Canon, Fujifilm, GoPro, Olympus / OM System, Ricoh, Sony o Panasonic, probabilmente sì: {name} le parla come fa la sua app per smartphone. Quanto è provato ogni modello varia, quindi controlla l'elenco delle fotocamere. Le fotocamere che devono prima abbinarsi via Bluetooth, come le Fujifilm più recenti, non sono ancora supportate."
       },
       {
         "q": "Può importare i file RAW?",
@@ -191,7 +191,8 @@
       "oishare": "Usa l'interfaccia Wi-Fi OI.Share.",
       "ricoh": "Usa l'interfaccia Wi-Fi della GR.",
       "dlna": "Fotocamere che condividono le foto come media server sul Wi-Fi.",
-      "nikon": "Servono verifiche con una fotocamera reale."
+      "nikon": "Servono verifiche con una fotocamera reale.",
+      "gopro": "Usa l'interfaccia Wi-Fi Open GoPro. JPEG, GPR (RAW) e video."
     },
     "emulator_note": "«Funziona nell'emulatore» significa che {name} supera i suoi test con vcam, un emulatore open source del protocollo di quella fotocamera. Le fotocamere reali a volte si comportano in modo diverso.",
     "report_h2": "L'hai provato con la tua fotocamera?",
@@ -243,6 +244,6 @@
     "license": "Open source con licenza MIT.",
     "nocookies": "Niente cookie. Solo un conteggio anonimo delle visite.",
     "privacy": "Privacy",
-    "trademark": "Fujifilm, Canon, Olympus, OM System, Ricoh, Sony, Panasonic e Nikon sono marchi dei rispettivi proprietari. {name} non è affiliato a nessuno di essi."
+    "trademark": "Fujifilm, Canon, GoPro, Olympus, OM System, Ricoh, Sony, Panasonic e Nikon sono marchi dei rispettivi proprietari. {name} non è affiliato a nessuno di essi."
   }
 }

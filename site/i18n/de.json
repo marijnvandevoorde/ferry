@@ -4,8 +4,8 @@
   "meta": {
     "home_title": "{name}: Fotos von der Kamera per WLAN, ohne Kabel",
     "home_description": "{name} kopiert Fotos per WLAN von der Kamera auf den Computer: in Fotos, einen Ordner oder Lightroom. Ohne Kabel, ohne Kartenleser. Kostenlos für Mac, Windows und Linux.",
-    "cameras_title": "Unterstützte Kameras: Canon, Fujifilm, Olympus, Ricoh, Sony, Panasonic | {name}",
-    "cameras_description": "Welche Kameras mit {name} Fotos kabellos übertragen: Canon, Fujifilm, Olympus / OM System, Ricoh, Sony und Panasonic, Modell für Modell.",
+    "cameras_title": "Unterstützte Kameras: Canon, Fujifilm, GoPro, Olympus, Ricoh, Sony, Panasonic | {name}",
+    "cameras_description": "Welche Kameras mit {name} Fotos kabellos übertragen: Canon, Fujifilm, GoPro, Olympus / OM System, Ricoh, Sony und Panasonic, Modell für Modell.",
     "privacy_title": "Datenschutz | {name}",
     "privacy_description": "{name} sammelt nichts: Die App spricht nur mit deiner Kamera und deinen Importzielen. Diese Website zählt Besuche anonym, ohne Cookies.",
     "notfound_title": "Seite nicht gefunden | {name}",
@@ -108,7 +108,7 @@
   },
   "camerasblock": {
     "h2": "Funktioniert mit deiner Kamera",
-    "p": "Funktioniert mit WLAN-Kameras von Canon, Fujifilm, Olympus / OM System, Ricoh, Sony und Panasonic. Manche Modelle sind an einer echten Kamera getestet, andere in einem Emulator, und manche sind noch experimentell. Die Kameraliste zeigt den Stand für jedes Modell.",
+    "p": "Funktioniert mit WLAN-Kameras von Canon, Fujifilm, GoPro, Olympus / OM System, Ricoh, Sony und Panasonic. Manche Modelle sind an einer echten Kamera getestet, andere in einem Emulator, und manche sind noch experimentell. Die Kameraliste zeigt den Stand für jedes Modell.",
     "link": "Alle unterstützten Kameras ansehen"
   },
   "download": {
@@ -135,7 +135,7 @@
     "items": [
       {
         "q": "Funktioniert {name} mit meiner Kamera?",
-        "a": "Wenn deine Kamera WLAN hat und von Canon, Fujifilm, Olympus / OM System, Ricoh, Sony oder Panasonic ist, wahrscheinlich: {name} spricht mit ihr wie ihre Smartphone-App. Wie gut jedes Modell getestet ist, ist unterschiedlich, sieh also in der Kameraliste nach. Kameras, die sich erst über Bluetooth koppeln müssen, wie die neuesten Fujifilm-Modelle, werden noch nicht unterstützt."
+        "a": "Wenn deine Kamera WLAN hat und von Canon, Fujifilm, GoPro, Olympus / OM System, Ricoh, Sony oder Panasonic ist, wahrscheinlich: {name} spricht mit ihr wie ihre Smartphone-App. Wie gut jedes Modell getestet ist, ist unterschiedlich, sieh also in der Kameraliste nach. Kameras, die sich erst über Bluetooth koppeln müssen, wie die neuesten Fujifilm-Modelle, werden noch nicht unterstützt."
       },
       {
         "q": "Kann ich RAW-Dateien importieren?",
@@ -191,7 +191,8 @@
       "oishare": "Nutzt die WLAN-Schnittstelle von OI.Share.",
       "ricoh": "Nutzt die WLAN-Schnittstelle der GR.",
       "dlna": "Kameras, die Fotos im WLAN als Medienserver bereitstellen.",
-      "nikon": "Muss noch an einer echten Kamera erforscht werden."
+      "nikon": "Muss noch an einer echten Kamera erforscht werden.",
+      "gopro": "Nutzt die Open-GoPro-WLAN-Schnittstelle. JPEG, GPR (RAW) und Video."
     },
     "emulator_note": "„Funktioniert im Emulator“ heißt: {name} besteht seine Tests gegen vcam, einen Open-Source-Emulator des Protokolls dieser Kamera. Echte Kameras verhalten sich manchmal anders.",
     "report_h2": "Mit deiner Kamera probiert?",
@@ -243,6 +244,6 @@
     "license": "Open Source unter der MIT-Lizenz.",
     "nocookies": "Keine Cookies. Nur anonyme Besucherzahlen.",
     "privacy": "Datenschutz",
-    "trademark": "Fujifilm, Canon, Olympus, OM System, Ricoh, Sony, Panasonic und Nikon sind Marken ihrer jeweiligen Inhaber. {name} steht in keiner Verbindung zu ihnen."
+    "trademark": "Fujifilm, Canon, GoPro, Olympus, OM System, Ricoh, Sony, Panasonic und Nikon sind Marken ihrer jeweiligen Inhaber. {name} steht in keiner Verbindung zu ihnen."
   }
 }

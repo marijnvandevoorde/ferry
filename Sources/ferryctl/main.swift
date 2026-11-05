@@ -24,7 +24,7 @@ options:
   --all                import everything, not only photos that weren't imported before
   --skip-videos        leave out videos
   --bluetooth          the camera's Wi-Fi was started over Bluetooth (newer Fujifilm cameras: XApp gallery)
-  --protocol NAME      fuji, ptpip (Canon, Nikon, …), olympus, ricoh or dlna (Sony, Panasonic); default: try each
+  --protocol NAME      fuji, ptpip (Canon, Nikon, …), olympus, ricoh, gopro or dlna (Sony, Panasonic); default: try each
   --immich URL         also upload imports to this Immich server (API key in $IMMICH_API_KEY)
   --immich-album NAME  add Immich uploads to this album
   --history FILE       import history file (default: \(ImportHistory.defaultURL.path))

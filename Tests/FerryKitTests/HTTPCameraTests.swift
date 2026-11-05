@@ -19,4 +19,24 @@ final class HTTPCameraTests: XCTestCase {
         XCTAssertEqual(OlympusCamera.tag("model", in: "<?xml version=\"1.0\"?><caminfo><model>E-M10MarkII</model></caminfo>"), "E-M10MarkII")
         XCTAssertNil(OlympusCamera.tag("model", in: "<html>router</html>"))
     }
+
+    func testGoProMediaList() throws {
+        let json = """
+        {"id": "1", "media": [{"d": "100GOPRO", "fs": [
+          {"n": "GX010001.MP4", "cre": "1696600109", "mod": "1696600109", "s": "2806303", "glrv": "100", "ls": "-1"},
+          {"n": "GOPR0002.JPG", "cre": "1696600200", "mod": "1696600200", "s": "4200", "raw": "1"},
+          {"n": "G0030004.JPG", "cre": "1696600300", "mod": "1696600300", "g": "3", "b": "4", "l": "7", "s": "4", "m": ["6"], "t": "b"}
+        ]}]}
+        """
+        let files = GoProCamera.parseMediaList(Data(json.utf8))
+        XCTAssertEqual(files.map(\.name), ["GX010001.MP4", "GOPR0002.JPG", "GOPR0002.GPR",
+                                           "G0030004.JPG", "G0030005.JPG", "G0030007.JPG"])
+        XCTAssertEqual(files[0].path, "100GOPRO/GX010001.MP4")
+        XCTAssertEqual(files[0].size, 2_806_303)
+        XCTAssertEqual(files[2].size, 0)
+        XCTAssertEqual(files[3].size, 0)
+        // 1696600109 is 2023-10-06 13:48:29 on the camera's clock, whatever this computer's time zone.
+        let c = Calendar(identifier: .gregorian).dateComponents([.year, .month, .day, .hour, .minute, .second], from: try XCTUnwrap(files[0].date))
+        XCTAssertEqual([c.year, c.month, c.day, c.hour, c.minute, c.second], [2023, 10, 6, 13, 48, 29])
+    }
 }

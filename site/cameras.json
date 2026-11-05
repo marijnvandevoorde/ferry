@@ -31,6 +31,13 @@
       ]
     },
     {
+      "brand": "GoPro",
+      "slug": "gopro",
+      "models": [
+        ["HERO9 Black and later", "experimental", "gopro"]
+      ]
+    },
+    {
       "brand": "Nikon",
       "slug": "nikon",
       "models": [

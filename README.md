@@ -3,7 +3,7 @@
 An open-source app that imports photos from your camera over Wi-Fi, no cable or card reader. On the Mac
 it imports straight into Apple Photos or a folder; on Windows and Linux into a folder, optionally also to Immich.
 
-It works with Wi-Fi cameras from Canon, Fujifilm, Olympus / OM System, Ricoh, Sony and Panasonic, by talking to
+It works with Wi-Fi cameras from Canon, Fujifilm, GoPro, Olympus / OM System, Ricoh, Sony and Panasonic, by talking to
 them the way their phone apps do. How well each one is tested differs.
 See [compatibility](#compatibility) and the [roadmap](ROADMAP.md).
 
@@ -30,6 +30,7 @@ Fujifilm cameras can also join your home Wi-Fi and send photos from there (PC Au
 | Fujifilm X-T5, X-S20, X100VI and others that pair over Bluetooth | ❌ planned | |
 | Canon EOS R, 90D, 5D Mark III, Rebel SL2, PowerShot G7 X III (standard PTP/IP) | not yet | ✅ |
 | Olympus / OM System (OI.Share), Ricoh GR II / III | not yet | mock API only |
+| GoPro HERO9 Black and later (Open GoPro) | not yet | mock API only |
 | Older Sony Alpha and Panasonic Lumix with Wi-Fi sharing (DLNA) | not yet | mock API only |
 
 "Emulator" means the protocol works against [vcam](https://github.com/petabyt/vcam)'s model of that camera.

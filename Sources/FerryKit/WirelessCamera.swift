@@ -50,6 +50,8 @@ public enum CameraProtocol: String, Sendable, CaseIterable {
     case olympus
     /// Ricoh GR II / III (HTTP API).
     case ricoh
+    /// GoPro HERO9 and later (Open GoPro HTTP API).
+    case gopro
     /// DLNA media server: older Sony ("Send to Smartphone") and Panasonic Lumix.
     case dlna
 
@@ -80,6 +82,7 @@ public enum CameraProtocol: String, Sendable, CaseIterable {
         case .ptpip: PTPIPCamera(host: host, interface: interface, clientName: clientName, log: log)
         case .olympus: OlympusCamera(host: host, log: log)
         case .ricoh: RicohCamera(host: host, log: log)
+        case .gopro: GoProCamera(host: host, log: log)
         case .dlna: DLNACamera(host: host, log: log)
         }
     }

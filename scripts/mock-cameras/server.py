@@ -1,6 +1,6 @@
-"""Mock Olympus (OI.Share), Ricoh GR and DLNA (Sony/Panasonic) camera APIs serving a folder as the camera's card.
+"""Mock Olympus (OI.Share), Ricoh GR, GoPro (Open GoPro) and DLNA (Sony/Panasonic) camera APIs serving a folder as the camera's card.
 
-usage: python3 server.py olympus|ricoh|dlna PORT CARD_DIR
+usage: python3 server.py olympus|ricoh|gopro|dlna PORT CARD_DIR
 CARD_DIR contains DCIM/<folder>/<files>, like a real card.
 """
 import html, json, os, re, sys, urllib.parse
@@ -62,6 +62,26 @@ class Handler(BaseHTTPRequestHandler):
                     return self.send(200, json.dumps({"errCode": 200, "size": st.st_size, "datetime": when}).encode(), "application/json")
                 if q.get("size") == ["thumb"]: return self.send(404, b"")
                 return self.send_file(path)
+        if kind == "gopro":
+            if url.path == "/gopro/camera/info":
+                return self.send(200, json.dumps({"model_name": "HERO12 Black", "model_number": 62}).encode(), "application/json")
+            if url.path == "/gopro/camera/keep_alive": return self.send(200, b"{}", "application/json")
+            if url.path == "/gopro/media/list":
+                media = []
+                for d in sorted(os.listdir(dcim)):
+                    names = sorted(os.listdir(os.path.join(dcim, d)))
+                    # Burst photos G<group><index>.JPG are listed as one grouped entry.
+                    bursts = [n for n in names if re.fullmatch(r"G\d{7}\.JPG", n)]
+                    fs = [{"n": n, "cre": str(int(os.stat(os.path.join(dcim, d, n)).st_mtime)), "mod": "0",
+                           "s": str(os.path.getsize(os.path.join(dcim, d, n)))} for n in names if n not in bursts]
+                    if bursts:
+                        ids = [int(n[4:8]) for n in bursts]
+                        fs.append({"n": bursts[0], "g": "1", "b": str(min(ids)), "l": str(max(ids)), "s": str(len(bursts)),
+                                   "cre": "1761984000", "mod": "0", "t": "b", "m": []})
+                    media.append({"d": d, "fs": fs})
+                return self.send(200, json.dumps({"id": "1", "media": media}).encode(), "application/json")
+            if url.path == "/gopro/media/thumbnail": return self.send(200, b"T" * 200, "image/jpeg")
+            if url.path.startswith("/videos/DCIM/"): return self.send_file(os.path.join(dcim, url.path[len("/videos/DCIM/"):]))
         if kind == "dlna":
             if url.path == "/DmsDesc.xml":
                 return self.send(200, f"""<?xml version="1.0"?><root xmlns="urn:schemas-upnp-org:device-1-0"><device>

@@ -272,5 +272,114 @@ public final class RicohCamera: HTTPCamera {
     }
 }
 
+// MARK: - GoPro
+
+/// GoPro HERO9 and later over the camera's Wi-Fi: the Open GoPro HTTP API on port 8080 (camera at 10.5.5.9).
+/// See https://gopro.github.io/OpenGoPro/http. Not yet tested on a real camera.
+public final class GoProCamera: HTTPCamera {
+    public static let defaultHost = "10.5.5.9"
+
+    public init(host: String = GoProCamera.defaultHost, log: @escaping (String) -> Void = { _ in }) {
+        // A host with its own port (the mock camera in tests) keeps it; otherwise the API's port 8080.
+        super.init(host: host, port: host.contains(":") ? nil : 8080, log: log)
+    }
+
+    public func connect(onWaitingForApproval: () -> Void = {}) throws {
+        log("Connecting to \(host) (GoPro)")
+        if let (data, status) = try? get("/gopro/camera/info", timeout: 5), status == 200,
+           let info = try? JSONSerialization.jsonObject(with: data) as? [String: Any] {
+            cameraName = info["model_name"] as? String ?? "GoPro"
+        } else {
+            // Older firmware has no camera info; the version call tells it's a GoPro.
+            let (_, status) = try get("/gopro/version", timeout: 5)
+            guard status == 200 else { throw FujiError.connectionFailed("\(host) is not a GoPro") }
+            cameraName = "GoPro"
+        }
+        try loadList()
+        isConnected = true
+        log("Connected to \(cameraName): \(files.count) files")
+    }
+
+    func loadList() throws {
+        let (data, status) = try get("/gopro/media/list", timeout: 30)
+        guard status == 200 else { throw FujiError.protocolError("media list: HTTP \(status)") }
+        files = Self.parseMediaList(data).enumerated().map { index, file in
+            ("/videos/DCIM/\(file.path)", Self.info(index: index, filename: file.name, size: file.size, date: file.date))
+        }
+    }
+
+    /// The files in a `/gopro/media/list` response. Grouped items (bursts, time lapses) are listed once and
+    /// expanded here; a photo with `raw` set has a .GPR file next to it. Sizes of those are unknown until downloaded.
+    static func parseMediaList(_ data: Data) -> [(path: String, name: String, size: UInt32, date: Date?)] {
+        guard let json = try? JSONSerialization.jsonObject(with: data) as? [String: Any],
+              let media = json["media"] as? [[String: Any]] else { return [] }
+        var result: [(path: String, name: String, size: UInt32, date: Date?)] = []
+        for folder in media {
+            guard let dir = folder["d"] as? String, let entries = folder["fs"] as? [[String: Any]] else { continue }
+            for entry in entries {
+                guard let name = entry["n"] as? String else { continue }
+                let date = (entry["cre"] as? String).flatMap(TimeInterval.init).flatMap(localDate)
+                var names = [name]
+                if entry["g"] != nil {
+                    // Group members share the first four characters and are numbered b...l: G0010001.JPG ... G0010030.JPG.
+                    let first = Int(entry["b"] as? String ?? ""), last = Int(entry["l"] as? String ?? "")
+                    let missing = Set((entry["m"] as? [String] ?? []).compactMap(Int.init))
+                    let ext = (name as NSString).pathExtension
+                    if let first, let last, first <= last, name.count >= 8 {
+                        names = (first...last).filter { !missing.contains($0) }
+                            .map { "\(name.prefix(4))\(String(format: "%04d", $0)).\(ext)" }
+                    }
+                }
+                for n in names {
+                    // Group entries carry the member count in "s", not a size.
+                    let size = entry["g"] == nil ? UInt32(entry["s"] as? String ?? "") ?? 0 : 0
+                    result.append(("\(dir)/\(n)", n, size, date))
+                    if entry["raw"] as? String == "1" {
+                        let raw = (n as NSString).deletingPathExtension + ".GPR"
+                        result.append(("\(dir)/\(raw)", raw, 0, date))
+                    }
+                }
+            }
+        }
+        return result
+    }
+
+    /// GoPro timestamps are the camera's local clock counted as if it were UTC.
+    static func localDate(_ seconds: TimeInterval) -> Date? {
+        var utc = Calendar(identifier: .gregorian)
+        utc.timeZone = TimeZone(identifier: "UTC")!
+        let components = utc.dateComponents([.year, .month, .day, .hour, .minute, .second], from: Date(timeIntervalSince1970: seconds))
+        return Calendar(identifier: .gregorian).date(from: components)
+    }
+
+    public func thumbnail(_ handle: UInt32) throws -> Data? {
+        let path = try entry(handle).path.replacingOccurrences(of: "/videos/DCIM/", with: "")
+        let (data, status) = try get("/gopro/media/thumbnail?path=\(path)")
+        return status == 200 && data.count >= 100 ? data : nil
+    }
+
+    @discardableResult
+    public func download(_ handle: UInt32, to destination: URL, progress: (Int64, Int64) -> Void) throws -> ObjectInfo {
+        var (path, info) = try entry(handle)
+        log("Downloading \(info.filename)")
+        try download(path, to: destination, timeout: 600)
+        if info.compressedSize > 0 {
+            try verifySize(destination, expected: info.compressedSize)
+        } else {
+            info.compressedSize = (try? FileManager.default.attributesOfItem(atPath: destination.path)[.size] as? NSNumber)?.uint32Value ?? 0
+        }
+        progress(Int64(info.compressedSize), Int64(info.compressedSize))
+        return info
+    }
+
+    public func refreshObjectCount() throws -> Int {
+        // Without it the camera may turn its Wi-Fi off.
+        _ = try? get("/gopro/camera/keep_alive", timeout: 5)
+        try loadList()
+        return files.count
+    }
+}
+
 extension OlympusCamera: WirelessCamera {}
 extension RicohCamera: WirelessCamera {}
+extension GoProCamera: WirelessCamera {}

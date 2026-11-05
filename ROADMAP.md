@@ -74,7 +74,7 @@ Cameras from about 2022 onwards (X-T5, X-S20, X100VI, …) pair over Bluetooth a
 Brands whose Wi-Fi transfer only works with a phone app.
 
 - Camera driver abstraction
-- Olympus / OM System, Ricoh GR, Sony (older "Send to Smartphone"), Panasonic Lumix, Canon and Nikon (PTP/IP)
+- Olympus / OM System, Ricoh GR, Sony (older "Send to Smartphone"), Panasonic Lumix, Canon and Nikon (PTP/IP), GoPro (Open GoPro)
 
 ## Signing and stores
 

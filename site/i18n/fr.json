@@ -4,8 +4,8 @@
   "meta": {
     "home_title": "{name} : les photos de votre appareil en Wi-Fi, sans câble",
     "home_description": "{name} copie les photos de votre appareil vers votre ordinateur en Wi-Fi : dans Photos, un dossier ou Lightroom. Sans câble. Gratuit sur Mac, Windows et Linux.",
-    "cameras_title": "Appareils compatibles : Canon, Fujifilm, Olympus, Ricoh, Sony, Panasonic | {name}",
-    "cameras_description": "Quels appareils fonctionnent avec {name} pour importer sans fil : Canon, Fujifilm, Olympus / OM System, Ricoh, Sony et Panasonic, modèle par modèle.",
+    "cameras_title": "Appareils compatibles : Canon, Fujifilm, GoPro, Olympus, Ricoh, Sony, Panasonic | {name}",
+    "cameras_description": "Quels appareils fonctionnent avec {name} pour importer sans fil : Canon, Fujifilm, GoPro, Olympus / OM System, Ricoh, Sony et Panasonic, modèle par modèle.",
     "privacy_title": "Confidentialité | {name}",
     "privacy_description": "{name} ne collecte rien : il ne parle qu'à votre appareil photo et à vos destinations d'import. Ce site compte les visites anonymement, sans cookies.",
     "notfound_title": "Page introuvable | {name}",
@@ -108,7 +108,7 @@
   },
   "camerasblock": {
     "h2": "Compatible avec votre appareil",
-    "p": "Fonctionne avec les appareils Wi-Fi de Canon, Fujifilm, Olympus / OM System, Ricoh, Sony et Panasonic. Certains modèles sont testés sur un vrai appareil, d'autres dans un émulateur, et certains sont encore expérimentaux. La liste des appareils indique où en est chaque modèle.",
+    "p": "Fonctionne avec les appareils Wi-Fi de Canon, Fujifilm, GoPro, Olympus / OM System, Ricoh, Sony et Panasonic. Certains modèles sont testés sur un vrai appareil, d'autres dans un émulateur, et certains sont encore expérimentaux. La liste des appareils indique où en est chaque modèle.",
     "link": "Voir tous les appareils compatibles"
   },
   "download": {
@@ -135,7 +135,7 @@
     "items": [
       {
         "q": "{name} fonctionne-t-il avec mon appareil ?",
-        "a": "Si votre appareil a le Wi-Fi et vient de chez Canon, Fujifilm, Olympus / OM System, Ricoh, Sony ou Panasonic, probablement : {name} lui parle comme son app mobile. Le niveau de test varie selon le modèle, consultez donc la liste des appareils. Les appareils qui doivent d'abord s'appairer en Bluetooth, comme les Fujifilm les plus récents, ne sont pas encore pris en charge."
+        "a": "Si votre appareil a le Wi-Fi et vient de chez Canon, Fujifilm, GoPro, Olympus / OM System, Ricoh, Sony ou Panasonic, probablement : {name} lui parle comme son app mobile. Le niveau de test varie selon le modèle, consultez donc la liste des appareils. Les appareils qui doivent d'abord s'appairer en Bluetooth, comme les Fujifilm les plus récents, ne sont pas encore pris en charge."
       },
       {
         "q": "Peut-il importer les fichiers RAW ?",
@@ -191,7 +191,8 @@
       "oishare": "Utilise l'interface Wi-Fi OI.Share.",
       "ricoh": "Utilise l'interface Wi-Fi du GR.",
       "dlna": "Appareils qui partagent leurs photos comme un serveur multimédia en Wi-Fi.",
-      "nikon": "À étudier avec un vrai appareil."
+      "nikon": "À étudier avec un vrai appareil.",
+      "gopro": "Utilise l'interface Wi-Fi Open GoPro. JPEG, GPR (RAW) et vidéo."
     },
     "emulator_note": "« Fonctionne dans l'émulateur » signifie que {name} réussit ses tests face à vcam, un émulateur open source du protocole de cet appareil. Les vrais appareils se comportent parfois différemment.",
     "report_h2": "Vous l'avez essayé avec votre appareil ?",
@@ -243,6 +244,6 @@
     "license": "Open source sous licence MIT.",
     "nocookies": "Pas de cookies. Seulement un comptage anonyme des visites.",
     "privacy": "Confidentialité",
-    "trademark": "Fujifilm, Canon, Olympus, OM System, Ricoh, Sony, Panasonic et Nikon sont des marques de leurs propriétaires. {name} n'est affilié à aucun d'entre eux."
+    "trademark": "Fujifilm, Canon, GoPro, Olympus, OM System, Ricoh, Sony, Panasonic et Nikon sont des marques de leurs propriétaires. {name} n'est affilié à aucun d'entre eux."
   }
 }

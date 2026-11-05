@@ -4,8 +4,8 @@
   "meta": {
     "home_title": "{name}: foto's van je camera via wifi, zonder kabel",
     "home_description": "{name} kopieert foto's van je camera via wifi naar je computer: naar Apple Foto's, een map of Lightroom. Geen kabel, geen kaartlezer. Gratis voor Mac, Windows en Linux.",
-    "cameras_title": "Ondersteunde camera's: Canon, Fujifilm, Olympus, Ricoh, Sony, Panasonic | {name}",
-    "cameras_description": "Welke camera's werken met {name} voor draadloos foto's importeren: Canon, Fujifilm, Olympus / OM System, Ricoh, Sony en Panasonic, per model.",
+    "cameras_title": "Ondersteunde camera's: Canon, Fujifilm, GoPro, Olympus, Ricoh, Sony, Panasonic | {name}",
+    "cameras_description": "Welke camera's werken met {name} voor draadloos foto's importeren: Canon, Fujifilm, GoPro, Olympus / OM System, Ricoh, Sony en Panasonic, per model.",
     "privacy_title": "Privacy | {name}",
     "privacy_description": "{name} verzamelt niets: het praat alleen met je camera en waar je naartoe importeert. Deze website telt bezoeken anoniem, zonder cookies.",
     "notfound_title": "Pagina niet gevonden | {name}",
@@ -108,7 +108,7 @@
   },
   "camerasblock": {
     "h2": "Werkt met je camera",
-    "p": "Werkt met wifi-camera's van Canon, Fujifilm, Olympus / OM System, Ricoh, Sony en Panasonic. Sommige modellen zijn getest op een echte camera, andere in een emulator, en sommige zijn nog experimenteel. De lijst met camera's toont hoe het per model zit.",
+    "p": "Werkt met wifi-camera's van Canon, Fujifilm, GoPro, Olympus / OM System, Ricoh, Sony en Panasonic. Sommige modellen zijn getest op een echte camera, andere in een emulator, en sommige zijn nog experimenteel. De lijst met camera's toont hoe het per model zit.",
     "link": "Alle ondersteunde camera's bekijken"
   },
   "download": {
@@ -135,7 +135,7 @@
     "items": [
       {
         "q": "Werkt {name} met mijn camera?",
-        "a": "Als je camera wifi heeft en van Canon, Fujifilm, Olympus / OM System, Ricoh, Sony of Panasonic is, waarschijnlijk wel: {name} praat ermee zoals de telefoon-app dat doet. Hoe goed elk model getest is, verschilt, dus kijk in de lijst met camera's. Camera's die eerst via Bluetooth moeten koppelen, zoals de nieuwste Fujifilm-modellen, worden nog niet ondersteund."
+        "a": "Als je camera wifi heeft en van Canon, Fujifilm, GoPro, Olympus / OM System, Ricoh, Sony of Panasonic is, waarschijnlijk wel: {name} praat ermee zoals de telefoon-app dat doet. Hoe goed elk model getest is, verschilt, dus kijk in de lijst met camera's. Camera's die eerst via Bluetooth moeten koppelen, zoals de nieuwste Fujifilm-modellen, worden nog niet ondersteund."
       },
       {
         "q": "Kan het RAW-bestanden importeren?",
@@ -191,7 +191,8 @@
       "oishare": "Gebruikt de OI.Share-wifi-interface.",
       "ricoh": "Gebruikt de wifi-interface van de GR.",
       "dlna": "Camera's die foto's delen als mediaserver via wifi.",
-      "nikon": "Vraagt onderzoek met een echte camera."
+      "nikon": "Vraagt onderzoek met een echte camera.",
+      "gopro": "Gebruikt de Open GoPro-wifi-interface. JPEG, GPR (RAW) en video."
     },
     "emulator_note": "\"Werkt in de emulator\" betekent dat {name} zijn tests doorstaat met vcam, een open-source emulator van het protocol van die camera. Echte camera's gedragen zich soms anders.",
     "report_h2": "Met je camera geprobeerd?",
@@ -243,6 +244,6 @@
     "license": "Open source onder de MIT-licentie.",
     "nocookies": "Geen cookies. Alleen anonieme bezoekersaantallen.",
     "privacy": "Privacy",
-    "trademark": "Fujifilm, Canon, Olympus, OM System, Ricoh, Sony, Panasonic en Nikon zijn handelsmerken van hun eigenaars. {name} is niet aan hen gelieerd."
+    "trademark": "Fujifilm, Canon, GoPro, Olympus, OM System, Ricoh, Sony, Panasonic en Nikon zijn handelsmerken van hun eigenaars. {name} is niet aan hen gelieerd."
   }
 }
