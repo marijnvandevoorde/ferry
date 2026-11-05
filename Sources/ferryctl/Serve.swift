@@ -13,7 +13,8 @@ import Foundation
 ///   {"cmd": "cancel"}                           stop the running import after the current file
 ///   {"cmd": "autosave", "enabled": bool}        listen for Fujifilm cameras sending photos over the home network
 ///                                               (PC AutoSave); registering happens when the camera asks
-///   {"cmd": "disconnect"} / {"cmd": "quit"}
+///   {"cmd": "disconnect", "pause": seconds?}    with "pause", don't reconnect by itself for that long
+///   {"cmd": "quit"}
 ///
 /// Events, one JSON object per line on stdout:
 ///   {"event": "status", "phase": "searching|connecting|waitingForApproval|connected", "camera": "...", "address": "..."}
@@ -52,6 +53,8 @@ final class Server: @unchecked Sendable {
     private var stopped = false
     /// Set by a connect command after a Bluetooth hand-off; newer Fujifilm cameras then use the XApp gallery.
     private var afterBluetoothHandoff = false
+    /// After disconnecting by itself, the UI asks for a pause so the camera can close its network first.
+    private var reconnectAfter = Date.distantPast
 
     init(host: String?, clientName: String, history: ImportHistory) {
         self.host = host
@@ -84,7 +87,11 @@ final class Server: @unchecked Sendable {
                     self.connectIfNeeded(reportFailure: true)
                 }
             case "disconnect":
-                queue.async { self.disconnect() }
+                let pause = command["pause"] as? Double ?? 0
+                queue.async {
+                    self.disconnect()
+                    self.reconnectAfter = Date().addingTimeInterval(pause)
+                }
             case "autosave":
                 let enabled = command["enabled"] as? Bool ?? false
                 queue.async { self.setAutoSave(enabled) }
@@ -107,7 +114,7 @@ final class Server: @unchecked Sendable {
         queue.asyncAfter(deadline: .now() + 3) { [weak self] in
             guard let self else { return }
             if camera == nil {
-                connectIfNeeded(reportFailure: false)
+                if Date() >= reconnectAfter { connectIfNeeded(reportFailure: false) }
             } else {
                 keepAlive()
             }

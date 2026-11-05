@@ -41,6 +41,8 @@ const settings = {
   get immichAlbum() { return localStorage.getItem("immichAlbum") ?? ""; },
   set immichAlbum(v: string) { localStorage.setItem("immichAlbum", v); },
   set skipVideos(v: boolean) { localStorage.setItem("skipVideos", String(v)); },
+  get disconnectAfterImport() { return localStorage.getItem("disconnectAfterImport") === "true"; },
+  set disconnectAfterImport(v: boolean) { localStorage.setItem("disconnectAfterImport", String(v)); },
   get autoSave() { return localStorage.getItem("autoSave") === "true"; },
   set autoSave(v: boolean) { localStorage.setItem("autoSave", String(v)); },
 };
@@ -145,6 +147,7 @@ listen<ServeEvent>("ferryctl", ({ payload: e }) => {
       if (e.camera) state.camera = e.camera;
       if (e.phase === "connected") {
         showError("");
+        $("last-import").hidden = true;
         if (!wasConnected) {
           state.listed = false;
           state.autoSaveSession = e.autoSave === true;
@@ -245,13 +248,17 @@ listen<ServeEvent>("ferryctl", ({ payload: e }) => {
       }
       continueImportNew();
       if (state.importing) return;
-      // PC AutoSave: the camera sent what it had; let it go.
-      if (state.autoSaveSession && !state.listing) send({ cmd: "disconnect" });
+      // PC AutoSave: the camera sent what it had; let it go. Otherwise optionally let the computer go back to its usual
+      // network; the pause keeps it from reconnecting while the camera closes its own.
+      const letGo = !state.listing && (state.autoSaveSession || (settings.disconnectAfterImport && !e.cancelled));
+      if (letGo) send(state.autoSaveSession ? { cmd: "disconnect" } : { cmd: "disconnect", pause: 60 });
       let summary = t("Imported {n} items", { n: e.imported }, e.imported);
       if (e.cancelled) summary += t(" (stopped)");
       if (e.failed.length) summary += t(". {n} failed: {list}", { n: e.failed.length, list: e.failed.slice(0, 3).join(", ") });
       render();
       $("status").textContent = summary;
+      $("last-import").textContent = summary;
+      $("last-import").hidden = !letGo;
       $("show-folder").hidden = e.imported === 0;
       notify(t("Import finished"), summary);
       return;
@@ -380,6 +387,7 @@ function openSettings() {
   $<HTMLSelectElement>("folders").value = settings.folders;
   $<HTMLInputElement>("rename").value = settings.rename;
   $<HTMLInputElement>("auto-import").checked = settings.autoImport;
+  $<HTMLInputElement>("disconnect-after").checked = settings.disconnectAfterImport;
   $<HTMLInputElement>("skip-videos").checked = settings.skipVideos;
   $<HTMLInputElement>("autosave").checked = settings.autoSave;
   $("autosave-status").textContent = settings.autoSave ? state.autoSaveStatus : "";
@@ -441,6 +449,7 @@ $("preset-watched").onclick = async () => {
 $("folders").onchange = (e) => (settings.folders = (e.target as HTMLSelectElement).value);
 $("rename").onchange = (e) => (settings.rename = (e.target as HTMLInputElement).value.trim());
 $("auto-import").onchange = (e) => (settings.autoImport = (e.target as HTMLInputElement).checked);
+$("disconnect-after").onchange = (e) => (settings.disconnectAfterImport = (e.target as HTMLInputElement).checked);
 $("skip-videos").onchange = (e) => {
   settings.skipVideos = (e.target as HTMLInputElement).checked;
   render();

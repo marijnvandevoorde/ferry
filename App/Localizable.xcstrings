@@ -2187,6 +2187,40 @@
         }
       }
     },
+    "Disconnect when the import is done": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Se déconnecter à la fin de l'import"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Desconectar al terminar la importación"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Disconnetti al termine dell'importazione"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nach dem Import trennen"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Verbreken als het importeren klaar is"
+          }
+        }
+      }
+    },
     "Dismiss": {
       "localizations": {
         "fr": {
@@ -3523,6 +3557,40 @@
           "stringUnit": {
             "state": "translated",
             "value": "Video's overslaan bij ‘Nieuwe importeren’"
+          }
+        }
+      }
+    },
+    "Lets this Mac go back to your usual Wi-Fi network once the camera closes its own.": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Permet à ce Mac de revenir sur votre Wi-Fi habituel une fois que l'appareil a fermé le sien."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Permite que este Mac vuelva a tu Wi-Fi habitual cuando la cámara cierre el suyo."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Permette a questo Mac di tornare alla solita rete Wi-Fi quando la fotocamera chiude la sua."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "So kehrt dieser Mac in dein gewohntes WLAN zurück, sobald die Kamera ihr eigenes schließt."
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Zo gaat deze Mac terug naar je gewone wifi zodra de camera zijn eigen netwerk sluit."
           }
         }
       }

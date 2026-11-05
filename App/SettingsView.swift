@@ -7,6 +7,7 @@ struct SettingsView: View {
     @AppStorage(Prefs.host) private var host = ""
     @AppStorage(Prefs.autoConnect) private var autoConnect = true
     @AppStorage(Prefs.autoImport) private var autoImport = false
+    @AppStorage(Prefs.disconnectAfterImport) private var disconnectAfterImport = false
     @AppStorage(Prefs.destination) private var destination = DestinationKind.photos
     @AppStorage(Prefs.useAlbum) private var useAlbum = true
     @AppStorage(Prefs.albumName) private var albumName = "Ferry"
@@ -40,6 +41,10 @@ struct SettingsView: View {
                 TextField("Camera address", text: $host, prompt: Text("Automatic (Wi-Fi router)"))
                 Toggle("Connect automatically when the camera is found", isOn: $autoConnect)
                 Toggle("Import new photos automatically after connecting", isOn: $autoImport)
+                Toggle(isOn: $disconnectAfterImport) {
+                    Text("Disconnect when the import is done")
+                    Text("Lets this Mac go back to your usual Wi-Fi network once the camera closes its own.")
+                }
                 Toggle("Leave videos out of “Import New”", isOn: $skipVideos)
                 Toggle("Open Ferry at login", isOn: $launchAtLogin)
                     .onChange(of: launchAtLogin) { _, enabled in

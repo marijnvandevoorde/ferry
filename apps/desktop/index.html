@@ -66,6 +66,7 @@
           </ul>
         </details>
         <button id="connect-now" type="button" data-i18n>Connect</button>
+        <p id="last-import" class="muted" role="status" hidden></p>
         <p id="error" class="error" role="alert" hidden></p>
         <ul id="bt-saved" class="bt-list" hidden></ul>
         <p><button id="bt-open" type="button" data-i18n>Newer Fujifilm, like the X-T5? Pair over Bluetooth…</button></p>
@@ -101,6 +102,8 @@
         </label>
         <label><span data-i18n>Rename files (optional)</span> <input id="rename" placeholder="{yyyy-MM-dd}_{original}" /></label>
         <label class="check"><input id="auto-import" type="checkbox" /> <span data-i18n>Import new photos automatically after connecting</span></label>
+        <label class="check"><input id="disconnect-after" type="checkbox" /> <span data-i18n>Disconnect when the import is done</span></label>
+        <p class="muted small" data-i18n>Lets this computer go back to your usual Wi-Fi network once the camera closes its own.</p>
         <label class="check"><input id="skip-videos" type="checkbox" /> <span data-i18n>Leave videos out of “Import New”</span></label>
         <label class="check"><input id="autostart" type="checkbox" /> <span data-i18n>Start at login</span></label>
         <fieldset>

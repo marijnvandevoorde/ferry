@@ -52,6 +52,12 @@ struct ConnectView: View {
                     .font(.callout)
             }
 
+            if model.phase == .searching, model.lastError == nil, let summary = model.importSummary {
+                Label(summary, systemImage: "checkmark.circle.fill")
+                    .foregroundStyle(.green)
+                    .font(.callout)
+            }
+
             if let error = model.lastError {
                 Label(error, systemImage: "exclamationmark.triangle.fill")
                     .foregroundStyle(.orange)

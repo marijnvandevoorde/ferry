@@ -47,6 +47,7 @@ enum Prefs {
     static let host = "cameraHost"
     static let autoConnect = "autoConnect"
     static let autoImport = "autoImport"
+    static let disconnectAfterImport = "disconnectAfterImport"
     static let useAlbum = "useAlbum"
     static let albumName = "albumName"
     static let hideResizeNotice = "hideResizeNotice"
@@ -84,6 +85,7 @@ enum Prefs {
             host: "",
             autoConnect: true,
             autoImport: false,
+            disconnectAfterImport: false,
             useAlbum: true,
             albumName: "Ferry",
             destination: DestinationKind.photos.rawValue,
@@ -119,6 +121,8 @@ final class CameraModel {
     private(set) var isListing = false
     /// "Import New" was pressed while the card was still being read: import what turns up after it too.
     private var importNewWhenListed = false
+    /// After disconnecting by itself, auto-connect waits a moment so it doesn't reconnect while the camera closes its network.
+    private var autoConnectPausedUntil: Date?
     private(set) var importProgress: ImportProgress?
     private(set) var lastError: String?
     private(set) var importSummary: String?
@@ -189,7 +193,8 @@ final class CameraModel {
         searchTask = Task {
             while !Task.isCancelled {
                 // An import the connection dropped in the middle of reconnects even without auto-connect.
-                if phase == .searching && (UserDefaults.standard.bool(forKey: Prefs.autoConnect) || !pendingImport.isEmpty) {
+                let paused = autoConnectPausedUntil.map { $0 > .now } ?? false
+                if phase == .searching && ((UserDefaults.standard.bool(forKey: Prefs.autoConnect) && !paused) || !pendingImport.isEmpty) {
                     await connect(quiet: true)
                 }
                 try? await Task.sleep(for: .seconds(3))
@@ -476,8 +481,20 @@ final class CameraModel {
         importProgress = ImportProgress(index: 0, total: batch.count, filename: "", fraction: 0)
         importTask = Task {
             await runImport(batch, camera: camera)
-            if !Task.isCancelled { continueImportNew() }
+            if !Task.isCancelled {
+                continueImportNew()
+                disconnectIfDone()
+            }
         }
+    }
+
+    /// "Disconnect when the import is done": lets the Mac go back to its usual network once the camera closes its own.
+    private func disconnectIfDone() {
+        guard UserDefaults.standard.bool(forKey: Prefs.disconnectAfterImport), phase == .connected,
+              !isImporting, !isListing, !importNewWhenListed, pendingImport.isEmpty else { return }
+        appendLog("Import done: disconnecting")
+        disconnect()
+        autoConnectPausedUntil = .now + 60
     }
 
     /// The configured destinations, ready to use, or nil (with `lastError` set) when one can't be used.

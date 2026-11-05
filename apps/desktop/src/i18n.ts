@@ -4,6 +4,18 @@
 type Lang = "fr" | "es" | "it" | "de" | "nl";
 
 const strings: Record<string, Record<Lang, string>> = {
+  "Disconnect when the import is done": {
+    fr: "Se déconnecter à la fin de l'import",
+    es: "Desconectar al terminar la importación",
+    it: "Disconnetti al termine dell'importazione",
+    de: "Nach dem Import trennen",
+    nl: "Verbreken als het importeren klaar is" },
+  "Lets this computer go back to your usual Wi-Fi network once the camera closes its own.": {
+    fr: "Permet à cet ordinateur de revenir sur votre Wi-Fi habituel une fois que l'appareil a fermé le sien.",
+    es: "Permite que este ordenador vuelva a tu Wi-Fi habitual cuando la cámara cierre el suyo.",
+    it: "Permette a questo computer di tornare alla solita rete Wi-Fi quando la fotocamera chiude la sua.",
+    de: "So kehrt dieser Computer in dein gewohntes WLAN zurück, sobald die Kamera ihr eigenes schließt.",
+    nl: "Zo gaat deze computer terug naar je gewone wifi zodra de camera zijn eigen netwerk sluit." },
   "Camera battery low: {n}%": {
     fr: "Batterie de l'appareil faible : {n} %",
     es: "Batería de la cámara baja: {n} %",
