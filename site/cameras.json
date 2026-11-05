@@ -2,6 +2,17 @@
   "_comment": "Status: tested (a real camera), emulator (vcam emulates the model), experimental (mock API only), planned, unsupported. Notes are keys into i18n cameras.notes.",
   "brands": [
     {
+      "brand": "Canon",
+      "slug": "canon",
+      "models": [
+        ["EOS R", "emulator", "ptpip"],
+        ["EOS 90D", "emulator", "ptpip"],
+        ["EOS 5D Mark III", "emulator", "ptpip"],
+        ["EOS Rebel SL2 / 200D", "emulator", "ptpip"],
+        ["PowerShot G7 X Mark III", "emulator", "ptpip"]
+      ]
+    },
+    {
       "brand": "Fujifilm",
       "slug": "fujifilm",
       "models": [
@@ -20,14 +31,10 @@
       ]
     },
     {
-      "brand": "Canon",
-      "slug": "canon",
+      "brand": "Nikon",
+      "slug": "nikon",
       "models": [
-        ["EOS R", "emulator", "ptpip"],
-        ["EOS 90D", "emulator", "ptpip"],
-        ["EOS 5D Mark III", "emulator", "ptpip"],
-        ["EOS Rebel SL2 / 200D", "emulator", "ptpip"],
-        ["PowerShot G7 X Mark III", "emulator", "ptpip"]
+        ["Wi-Fi models", "planned", "nikon"]
       ]
     },
     {
@@ -49,13 +56,6 @@
       "slug": "sony-panasonic",
       "models": [
         ["Older Sony Alpha and Panasonic Lumix with Wi-Fi sharing", "experimental", "dlna"]
-      ]
-    },
-    {
-      "brand": "Nikon",
-      "slug": "nikon",
-      "models": [
-        ["Wi-Fi models", "planned", "nikon"]
       ]
     }
   ]

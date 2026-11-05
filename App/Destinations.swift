@@ -49,7 +49,7 @@ func configuredDestinations() -> [Destination] {
     case .photos:
         let useAlbum = defaults.bool(forKey: Prefs.useAlbum)
         let name = defaults.string(forKey: Prefs.albumName) ?? ""
-        result.append(PhotosDestination(albumName: useAlbum ? (name.isEmpty ? "Fujifilm" : name) : nil))
+        result.append(PhotosDestination(albumName: useAlbum ? (name.isEmpty ? "Ferry" : name) : nil))
     case .folder:
         let folder = defaults.string(forKey: Prefs.folderTemplate) ?? ""
         let rename = defaults.bool(forKey: Prefs.renameFiles)
@@ -64,7 +64,7 @@ func configuredDestinations() -> [Destination] {
 // MARK: - Apple Photos
 
 final class PhotosDestination: Destination {
-    /// May contain date tokens, e.g. "Fujifilm {yyyy}-{MM}", for an album per month.
+    /// May contain date tokens, e.g. "Ferry {yyyy}-{MM}", for an album per month.
     let albumName: String?
     private var canUseAlbums = false
     private var albums: [String: PHAssetCollection] = [:]

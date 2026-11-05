@@ -42,12 +42,12 @@ struct ConnectView: View {
                         .foregroundStyle(.secondary)
                 } else {
                     SettingsLink {
-                        Text("Stay online: import over your home Wi-Fi with PC AutoSave…")
+                        Text("Fujifilm camera? Stay online with PC AutoSave…")
                     }
                     .buttonStyle(.link)
                     .font(.callout)
                 }
-                Button("Newer camera, like the X-T5? Pair over Bluetooth…") { showBluetooth = true }
+                Button("Newer Fujifilm, like the X-T5? Pair over Bluetooth…") { showBluetooth = true }
                     .buttonStyle(.link)
                     .font(.callout)
             }
@@ -83,7 +83,7 @@ struct ConnectView: View {
     private var steps: some View {
         VStack(alignment: .leading, spacing: 14) {
             StepRow(number: 1, text: CameraGuide.lastConnected.cameraStep)
-            StepRow(number: 2, text: "On this Mac, join the camera's Wi-Fi network (named **FUJIFILM-X-…**).")
+            StepRow(number: 2, text: "On this Mac, join the camera's Wi-Fi network. Its name usually includes the brand or model.")
             StepRow(number: 3, text: autoConnect
                     ? "Ferry connects automatically. Press **OK** on the camera if it asks."
                     : "Click **Connect**. Press **OK** on the camera if it asks.")

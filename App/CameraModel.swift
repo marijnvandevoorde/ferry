@@ -75,12 +75,17 @@ enum Prefs {
     static let backlogNoticeDismissed = "backlogNoticeDismissed"
 
     static func register() {
+        // The album used to be called "Fujifilm" by default; keep it for people who already imported into it.
+        if UserDefaults.standard.object(forKey: albumName) == nil,
+           FileManager.default.fileExists(atPath: ImportHistory.defaultURL.path) {
+            UserDefaults.standard.set("Fujifilm", forKey: albumName)
+        }
         UserDefaults.standard.register(defaults: [
             host: "",
             autoConnect: true,
             autoImport: false,
             useAlbum: true,
-            albumName: "Fujifilm",
+            albumName: "Ferry",
             destination: DestinationKind.photos.rawValue,
             folderTemplate: PathTemplate.defaultFolder.template,
             renameFiles: false,

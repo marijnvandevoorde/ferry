@@ -4,8 +4,8 @@
   "meta": {
     "home_title": "{name}: le foto dalla fotocamera via Wi-Fi, senza cavo",
     "home_description": "{name} copia le foto dalla fotocamera al computer via Wi-Fi: in Foto, in una cartella o in Lightroom. Senza cavo né lettore di schede. Gratis per Mac, Windows e Linux.",
-    "cameras_title": "Fotocamere supportate: Fujifilm, Canon, Olympus, Ricoh | {name}",
-    "cameras_description": "Quali fotocamere funzionano con {name} per trasferire le foto via Wi-Fi: Fujifilm X-T20, X-T2, X-T4, X-T30, X-S10 e altre, più Canon, Olympus, Ricoh, Sony e Panasonic.",
+    "cameras_title": "Fotocamere supportate: Canon, Fujifilm, Olympus, Ricoh, Sony, Panasonic | {name}",
+    "cameras_description": "Quali fotocamere funzionano con {name} per importare foto senza fili: Canon, Fujifilm, Olympus / OM System, Ricoh, Sony e Panasonic, modello per modello.",
     "privacy_title": "Privacy | {name}",
     "privacy_description": "{name} non raccoglie nulla: parla solo con la tua fotocamera e con dove importi. Questo sito conta le visite in modo anonimo, senza cookie.",
     "notfound_title": "Pagina non trovata | {name}",
@@ -47,7 +47,7 @@
     "steps": [
       {
         "t": "Attiva il Wi-Fi della fotocamera",
-        "d": "Come faresti per la sua app sul telefono. Su una Fujifilm: Riproduzione, poi Comunicazione wireless."
+        "d": "Come faresti per la sua app per smartphone."
       },
       {
         "t": "Collegati alla rete della fotocamera",
@@ -58,7 +58,7 @@
         "d": "Vengono copiate solo le foto che non hai ancora importato, verificate e salvate dove vuoi. Oppure seleziona quelle che ti servono."
       }
     ],
-    "autosave": "Ancora più facile sulle Fujifilm: con PC AutoSave la fotocamera invia le nuove foto a {name} tramite il Wi-Fi di casa. Senza cambiare rete."
+    "autosave": "Alcune fotocamere possono anche collegarsi al Wi-Fi di casa e inviare da lì le nuove foto a {name}, senza cambiare rete. Oggi è PC AutoSave di Fujifilm."
   },
   "features": {
     "h2": "Tutto quello che serve, niente di più",
@@ -73,7 +73,7 @@
       },
       {
         "t": "Tramite il Wi-Fi di casa",
-        "d": "Sulle Fujifilm: registra la fotocamera una volta sola, poi scegli PC AutoSave sulla fotocamera e invierà le nuove foto tramite il Wi-Fi di casa."
+        "d": "Le fotocamere che possono collegarsi al Wi-Fi di casa ci inviano le nuove foto, e il computer resta online. Oggi è PC AutoSave di Fujifilm: registra la fotocamera una volta, poi invia dalla fotocamera."
       },
       {
         "t": "Scegli sulla fotocamera",
@@ -108,7 +108,7 @@
   },
   "camerasblock": {
     "h2": "Funziona con la tua fotocamera",
-    "p": "Oggi funziona al meglio con le Fujifilm X e GFX dal 2014 al 2021 circa, quelle che funzionavano con l'app Camera Remote di Fujifilm. Provato sulla X-T20 e su altri nove modelli Fujifilm in un emulatore. Canon, Olympus, Ricoh, Sony e Panasonic sono sperimentali.",
+    "p": "Funziona con le fotocamere Wi-Fi di Canon, Fujifilm, Olympus / OM System, Ricoh, Sony e Panasonic. Alcuni modelli sono provati su una fotocamera reale, altri in un emulatore, e alcuni sono ancora sperimentali. L'elenco delle fotocamere mostra a che punto è ogni modello.",
     "link": "Vedi tutte le fotocamere supportate"
   },
   "download": {
@@ -135,11 +135,11 @@
     "items": [
       {
         "q": "{name} funziona con la mia fotocamera?",
-        "a": "Le Fujifilm che funzionavano via Wi-Fi con l'app Camera Remote sono le meglio supportate; {name} sostituisce il trasferimento foto di quell'app. I modelli Fujifilm più recenti che si abbinano via Bluetooth, come la X-T5 e la X-S20, non sono ancora supportati. Canon, Olympus, Ricoh, Sony e Panasonic sono sperimentali. Vedi l'elenco delle fotocamere."
+        "a": "Se la tua fotocamera ha il Wi-Fi ed è Canon, Fujifilm, Olympus / OM System, Ricoh, Sony o Panasonic, probabilmente sì: {name} le parla come fa la sua app per smartphone. Quanto è provato ogni modello varia, quindi controlla l'elenco delle fotocamere. Le fotocamere che devono prima abbinarsi via Bluetooth, come le Fujifilm più recenti, non sono ancora supportate."
       },
       {
         "q": "Può importare i file RAW?",
-        "a": "{name} importa tutto ciò che la fotocamera offre, RAW compresi. Le Fujifilm offrono solo JPEG via Wi-Fi, quindi per i file RAF serve ancora un lettore di schede o un cavo. Altre marche forse offrono anche i RAW; non è ancora stato provato."
+        "a": "{name} importa tutto ciò che la fotocamera offre via Wi-Fi, RAW compresi. Alcune fotocamere, tra cui le Fujifilm, offrono via Wi-Fi solo JPEG; per i loro RAW serve ancora un lettore di schede o un cavo. Se altre marche offrono i RAW non è ancora provato."
       },
       {
         "q": "È per i professionisti?",
@@ -151,7 +151,7 @@
       },
       {
         "q": "Il computer resta offline durante l'importazione?",
-        "a": "Sì: finché il computer è sul Wi-Fi della fotocamera, non può raggiungere internet. Con PC AutoSave è la fotocamera a collegarsi alla rete di casa, quindi resti online."
+        "a": "Sì, finché il computer è sul Wi-Fi della fotocamera non ha internet. Le fotocamere che possono invece collegarsi alla rete di casa, come le Fujifilm con PC AutoSave, ti lasciano online."
       },
       {
         "q": "Carica le mie foto da qualche parte?",

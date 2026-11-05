@@ -22,18 +22,18 @@ const strings: Record<string, Record<Lang, string>> = {
   "Show": { fr: "Afficher", es: "Mostrar", it: "Mostra", de: "Anzeigen", nl: "Tonen" },
   "Connect your camera": { fr: "Connectez votre appareil", es: "Conecta tu cámara", it: "Collega la fotocamera", de: "Kamera verbinden", nl: "Verbind je camera" },
   "Looking for the camera on your Wi-Fi network…": { fr: "Recherche de l'appareil sur votre réseau Wi-Fi…", es: "Buscando la cámara en tu red Wi-Fi…", it: "Ricerca della fotocamera sulla rete Wi-Fi…", de: "Suche nach der Kamera im WLAN…", nl: "Camera zoeken op je wifinetwerk…" },
-  "On the camera, press <b>Playback</b>, then choose <b>Wireless Communication</b>.": {
-    fr: "Sur l'appareil, appuyez sur <b>Lecture</b>, puis choisissez <b>Communication sans fil</b>.",
-    es: "En la cámara, pulsa <b>Reproducción</b> y elige <b>Comunicación inalámbrica</b>.",
-    it: "Sulla fotocamera, premi <b>Riproduzione</b>, poi scegli <b>Comunicazione wireless</b>.",
-    de: "Drücke an der Kamera <b>Wiedergabe</b> und wähle <b>Drahtlose Kommunikation</b>.",
-    nl: "Druk op de camera op <b>Weergave</b> en kies <b>Draadloze communicatie</b>." },
-  "On this computer, join the camera's Wi-Fi network (named <b>FUJIFILM-…</b>).": {
-    fr: "Sur cet ordinateur, rejoignez le réseau Wi-Fi de l'appareil (nommé <b>FUJIFILM-…</b>).",
-    es: "En este ordenador, conéctate a la red Wi-Fi de la cámara (llamada <b>FUJIFILM-…</b>).",
-    it: "Su questo computer, collegati alla rete Wi-Fi della fotocamera (chiamata <b>FUJIFILM-…</b>).",
-    de: "Verbinde diesen Computer mit dem WLAN der Kamera (Name <b>FUJIFILM-…</b>).",
-    nl: "Verbind deze computer met het wifinetwerk van de camera (genaamd <b>FUJIFILM-…</b>)." },
+  "On the camera, turn on Wi-Fi the way you would for its phone app.": {
+    fr: "Sur l'appareil, activez le Wi-Fi comme vous le feriez pour son app mobile.",
+    es: "En la cámara, activa el Wi-Fi como lo harías para su app del móvil.",
+    it: "Sulla fotocamera, attiva il Wi-Fi come faresti per la sua app per smartphone.",
+    de: "Schalte an der Kamera das WLAN ein, wie du es für ihre Smartphone-App tun würdest.",
+    nl: "Zet wifi aan op de camera, zoals je dat voor de app op je telefoon zou doen." },
+  "On this computer, join the camera's Wi-Fi network. Its name usually includes the brand or model.": {
+    fr: "Sur cet ordinateur, rejoignez le réseau Wi-Fi de l'appareil. Son nom contient généralement la marque ou le modèle.",
+    es: "En este ordenador, conéctate a la red Wi-Fi de la cámara. Su nombre suele incluir la marca o el modelo.",
+    it: "Su questo computer, collegati alla rete Wi-Fi della fotocamera. Di solito il nome contiene la marca o il modello.",
+    de: "Verbinde diesen Computer mit dem WLAN der Kamera. Sein Name enthält meist die Marke oder das Modell.",
+    nl: "Verbind deze computer met het wifinetwerk van de camera. De naam bevat meestal het merk of het model." },
   "Ferry connects automatically. Press <b>OK</b> on the camera if it asks.": {
     fr: "Ferry se connecte automatiquement. Appuyez sur <b>OK</b> sur l'appareil s'il le demande.",
     es: "Ferry se conecta automáticamente. Pulsa <b>OK</b> en la cámara si te lo pide.",

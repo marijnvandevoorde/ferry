@@ -2496,7 +2496,7 @@
         }
       }
     },
-    "Fujifilm {yyyy}-{MM}": {
+    "Ferry {yyyy}-{MM}": {
       "shouldTranslate": false
     },
     "HEIF": {
@@ -3629,36 +3629,36 @@
         }
       }
     },
-    "Newer camera, like the X-T5? Pair over Bluetooth…": {
+    "Newer Fujifilm, like the X-T5? Pair over Bluetooth…": {
       "localizations": {
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Appareil plus récent, comme le X-T5 ? Appairer en Bluetooth…"
+            "value": "Fujifilm récent, comme le X-T5 ? Appairer en Bluetooth…"
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "¿Cámara más nueva, como la X-T5? Emparejar por Bluetooth…"
+            "value": "¿Fujifilm reciente, como la X-T5? Emparejar por Bluetooth…"
           }
         },
         "it": {
           "stringUnit": {
             "state": "translated",
-            "value": "Fotocamera più recente, come la X-T5? Abbina via Bluetooth…"
+            "value": "Fujifilm recente, come la X-T5? Abbina via Bluetooth…"
           }
         },
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Neuere Kamera wie die X-T5? Über Bluetooth koppeln…"
+            "value": "Neuere Fujifilm wie die X-T5? Über Bluetooth koppeln…"
           }
         },
         "nl": {
           "stringUnit": {
             "state": "translated",
-            "value": "Nieuwere camera, zoals de X-T5? Koppelen via Bluetooth…"
+            "value": "Nieuwere Fujifilm, zoals de X-T5? Koppelen via Bluetooth…"
           }
         }
       }
@@ -4173,70 +4173,70 @@
         }
       }
     },
-    "On the camera, press **Playback**, then choose **Wireless Communication** (Wi-Fi button, or Menu → Connection Setting).": {
+    "On the camera, turn on Wi-Fi the way you would for its phone app.": {
       "localizations": {
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Sur l'appareil, appuyez sur **Lecture**, puis choisissez **Communication sans fil** (bouton Wi-Fi, ou Menu → Paramètres de connexion)."
+            "value": "Sur l'appareil, activez le Wi-Fi comme vous le feriez pour son app mobile."
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "En la cámara, pulsa **Reproducción** y elige **Comunicación inalámbrica** (botón Wi-Fi, o Menú → Ajustes de conexión)."
+            "value": "En la cámara, activa el Wi-Fi como lo harías para su app del móvil."
           }
         },
         "it": {
           "stringUnit": {
             "state": "translated",
-            "value": "Sulla fotocamera, premi **Riproduzione**, poi scegli **Comunicazione wireless** (tasto Wi-Fi, oppure Menu → Impostazioni connessione)."
+            "value": "Sulla fotocamera, attiva il Wi-Fi come faresti per la sua app per smartphone."
           }
         },
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Drücke an der Kamera **Wiedergabe** und wähle **Drahtlose Kommunikation** (WLAN-Taste oder Menü → Verbindungseinstellungen)."
+            "value": "Schalte an der Kamera das WLAN ein, wie du es für ihre Smartphone-App tun würdest."
           }
         },
         "nl": {
           "stringUnit": {
             "state": "translated",
-            "value": "Druk op de camera op **Weergave** en kies **Draadloze communicatie** (wifiknop, of Menu → Verbindingsinstellingen)."
+            "value": "Zet wifi aan op de camera, zoals je dat voor de app op je telefoon zou doen."
           }
         }
       }
     },
-    "On this Mac, join the camera's Wi-Fi network (named **FUJIFILM-X-…**).": {
+    "On this Mac, join the camera's Wi-Fi network. Its name usually includes the brand or model.": {
       "localizations": {
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Sur ce Mac, rejoignez le réseau Wi-Fi de l'appareil (nommé **FUJIFILM-X-…**)."
+            "value": "Sur ce Mac, rejoignez le réseau Wi-Fi de l'appareil. Son nom contient généralement la marque ou le modèle."
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "En este Mac, conéctate a la red Wi-Fi de la cámara (llamada **FUJIFILM-X-…**)."
+            "value": "En este Mac, conéctate a la red Wi-Fi de la cámara. Su nombre suele incluir la marca o el modelo."
           }
         },
         "it": {
           "stringUnit": {
             "state": "translated",
-            "value": "Su questo Mac, collegati alla rete Wi-Fi della fotocamera (chiamata **FUJIFILM-X-…**)."
+            "value": "Su questo Mac, collegati alla rete Wi-Fi della fotocamera. Di solito il nome contiene la marca o il modello."
           }
         },
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Verbinde diesen Mac mit dem WLAN der Kamera (Name **FUJIFILM-X-…**)."
+            "value": "Verbinde diesen Mac mit dem WLAN der Kamera. Sein Name enthält meist die Marke oder das Modell."
           }
         },
         "nl": {
           "stringUnit": {
             "state": "translated",
-            "value": "Verbind deze Mac met het wifinetwerk van de camera (genaamd **FUJIFILM-X-…**)."
+            "value": "Verbind deze Mac met het wifinetwerk van de camera. De naam bevat meestal het merk of het model."
           }
         }
       }
@@ -5643,36 +5643,36 @@
         }
       }
     },
-    "Stay online: import over your home Wi-Fi with PC AutoSave…": {
+    "Fujifilm camera? Stay online with PC AutoSave…": {
       "localizations": {
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Restez en ligne : importez via votre Wi-Fi domestique avec PC AutoSave…"
+            "value": "Appareil Fujifilm ? Restez en ligne avec PC AutoSave…"
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Sigue conectado: importa por el Wi-Fi de casa con PC AutoSave…"
+            "value": "¿Cámara Fujifilm? Sigue conectado con PC AutoSave…"
           }
         },
         "it": {
           "stringUnit": {
             "state": "translated",
-            "value": "Resta online: importa tramite il Wi-Fi di casa con PC AutoSave…"
+            "value": "Fotocamera Fujifilm? Resta online con PC AutoSave…"
           }
         },
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Online bleiben: über das Heim-WLAN mit PC AutoSave importieren…"
+            "value": "Fujifilm-Kamera? Mit PC AutoSave online bleiben…"
           }
         },
         "nl": {
           "stringUnit": {
             "state": "translated",
-            "value": "Blijf online: importeer via je wifi thuis met PC AutoSave…"
+            "value": "Fujifilm-camera? Blijf online met PC AutoSave…"
           }
         }
       }

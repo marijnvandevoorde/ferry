@@ -1,33 +1,36 @@
 # Ferry
 
-An open-source Mac app that imports photos from Fujifilm X cameras over Wi-Fi straight into Apple Photos.
-It replaces the photo-transfer part of Fujifilm's unmaintained *Camera Remote* app.
+An open-source app that imports photos from your camera over Wi-Fi, no cable or card reader. On the Mac
+it imports straight into Apple Photos or a folder; on Windows and Linux into a folder, optionally also to Immich.
 
-Fujifilm X and GFX cameras from roughly 2014–2021 that work with *Camera Remote* over Wi-Fi should work.
+It works with Wi-Fi cameras from Canon, Fujifilm, Olympus / OM System, Ricoh, Sony and Panasonic, by talking to
+them the way their phone apps do. How well each one is tested differs.
 See [compatibility](#compatibility) and the [roadmap](ROADMAP.md).
 
 ## Using it
 
-1. On the camera, press **Playback**, then choose **Wireless Communication** (Wi-Fi button, or Menu → Connection Setting).
-2. On the Mac, join the camera's Wi-Fi network (`FUJIFILM-X-…`). Your Mac will be offline while connected.
+1. On the camera, turn on Wi-Fi the way you would for its phone app.
+2. On the Mac, join the camera's Wi-Fi network. Your Mac will be offline while connected.
 3. Open Ferry. It finds the camera automatically; press **OK** on the camera if it asks.
 4. Click **Import New**, or select photos and click **Import Selected**.
 
-Photos go into your Photos library, in a *Fujifilm* album by default. Ferry remembers what it imported,
+Photos go into your Photos library, in a *Ferry* album by default. Ferry remembers what it imported,
 so next time only new photos are offered. Settings (⌘,) has the camera address, auto-connect, auto-import and album options.
 If something goes wrong, **Window → Connection Log** shows what the camera said.
 
-Over Wi-Fi the camera only offers JPEGs (no RAF files).
+Ferry imports whatever the camera offers over Wi-Fi. Fujifilm cameras only offer JPEGs (no RAF files).
+Fujifilm cameras can also join your home Wi-Fi and send photos from there (PC AutoSave), so the Mac stays online.
 
 ## Compatibility
 
 | Camera | Real camera | Emulator |
 |--------|-------------|----------|
-| X-T20 | ✅ | ✅ |
-| X-A2, X30, X-F10, X-T2, X-T4, X-T30, X-S10, X-H1, GFX100 II | not yet | ✅ |
-| X-T5, X-S20, X100VI and other cameras that pair over Bluetooth | ❌ planned | |
+| Fujifilm X-T20 | ✅ | ✅ |
+| Fujifilm X-A2, X30, X-F10, X-T2, X-T4, X-T30, X-S10, X-H1, GFX100 II | not yet | ✅ |
+| Fujifilm X-T5, X-S20, X100VI and others that pair over Bluetooth | ❌ planned | |
 | Canon EOS R, 90D, 5D Mark III, Rebel SL2, PowerShot G7 X III (standard PTP/IP) | not yet | ✅ |
 | Olympus / OM System (OI.Share), Ricoh GR II / III | not yet | mock API only |
+| Older Sony Alpha and Panasonic Lumix with Wi-Fi sharing (DLNA) | not yet | mock API only |
 
 "Emulator" means the protocol works against [vcam](https://github.com/petabyt/vcam)'s model of that camera.
 Tried it with your camera? Please [file a camera report](https://github.com/marijnvandevoorde/ferry/issues/new?template=camera-report.yml),

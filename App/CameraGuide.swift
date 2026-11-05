@@ -28,7 +28,7 @@ struct CameraGuide {
         case .remoteNew:
             "On the \(name), open the **Playback** menu and choose **Wireless Communication**. If it offers Bluetooth pairing, skip it."
         case nil:
-            "On the camera, press **Playback**, then choose **Wireless Communication** (Wi-Fi button, or Menu → Connection Setting)."
+            "On the camera, turn on Wi-Fi the way you would for its phone app."
         }
     }
 

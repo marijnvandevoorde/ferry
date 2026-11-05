@@ -9,7 +9,7 @@ struct SettingsView: View {
     @AppStorage(Prefs.autoImport) private var autoImport = false
     @AppStorage(Prefs.destination) private var destination = DestinationKind.photos
     @AppStorage(Prefs.useAlbum) private var useAlbum = true
-    @AppStorage(Prefs.albumName) private var albumName = "Fujifilm"
+    @AppStorage(Prefs.albumName) private var albumName = "Ferry"
     @AppStorage(Prefs.folderTemplate) private var folderTemplate = PathTemplate.defaultFolder.template
     @AppStorage(Prefs.renameFiles) private var renameFiles = false
     @AppStorage(Prefs.fileTemplate) private var fileTemplate = "{yyyy-MM-dd}_{original}"
@@ -74,7 +74,7 @@ struct SettingsView: View {
                 switch destination {
                 case .photos:
                     Toggle("Add imported photos to an album", isOn: $useAlbum)
-                    TextField("Album name", text: $albumName, prompt: Text("Fujifilm {yyyy}-{MM}"))
+                    TextField("Album name", text: $albumName, prompt: Text("Ferry {yyyy}-{MM}"))
                         .disabled(!useAlbum)
                 case .folder:
                     FolderRow(title: "Folder", url: folder) {
