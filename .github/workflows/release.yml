@@ -155,9 +155,6 @@ jobs:
     runs-on: ${{ matrix.os }}
     permissions:
       contents: write
-    env:
-      # An ASCII-armored private key; without it the Linux packages go out unsigned.
-      LINUX_GPG_KEY: ${{ secrets.LINUX_GPG_KEY }}
     defaults:
       run:
         working-directory: apps/desktop
@@ -183,11 +180,15 @@ jobs:
         run: |
           if [ "$RUNNER_OS" = "Linux" ]; then BUNDLES=appimage,deb; else BUNDLES=msi,nsis; fi
           pnpm tauri build --bundles "$BUNDLES"
+      # Only this step gets the key: a multi-line value in the job's environment breaks the Windows Swift setup.
       - name: Sign the Linux packages
-        if: runner.os == 'Linux' && env.LINUX_GPG_KEY != ''
+        if: runner.os == 'Linux'
         env:
+          # An ASCII-armored private key; without it the Linux packages go out unsigned.
+          LINUX_GPG_KEY: ${{ secrets.LINUX_GPG_KEY }}
           LINUX_GPG_PASSPHRASE: ${{ secrets.LINUX_GPG_PASSPHRASE }}
         run: |
+          [ -n "$LINUX_GPG_KEY" ] || { echo "No LINUX_GPG_KEY: not signing"; exit 0; }
           echo "$LINUX_GPG_KEY" | gpg --batch --import
           for f in src-tauri/target/release/bundle/appimage/*.AppImage src-tauri/target/release/bundle/deb/*.deb; do
             gpg --batch --yes --pinentry-mode loopback --passphrase "$LINUX_GPG_PASSPHRASE" --armor --detach-sign "$f"
