@@ -52,6 +52,14 @@ pnpm tauri dev       # FERRY_HOST=127.0.0.1 points it at the emulator
 
 See [importing into other photo apps](docs/other-apps.md).
 
+The Linux AppImage and .deb on the releases page come with a `.asc` signature, made with the key in
+[docs/ferry-releases.asc](docs/ferry-releases.asc) (fingerprint `A4DB 4DC1 7A30 FB56 427B  6F49 A405 8191 6E87 1361`):
+
+```sh
+gpg --import docs/ferry-releases.asc
+gpg --verify Ferry_*.AppImage.asc Ferry_*.AppImage
+```
+
 ## Command line (macOS, Linux, Windows)
 
 `ferryctl` imports without the app, for example on a Linux machine or from a script:
