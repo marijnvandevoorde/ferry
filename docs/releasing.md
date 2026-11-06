@@ -1,6 +1,12 @@
 # Releasing
 
-Pushing a tag such as `v0.2.0` runs `.github/workflows/release.yml`, which:
+Release with `scripts/release.py 0.2.2` from an up-to-date, clean `main` on which CI passed. It sets the version
+everywhere, tags it, waits for the release build and checks its downloads, then updates the site, the Homebrew
+formula and tap, and the Flathub manifest, and lists what's left to do by hand (App Store review, Flathub,
+Microsoft Store). If it stops after tagging, rerun it with `--after` to do the rest. CI runs
+`scripts/release.py --check`, which fails when the files name different versions.
+
+The tag runs `.github/workflows/release.yml`, which:
 
 1. creates the GitHub release,
 2. archives the Mac app, signed with Xcode cloud signing,
@@ -10,9 +16,8 @@ Pushing a tag such as `v0.2.0` runs `.github/workflows/release.yml`, which:
 5. builds the Windows (MSI, setup .exe) and Linux (AppImage, .deb, signed when `LINUX_GPG_KEY` is set)
    installers and attaches them.
 
-Before tagging, set the new version in `project.yml` (`MARKETING_VERSION`), `apps/desktop/package.json`,
-`apps/desktop/src-tauri/tauri.conf.json`, `apps/desktop/src-tauri/Cargo.toml`, `Sources/ferryctl/main.swift` and
-`site/site.json`. After the release, update the version, URL and checksum in `packaging/` (Flathub, Homebrew).
+A new file that names the version goes in `VERSION_FILES` or `PACKAGE_FILES` in `scripts/release.py`, and a new
+platform's download in `ASSETS`.
 
 ## One-time setup
 
