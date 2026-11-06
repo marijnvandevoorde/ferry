@@ -1,6 +1,6 @@
 [package]
 name = "ferry"
-version = "0.2.0"
+version = "0.2.1"
 description = "Import photos from your camera over Wi-Fi"
 license = "MIT"
 edition = "2021"

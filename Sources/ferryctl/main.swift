@@ -2,7 +2,7 @@ import FerryKit
 import Foundation
 
 /// Matches the apps' version; bumped with them on a release (docs/releasing.md).
-let version = "0.2.0"
+let version = "0.2.1"
 
 let usage = """
 usage: ferryctl [options] <command>
