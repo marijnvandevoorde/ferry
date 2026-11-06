@@ -46,6 +46,10 @@ For the App Store upload, the app record must exist in App Store Connect with th
 
 ## App Store notes
 
+- `scripts/app-store.py` does the App Store Connect chores over the API: the review contact, screenshots taken
+  against the camera emulator, the Developer ID certificate, uploading a build and submitting it. `status` shows
+  what's missing. Only App Privacy has no API.
+
 - The app is sandboxed; every feature has to work inside the sandbox.
 - `App/PrivacyInfo.xcprivacy` declares the required-reason APIs (UserDefaults only). No data is collected.
 - Review needs a way to test without a camera: point reviewers at the vcam emulator, or provide a demo video.
