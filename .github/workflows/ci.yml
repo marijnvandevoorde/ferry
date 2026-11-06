@@ -45,6 +45,8 @@ jobs:
     runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v4
+      - name: Every file names the same version
+        run: scripts/release.py --check
       - name: Build vcam
         run: docker build -q -t vcam-fuji scripts/vcam
       - name: Every emulated Fuji model
