@@ -3,7 +3,11 @@ import XCTest
 
 /// Connects `PTPIPCamera` to a fake camera on 127.0.0.1:15740 that reads the init request and then does `answer`.
 final class PTPIPConnectTests: XCTestCase {
-    private func fakeCamera(_ answer: @escaping @Sendable (TCPSocket) -> Void) throws -> Sys.Handle {
+    /// `accepted` is signalled once the fake took a connection: close the listener only after that, or a late
+    /// `accept` picks up the next test's listener when it reuses the descriptor number.
+    private func fakeCamera(
+        accepted: DispatchSemaphore? = nil, _ answer: @escaping @Sendable (TCPSocket) -> Void
+    ) throws -> Sys.Handle {
         let fd = Sys.tcpSocket()
         Sys.setReuseAddress(fd)
         guard Sys.bind(fd, to: Sys.ipv4("127.0.0.1", port: PTPIPCamera.port)!), Sys.listen(fd, backlog: 1) else {
@@ -13,6 +17,7 @@ final class PTPIPConnectTests: XCTestCase {
         let listener = fd
         Thread.detachNewThread {
             let client = Sys.accept(listener)
+            accepted?.signal()
             guard Sys.isValid(client) else { return }
             let socket = TCPSocket(handle: client)
             socket.readTimeout = 5
@@ -59,10 +64,12 @@ final class PTPIPConnectTests: XCTestCase {
     }
 
     func testAddressAnswers() throws {
-        let listener = try fakeCamera { _ in }
+        let accepted = DispatchSemaphore(value: 0)
+        let listener = try fakeCamera(accepted: accepted) { _ in }
         let address = PTPIPCamera(host: "127.0.0.1").address
         XCTAssertEqual(address, CameraAddress(host: "127.0.0.1", port: PTPIPCamera.port))
         XCTAssertTrue(address!.answers(timeout: 1))
+        XCTAssertEqual(accepted.wait(timeout: .now() + 5), .success)
         Sys.close(listener)
         XCTAssertFalse(address!.answers(timeout: 1))
     }
