@@ -3,6 +3,8 @@ import Foundation
 public enum FujiError: Error, LocalizedError, Equatable {
     case connectionFailed(String)
     case handshakeRejected
+    /// A PTP/IP camera answered the init request with InitFail.
+    case initRejected
     case disconnected
     case timeout
     case io(String)
@@ -14,6 +16,7 @@ public enum FujiError: Error, LocalizedError, Equatable {
         switch self {
         case .connectionFailed(let m): return localized("Could not connect: %@", m)
         case .handshakeRejected: return localized("The camera rejected the connection. Restart Wi-Fi on the camera and try again.")
+        case .initRejected: return localized("The camera refused the connection. It may need pairing that Ferry doesn't support yet.")
         case .disconnected: return localized("The camera closed the connection.")
         case .timeout: return localized("The camera stopped responding.")
         case .io(let m): return localized("Network error: %@", m)

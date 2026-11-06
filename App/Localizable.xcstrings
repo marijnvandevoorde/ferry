@@ -1507,6 +1507,40 @@
         }
       }
     },
+    "Check the camera. It may be asking whether to allow this Mac.": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Regardez l'appareil : il demande peut-être s'il doit autoriser ce Mac."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mira la cámara. Puede que esté preguntando si permite este Mac."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Controlla la fotocamera. Potrebbe chiedere se consentire questo Mac."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sieh auf die Kamera. Vielleicht fragt sie, ob sie diesen Mac zulassen soll."
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kijk op de camera. Misschien vraagt hij of deze Mac toegelaten wordt."
+          }
+        }
+      }
+    },
     "Choose": {
       "localizations": {
         "fr": {
@@ -2428,6 +2462,40 @@
         }
       }
     },
+    "Ferry lets go of the camera after the import. Turn the camera off and this Mac goes back to your usual Wi-Fi.": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ferry libère l'appareil après l'import. Éteignez l'appareil et ce Mac revient sur votre Wi-Fi habituel."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ferry suelta la cámara al terminar la importación. Apaga la cámara y este Mac vuelve a tu Wi-Fi habitual."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ferry lascia la fotocamera dopo l'importazione. Spegni la fotocamera e questo Mac torna al tuo Wi-Fi abituale."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ferry gibt die Kamera nach dem Import frei. Schalte die Kamera aus, und dieser Mac wechselt zurück in dein übliches WLAN."
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ferry laat de camera los na het importeren. Zet de camera uit en deze Mac gaat terug naar je gewone wifi."
+          }
+        }
+      }
+    },
     "Ferry needs access to Photos. Allow it in System Settings → Privacy & Security → Photos.": {
       "localizations": {
         "fr": {
@@ -2805,6 +2873,40 @@
     "Ferry {yyyy}-{MM}": {
       "shouldTranslate": false
     },
+    "Fujifilm:": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Fujifilm :"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Fujifilm:"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Fujifilm:"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Fujifilm:"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Fujifilm:"
+          }
+        }
+      }
+    },
     "HEIF": {
       "shouldTranslate": false
     },
@@ -2838,6 +2940,40 @@
           "stringUnit": {
             "state": "translated",
             "value": "Dock-pictogram verbergen"
+          }
+        }
+      }
+    },
+    "How to connect": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Comment se connecter"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cómo conectar"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Come collegarsi"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "So verbindest du dich"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Zo maak je verbinding"
           }
         }
       }
@@ -2876,6 +3012,40 @@
         }
       }
     },
+    "Import %lld Items": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Importer %lld éléments"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Importar %lld elementos"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Importa %lld elementi"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld Objekte importieren"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld items importeren"
+          }
+        }
+      }
+    },
     "Import %lld New": {
       "localizations": {
         "fr": {
@@ -2910,40 +3080,6 @@
         }
       }
     },
-    "Import %lld Photos": {
-      "localizations": {
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Importer %lld photos"
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Importar %lld fotos"
-          }
-        },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Importa %lld foto"
-          }
-        },
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "%lld Fotos importieren"
-          }
-        },
-        "nl": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "%lld foto's importeren"
-          }
-        }
-      }
-    },
     "Import %lld Selected": {
       "localizations": {
         "fr": {
@@ -2974,6 +3110,40 @@
           "stringUnit": {
             "state": "translated",
             "value": "%lld geselecteerde importeren"
+          }
+        }
+      }
+    },
+    "Import done": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Import terminé"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Importación terminada"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Importazione completata"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Import fertig"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Importeren klaar"
           }
         }
       }
@@ -3456,6 +3626,40 @@
         }
       }
     },
+    "Join the camera's Wi-Fi network and Ferry connects by itself.": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Rejoignez le réseau Wi-Fi de l'appareil et Ferry se connecte tout seul."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Únete a la red Wi-Fi de la cámara y Ferry se conecta solo."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Collegati alla rete Wi-Fi della fotocamera e Ferry si connette da solo."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Verbinde dich mit dem WLAN der Kamera, dann verbindet sich Ferry von selbst."
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Maak verbinding met het wifinetwerk van de camera en Ferry maakt zelf verbinding."
+          }
+        }
+      }
+    },
     "JPEG": {
       "shouldTranslate": false
     },
@@ -3561,40 +3765,6 @@
         }
       }
     },
-    "Lets this Mac go back to your usual Wi-Fi network once the camera closes its own.": {
-      "localizations": {
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Permet à ce Mac de revenir sur votre Wi-Fi habituel une fois que l'appareil a fermé le sien."
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Permite que este Mac vuelva a tu Wi-Fi habitual cuando la cámara cierre el suyo."
-          }
-        },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Permette a questo Mac di tornare alla solita rete Wi-Fi quando la fotocamera chiude la sua."
-          }
-        },
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "So kehrt dieser Mac in dein gewohntes WLAN zurück, sobald die Kamera ihr eigenes schließt."
-          }
-        },
-        "nl": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Zo gaat deze Mac terug naar je gewone wifi zodra de camera zijn eigen netwerk sluit."
-          }
-        }
-      }
-    },
     "Listening for cameras on this network": {
       "localizations": {
         "fr": {
@@ -3659,40 +3829,6 @@
           "stringUnit": {
             "state": "translated",
             "value": "Camera's zoeken…"
-          }
-        }
-      }
-    },
-    "Looking for the camera on your Wi-Fi network…": {
-      "localizations": {
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Recherche de l'appareil sur votre réseau Wi-Fi…"
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Buscando la cámara en tu red Wi-Fi…"
-          }
-        },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Ricerca della fotocamera sulla rete Wi-Fi…"
-          }
-        },
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Suche nach der Kamera im WLAN…"
-          }
-        },
-        "nl": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Camera zoeken op je wifinetwerk…"
           }
         }
       }
@@ -3965,40 +4101,6 @@
           "stringUnit": {
             "state": "translated",
             "value": "Netwerk"
-          }
-        }
-      }
-    },
-    "Newer Fujifilm, like the X-T5? Pair over Bluetooth…": {
-      "localizations": {
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Fujifilm récent, comme le X-T5 ? Appairer en Bluetooth…"
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "¿Fujifilm reciente, como la X-T5? Emparejar por Bluetooth…"
-          }
-        },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Fujifilm recente, come la X-T5? Abbina via Bluetooth…"
-          }
-        },
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Neuere Fujifilm wie die X-T5? Über Bluetooth koppeln…"
-          }
-        },
-        "nl": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Nieuwere Fujifilm, zoals de X-T5? Koppelen via Bluetooth…"
           }
         }
       }
@@ -4785,6 +4887,40 @@
         }
       }
     },
+    "Pair over Bluetooth (X-T5 and newer)": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Appairer en Bluetooth (X-T5 et plus récents)"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Emparejar por Bluetooth (X-T5 y posteriores)"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Abbina via Bluetooth (X-T5 e successive)"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Über Bluetooth koppeln (X-T5 und neuer)"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Koppelen via Bluetooth (X-T5 en nieuwer)"
+          }
+        }
+      }
+    },
     "PC AutoSave": {
       "shouldTranslate": false
     },
@@ -5022,40 +5158,6 @@
           "stringUnit": {
             "state": "translated",
             "value": "Foto"
-          }
-        }
-      }
-    },
-    "Press OK on the camera": {
-      "localizations": {
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Appuyez sur OK sur l'appareil"
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Pulsa OK en la cámara"
-          }
-        },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Premi OK sulla fotocamera"
-          }
-        },
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Drücke OK an der Kamera"
-          }
-        },
-        "nl": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Druk op OK op de camera"
           }
         }
       }
@@ -5745,6 +5847,40 @@
         }
       }
     },
+    "Send a camera report…": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Envoyer un rapport sur l'appareil…"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Enviar un informe de la cámara…"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Invia un resoconto sulla fotocamera…"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kamerabericht senden…"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Camerarapport sturen…"
+          }
+        }
+      }
+    },
     "Server": {
       "localizations": {
         "fr": {
@@ -5983,36 +6119,36 @@
         }
       }
     },
-    "Fujifilm camera? Stay online with PC AutoSave…": {
+    "Stay online with PC AutoSave": {
       "localizations": {
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Appareil Fujifilm ? Restez en ligne avec PC AutoSave…"
+            "value": "Restez en ligne avec PC AutoSave"
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "¿Cámara Fujifilm? Sigue conectado con PC AutoSave…"
+            "value": "Sigue conectado con PC AutoSave"
           }
         },
         "it": {
           "stringUnit": {
             "state": "translated",
-            "value": "Fotocamera Fujifilm? Resta online con PC AutoSave…"
+            "value": "Resta online con PC AutoSave"
           }
         },
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Fujifilm-Kamera? Mit PC AutoSave online bleiben…"
+            "value": "Mit PC AutoSave online bleiben"
           }
         },
         "nl": {
           "stringUnit": {
             "state": "translated",
-            "value": "Fujifilm-camera? Blijf online met PC AutoSave…"
+            "value": "Blijf online met PC AutoSave"
           }
         }
       }
@@ -6221,40 +6357,6 @@
         }
       }
     },
-    "The camera is asking whether to allow this Mac.": {
-      "localizations": {
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "L'appareil demande s'il doit autoriser ce Mac."
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "La cámara pregunta si debe permitir este Mac."
-          }
-        },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "La fotocamera chiede se consentire questo Mac."
-          }
-        },
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Die Kamera fragt, ob sie diesen Mac zulassen soll."
-          }
-        },
-        "nl": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "De camera vraagt of deze Mac toegelaten wordt."
-          }
-        }
-      }
-    },
     "The camera is sending smaller copies of your photos": {
       "localizations": {
         "fr": {
@@ -6319,6 +6421,40 @@
           "stringUnit": {
             "state": "translated",
             "value": "Fujifilm-camera's: de camera maakt verbinding met je wifi en stuurt nieuwe foto's naar deze Mac, die online blijft. Eenmalig op de camera: Instellingen → Verbindingsinstellingen → PC AutoSave-instelling. Verbind met je netwerk (de eenvoudige instelling gebruikt de WPS-knop van je router, zonder wachtwoord te typen) en registreer deze Mac. Kies daarna PC AutoSave in het weergavemenu om foto's te sturen."
+          }
+        }
+      }
+    },
+    "The camera refused a request. Details are in Connection Log.": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "L'appareil a refusé une demande. Les détails sont dans le Journal de connexion."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "La cámara rechazó una petición. Los detalles están en el Registro de conexión."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "La fotocamera ha rifiutato una richiesta. I dettagli sono nel Registro di connessione."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Die Kamera hat eine Anfrage abgelehnt. Details stehen im Verbindungsprotokoll."
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "De camera weigerde een verzoek. Details staan in het Verbindingslogboek."
           }
         }
       }
@@ -6629,6 +6765,40 @@
         }
       }
     },
+    "Waiting for the camera": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "En attente de l'appareil"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Esperando a la cámara"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "In attesa della fotocamera"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Warten auf die Kamera"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wachten op de camera"
+          }
+        }
+      }
+    },
     "Waiting for the camera to send images…": {
       "localizations": {
         "fr": {
@@ -6697,36 +6867,36 @@
         }
       }
     },
-    "While this Mac is on the camera's network it has no internet. It goes back to your usual Wi-Fi when you turn the camera off.": {
+    "While this Mac is on the camera's network it has no internet. Turn the camera off and this Mac goes back to your usual Wi-Fi.": {
       "localizations": {
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Tant que ce Mac est sur le réseau de l'appareil, il n'a pas d'internet. Il revient sur votre Wi-Fi habituel quand vous éteignez l'appareil."
+            "value": "Tant que ce Mac est sur le réseau de l'appareil, il n'a pas d'internet. Éteignez l'appareil et ce Mac revient sur votre Wi-Fi habituel."
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Mientras este Mac esté en la red de la cámara no tendrá internet. Vuelve a tu Wi-Fi habitual cuando apagas la cámara."
+            "value": "Mientras este Mac esté en la red de la cámara no tendrá internet. Apaga la cámara y este Mac vuelve a tu Wi-Fi habitual."
           }
         },
         "it": {
           "stringUnit": {
             "state": "translated",
-            "value": "Finché questo Mac è sulla rete della fotocamera non ha internet. Torna al tuo Wi-Fi abituale quando spegni la fotocamera."
+            "value": "Finché questo Mac è sulla rete della fotocamera non ha internet. Spegni la fotocamera e questo Mac torna al tuo Wi-Fi abituale."
           }
         },
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Solange dieser Mac im Netzwerk der Kamera ist, hat er kein Internet. Er wechselt zurück in dein übliches WLAN, wenn du die Kamera ausschaltest."
+            "value": "Solange dieser Mac im Netzwerk der Kamera ist, hat er kein Internet. Schalte die Kamera aus, und dieser Mac wechselt zurück in dein übliches WLAN."
           }
         },
         "nl": {
           "stringUnit": {
             "state": "translated",
-            "value": "Zolang deze Mac op het netwerk van de camera zit, heeft hij geen internet. Hij gaat terug naar je gewone wifi als je de camera uitzet."
+            "value": "Zolang deze Mac op het netwerk van de camera zit, heeft hij geen internet. Zet de camera uit en deze Mac gaat terug naar je gewone wifi."
           }
         }
       }
@@ -6829,6 +6999,40 @@
           "stringUnit": {
             "state": "translated",
             "value": "Gisteren"
+          }
+        }
+      }
+    },
+    "You can turn the camera off now.": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Vous pouvez éteindre l'appareil."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ya puedes apagar la cámara."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ora puoi spegnere la fotocamera."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Du kannst die Kamera jetzt ausschalten."
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Je kunt de camera nu uitzetten."
           }
         }
       }

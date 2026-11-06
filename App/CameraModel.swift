@@ -121,8 +121,20 @@ final class CameraModel {
     private(set) var isListing = false
     /// "Import New" was pressed while the card was still being read: import what turns up after it too.
     private var importNewWhenListed = false
-    /// After disconnecting by itself, auto-connect waits a moment so it doesn't reconnect while the camera closes its network.
-    private var autoConnectPausedUntil: Date?
+    /// Auto-connect waits for the user to press Connect: after Cancel, after a failure other than "not found", and
+    /// after letting go of the camera when the import was done (then also until the camera's address stops answering).
+    private(set) var autoConnectPaused = false
+    /// The import is done and Ferry let go of the camera; the connect screen says the camera can be turned off.
+    private(set) var importDone = false
+    /// Where the camera was when Ferry let go of it, checked until it stops answering.
+    private var doneCameraAddress: CameraAddress?
+    private var doneSince = Date.distantPast
+    private var doneCameraMisses = 0
+    /// The connection attempt in progress; Cancel abandons it.
+    private var connectTask: Task<WirelessCamera, Error>?
+    private var connectAttempt = 0
+    /// The camera marks protected photos (PTP cameras), so the filter for them means something.
+    private(set) var reportsProtection = false
     private(set) var importProgress: ImportProgress?
     private(set) var lastError: String?
     private(set) var importSummary: String?
@@ -164,8 +176,11 @@ final class CameraModel {
         didSet { UserDefaults.standard.set(protectedOnly, forKey: Prefs.protectedOnly) }
     }
 
+    /// "Only Protected Photos" is on and means something for this camera.
+    var filtersProtected: Bool { protectedOnly && reportsProtection }
+
     func matchesFilters(_ item: PhotoItem) -> Bool {
-        (kindFilter == nil || item.info.kind == kindFilter) && (!protectedOnly || item.info.isProtected)
+        (kindFilter == nil || item.info.kind == kindFilter) && (!filtersProtected || item.info.isProtected)
     }
 
     /// Where the last finished import went.
@@ -192,9 +207,9 @@ final class CameraModel {
         searchTask?.cancel()
         searchTask = Task {
             while !Task.isCancelled {
+                await checkDoneCamera()
                 // An import the connection dropped in the middle of reconnects even without auto-connect.
-                let paused = autoConnectPausedUntil.map { $0 > .now } ?? false
-                if phase == .searching && ((UserDefaults.standard.bool(forKey: Prefs.autoConnect) && !paused) || !pendingImport.isEmpty) {
+                if phase == .searching && ((UserDefaults.standard.bool(forKey: Prefs.autoConnect) && !autoConnectPaused) || !pendingImport.isEmpty) {
                     await connect(quiet: true)
                 }
                 try? await Task.sleep(for: .seconds(3))
@@ -202,12 +217,41 @@ final class CameraModel {
         }
     }
 
+    /// After Ferry let go of the camera, auto-connect comes back once the camera's address stops answering: a plain
+    /// TCP connect, no handshake. Waits a little first, and wants two misses in a row, so a camera that is just
+    /// closing its session isn't taken for gone.
+    private func checkDoneCamera() async {
+        guard phase == .searching, let address = doneCameraAddress, Date.now.timeIntervalSince(doneSince) > 10 else { return }
+        let answers = await Task.detached { address.answers(timeout: 2) }.value
+        guard doneCameraAddress == address else { return }
+        doneCameraMisses = answers ? 0 : doneCameraMisses + 1
+        if doneCameraMisses >= 2 {
+            appendLog("The camera stopped answering at \(address.host):\(address.port); auto-connect is on again")
+            doneCameraAddress = nil
+            importDone = false
+            autoConnectPaused = false
+        }
+    }
+
+    /// Stops auto-connect until the user presses Connect.
+    private func pauseAutoConnect() {
+        autoConnectPaused = true
+        doneCameraAddress = nil
+    }
+
     /// Connects to the camera on its own Wi-Fi network, or to `autoSaveHost` when the camera reached out over
-    /// the home network (PC AutoSave).
+    /// the home network (PC AutoSave). `quiet`: an automatic attempt, where not finding the camera is expected.
     func connect(quiet: Bool = false, autoSaveHost: String? = nil) async {
         guard phase == .searching else { return }
         phase = .connecting
-        if !quiet { lastError = nil }
+        if !quiet {
+            lastError = nil
+            autoConnectPaused = false
+            doneCameraAddress = nil
+            importDone = false
+        }
+        connectAttempt += 1
+        let attempt = connectAttempt
 
         // By default the camera is the Wi-Fi network's router. Connect through the Wi-Fi interface
         // explicitly so a VPN that routes 192.168.x.x can't intercept it.
@@ -219,37 +263,61 @@ final class CameraModel {
         let clientName = Host.current().localizedName ?? "Mac"
         let interface = isLoopback || autoSaveHost != nil ? nil : wifi
         let log: (String) -> Void = { [weak self] line in Task { @MainActor in self?.appendLog(line) } }
-        let onApproval: () -> Void = { Task { @MainActor [weak self] in self?.phase = .waitingForApproval } }
+        let onApproval: () -> Void = {
+            Task { @MainActor [weak self] in
+                guard let self, connectAttempt == attempt, phase == .connecting else { return }
+                phase = .waitingForApproval
+            }
+        }
         let afterBluetoothHandoff = bluetoothLink != nil
 
+        let task = Task.detached {
+            if autoSaveHost != nil {
+                // PC AutoSave is Fuji-only.
+                let fuji = FujiCamera(host: host, interface: interface, clientName: clientName, log: log)
+                try fuji.connect(onWaitingForApproval: onApproval)
+                return fuji as WirelessCamera
+            }
+            // Fuji's protocol first, then standard PTP/IP (Canon and others).
+            return try CameraProtocol.connect(host: host, interface: interface, clientName: clientName,
+                                              afterBluetoothHandoff: afterBluetoothHandoff, log: log,
+                                              onWaitingForApproval: onApproval)
+        }
+        connectTask = task
         let camera: SerialCamera
         do {
-            camera = SerialCamera(try await Task.detached {
-                if autoSaveHost != nil {
-                    // PC AutoSave is Fuji-only.
-                    let fuji = FujiCamera(host: host, interface: interface, clientName: clientName, log: log)
-                    try fuji.connect(onWaitingForApproval: onApproval)
-                    return fuji as WirelessCamera
-                }
-                // Fuji's protocol first, then standard PTP/IP (Canon and others).
-                return try CameraProtocol.connect(host: host, interface: interface, clientName: clientName,
-                                                  afterBluetoothHandoff: afterBluetoothHandoff, log: log,
-                                                  onWaitingForApproval: onApproval)
-            }.value)
-        } catch {
-            phase = .searching
-            // While searching, failing to reach the camera is expected; only surface real problems.
-            if case FujiError.connectionFailed(let reason) = error, quiet {
-                if reason != lastSearchFailure { appendLog("Not found: \(reason)") }
-                lastSearchFailure = reason
+            let connected = try await task.value
+            guard attempt == connectAttempt else {
+                // Cancelled, but the camera answered anyway: let it go.
+                Task.detached { connected.disconnect() }
                 return
             }
+            camera = SerialCamera(connected)
+        } catch {
+            // Cancelled: `cancelConnect()` already went back to searching.
+            guard attempt == connectAttempt else { return }
+            connectTask = nil
+            phase = .searching
+            if case FujiError.connectionFailed(let reason) = error {
+                // While searching, failing to reach the camera is expected; only surface real problems.
+                if quiet {
+                    if reason != lastSearchFailure { appendLog("Not found: \(reason)") }
+                    lastSearchFailure = reason
+                    return
+                }
+            } else {
+                // The camera is there but the connection failed: don't knock again every few seconds.
+                pauseAutoConnect()
+                pendingImport = []
+            }
             appendLog("Connection failed: \(error.localizedDescription)")
-            lastError = error.localizedDescription
+            lastError = Self.message(for: error)
             return
         }
 
+        connectTask = nil
         self.camera = camera
+        reportsProtection = camera.camera is FujiCamera || camera.camera is PTPIPCamera
         lastSearchFailure = nil
         cameraName = camera.camera.cameraName
         batteryPercent = camera.camera.batteryPercent
@@ -266,9 +334,30 @@ final class CameraModel {
         // The new network needs a moment to give this Mac an address.
         for _ in 0..<10 where phase == .searching {
             await connect()
-            if phase != .searching { return }
+            // Connected, cancelled, or the camera answered and failed: no point in trying again.
+            if phase != .searching || autoConnectPaused { return }
             try? await Task.sleep(for: .seconds(2))
         }
+    }
+
+    /// Stops connecting or waiting for the camera; auto-connect waits until the user presses Connect.
+    func cancelConnect() {
+        guard phase == .connecting || phase == .waitingForApproval else { return }
+        appendLog("Connecting cancelled; auto-connect waits for Connect")
+        connectAttempt += 1
+        connectTask?.cancel()
+        connectTask = nil
+        pendingImport = []
+        pauseAutoConnect()
+        phase = .searching
+    }
+
+    /// What the connect screen says about a failed connection. Camera error codes only go to the log.
+    private static func message(for error: Error) -> String {
+        if case FujiError.response = error {
+            return String(localized: "The camera refused a request. Details are in Connection Log.")
+        }
+        return error.localizedDescription
     }
 
     func disconnect() {
@@ -494,9 +583,14 @@ final class CameraModel {
     private func disconnectIfDone() {
         guard UserDefaults.standard.bool(forKey: Prefs.disconnectAfterImport), phase == .connected,
               !isImporting, !isListing, !importNewWhenListed, pendingImport.isEmpty else { return }
-        appendLog("Import done: disconnecting")
+        appendLog("Import done: disconnecting; auto-connect waits until the camera is off or Connect is pressed")
+        let address = camera?.camera.address
         disconnect()
-        autoConnectPausedUntil = .now + 60
+        pauseAutoConnect()
+        doneCameraAddress = address
+        doneSince = .now
+        doneCameraMisses = 0
+        importDone = true
     }
 
     /// The configured destinations, ready to use, or nil (with `lastError` set) when one can't be used.
@@ -581,7 +675,7 @@ final class CameraModel {
         var imported = 0
         var failed: [String] = []
         pendingImport = Set(batch.map(\.id))
-        for (index, item) in batch.enumerated() {
+        batch: for (index, item) in batch.enumerated() {
             if Task.isCancelled { break }
             importProgress = ImportProgress(index: index + 1, total: batch.count, filename: item.info.filename, fraction: 0,
                                             bytesDone: batchBytesBefore, totalBytes: totalBytes, started: started)
@@ -593,6 +687,9 @@ final class CameraModel {
                     imported += 1
                     pendingImport.remove(item.id)
                     break
+                } catch where Task.isCancelled {
+                    // Stop: the download was cut off, which is neither a failure nor a lost connection.
+                    break batch
                 } catch let error as FujiError where error.isConnectionLoss {
                     // Keep `pendingImport`: the import continues after reconnecting.
                     connectionLost(error)

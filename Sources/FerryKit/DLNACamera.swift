@@ -21,7 +21,7 @@ public final class DLNACamera: HTTPCamera {
 
     static let cameraMakers = ["Sony", "Panasonic"]
 
-    private var controlURL: URL?
+    private(set) var controlURL: URL?
     private var manufacturer = ""
 
     public init(host: String, log: @escaping (String) -> Void = { _ in }) {

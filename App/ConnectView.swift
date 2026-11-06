@@ -6,13 +6,16 @@ struct ConnectView: View {
     @AppStorage(Prefs.autoSave) private var autoSave = false
     @State private var showBluetooth = false
 
+    /// The camera report form on GitHub.
+    static let reportURL = URL(string: "https://github.com/marijnvandevoorde/ferry/issues/new?template=camera-report.yml")!
+
     var body: some View {
         VStack(spacing: 28) {
             ZStack {
                 Circle()
                     .fill(.quaternary)
                     .frame(width: 112, height: 112)
-                if model.phase == .searching {
+                if model.phase == .searching && !model.importDone {
                     Image("FerryMark")
                         .resizable()
                         .scaledToFit()
@@ -22,7 +25,7 @@ struct ConnectView: View {
                     Image(systemName: icon)
                         .font(.system(size: 46, weight: .light))
                         .foregroundStyle(.secondary)
-                        .symbolEffect(.pulse)
+                        .symbolEffect(.pulse, isActive: model.phase != .searching)
                 }
             }
 
@@ -35,35 +38,38 @@ struct ConnectView: View {
             }
 
             if model.phase == .searching {
-                steps
-                if autoSave {
-                    Label("PC AutoSave is on: the camera can also send photos over your home Wi-Fi.", systemImage: "house")
-                        .font(.callout)
-                        .foregroundStyle(.secondary)
-                } else {
-                    SettingsLink {
-                        Text("Fujifilm camera? Stay online with PC AutoSave…")
+                if model.importDone {
+                    doneSummary
+                    DisclosureGroup("How to connect") {
+                        steps.padding(.top, 8)
                     }
-                    .buttonStyle(.link)
-                    .font(.callout)
+                    .frame(maxWidth: 480)
+                } else {
+                    steps
+                    if autoSave {
+                        Label("PC AutoSave is on: the camera can also send photos over your home Wi-Fi.", systemImage: "house")
+                            .font(.callout)
+                            .foregroundStyle(.secondary)
+                    }
+                    fujifilmLinks
                 }
-                Button("Newer Fujifilm, like the X-T5? Pair over Bluetooth…") { showBluetooth = true }
-                    .buttonStyle(.link)
-                    .font(.callout)
             }
 
-            if model.phase == .searching, model.lastError == nil, let summary = model.importSummary {
+            if model.phase == .searching, !model.importDone, model.lastError == nil, let summary = model.importSummary {
                 Label(summary, systemImage: "checkmark.circle.fill")
                     .foregroundStyle(.green)
                     .font(.callout)
             }
 
             if let error = model.lastError {
-                Label(error, systemImage: "exclamationmark.triangle.fill")
-                    .foregroundStyle(.orange)
-                    .font(.callout)
-                    .multilineTextAlignment(.center)
-                    .frame(maxWidth: 460)
+                VStack(spacing: 6) {
+                    Label(error, systemImage: "exclamationmark.triangle.fill")
+                        .foregroundStyle(.orange)
+                        .multilineTextAlignment(.center)
+                    Link("Send a camera report…", destination: Self.reportURL)
+                }
+                .font(.callout)
+                .frame(maxWidth: 460)
             }
 
             HStack(spacing: 12) {
@@ -77,6 +83,8 @@ struct ConnectView: View {
                     .keyboardShortcut(.defaultAction)
                 } else {
                     ProgressView().controlSize(.small)
+                    Button("Cancel") { model.cancelConnect() }
+                        .keyboardShortcut(.cancelAction)
                 }
             }
             .controlSize(.large)
@@ -86,11 +94,51 @@ struct ConnectView: View {
         .sheet(isPresented: $showBluetooth) { BluetoothPairingView() }
     }
 
+    /// Auto-connect is on and not waiting for the user to press Connect.
+    private var connectsByItself: Bool { autoConnect && !model.autoConnectPaused }
+
+    /// After Ferry let go of the camera: what was imported, and where to see it.
+    @ViewBuilder private var doneSummary: some View {
+        if let summary = model.importSummary {
+            VStack(spacing: 8) {
+                Label(summary, systemImage: "checkmark.circle.fill")
+                    .foregroundStyle(.green)
+                switch model.lastImportLocation {
+                case .photos?:
+                    Button("Open Photos") { model.showLastImport() }.buttonStyle(.link)
+                case .folder?:
+                    Button("Show in Finder") { model.showLastImport() }.buttonStyle(.link)
+                case nil:
+                    EmptyView()
+                }
+            }
+            .font(.callout)
+        }
+    }
+
+    /// "Fujifilm: Stay online with PC AutoSave · Pair over Bluetooth (X-T5 and newer)", each part a link.
+    private var fujifilmLinks: some View {
+        HStack(spacing: 4) {
+            Text("Fujifilm:")
+                .foregroundStyle(.secondary)
+            if !autoSave {
+                SettingsLink {
+                    Text("Stay online with PC AutoSave")
+                }
+                Text(verbatim: "·")
+                    .foregroundStyle(.secondary)
+            }
+            Button("Pair over Bluetooth (X-T5 and newer)") { showBluetooth = true }
+        }
+        .buttonStyle(.link)
+        .font(.callout)
+    }
+
     private var steps: some View {
         VStack(alignment: .leading, spacing: 14) {
             StepRow(number: 1, text: CameraGuide.lastConnected.cameraStep)
             StepRow(number: 2, text: "On this Mac, join the camera's Wi-Fi network. Its name usually includes the brand or model.")
-            StepRow(number: 3, text: autoConnect
+            StepRow(number: 3, text: connectsByItself
                     ? "Ferry connects automatically. Press **OK** on the camera if it asks."
                     : "Click **Connect**. Press **OK** on the camera if it asks.")
             DisclosureGroup("Where is Wi-Fi on my camera?") {
@@ -107,7 +155,7 @@ struct ConnectView: View {
                 .padding(.top, 6)
             }
             .font(.callout)
-            Label("While this Mac is on the camera's network it has no internet. It goes back to your usual Wi-Fi when you turn the camera off.", systemImage: "wifi.exclamationmark")
+            Label("While this Mac is on the camera's network it has no internet. Turn the camera off and this Mac goes back to your usual Wi-Fi.", systemImage: "wifi.exclamationmark")
                 .font(.callout)
                 .foregroundStyle(.secondary)
                 .fixedSize(horizontal: false, vertical: true)
@@ -120,6 +168,7 @@ struct ConnectView: View {
     private var icon: String {
         switch model.phase {
         case .waitingForApproval: "hand.tap"
+        case .searching where model.importDone: "checkmark"
         default: "wifi"
         }
     }
@@ -127,7 +176,8 @@ struct ConnectView: View {
     private var title: LocalizedStringKey {
         switch model.phase {
         case .connecting: "Connecting…"
-        case .waitingForApproval: "Press OK on the camera"
+        case .waitingForApproval: "Waiting for the camera"
+        case .searching where model.importDone: "Import done"
         default: "Connect your camera"
         }
     }
@@ -135,8 +185,9 @@ struct ConnectView: View {
     private var subtitle: LocalizedStringKey {
         switch model.phase {
         case .connecting: "Talking to the camera at \(model.cameraAddress)"
-        case .waitingForApproval: "The camera is asking whether to allow this Mac."
-        default: autoConnect ? "Looking for the camera on your Wi-Fi network…" : "Import photos from your camera over Wi-Fi."
+        case .waitingForApproval: "Check the camera. It may be asking whether to allow this Mac."
+        case .searching where model.importDone: "You can turn the camera off now."
+        default: connectsByItself ? "Join the camera's Wi-Fi network and Ferry connects by itself." : "Import photos from your camera over Wi-Fi."
         }
     }
 }

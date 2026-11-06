@@ -43,7 +43,7 @@ struct SettingsView: View {
                 Toggle("Import new photos automatically after connecting", isOn: $autoImport)
                 Toggle(isOn: $disconnectAfterImport) {
                     Text("Disconnect when the import is done")
-                    Text("Lets this Mac go back to your usual Wi-Fi network once the camera closes its own.")
+                    Text("Ferry lets go of the camera after the import. Turn the camera off and this Mac goes back to your usual Wi-Fi.")
                 }
                 Toggle("Leave videos out of “Import New”", isOn: $skipVideos)
                 Toggle("Open Ferry at login", isOn: $launchAtLogin)

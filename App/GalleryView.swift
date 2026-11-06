@@ -106,7 +106,9 @@ struct GalleryView: View {
                         ForEach(Self.kinds, id: \.0) { Text($0.1).tag($0.0) }
                     }
                     .pickerStyle(.inline)
-                    Toggle("Only Protected Photos", isOn: $model.protectedOnly)
+                    if model.reportsProtection {
+                        Toggle("Only Protected Photos", isOn: $model.protectedOnly)
+                    }
                     Divider()
                     Picker("Order", selection: $oldestFirst) {
                         Text("Newest First").tag(false)
@@ -114,7 +116,7 @@ struct GalleryView: View {
                     }
                     .pickerStyle(.inline)
                 } label: {
-                    Label("Filter", systemImage: model.kindFilter != nil || model.protectedOnly
+                    Label("Filter", systemImage: model.kindFilter != nil || model.filtersProtected
                           ? "line.3.horizontal.decrease.circle.fill" : "line.3.horizontal.decrease.circle")
                 }
                 .help("Filter and sort. Import New imports what the filters show.")
@@ -170,7 +172,7 @@ struct GalleryView: View {
     @ViewBuilder private func contextMenu(for item: PhotoItem) -> some View {
         let ids = model.selection.contains(item.id) ? model.selection : [item.id]
         let targets = model.items.filter { ids.contains($0.id) }
-        Button(ids.count > 1 ? "Import \(ids.count) Photos" : "Import") {
+        Button(ids.count > 1 ? "Import \(ids.count) Items" : "Import") {
             model.startImport(targets)
         }
         .disabled(model.isImporting)

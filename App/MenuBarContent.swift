@@ -40,7 +40,7 @@ struct MenuBarContent: View {
         switch model.phase {
         case .searching: String(localized: "No camera connected")
         case .connecting: String(localized: "Connecting…")
-        case .waitingForApproval: String(localized: "Press OK on the camera")
+        case .waitingForApproval: String(localized: "Waiting for the camera")
         case .connected: String(localized: "\(model.cameraName.isEmpty ? String(localized: "Camera") : model.cameraName): \(model.newItems.count) new")
         }
     }

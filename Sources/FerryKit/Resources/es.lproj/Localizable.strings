@@ -1,6 +1,7 @@
 /* FerryKit error messages. */
 "Could not connect: %@" = "No se pudo conectar: %@";
 "The camera rejected the connection. Restart Wi-Fi on the camera and try again." = "La cámara rechazó la conexión. Reinicia el Wi-Fi de la cámara e inténtalo de nuevo.";
+"The camera refused the connection. It may need pairing that Ferry doesn't support yet." = "La cámara rechazó la conexión. Puede que necesite un emparejamiento que Ferry aún no admite.";
 "The camera closed the connection." = "La cámara cerró la conexión.";
 "The camera stopped responding." = "La cámara dejó de responder.";
 "Network error: %@" = "Error de red: %@";
