@@ -10,8 +10,9 @@ import { isPermissionGranted, requestPermission, sendNotification } from "@tauri
 // Events from `ferryctl serve` (see Sources/ferryctl/Serve.swift).
 type Item = { id: string; filename: string; date: string; isVideo: boolean; kind: string; protected: boolean; size: number; imported: boolean };
 type ServeEvent =
-  | { event: "status"; phase: "searching" | "connecting" | "waitingForApproval" | "connected"; camera?: string; address?: string; autoSave?: boolean }
+  | { event: "status"; phase: "searching" | "connecting" | "waitingForApproval" | "connected"; camera?: string; address?: string; autoSave?: boolean; paused?: boolean }
   | { event: "items"; items: Item[]; complete?: boolean; total?: number }
+  | { event: "marked"; ids: string[]; imported: boolean }
   | { event: "autosave"; status: "off" | "listening" | "registered" | "error"; camera?: string; message?: string }
   | { event: "thumbnail"; id: string; path: string }
   | { event: "progress"; index: number; total: number; filename: string; fraction: number; bytes: number; totalBytes: number }
@@ -45,6 +46,11 @@ const settings = {
   set disconnectAfterImport(v: boolean) { localStorage.setItem("disconnectAfterImport", String(v)); },
   get autoSave() { return localStorage.getItem("autoSave") === "true"; },
   set autoSave(v: boolean) { localStorage.setItem("autoSave", String(v)); },
+  /** Cameras whose "already copied these?" notice was closed. */
+  get backlogNoticeDismissed(): string[] {
+    try { return JSON.parse(localStorage.getItem("backlogNoticeDismissed") ?? "[]"); } catch { return []; }
+  },
+  set backlogNoticeDismissed(v: string[]) { localStorage.setItem("backlogNoticeDismissed", JSON.stringify(v)); },
 };
 
 const state = {
@@ -69,9 +75,44 @@ const state = {
   /** The camera came over the home network (PC AutoSave): import everything new, then let it go. */
   autoSaveSession: false,
   autoSaveStatus: "",
+  /** An AutoSave session that didn't import because the card looks copied already (the backlog notice asks). */
+  autoSaveHeldBack: false,
   /** The camera's battery in percent, when it reports it. */
   battery: null as number | null,
+  address: "",
+  /** The last import's summary, and how many it imported. */
+  lastSummary: "",
+  lastImported: 0,
+  /** Ferry let go of the camera after an import: the connect screen shows what was imported. */
+  done: null as { summary: string; imported: number; autoSave: boolean } | null,
+  /** Not reconnecting by itself until the camera is gone or Connect is pressed. */
+  paused: false,
+  stepsShown: false,
 };
+
+/** A camera full of photos, none of them imported by Ferry: probably copied some other way before. */
+function showBacklogNotice(): boolean {
+  return state.phase === "connected" && !state.listing && state.items.length >= 30 && !state.items.some((i) => i.imported)
+    && !settings.backlogNoticeDismissed.includes(state.camera);
+}
+
+function dismissBacklogNotice() {
+  settings.backlogNoticeDismissed = [...settings.backlogNoticeDismissed, state.camera];
+  render();
+}
+
+/** Records items as imported, or not, without copying anything, so "Import New" leaves them out or offers them again. */
+function markImported(ids: string[], imported: boolean) {
+  send({ cmd: "mark", ids, imported });
+}
+
+/** Lets go of the camera after an import and shows the done state. A camera that came over the home network
+ * (PC AutoSave) just goes; otherwise Ferry waits for it to go away before looking for cameras again. */
+function letGo() {
+  state.done = { summary: state.lastSummary || t("Everything is imported."), imported: state.lastImported, autoSave: state.autoSaveSession };
+  state.stepsShown = false;
+  send(state.autoSaveSession ? { cmd: "disconnect" } : { cmd: "disconnect", untilGone: true });
+}
 
 /** Filters shown in the toolbar, for finding and selecting; "Import New" ignores them. */
 function matchesFilters(item: Item): boolean {
@@ -122,8 +163,8 @@ function startImport(ids?: string[]) {
   render();
 }
 
-async function notify(title: string, body: string) {
-  if (document.hasFocus()) return;
+async function notify(title: string, body: string, always = false) {
+  if (document.hasFocus() && !always) return;
   let granted = await isPermissionGranted();
   if (!granted) granted = (await requestPermission()) === "granted";
   if (granted) sendNotification({ title, body });
@@ -145,12 +186,15 @@ listen<ServeEvent>("ferryctl", ({ payload: e }) => {
       const wasConnected = state.phase === "connected";
       state.phase = e.phase;
       if (e.camera) state.camera = e.camera;
+      if (e.address) state.address = e.address;
+      state.paused = e.paused === true;
       if (e.phase === "connected") {
         showError("");
-        $("last-import").hidden = true;
+        state.done = null;
         if (!wasConnected) {
           state.listed = false;
           state.autoSaveSession = e.autoSave === true;
+          state.autoSaveHeldBack = false;
         }
       }
       if (e.phase === "searching") {
@@ -158,6 +202,7 @@ listen<ServeEvent>("ferryctl", ({ payload: e }) => {
         state.listing = false;
         state.importNewWhenListed = false;
         state.autoSaveSession = false;
+        state.autoSaveHeldBack = false;
       }
       if (e.phase === "searching" && wasConnected) {
         if (state.batch) state.resume = state.batch;
@@ -166,10 +211,6 @@ listen<ServeEvent>("ferryctl", ({ payload: e }) => {
         state.selection.clear();
         state.importing = false;
       }
-      $("connect-subtitle").textContent =
-        e.phase === "connecting" ? t("Talking to the camera at {address}…", { address: e.address ?? "" }) :
-        e.phase === "waitingForApproval" ? t("Press OK on the camera to allow this computer.") :
-        t("Looking for the camera on your Wi-Fi network…");
       break;
     }
     case "items": {
@@ -189,8 +230,17 @@ listen<ServeEvent>("ferryctl", ({ payload: e }) => {
         if (!ids || ids.length > 0) startImport(ids);
       } else if (firstList && state.autoSaveSession) {
         if (state.importing) state.importNewWhenListed = true;
-        else if (fresh.length > 0 && settings.folder) importNew();
-        else send({ cmd: "disconnect" });
+        else if (fresh.length === 0) send({ cmd: "disconnect" });
+        else if (!settings.folder) {
+          // Don't let the camera go silently: say why nothing was imported.
+          send({ cmd: "disconnect" });
+          showError(t("Choose a folder to import into first."));
+          notify("PC AutoSave", t("Choose a folder to import into first."), true);
+        } else if (showBacklogNotice()) {
+          // Most likely copied some other way before: ask instead of importing the whole card.
+          state.autoSaveHeldBack = true;
+          notify(state.camera || t("Camera connected"), t("Already copied these photos some other way?"));
+        } else importNew();
       } else if (firstList && fresh.length > 0 && settings.autoImport) {
         if (state.importing) state.importNewWhenListed = true;
         else importNew();
@@ -200,9 +250,16 @@ listen<ServeEvent>("ferryctl", ({ payload: e }) => {
         const waiting = state.importNewWhenListed;
         continueImportNew();
         // Nothing new left after the listing: the import is already done.
-        if (waiting && !state.importing && settings.disconnectAfterImport && !state.autoSaveSession)
-          send({ cmd: "disconnect", pause: 60 });
+        if (waiting && !state.importing && settings.disconnectAfterImport && !state.autoSaveSession) letGo();
       }
+      break;
+    }
+    case "marked": {
+      const ids = new Set(e.ids);
+      for (const item of state.items) if (ids.has(item.id)) item.imported = e.imported;
+      if (e.imported) ids.forEach((id) => state.selection.delete(id));
+      // An AutoSave session held back for the notice: with nothing left to import, let the camera go.
+      if (state.autoSaveHeldBack && !state.importing && itemsToImport().length === 0) send({ cmd: "disconnect" });
       break;
     }
     case "battery":
@@ -254,15 +311,14 @@ listen<ServeEvent>("ferryctl", ({ payload: e }) => {
       if (state.importing) return;
       // PC AutoSave: the camera sent what it had; let it go. Otherwise optionally let the computer go back to its usual
       // network; the pause keeps it from reconnecting while the camera closes its own.
-      const letGo = !state.listing && (state.autoSaveSession || (settings.disconnectAfterImport && !e.cancelled));
-      if (letGo) send(state.autoSaveSession ? { cmd: "disconnect" } : { cmd: "disconnect", pause: 60 });
       let summary = t("Imported {n} items", { n: e.imported }, e.imported);
       if (e.cancelled) summary += t(" (stopped)");
       if (e.failed.length) summary += t(". {n} failed: {list}", { n: e.failed.length, list: e.failed.slice(0, 3).join(", ") });
+      state.lastSummary = summary;
+      state.lastImported = e.imported;
+      if (!state.listing && (state.autoSaveSession || (settings.disconnectAfterImport && !e.cancelled))) letGo();
       render();
       $("status").textContent = summary;
-      $("last-import").textContent = summary;
-      $("last-import").hidden = !letGo;
       $("show-folder").hidden = e.imported === 0;
       notify(t("Import finished"), summary);
       return;
@@ -291,7 +347,11 @@ function render() {
   const newCount = state.items.filter((i) => !i.imported).length;
   $("subtitle").textContent = connected ? t("{n} items · {m} not imported", { n: state.items.length, m: newCount }) : "";
   $<HTMLButtonElement>("connect-now").disabled = state.phase !== "searching";
-  if (!connected) return;
+  $("backlog-notice").hidden = !showBacklogNotice();
+  if (!connected) {
+    renderConnect();
+    return;
+  }
 
   // Footer
   const toImport = itemsToImport();
@@ -378,11 +438,90 @@ function render() {
         state.selection.has(item.id) ? state.selection.delete(item.id) : state.selection.add(item.id);
         render();
       };
+      cell.oncontextmenu = (e) => {
+        e.preventDefault();
+        // From the keyboard (menu key, Shift+F10) there's no pointer position: open it at the photo.
+        const rect = cell.getBoundingClientRect();
+        const fromKeyboard = e.clientX === 0 && e.clientY === 0;
+        openMenu(item, fromKeyboard ? rect.left + 8 : e.clientX, fromKeyboard ? rect.top + 8 : e.clientY);
+      };
       grid.append(cell);
     }
     gallery.append(header, grid);
   }
 }
+
+function renderConnect() {
+  const done = state.phase === "searching" ? state.done : null;
+  $("connect-title").textContent = done ? done.summary : t("Connect your camera");
+  $("connect-subtitle").textContent =
+    state.phase === "connecting" ? t("Talking to the camera at {address}…", { address: state.address }) :
+    state.phase === "waitingForApproval" ? t("Press OK on the camera to allow this computer.") :
+    // Until the camera's address stops answering; a camera that sent its photos over the home network can go any time.
+    done && (state.paused || done.autoSave) ? t("You can turn the camera off now.") :
+    t("Join the camera's Wi-Fi network and Ferry connects by itself.");
+  $("done-actions").hidden = !done || done.imported === 0 || !settings.folder;
+  $("autosave-waiting").hidden = !settings.autoSave;
+  // After an import the steps are folded away: the camera was found, it didn't get lost.
+  const stepsHidden = !!done && !state.stepsShown;
+  $("steps").hidden = stepsHidden;
+  $("fuji-links").hidden = stepsHidden;
+  $("show-steps").hidden = !stepsHidden;
+  $("autosave-link-group").hidden = settings.autoSave;
+}
+
+// MARK: - Context menu
+
+function closeMenu() {
+  $("context-menu").hidden = true;
+}
+
+/** Right-click on a photo: acts on the whole selection when the photo is part of it. */
+function openMenu(item: Item, x: number, y: number) {
+  const ids = state.selection.has(item.id) ? [...state.selection] : [item.id];
+  const targets = state.items.filter((i) => ids.includes(i.id));
+  const menu = $("context-menu");
+  const entry = (label: string, action: () => void, disabled = false) => {
+    const button = document.createElement("button");
+    button.type = "button";
+    button.setAttribute("role", "menuitem");
+    button.textContent = label;
+    button.disabled = disabled;
+    button.onclick = () => {
+      closeMenu();
+      action();
+    };
+    return button;
+  };
+  const entries: HTMLElement[] = [
+    entry(ids.length > 1 ? t("Import {n} Items", { n: ids.length }) : t("Import"), () => startImport(ids), state.importing),
+    document.createElement("hr"),
+  ];
+  if (targets.some((i) => !i.imported)) entries.push(entry(t("Mark as Imported"), () => markImported(ids, true)));
+  if (targets.some((i) => i.imported)) entries.push(entry(t("Mark as Not Imported"), () => markImported(ids, false)));
+  menu.replaceChildren(...entries);
+  menu.hidden = false;
+  const { width, height } = menu.getBoundingClientRect();
+  menu.style.left = `${Math.max(0, Math.min(x, innerWidth - width - 4))}px`;
+  menu.style.top = `${Math.max(0, Math.min(y, innerHeight - height - 4))}px`;
+  menu.querySelector<HTMLButtonElement>("button:not(:disabled)")?.focus();
+}
+
+document.addEventListener("pointerdown", (e) => {
+  if (!$("context-menu").contains(e.target as Node)) closeMenu();
+});
+document.addEventListener("keydown", (e) => {
+  if (e.key === "Escape") closeMenu();
+});
+$("context-menu").addEventListener("keydown", (e) => {
+  if (e.key !== "ArrowDown" && e.key !== "ArrowUp") return;
+  e.preventDefault();
+  const buttons = [...$("context-menu").querySelectorAll<HTMLButtonElement>("button:not(:disabled)")];
+  const i = buttons.indexOf(document.activeElement as HTMLButtonElement);
+  buttons[(i + (e.key === "ArrowDown" ? 1 : buttons.length - 1)) % buttons.length]?.focus();
+});
+window.addEventListener("blur", closeMenu);
+document.querySelector("main")!.addEventListener("scroll", closeMenu);
 
 // MARK: - Controls
 
@@ -404,8 +543,22 @@ function openSettings() {
 
 $("connect-now").onclick = () => {
   showError("");
+  state.done = null;
+  render();
   send({ cmd: "connect" });
 };
+$("show-steps").onclick = () => {
+  state.stepsShown = true;
+  render();
+};
+$("done-open-folder").onclick = () => settings.folder && openPath(settings.folder);
+$("autosave-link").onclick = () => {
+  openSettings();
+  $("autosave").focus();
+};
+$("backlog-mark").onclick = () => markImported(state.items.map((i) => i.id), true);
+$("backlog-dismiss").onclick = dismissBacklogNotice;
+$("backlog-dismiss").title = t("Dismiss");
 $("disconnect").onclick = () => {
   state.resume = null;
   state.batch = null;
@@ -463,6 +616,8 @@ $("autosave").onchange = (e) => {
   if (!settings.autoSave) state.autoSaveStatus = "";
   $("autosave-status").textContent = "";
   send({ cmd: "autosave", enabled: settings.autoSave });
+  // The camera can send photos any time: Ferry has to be running for that.
+  if (settings.autoSave) enableAutostart().then(() => ($<HTMLInputElement>("autostart").checked = true)).catch(() => {});
 };
 if (settings.autoSave) send({ cmd: "autosave", enabled: true });
 $("immich-server").onchange = (e) => (settings.immichServer = (e.target as HTMLInputElement).value.trim());

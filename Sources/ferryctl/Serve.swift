@@ -13,17 +13,25 @@ import Foundation
 ///   {"cmd": "cancel"}                           stop the running import after the current file
 ///   {"cmd": "autosave", "enabled": bool}        listen for Fujifilm cameras sending photos over the home network
 ///                                               (PC AutoSave); registering happens when the camera asks
-///   {"cmd": "disconnect", "pause": seconds?}    with "pause", don't reconnect by itself for that long
+///   {"cmd": "disconnect", "pause": seconds?, "untilGone": bool?}
+///                                               with "pause", don't reconnect by itself for that long; with
+///                                               "untilGone", not until the camera's address stops answering (a plain
+///                                               TCP connect to its port) or the next "connect"
+///   {"cmd": "mark", "ids": [...], "imported": bool}
+///                                               record items as imported, or not, without copying anything
 ///   {"cmd": "quit"}
 ///
 /// Events, one JSON object per line on stdout:
 ///   {"event": "status", "phase": "searching|connecting|waitingForApproval|connected", "camera": "...", "address": "..."}
+///   {"event": "status", "phase": "searching", "paused": true}
+///                                               let go of the camera; not reconnecting until it's gone or "connect"
 ///   {"event": "items", "items": [{"id", "filename", "date", "isVideo", "kind", "protected", "size", "imported"}],
 ///    "complete": bool, "total": n}                 the list so far, newest first; sent in batches while reading the card
 ///   {"event": "thumbnail", "id", "path"}
 ///   {"event": "progress", "index", "total", "filename", "fraction", "bytes", "totalBytes"}
 ///   {"event": "imported", "id", "path"}
 ///   {"event": "done", "imported", "failed", "cancelled"}
+///   {"event": "marked", "ids", "imported"}     after "mark": these items are now (not) imported
 ///   {"event": "autosave", "status": "off|listening|registered|error", "camera"?, "message"?}
 ///   {"event": "status", ..., "autoSave": true}  connected because the camera came over the home network
 ///   {"event": "battery", "percent"}             the camera's charge, when it reports it
@@ -55,6 +63,9 @@ final class Server: @unchecked Sendable {
     private var afterBluetoothHandoff = false
     /// After disconnecting by itself, the UI asks for a pause so the camera can close its network first.
     private var reconnectAfter = Date.distantPast
+    /// After letting go with "untilGone": where the camera was, checked now and then until it stops answering.
+    private var pausedUntilGone: (host: String, port: UInt16, interface: String?)?
+    private var lastPresenceCheck = Date.distantPast
 
     init(host: String?, clientName: String, history: ImportHistory) {
         self.host = host
@@ -84,14 +95,26 @@ final class Server: @unchecked Sendable {
                 let bluetooth = command["bluetooth"] as? Bool ?? false
                 queue.async {
                     if bluetooth { self.afterBluetoothHandoff = true }
+                    self.reconnectAfter = .distantPast
+                    self.pausedUntilGone = nil
                     self.connectIfNeeded(reportFailure: true)
                 }
             case "disconnect":
                 let pause = command["pause"] as? Double ?? 0
+                let untilGone = command["untilGone"] as? Bool ?? false
                 queue.async {
-                    self.disconnect()
+                    let endpoint = untilGone ? self.camera.flatMap(CameraPresence.endpoint(of:)) : nil
+                    self.pausedUntilGone = endpoint.map { ($0.host, $0.port, self.host == nil ? NetworkInfo.wifiInterface : nil) }
+                    self.lastPresenceCheck = Date()
                     self.reconnectAfter = Date().addingTimeInterval(pause)
+                    self.disconnect(paused: endpoint != nil)
                 }
+            case "mark":
+                // The history has its own lock: no need to wait behind a running import.
+                let ids = command["ids"] as? [String] ?? []
+                let imported = command["imported"] as? Bool ?? true
+                if imported { history.insert(contentsOf: ids) } else { history.remove(contentsOf: ids) }
+                emit(["event": "marked", "ids": ids, "imported": imported])
             case "autosave":
                 let enabled = command["enabled"] as? Bool ?? false
                 queue.async { self.setAutoSave(enabled) }
@@ -114,12 +137,24 @@ final class Server: @unchecked Sendable {
         queue.asyncAfter(deadline: .now() + 3) { [weak self] in
             guard let self else { return }
             if camera == nil {
-                if Date() >= reconnectAfter { connectIfNeeded(reportFailure: false) }
+                if pausedUntilGone != nil { checkCameraGone() }
+                if pausedUntilGone == nil, Date() >= reconnectAfter { connectIfNeeded(reportFailure: false) }
             } else {
                 keepAlive()
             }
             scheduleTick()
         }
+    }
+
+    /// Paused after letting go of the camera: resumes searching once its address stops answering, which happens when
+    /// the camera is turned off or this computer has gone back to another network.
+    private func checkCameraGone() {
+        guard let paused = pausedUntilGone, Date().timeIntervalSince(lastPresenceCheck) >= 10 else { return }
+        lastPresenceCheck = Date()
+        if CameraPresence.answers(host: paused.host, port: paused.port, interface: paused.interface) { return }
+        emit(["event": "log", "line": "The camera at \(paused.host) is gone: looking for cameras again"])
+        pausedUntilGone = nil
+        emit(["event": "status", "phase": "searching"])
     }
 
     private func connectIfNeeded(reportFailure: Bool) {
@@ -160,7 +195,7 @@ final class Server: @unchecked Sendable {
         }
     }
 
-    private func disconnect() {
+    private func disconnect(paused: Bool = false) {
         afterBluetoothHandoff = false
         camera?.disconnect()
         camera = nil
@@ -170,7 +205,7 @@ final class Server: @unchecked Sendable {
         pendingHandles = []
         listed = []
         listGeneration += 1
-        emit(["event": "status", "phase": "searching"])
+        emit(paused ? ["event": "status", "phase": "searching", "paused": true] : ["event": "status", "phase": "searching"])
     }
 
     private func lost(_ error: Error) {

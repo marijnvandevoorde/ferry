@@ -44,10 +44,25 @@
       </nav>
     </header>
 
+    <!-- A camera full of photos, none of them imported by Ferry: probably copied some other way before. -->
+    <div id="backlog-notice" class="notice" role="region" aria-labelledby="backlog-title" hidden>
+      <div class="notice-text">
+        <strong id="backlog-title" data-i18n>Already copied these photos some other way?</strong>
+        <p class="muted" data-i18n>Mark them as imported, and Import New will only pick up photos you take from now on. Nothing is copied or deleted.</p>
+      </div>
+      <button id="backlog-mark" type="button" data-i18n>Mark All as Imported</button>
+      <button id="backlog-dismiss" type="button" class="close" aria-label="Dismiss" data-i18n-label>×</button>
+    </div>
+
     <main>
       <section id="connect">
         <h2 id="connect-title" data-i18n>Connect your camera</h2>
-        <p id="connect-subtitle" class="muted" data-i18n>Looking for the camera on your Wi-Fi network…</p>
+        <p id="connect-subtitle" class="muted" data-i18n>Join the camera's Wi-Fi network and Ferry connects by itself.</p>
+        <!-- After letting go of the camera: what was imported, and the steps folded away. -->
+        <p id="done-actions" hidden><button id="done-open-folder" type="button" data-i18n>Open folder</button></p>
+        <p id="autosave-waiting" class="notice-line" hidden data-i18n>Waiting for your camera to send photos (PC AutoSave)</p>
+        <p><button id="show-steps" type="button" class="link" hidden data-i18n>Show the steps</button></p>
+        <div id="steps">
         <ol>
           <li data-i18n>On the camera, turn on Wi-Fi the way you would for its phone app.</li>
           <li data-i18n>On this computer, join the camera's Wi-Fi network. Its name usually includes the brand or model.</li>
@@ -65,11 +80,13 @@
             <li data-i18n><b>Sony:</b> Send to Smartphone in the playback menu.</li>
           </ul>
         </details>
+        </div>
         <button id="connect-now" type="button" data-i18n>Connect</button>
-        <p id="last-import" class="muted" role="status" hidden></p>
         <p id="error" class="error" role="alert" hidden></p>
         <ul id="bt-saved" class="bt-list" hidden></ul>
-        <p><button id="bt-open" type="button" data-i18n>Newer Fujifilm, like the X-T5? Pair over Bluetooth…</button></p>
+        <p id="fuji-links" class="muted"><span>Fujifilm:</span>
+          <span id="autosave-link-group"><button id="autosave-link" type="button" class="link" data-i18n>Stay online with PC AutoSave</button> ·</span>
+          <button id="bt-open" type="button" class="link" data-i18n>Pair over Bluetooth (X-T5 and newer)</button></p>
       </section>
       <section id="gallery" hidden></section>
     </main>
@@ -83,6 +100,8 @@
       <button id="import-selected" type="button" hidden></button>
       <button id="import-new" type="button" class="primary"></button>
     </footer>
+
+    <div id="context-menu" class="menu" role="menu" hidden></div>
 
     <dialog id="settings">
       <form method="dialog">
@@ -103,12 +122,13 @@
         <label><span data-i18n>Rename files (optional)</span> <input id="rename" placeholder="{yyyy-MM-dd}_{original}" /></label>
         <label class="check"><input id="auto-import" type="checkbox" /> <span data-i18n>Import new photos automatically after connecting</span></label>
         <label class="check"><input id="disconnect-after" type="checkbox" /> <span data-i18n>Disconnect when the import is done</span></label>
-        <p class="muted small" data-i18n>Lets this computer go back to your usual Wi-Fi network once the camera closes its own.</p>
+        <p class="muted small" data-i18n>Ferry lets go of the camera after the import. Turn the camera off and this computer goes back to your usual Wi-Fi.</p>
         <label class="check"><input id="skip-videos" type="checkbox" /> <span data-i18n>Leave videos out of “Import New”</span></label>
         <label class="check"><input id="autostart" type="checkbox" /> <span data-i18n>Start at login</span></label>
         <fieldset>
           <legend>PC AutoSave</legend>
           <label class="check"><input id="autosave" type="checkbox" /> <span data-i18n>Receive photos over the home network (Fujifilm PC AutoSave)</span></label>
+          <p class="muted small" data-i18n>Ferry then starts at login and keeps running in the tray, so the camera can send photos any time.</p>
           <p id="autosave-status" class="muted small" role="status"></p>
           <p class="muted small" data-i18n>Fujifilm cameras: the camera joins your Wi-Fi and sends new photos to this computer, so the computer stays online. Once, on the camera: Set Up → Connection Setting → PC AutoSave Setting. Join your network (Simple Setup uses your router's WPS button, no password to type), then register this computer. After that, choose PC AutoSave in the camera's playback menu to send photos.</p>
         </fieldset>
