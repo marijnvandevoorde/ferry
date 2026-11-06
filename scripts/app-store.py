@@ -217,8 +217,8 @@ def developer_id():
             if created:
                 break
         else:
-            sys.exit("Apple refused: create it in Xcode → Settings → Accounts → Manage Certificates → + → "
-                     "Developer ID Application, then export it from Keychain Access (docs/releasing.md)")
+            sys.exit("Apple refused: only the Account Holder can create it, at developer.apple.com → "
+                     "Certificates → + → Developer ID Application (docs/releasing.md)")
         cert = created["data"]
         print(f"created {cert['attributes']['name']}, valid until {cert['attributes']['expirationDate'][:10]}")
         (tmp / "cert.der").write_bytes(base64.b64decode(cert["attributes"]["certificateContent"]))
