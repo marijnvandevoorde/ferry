@@ -48,6 +48,9 @@
     <control>keyboard</control>
   </supports>
   <releases>
+    <release version="0.2.1" date="2026-11-06">
+      <url type="details">https://github.com/marijnvandevoorde/ferry/releases/tag/v0.2.1</url>
+    </release>
     <release version="0.2.0" date="2026-11-05">
       <url type="details">https://github.com/marijnvandevoorde/ferry/releases/tag/v0.2.0</url>
     </release>

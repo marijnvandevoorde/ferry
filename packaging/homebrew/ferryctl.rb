@@ -4,7 +4,7 @@ class Ferryctl < Formula
   desc "Import photos from a camera over Wi-Fi (Fujifilm, Canon, GoPro and more)"
   homepage "https://ferry.small-victories.co"
   url "https://github.com/marijnvandevoorde/ferry/archive/refs/tags/v0.2.1.tar.gz"
-  sha256 "SHA256_OF_THE_TAG_TARBALL"
+  sha256 "eb9e2faeb61901a36caa7fbe0425ba8164f079b18b40542b89e5b27ff4dbcf54"
   license "MIT"
   head "https://github.com/marijnvandevoorde/ferry.git", branch: "main"
 
