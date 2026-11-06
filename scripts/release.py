@@ -38,8 +38,8 @@ PACKAGE_FILES = {
     "packaging/homebrew/ferryctl.rb": r'archive/refs/tags/v([^/"]+)\.tar\.gz',
     "packaging/flathub/io.github.marijnvandevoorde.Ferry.yml": r'releases/download/v([^/]+)/',
 }
-# What the release build must attach. The DMG needs the Developer ID certificate.
-ASSETS = ["Ferry_{v}_x64-setup.exe", "Ferry_{v}_x64_en-US.msi", "Ferry_{v}_amd64.AppImage",
+# What the release build must attach.
+ASSETS = ["Ferry-{v}.dmg", "Ferry_{v}_x64-setup.exe", "Ferry_{v}_x64_en-US.msi", "Ferry_{v}_amd64.AppImage",
           "Ferry_{v}_amd64.AppImage.asc", "Ferry_{v}_amd64.deb", "Ferry_{v}_amd64.deb.asc"]
 
 
@@ -143,7 +143,6 @@ def check_assets(version):
     missing = [a.format(v=version) for a in ASSETS if a.format(v=version) not in names.split("\n")]
     if missing:
         sys.exit("missing from the release: " + ", ".join(missing))
-    return any(name.endswith(".dmg") for name in names.split("\n"))
 
 
 def update_packages(version):
@@ -208,11 +207,9 @@ def check_site(version, commit):
     print("the site links the new downloads")
 
 
-def by_hand(version, has_dmg):
+def by_hand(version):
     step("Left to do by hand")
     todo = []
-    if not has_dmg:
-        todo.append("Mac DMG: not built. Add the DEVELOPER_ID_P12 secrets (docs/releasing.md) and rerun the release.")
     upload = subprocess.run(["gh", "variable", "get", "APP_STORE_UPLOAD", "-R", REPO], capture_output=True, text=True)
     if upload.stdout.strip() == "true":
         todo.append(f"Mac App Store: build {version} was uploaded. In App Store Connect, add it to a new version "
@@ -244,12 +241,12 @@ def main():
         bump_and_tag(args.version)
     step("Waiting for the release build")
     wait_for("release.yml", run("git", "rev-list", "-n", "1", f"v{args.version}"))
-    has_dmg = check_assets(args.version)
+    check_assets(args.version)
     site_commit = update_packages(args.version)
     update_tap(args.version)
     if site_commit and "site/site.json" in run("git", "diff", "--name-only", f"{site_commit}~1", site_commit):
         check_site(args.version, site_commit)
-    by_hand(args.version, has_dmg)
+    by_hand(args.version)
 
 
 if __name__ == "__main__":
