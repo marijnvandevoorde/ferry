@@ -10,7 +10,7 @@ import Foundation
 ///    "skipVideos": false, "immich": {"server", "apiKey", "album"}?}
 ///                                               import the given items, or all new ones without "ids";
 ///                                               with "immich", also upload each file to that Immich server
-///   {"cmd": "cancel"}                           stop the running import after the current file
+///   {"cmd": "cancel"}                           stop the running import (cancels the running download on HTTP cameras)
 ///   {"cmd": "autosave", "enabled": bool}        listen for Fujifilm cameras sending photos over the home network
 ///                                               (PC AutoSave); registering happens when the camera asks
 ///   {"cmd": "disconnect", "pause": seconds?, "untilGone": bool?}
@@ -58,13 +58,15 @@ final class Server: @unchecked Sendable {
     private let autoSaveLock = NSLock()
     private var autoSaveListener: AutoSaveListener?
     private var cancelRequested = false
+    /// The camera an import is downloading from, so "cancel" can stop the running download (guarded by `lock`).
+    private var transferCamera: WirelessCamera?
     private var stopped = false
     /// Set by a connect command after a Bluetooth hand-off; newer Fujifilm cameras then use the XApp gallery.
     private var afterBluetoothHandoff = false
     /// After disconnecting by itself, the UI asks for a pause so the camera can close its network first.
     private var reconnectAfter = Date.distantPast
     /// After letting go with "untilGone": where the camera was, checked now and then until it stops answering.
-    private var pausedUntilGone: (host: String, port: UInt16, interface: String?)?
+    private var pausedUntilGone: CameraAddress?
     private var lastPresenceCheck = Date.distantPast
 
     init(host: String?, clientName: String, history: ImportHistory) {
@@ -87,7 +89,10 @@ final class Server: @unchecked Sendable {
             }
             switch name {
             case "cancel":
-                lock.withLock { cancelRequested = true }
+                lock.withLock {
+                    cancelRequested = true
+                    transferCamera?.cancelTransfer()
+                }
             case "quit":
                 queue.sync { disconnect() }
                 exit(0)
@@ -103,8 +108,8 @@ final class Server: @unchecked Sendable {
                 let pause = command["pause"] as? Double ?? 0
                 let untilGone = command["untilGone"] as? Bool ?? false
                 queue.async {
-                    let endpoint = untilGone ? self.camera.flatMap(CameraPresence.endpoint(of:)) : nil
-                    self.pausedUntilGone = endpoint.map { ($0.host, $0.port, self.host == nil ? NetworkInfo.wifiInterface : nil) }
+                    let endpoint = untilGone ? self.camera?.address : nil
+                    self.pausedUntilGone = endpoint
                     self.lastPresenceCheck = Date()
                     self.reconnectAfter = Date().addingTimeInterval(pause)
                     self.disconnect(paused: endpoint != nil)
@@ -151,7 +156,7 @@ final class Server: @unchecked Sendable {
     private func checkCameraGone() {
         guard let paused = pausedUntilGone, Date().timeIntervalSince(lastPresenceCheck) >= 10 else { return }
         lastPresenceCheck = Date()
-        if CameraPresence.answers(host: paused.host, port: paused.port, interface: paused.interface) { return }
+        if paused.answers() { return }
         emit(["event": "log", "line": "The camera at \(paused.host) is gone: looking for cameras again"])
         pausedUntilGone = nil
         emit(["event": "status", "phase": "searching"])
@@ -399,6 +404,8 @@ final class Server: @unchecked Sendable {
         var imported = 0
         var failed: [String] = []
         var bytesBefore = 0
+        lock.withLock { transferCamera = camera }
+        defer { lock.withLock { transferCamera = nil } }
         for (index, id) in ids.enumerated() {
             if lock.withLock({ cancelRequested }) { break }
             guard let (handle, info) = items[id] else { continue }
@@ -435,6 +442,8 @@ final class Server: @unchecked Sendable {
                 emit(["event": "imported", "id": id, "path": url.path])
             } catch let error as FujiError where error.isConnectionLoss {
                 lost(error)
+                break
+            } catch is CancellationError {
                 break
             } catch {
                 failed.append(info.filename)
