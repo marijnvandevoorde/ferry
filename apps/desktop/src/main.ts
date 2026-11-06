@@ -197,7 +197,11 @@ listen<ServeEvent>("ferryctl", ({ payload: e }) => {
       } else if (firstList && fresh.length > 0 && !state.importing) {
         notify(state.camera || t("Camera connected"), t("{n} new items to import", { n: fresh.length }, fresh.length));
       } else if (complete) {
+        const waiting = state.importNewWhenListed;
         continueImportNew();
+        // Nothing new left after the listing: the import is already done.
+        if (waiting && !state.importing && settings.disconnectAfterImport && !state.autoSaveSession)
+          send({ cmd: "disconnect", pause: 60 });
       }
       break;
     }

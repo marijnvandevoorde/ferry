@@ -461,6 +461,8 @@ final class CameraModel {
         guard importNewWhenListed, !isListing, !isImporting else { return }
         importNewWhenListed = false
         importNew()
+        // Nothing new left after the listing: the import is already done.
+        disconnectIfDone()
     }
 
     func importSelected() {
