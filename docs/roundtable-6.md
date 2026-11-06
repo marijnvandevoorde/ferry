@@ -129,8 +129,9 @@ Decided, in this round:
 
 Not now:
 
-- **Fujifilm battery (11).** The raw level's scale is unknown, and a wrong percentage is worse than none. Map it on
-  a real X-T20, then move the warning so it also shows during an import.
+- **Fujifilm battery (11).** The X-T20 doesn't report the standard battery property (0x5001) in the transfer mode
+  Ferry uses. Fujifilm's own property (0xD242) only shows up in remote shooting mode, going by vcam's traces, and
+  its scale is unknown. The warning works for GoPro and Ricoh; Fujifilm needs a real camera that reports it.
 - **Immich key in the system keyring (7).** Decision 6 makes the page true today. A keyring on Windows and Linux
   (and through the Flatpak portal) is worth its own issue.
 - **RPM and Flatpak from source (13)** stay with #43.
