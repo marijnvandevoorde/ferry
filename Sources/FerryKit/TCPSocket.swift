@@ -70,6 +70,12 @@ final class TCPSocket {
         }
     }
 
+    /// Waits up to `timeout` seconds for data (or the peer closing); true when a read won't block.
+    func waitReadable(timeout: TimeInterval) -> Bool {
+        guard Sys.isValid(fd) else { return true }
+        return !Sys.wait([fd], timeout: timeout).isEmpty
+    }
+
     /// Reads exactly `count` bytes or throws.
     func read(exactly count: Int) throws -> Data {
         guard Sys.isValid(fd) else { throw FujiError.disconnected }

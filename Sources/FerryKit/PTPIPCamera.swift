@@ -42,6 +42,13 @@ public final class PTPIPCamera: @unchecked Sendable {
 
     // MARK: - Connection
 
+    /// How long to wait for the camera to answer the init request; cameras that ask the user to accept a new
+    /// device answer only after that.
+    static let approvalTimeout: TimeInterval = 120
+
+    /// `onWaitingForApproval` is called when the camera doesn't answer the init request right away: it may be
+    /// asking the user whether to allow this computer. Throws `FujiError.cancelled` when the calling task is
+    /// cancelled while waiting, and `FujiError.initRejected` when the camera refuses the connection.
     public func connect(onWaitingForApproval: () -> Void = {}) throws {
         log("Connecting to \(host):\(Self.port) (PTP/IP)" + (interface.map { " via \($0)" } ?? ""))
         let cmd = try TCPSocket(host: host, port: Self.port, interface: interface, connectTimeout: 5)
@@ -53,11 +60,16 @@ public final class PTPIPCamera: @unchecked Sendable {
         for unit in clientName.prefix(39).utf16 { w.u16(unit) }
         w.u16(0)
         w.u32(0x0001_0000)
-        // Cameras that ask the user to accept a new device answer only after that, so wait long.
-        cmd.readTimeout = 120
         try writePacket(.initCommandRequest, w.data, to: cmd)
+        try waitForInitAnswer(on: cmd, onWaitingForApproval: onWaitingForApproval)
+        cmd.readTimeout = 10
         let (type, ack) = try readPacket(from: cmd)
-        if type == .initFail { throw FujiError.handshakeRejected }
+        if type == .initFail {
+            var r = DataReader(ack)
+            let reason = (try? r.u32()).map { String(format: "0x%08X", $0) } ?? "none"
+            log("The camera refused the connection (PTP/IP InitFail, reason \(reason))")
+            throw FujiError.initRejected
+        }
         guard type == .initCommandAck else { throw FujiError.protocolError("expected init ack, got \(type)") }
         var r = DataReader(ack)
         let connectionNumber = try r.u32()
@@ -85,6 +97,26 @@ public final class PTPIPCamera: @unchecked Sendable {
         isConnected = true
         try loadHandles()
         log("Ready: \(objectHandles.count) objects")
+    }
+
+    /// Waits for the answer to the init request in short steps, so a cancelled task stops waiting. Reports
+    /// waiting for approval when the answer doesn't come within a second.
+    private func waitForInitAnswer(on cmd: TCPSocket, onWaitingForApproval: () -> Void) throws {
+        let deadline = Date().addingTimeInterval(Self.approvalTimeout)
+        var reported = false
+        while !cmd.waitReadable(timeout: 1) {
+            if Task.isCancelled {
+                log("Stopped waiting for the camera")
+                throw FujiError.cancelled
+            }
+            guard Date() < deadline else { throw FujiError.timeout }
+            if !reported {
+                reported = true
+                log("Waiting for the camera to answer; it may be asking whether to allow this computer")
+                onWaitingForApproval()
+            }
+        }
+        if Task.isCancelled { throw FujiError.cancelled }
     }
 
     public func disconnect() {

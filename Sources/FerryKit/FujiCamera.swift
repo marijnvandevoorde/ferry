@@ -96,6 +96,7 @@ public final class FujiCamera: @unchecked Sendable {
             let deadline = Date().addingTimeInterval(120)
             while cameraState == nil || cameraState == PTP.CameraState.waitForAccess {
                 guard Date() < deadline else { throw FujiError.timeout }
+                if Task.isCancelled { throw FujiError.cancelled }
                 Thread.sleep(forTimeInterval: 0.2)
                 try pollEvents()
                 if cameraState == nil || cameraState == PTP.CameraState.waitForAccess {

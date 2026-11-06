@@ -81,6 +81,44 @@ public final class SerialCamera: @unchecked Sendable {
     }
 }
 
+/// Where a camera listens, to check later whether it is still there without talking to it.
+public struct CameraAddress: Sendable, Equatable {
+    public var host: String
+    public var port: UInt16
+    public var interface: String?
+
+    public init(host: String, port: UInt16, interface: String? = nil) {
+        self.host = host
+        self.port = port
+        self.interface = interface
+    }
+
+    /// True when something accepts a TCP connection at the address. Connects and closes again, no handshake.
+    public func answers(timeout: TimeInterval = 2) -> Bool {
+        (try? TCPSocket(host: host, port: port, interface: interface, connectTimeout: timeout)) != nil
+    }
+}
+
+extension WirelessCamera {
+    /// The address and port this camera was reached on, when known.
+    public var address: CameraAddress? {
+        switch self {
+        case let camera as FujiCamera:
+            return CameraAddress(host: camera.host, port: PTP.commandPort, interface: camera.interface)
+        case let camera as PTPIPCamera:
+            return CameraAddress(host: camera.host, port: PTPIPCamera.port, interface: camera.interface)
+        case let camera as DLNACamera:
+            guard let url = camera.controlURL, let host = url.host else { return nil }
+            return CameraAddress(host: host, port: UInt16(url.port ?? 80))
+        case let camera as HTTPCamera:
+            guard let host = camera.base.host else { return nil }
+            return CameraAddress(host: host, port: UInt16(camera.base.port ?? 80))
+        default:
+            return nil
+        }
+    }
+}
+
 public enum CameraProtocol: String, Sendable, CaseIterable {
     /// Fujifilm's protocol on port 55740 (Camera Remote era).
     case fuji
