@@ -68,6 +68,7 @@ final class Server: @unchecked Sendable {
     /// After letting go with "untilGone": where the camera was, checked now and then until it stops answering.
     private var pausedUntilGone: CameraAddress?
     private var lastPresenceCheck = Date.distantPast
+    private var presenceMisses = 0
 
     init(host: String?, clientName: String, history: ImportHistory) {
         self.host = host
@@ -110,6 +111,7 @@ final class Server: @unchecked Sendable {
                 queue.async {
                     let endpoint = untilGone ? self.camera?.address : nil
                     self.pausedUntilGone = endpoint
+                    self.presenceMisses = 0
                     self.lastPresenceCheck = Date()
                     self.reconnectAfter = Date().addingTimeInterval(pause)
                     self.disconnect(paused: endpoint != nil)
@@ -156,7 +158,13 @@ final class Server: @unchecked Sendable {
     private func checkCameraGone() {
         guard let paused = pausedUntilGone, Date().timeIntervalSince(lastPresenceCheck) >= 10 else { return }
         lastPresenceCheck = Date()
-        if paused.answers() { return }
+        // Two misses in a row, so a camera that is still closing its network isn't taken for gone.
+        if paused.answers() {
+            presenceMisses = 0
+            return
+        }
+        presenceMisses += 1
+        if presenceMisses < 2 { return }
         emit(["event": "log", "line": "The camera at \(paused.host) is gone: looking for cameras again"])
         pausedUntilGone = nil
         emit(["event": "status", "phase": "searching"])
