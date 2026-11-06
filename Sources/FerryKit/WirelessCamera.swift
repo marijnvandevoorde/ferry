@@ -21,10 +21,14 @@ public protocol WirelessCamera: AnyObject, Sendable {
     func refreshObjectCount() throws -> Int
     /// The battery charge in percent, when the camera reports it; updated by `connect()` and `refreshObjectCount()`.
     var batteryPercent: Int? { get }
+    /// Cancels the download running now, if the camera can stop one midway; it then throws `CancellationError`.
+    /// May be called from any thread, unlike the other calls. `SerialCamera.run` calls it when its task is cancelled.
+    func cancelTransfer()
 }
 
 extension WirelessCamera {
     public var batteryPercent: Int? { nil }
+    public func cancelTransfer() {}
 }
 
 /// Serializes calls to a camera on its own queue, for use from async code.
@@ -39,10 +43,40 @@ public final class SerialCamera: @unchecked Sendable {
     /// Fuji-specific features (selection mode, PC AutoSave, profile) when the camera is a Fuji.
     public var fuji: FujiCamera? { camera as? FujiCamera }
 
+    /// Runs `body` on the camera's queue. Cancelling the calling task while `body` runs cancels the camera's
+    /// running download (`cancelTransfer()`), which then throws `CancellationError`.
     public func run<T: Sendable>(_ body: @escaping @Sendable (WirelessCamera) throws -> T) async throws -> T {
         let camera = self.camera
-        return try await withCheckedThrowingContinuation { cont in
-            queue.async { cont.resume(with: Result { try body(camera) }) }
+        let run = Run()
+        return try await withTaskCancellationHandler {
+            try await withCheckedThrowingContinuation { cont in
+                queue.async {
+                    run.setRunning(true)
+                    let result = Result { try body(camera) }
+                    run.setRunning(false)
+                    cont.resume(with: result)
+                }
+            }
+        } onCancel: {
+            run.ifRunning { camera.cancelTransfer() }
+        }
+    }
+
+    /// Whether a `run` body is on the queue now, so a cancelled caller never stops another caller's download.
+    private final class Run: @unchecked Sendable {
+        private let lock = NSLock()
+        private var running = false
+
+        func setRunning(_ value: Bool) {
+            lock.lock()
+            running = value
+            lock.unlock()
+        }
+
+        func ifRunning(_ action: () -> Void) {
+            lock.lock()
+            defer { lock.unlock() }
+            if running { action() }
         }
     }
 }

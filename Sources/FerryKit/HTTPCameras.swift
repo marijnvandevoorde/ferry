@@ -67,30 +67,52 @@ public class HTTPCamera: @unchecked Sendable {
         return try result.get()
     }
 
-    /// Downloads to a file without holding it in memory.
-    func download(_ pathAndQuery: String, to destination: URL, timeout: TimeInterval = 120) throws {
+    /// The configuration of download sessions. Tests swap in one with a stub `URLProtocol`.
+    nonisolated(unsafe) static var downloadConfiguration = URLSessionConfiguration.default
+
+    private let transferLock = NSLock()
+    private var transfer: URLSessionTask?
+
+    /// Cancels the download running now, if any; it then throws `CancellationError`. Safe to call from any thread.
+    public func cancelTransfer() {
+        transferLock.lock()
+        defer { transferLock.unlock() }
+        transfer?.cancel()
+    }
+
+    /// Downloads to a file without holding it in memory. `progress` gets the bytes received and the bytes expected
+    /// (the Content-Length, else `expected`, else 0 for unknown) as they arrive, on the calling thread.
+    ///
+    /// A data task that writes each chunk itself, rather than a download task: swift-corelibs-foundation's download
+    /// tasks only work with its own protocol handlers, and this behaves the same on every platform.
+    func download(_ pathAndQuery: String, to destination: URL, timeout: TimeInterval = 120, expected: Int64 = 0,
+                  progress: (Int64, Int64) -> Void = { _, _ in }) throws {
         guard let url = URL(string: pathAndQuery, relativeTo: base)?.absoluteURL else { throw FujiError.protocolError("bad URL \(pathAndQuery)") }
         var request = URLRequest(url: url, timeoutInterval: timeout)
         headers.forEach { request.setValue($1, forHTTPHeaderField: $0) }
-        let semaphore = DispatchSemaphore(value: 0)
-        nonisolated(unsafe) var failure: Error?
-        URLSession.shared.downloadTask(with: request) { tmp, response, error in
-            if let error {
-                failure = FujiError.io(error.localizedDescription)
-            } else if let code = (response as? HTTPURLResponse)?.statusCode, code != 200 {
-                failure = FujiError.protocolError("HTTP \(code) for \(url.path)")
-            } else if let tmp {
-                do {
-                    try? FileManager.default.removeItem(at: destination)
-                    try FileManager.default.moveItem(at: tmp, to: destination)
-                } catch {
-                    failure = error
-                }
+        let delegate = DownloadDelegate(destination: destination)
+        let session = URLSession(configuration: Self.downloadConfiguration, delegate: delegate, delegateQueue: nil)
+        defer { session.finishTasksAndInvalidate() }
+        let task = session.dataTask(with: request)
+        transferLock.lock()
+        transfer = task
+        transferLock.unlock()
+        defer {
+            transferLock.lock()
+            transfer = nil
+            transferLock.unlock()
+        }
+        task.resume()
+        var reported: Int64 = 0
+        while true {
+            delegate.wake.wait()
+            let (done, total, result) = delegate.state()
+            if done != reported {
+                reported = done
+                progress(done, total > 0 ? total : expected)
             }
-            semaphore.signal()
-        }.resume()
-        semaphore.wait()
-        if let failure { throw failure }
+            if let result { return try result.get() }
+        }
     }
 
     static func info(index: Int, filename: String, size: UInt32, date: Date?) -> ObjectInfo {
@@ -190,7 +212,7 @@ public final class OlympusCamera: HTTPCamera {
     public func download(_ handle: UInt32, to destination: URL, progress: (Int64, Int64) -> Void) throws -> ObjectInfo {
         let (path, info) = try entry(handle)
         log("Downloading \(info.filename) (\(info.compressedSize) bytes)")
-        try download(path, to: destination)
+        try download(path, to: destination, expected: Int64(info.compressedSize), progress: progress)
         try verifySize(destination, expected: info.compressedSize)
         progress(Int64(info.compressedSize), Int64(info.compressedSize))
         return info
@@ -261,7 +283,7 @@ public final class RicohCamera: HTTPCamera {
     public func download(_ handle: UInt32, to destination: URL, progress: (Int64, Int64) -> Void) throws -> ObjectInfo {
         var (path, info) = try entry(handle)
         log("Downloading \(info.filename)")
-        try download(path, to: destination)
+        try download(path, to: destination, expected: Int64(info.compressedSize), progress: progress)
         let size = (try? FileManager.default.attributesOfItem(atPath: destination.path)[.size] as? NSNumber)?.uint32Value ?? 0
         info.compressedSize = size
         progress(Int64(size), Int64(size))
@@ -378,7 +400,7 @@ public final class GoProCamera: HTTPCamera {
     public func download(_ handle: UInt32, to destination: URL, progress: (Int64, Int64) -> Void) throws -> ObjectInfo {
         var (path, info) = try entry(handle)
         log("Downloading \(info.filename)")
-        try download(path, to: destination, timeout: 600)
+        try download(path, to: destination, timeout: 600, expected: Int64(info.compressedSize), progress: progress)
         if info.compressedSize > 0 {
             try verifySize(destination, expected: info.compressedSize)
         } else {
@@ -394,6 +416,100 @@ public final class GoProCamera: HTTPCamera {
         readBattery()
         try loadList()
         return files.count
+    }
+}
+
+/// Writes a download's bytes to a `.part` file next to the destination, renames it when complete (removes it
+/// otherwise), and wakes the waiting thread when there is progress to report (at most every 0.1 s) or the
+/// download is over. URLSession calls it on one serial queue.
+private final class DownloadDelegate: NSObject, URLSessionDataDelegate, @unchecked Sendable {
+    let destination: URL
+    let part: URL
+    let wake = DispatchSemaphore(value: 0)
+    private let lock = NSLock()
+    private var done: Int64 = 0
+    private var total: Int64 = 0
+    private var lastWake: UInt64 = 0
+    private var result: Result<Void, Error>?
+    /// Only touched on the delegate queue.
+    private var file: FileHandle?
+    private var failure: Error?
+
+    init(destination: URL) {
+        self.destination = destination
+        part = destination.deletingLastPathComponent().appendingPathComponent(destination.lastPathComponent + ".part")
+    }
+
+    func state() -> (done: Int64, total: Int64, result: Result<Void, Error>?) {
+        lock.lock()
+        defer { lock.unlock() }
+        return (done, total, result)
+    }
+
+    func urlSession(_ session: URLSession, dataTask: URLSessionDataTask, didReceive response: URLResponse,
+                    completionHandler: @escaping (URLSession.ResponseDisposition) -> Void) {
+        if let code = (response as? HTTPURLResponse)?.statusCode, code != 200 {
+            failure = FujiError.protocolError("HTTP \(code) for \(dataTask.originalRequest?.url?.path ?? "")")
+            return completionHandler(.cancel)
+        }
+        do {
+            guard FileManager.default.createFile(atPath: part.path, contents: nil) else {
+                throw FujiError.io("can't create \(part.path)")
+            }
+            file = try FileHandle(forWritingTo: part)
+        } catch {
+            failure = error
+            return completionHandler(.cancel)
+        }
+        lock.lock()
+        total = max(response.expectedContentLength, 0)
+        lock.unlock()
+        completionHandler(.allow)
+    }
+
+    func urlSession(_ session: URLSession, dataTask: URLSessionDataTask, didReceive data: Data) {
+        guard failure == nil, let file else { return }
+        do {
+            try file.write(contentsOf: data)
+        } catch {
+            failure = error
+            dataTask.cancel()
+            return
+        }
+        let now = DispatchTime.now().uptimeNanoseconds
+        lock.lock()
+        done += Int64(data.count)
+        let due = now - lastWake >= 100_000_000
+        if due { lastWake = now }
+        lock.unlock()
+        if due { wake.signal() }
+    }
+
+    func urlSession(_ session: URLSession, task: URLSessionTask, didCompleteWithError error: Error?) {
+        let outcome: Result<Void, Error>
+        if let failure {
+            outcome = .failure(failure)
+        } else if let error {
+            let error = error as NSError
+            outcome = .failure(error.domain == NSURLErrorDomain && error.code == NSURLErrorCancelled
+                ? CancellationError() : FujiError.io(error.localizedDescription))
+        } else if file == nil {
+            outcome = .failure(FujiError.io("no response for \(task.originalRequest?.url?.path ?? "")"))
+        } else {
+            outcome = Result {
+                try file?.close()
+                file = nil
+                try? FileManager.default.removeItem(at: destination)
+                try FileManager.default.moveItem(at: part, to: destination)
+            }
+        }
+        try? file?.close()
+        file = nil
+        if case .failure = outcome { try? FileManager.default.removeItem(at: part) }
+        lock.lock()
+        result = outcome
+        lock.unlock()
+        wake.signal()
     }
 }
 
