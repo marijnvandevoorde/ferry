@@ -84,3 +84,19 @@ dialog progress { width: 100%; }
 .bt-credentials button { padding: 2px 8px; font-size: 12px; }
 #bt-manual .small { margin: 12px 0; }
 dialog menu { display: flex; justify-content: flex-end; padding: 0; margin: 16px 0 0; }
+
+button.link { background: none; border: 0; padding: 0; color: var(--accent); }
+button.link:hover { text-decoration: underline; }
+#fuji-links { font-size: 13px; margin-top: 16px; }
+#done-actions { margin: 16px 0 0; }
+#connect .notice-line { margin: 20px 0 -8px; font-weight: 600; }
+
+.notice { display: flex; align-items: flex-start; gap: 12px; padding: 12px 20px; border-bottom: 1px solid var(--border); background: var(--surface); }
+.notice-text { flex: 1; }
+.notice-text p { margin-top: 2px; }
+.notice .close { border: 0; background: none; font-size: 18px; line-height: 1; padding: 4px 6px; color: var(--muted); }
+
+.menu { position: fixed; z-index: 10; min-width: 200px; padding: 4px; background: var(--surface); border: 1px solid var(--border); border-radius: 8px; box-shadow: 0 6px 24px rgba(0, 0, 0, 0.18); }
+.menu button { display: block; width: 100%; text-align: left; border: 0; border-radius: 4px; background: none; padding: 5px 10px; }
+.menu button:hover:not(:disabled), .menu button:focus-visible { background: var(--accent); color: var(--accent-text); outline: none; }
+.menu hr { border: 0; border-top: 1px solid var(--border); margin: 4px 0; }
