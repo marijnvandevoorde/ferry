@@ -130,7 +130,7 @@ public final class DLNACamera: HTTPCamera {
     public func download(_ handle: UInt32, to destination: URL, progress: (Int64, Int64) -> Void) throws -> ObjectInfo {
         var (path, info) = try entry(handle)
         log("Downloading \(info.filename)")
-        try download(path, to: destination)
+        try download(path, to: destination, expected: Int64(info.compressedSize), progress: progress)
         let size = (try? FileManager.default.attributesOfItem(atPath: destination.path)[.size] as? NSNumber)?.uint32Value ?? 0
         info.compressedSize = size
         progress(Int64(size), Int64(size))
