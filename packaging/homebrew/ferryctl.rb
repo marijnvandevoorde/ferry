@@ -1,5 +1,5 @@
-# Homebrew formula for ferryctl, built from source. For a tap: copy to Formula/ferryctl.rb in
-# github.com/marijnvandevoorde/homebrew-ferry, then `brew install marijnvandevoorde/ferry/ferryctl`.
+# Homebrew formula for ferryctl, built from source. Published as Formula/ferryctl.rb in
+# github.com/marijnvandevoorde/homebrew-ferry: `brew install marijnvandevoorde/ferry/ferryctl`.
 class Ferryctl < Formula
   desc "Import photos from a camera over Wi-Fi (Fujifilm, Canon, GoPro and more)"
   homepage "https://ferry.small-victories.co"

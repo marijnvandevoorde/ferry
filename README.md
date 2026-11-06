@@ -62,7 +62,8 @@ gpg --verify Ferry_*.AppImage.asc Ferry_*.AppImage
 
 ## Command line (macOS, Linux, Windows)
 
-`ferryctl` imports without the app, for example on a Linux machine or from a script:
+`ferryctl` imports without the app, for example on a Linux machine or from a script. On a Mac, install it
+with Homebrew: `brew install marijnvandevoorde/ferry/ferryctl`. Elsewhere, build it from source:
 
 ```sh
 swift build -c release --product ferryctl
