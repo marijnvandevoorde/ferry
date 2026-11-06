@@ -83,8 +83,10 @@
         <h3>{{.os}}</h3>
         <p class="muted">{{.req}}</p>
         <ul>
-          {{#each2 .links}}<li><a class="btn {{#if .soon}}btn-soon{{/if}}" href="{{.href}}"{{#if .soon}} rel="nofollow"{{/if}}>{{.label}}</a>{{#if2 .soon}}<span class="soon">{{download.soon}}</span>{{/if2}}</li>{{/each2}}
+          {{#each2 .links}}<li><a class="btn {{#if .soon}}btn-soon{{/if}}" href="{{.href}}"{{#if .soon}} rel="nofollow"{{/if}}>{{.label}}</a>{{#if2 .soon}}<span class="soon">{{download.soon}}</span>{{/if2}}{{#if3 .sig}}<a class="sig" href="{{.sig}}">{{download.signature}}</a>{{/if3}}</li>{{/each2}}
         </ul>
+        {{#if4 .note}}<p class="dl-note">{{.note}}</p>{{/if4}}
+        {{#if5 .fingerprint}}<p class="dl-note">{{download.fingerprint}} <code>{{.fingerprint}}</code> <a href="{{site.repo}}#windows-and-linux">{{download.verify}}</a></p>{{/if5}}
       </article>{{/each}}
       <article class="dl" id="download-cli">
         <h3>{{download.cli}}</h3>

@@ -122,10 +122,14 @@
     "windows": "Windows",
     "windows_req": "Windows 10 und 11.",
     "windows_msi": "Installer laden",
+    "windows_note": "Windows meldet vielleicht, dass es den PC geschützt hat: Wähle Weitere Informationen, dann Trotzdem ausführen. Ein signierter Installer kommt bald.",
     "linux": "Linux",
     "linux_req": "Die meisten 64-Bit-Distributionen (x86-64).",
     "linux_appimage": "AppImage",
     "linux_deb": ".deb-Paket",
+    "signature": "Signatur",
+    "fingerprint": "Signiert mit Schlüssel",
+    "verify": "So prüfst du sie",
     "cli": "Kommandozeile",
     "cli_req": "Für Server, Skripte und den Raspberry Pi: ferryctl für macOS, Linux und Windows.",
     "cli_link": "Anleitung lesen"
@@ -135,7 +139,7 @@
     "items": [
       {
         "q": "Funktioniert {name} mit meiner Kamera?",
-        "a": "Wenn deine Kamera WLAN hat und von Canon, Fujifilm, GoPro, Olympus / OM System, Ricoh, Sony oder Panasonic ist, wahrscheinlich: {name} spricht mit ihr wie ihre Smartphone-App. Wie gut jedes Modell getestet ist, ist unterschiedlich, sieh also in der Kameraliste nach. Kameras, die sich erst über Bluetooth koppeln müssen, wie die neuesten Fujifilm-Modelle, werden noch nicht unterstützt."
+        "a": "Wenn deine Kamera WLAN hat und von Canon, Fujifilm, GoPro, Olympus / OM System, Ricoh, Sony oder Panasonic ist, wahrscheinlich: {name} spricht mit ihr wie ihre Smartphone-App. Wie gut jedes Modell getestet ist, ist unterschiedlich, sieh also in der Kameraliste nach. Die Kopplung per Bluetooth, die die neuesten Fujifilm-Modelle brauchen, ist in der Mac-App, aber noch nicht an einer echten Kamera getestet."
       },
       {
         "q": "Kann ich RAW-Dateien importieren?",
@@ -167,7 +171,7 @@
       },
       {
         "q": "Und andere Kameramarken?",
-        "a": "Canon, Olympus und OM System, Ricoh GR sowie ältere Sony- und Panasonic-Kameras werden experimentell unterstützt. Wenn du eine ausprobierst, sag uns bitte, ob es geklappt hat."
+        "a": "Canon, Olympus und OM System, Ricoh GR, Sony-Alpha-Kameras mit Send to Smartphone sowie Panasonic-Lumix-Kameras mit WLAN-Freigabe werden experimentell unterstützt. Wenn du eine ausprobierst, sag uns bitte, ob es geklappt hat."
       }
     ]
   },
@@ -183,16 +187,22 @@
     "th_model": "Modell",
     "th_status": "Status",
     "th_notes": "Hinweise",
+    "models": {
+      "canon_other": "Andere EOS-Modelle mit WLAN",
+      "sony_alpha": "Sony Alpha mit Send to Smartphone im Wiedergabemenü",
+      "panasonic_lumix": "Panasonic Lumix mit WLAN-Freigabe"
+    },
     "notes": {
       "jpeg_only": "JPEG per WLAN.",
       "camera_remote": "Gleiches WLAN-Protokoll wie die getesteten Modelle.",
-      "bluetooth": "Diese koppeln zuerst per Bluetooth. Unterstützung ist geplant.",
+      "bluetooth": "Diese koppeln zuerst per Bluetooth. Die Mac-App kann das, noch nicht an einer echten Kamera getestet.",
       "ptpip": "Standard-PTP/IP über das WLAN der Kamera.",
       "oishare": "Nutzt die WLAN-Schnittstelle von OI.Share.",
       "ricoh": "Nutzt die WLAN-Schnittstelle der GR.",
       "dlna": "Kameras, die Fotos im WLAN als Medienserver bereitstellen.",
       "nikon": "Muss noch an einer echten Kamera erforscht werden.",
-      "gopro": "Nutzt die Open-GoPro-WLAN-Schnittstelle. JPEG, GPR (RAW) und Video."
+      "gopro": "Nutzt die Open-GoPro-WLAN-Schnittstelle. JPEG, GPR (RAW) und Video.",
+      "canon_pairing": "Modelle, die eine Kopplung mit Camera Connect verlangen, funktionieren vielleicht noch nicht."
     },
     "emulator_note": "„Funktioniert im Emulator“ heißt: {name} besteht seine Tests gegen vcam, einen Open-Source-Emulator des Protokolls dieser Kamera. Echte Kameras verhalten sich manchmal anders.",
     "report_h2": "Mit deiner Kamera probiert?",
@@ -202,7 +212,7 @@
   },
   "privacy": {
     "h1": "Datenschutz",
-    "updated": "Zuletzt aktualisiert am 3. November 2026.",
+    "updated": "Zuletzt aktualisiert am 6. November 2026.",
     "sections": [
       {
         "h": "Kurz gesagt",
@@ -214,7 +224,7 @@
       },
       {
         "h": "Was die App speichert",
-        "p": "Eine Liste der importierten Fotos (Dateiname, Datum und Größe), damit sie beim nächsten Mal übersprungen werden, und deine Einstellungen. Beides bleibt auf deinem Computer. Ein Immich-API-Schlüssel wird im Schlüsselbund des Systems gespeichert."
+        "p": "Eine Liste der importierten Fotos (Dateiname, Datum und Größe), damit sie beim nächsten Mal übersprungen werden, und deine Einstellungen. Beides bleibt auf deinem Computer. Ein Immich-API-Schlüssel liegt auf dem Mac im Schlüsselbund, unter Windows und Linux in den Einstellungen der App auf diesem Computer."
       },
       {
         "h": "Berechtigungen",

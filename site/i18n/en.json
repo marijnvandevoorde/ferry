@@ -122,10 +122,14 @@
     "windows": "Windows",
     "windows_req": "Windows 10 and 11.",
     "windows_msi": "Download installer",
+    "windows_note": "Windows may say it protected your PC: choose More info, then Run anyway. A signed installer is coming.",
     "linux": "Linux",
     "linux_req": "Most 64-bit (x86-64) distributions.",
     "linux_appimage": "AppImage",
     "linux_deb": ".deb package",
+    "signature": "Signature",
+    "fingerprint": "Signed with key",
+    "verify": "How to verify",
     "cli": "Command line",
     "cli_req": "For servers, scripts and a Raspberry Pi: ferryctl for macOS, Linux and Windows.",
     "cli_link": "Read the instructions"
@@ -135,7 +139,7 @@
     "items": [
       {
         "q": "Does {name} work with my camera?",
-        "a": "If your camera has Wi-Fi and comes from Canon, Fujifilm, GoPro, Olympus / OM System, Ricoh, Sony or Panasonic, probably: {name} talks to it the way its phone app does. How well each model is tested differs, so check the camera list. Cameras that must pair over Bluetooth first, like the newest Fujifilm models, aren't supported yet."
+        "a": "If your camera has Wi-Fi and comes from Canon, Fujifilm, GoPro, Olympus / OM System, Ricoh, Sony or Panasonic, probably: {name} talks to it the way its phone app does. How well each model is tested differs, so check the camera list. Pairing over Bluetooth, which the newest Fujifilm models need, is in the Mac app but not yet tested on a real camera."
       },
       {
         "q": "Can it import RAW files?",
@@ -167,7 +171,7 @@
       },
       {
         "q": "What about other camera brands?",
-        "a": "Canon, Olympus and OM System, Ricoh GR, and older Sony and Panasonic cameras are supported experimentally. If you try one, please tell us whether it worked."
+        "a": "Canon, Olympus and OM System, Ricoh GR, Sony Alpha cameras with Send to Smartphone and Panasonic Lumix cameras with Wi-Fi sharing are supported experimentally. If you try one, please tell us whether it worked."
       }
     ]
   },
@@ -183,16 +187,22 @@
     "th_model": "Model",
     "th_status": "Status",
     "th_notes": "Notes",
+    "models": {
+      "canon_other": "Other EOS models with Wi-Fi",
+      "sony_alpha": "Sony Alpha with Send to Smartphone in the playback menu",
+      "panasonic_lumix": "Panasonic Lumix with Wi-Fi sharing"
+    },
     "notes": {
       "jpeg_only": "JPEG over Wi-Fi.",
       "camera_remote": "Same Wi-Fi protocol as the tested models.",
-      "bluetooth": "These pair over Bluetooth first. Support is planned.",
+      "bluetooth": "These pair over Bluetooth first. The Mac app can pair them, not yet tested on a real camera.",
       "ptpip": "Standard PTP/IP over the camera's Wi-Fi.",
       "oishare": "Uses the OI.Share Wi-Fi interface.",
       "ricoh": "Uses the GR's Wi-Fi interface.",
       "dlna": "Cameras that share photos as a media server on Wi-Fi.",
       "nikon": "Needs research with a real camera.",
-      "gopro": "Uses the Open GoPro Wi-Fi interface. JPEG, GPR (RAW) and video."
+      "gopro": "Uses the Open GoPro Wi-Fi interface. JPEG, GPR (RAW) and video.",
+      "canon_pairing": "Models that ask for Camera Connect pairing may not work yet."
     },
     "emulator_note": "\"Works in the emulator\" means {name} passes its tests against vcam, an open-source emulator of that camera's protocol. Real cameras sometimes behave differently.",
     "report_h2": "Tried it with your camera?",
@@ -202,7 +212,7 @@
   },
   "privacy": {
     "h1": "Privacy",
-    "updated": "Last updated 3 November 2026.",
+    "updated": "Last updated 6 November 2026.",
     "sections": [
       {
         "h": "The short version",
@@ -214,7 +224,7 @@
       },
       {
         "h": "What the app stores",
-        "p": "A list of the photos it imported (file name, date and size), so it can skip them next time, and your settings. Both stay on your computer. An Immich API key is stored in the system keychain."
+        "p": "A list of the photos it imported (file name, date and size), so it can skip them next time, and your settings. Both stay on your computer. An Immich API key is kept in the keychain on a Mac, and in the app's settings on this computer on Windows and Linux."
       },
       {
         "h": "Permissions",

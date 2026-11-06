@@ -1,5 +1,5 @@
 {
-  "_comment": "Status: tested (a real camera), emulator (vcam emulates the model), experimental (mock API only), planned, unsupported. Notes are keys into i18n cameras.notes.",
+  "_comment": "Status: tested (a real camera), emulator (vcam emulates the model), experimental (mock API only), planned, unsupported. Notes are keys into i18n cameras.notes. A model that is a key in i18n cameras.models is translated. An optional fourth item is a GitHub issue number.",
   "brands": [
     {
       "brand": "Canon",
@@ -10,7 +10,8 @@
         ["EOS 5D Mark III", "emulator", "ptpip"],
         ["EOS Rebel SL2 / 200D", "emulator", "ptpip"],
         ["EOS Rebel T6 / 1300D", "emulator", "ptpip"],
-        ["PowerShot G7 X Mark III", "emulator", "ptpip"]
+        ["PowerShot G7 X Mark III", "emulator", "ptpip"],
+        ["canon_other", "experimental", "canon_pairing", 52]
       ]
     },
     {
@@ -28,7 +29,7 @@
         ["X-F10", "emulator", "jpeg_only"],
         ["GFX100 II", "emulator", ""],
         ["X-E3, X-Pro2, X-Pro3, X100F, X100V, X-T3, X-T100, X-T200", "experimental", "camera_remote"],
-        ["X-T5, X-H2, X-H2S, X-S20, X100VI, X-T50, X-M5", "planned", "bluetooth"]
+        ["X-T5, X-H2, X-H2S, X-S20, X100VI, X-T50, X-M5", "experimental", "bluetooth", 46]
       ]
     },
     {
@@ -63,7 +64,8 @@
       "brand": "Sony / Panasonic",
       "slug": "sony-panasonic",
       "models": [
-        ["Older Sony Alpha and Panasonic Lumix with Wi-Fi sharing", "experimental", "dlna"]
+        ["sony_alpha", "experimental", "dlna"],
+        ["panasonic_lumix", "experimental", "dlna"]
       ]
     }
   ]

@@ -6,6 +6,7 @@
   "repo": "https://github.com/marijnvandevoorde/ferry",
   "contact": "https://github.com/marijnvandevoorde/ferry/issues",
   "camera_report": "https://tally.so/r/PRpy60",
+  "signing_key_fingerprint": "A4DB 4DC1 7A30 FB56 427B  6F49 A405 8191 6E87 1361",
   "languages": ["en", "nl", "fr", "de", "es", "it"],
   "downloads": {
     "mac_app_store": "https://apps.apple.com/app/id0000000000",

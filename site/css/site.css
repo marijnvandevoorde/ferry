@@ -199,6 +199,9 @@ figcaption { color: var(--muted); font-size: .95rem; margin-top: .9rem; text-ali
 .dl ul { list-style: none; padding: 0; margin: 1rem 0 0; display: grid; gap: .6rem; }
 .dl li { display: flex; flex-wrap: wrap; align-items: center; gap: .5rem; }
 .soon { font-size: .8rem; font-weight: 600; color: var(--muted); background: var(--bg-alt); border-radius: 999px; padding: .15rem .6rem; }
+.sig { font-size: .9rem; }
+.dl-note { font-size: .9rem; color: var(--muted); margin: 1rem 0 0; }
+.dl-note code { font-size: .85rem; }
 
 .faq details { border-bottom: 1px solid var(--line); padding: 1rem 0; }
 .faq summary { font-weight: 650; font-size: 1.1rem; padding-right: 2rem; position: relative; }

@@ -122,10 +122,14 @@
     "windows": "Windows",
     "windows_req": "Windows 10 et 11.",
     "windows_msi": "Télécharger l'installeur",
+    "windows_note": "Windows peut dire qu'il a protégé votre ordinateur : choisissez Informations complémentaires, puis Exécuter quand même. Un installeur signé arrive bientôt.",
     "linux": "Linux",
     "linux_req": "La plupart des distributions 64 bits (x86-64).",
     "linux_appimage": "AppImage",
     "linux_deb": "Paquet .deb",
+    "signature": "Signature",
+    "fingerprint": "Signé avec la clé",
+    "verify": "Comment vérifier",
     "cli": "Ligne de commande",
     "cli_req": "Pour les serveurs, les scripts et un Raspberry Pi : ferryctl pour macOS, Linux et Windows.",
     "cli_link": "Lire les instructions"
@@ -135,7 +139,7 @@
     "items": [
       {
         "q": "{name} fonctionne-t-il avec mon appareil ?",
-        "a": "Si votre appareil a le Wi-Fi et vient de chez Canon, Fujifilm, GoPro, Olympus / OM System, Ricoh, Sony ou Panasonic, probablement : {name} lui parle comme son app mobile. Le niveau de test varie selon le modèle, consultez donc la liste des appareils. Les appareils qui doivent d'abord s'appairer en Bluetooth, comme les Fujifilm les plus récents, ne sont pas encore pris en charge."
+        "a": "Si votre appareil a le Wi-Fi et vient de chez Canon, Fujifilm, GoPro, Olympus / OM System, Ricoh, Sony ou Panasonic, probablement : {name} lui parle comme son app mobile. Le niveau de test varie selon le modèle, consultez donc la liste des appareils. L'appairage Bluetooth, nécessaire aux Fujifilm les plus récents, est dans l'app Mac mais pas encore testé sur un vrai appareil."
       },
       {
         "q": "Peut-il importer les fichiers RAW ?",
@@ -167,7 +171,7 @@
       },
       {
         "q": "Et les autres marques d'appareils ?",
-        "a": "Canon, Olympus et OM System, Ricoh GR, ainsi que les anciens Sony et Panasonic sont pris en charge à titre expérimental. Si vous en essayez un, dites-nous si cela a fonctionné."
+        "a": "Canon, Olympus et OM System, Ricoh GR, les Sony Alpha avec Send to Smartphone et les Panasonic Lumix avec partage Wi-Fi sont pris en charge à titre expérimental. Si vous en essayez un, dites-nous si cela a fonctionné."
       }
     ]
   },
@@ -183,16 +187,22 @@
     "th_model": "Modèle",
     "th_status": "État",
     "th_notes": "Remarques",
+    "models": {
+      "canon_other": "Autres modèles EOS avec Wi-Fi",
+      "sony_alpha": "Sony Alpha avec Send to Smartphone dans le menu Lecture",
+      "panasonic_lumix": "Panasonic Lumix avec partage Wi-Fi"
+    },
     "notes": {
       "jpeg_only": "JPEG en Wi-Fi.",
       "camera_remote": "Même protocole Wi-Fi que les modèles testés.",
-      "bluetooth": "S'appairent d'abord en Bluetooth. La prise en charge est prévue.",
+      "bluetooth": "S'appairent d'abord en Bluetooth. L'app Mac sait le faire, pas encore testé sur un vrai appareil.",
       "ptpip": "PTP/IP standard via le Wi-Fi de l'appareil.",
       "oishare": "Utilise l'interface Wi-Fi OI.Share.",
       "ricoh": "Utilise l'interface Wi-Fi du GR.",
       "dlna": "Appareils qui partagent leurs photos comme un serveur multimédia en Wi-Fi.",
       "nikon": "À étudier avec un vrai appareil.",
-      "gopro": "Utilise l'interface Wi-Fi Open GoPro. JPEG, GPR (RAW) et vidéo."
+      "gopro": "Utilise l'interface Wi-Fi Open GoPro. JPEG, GPR (RAW) et vidéo.",
+      "canon_pairing": "Les modèles qui demandent un appairage Camera Connect ne fonctionnent peut-être pas encore."
     },
     "emulator_note": "« Fonctionne dans l'émulateur » signifie que {name} réussit ses tests face à vcam, un émulateur open source du protocole de cet appareil. Les vrais appareils se comportent parfois différemment.",
     "report_h2": "Vous l'avez essayé avec votre appareil ?",
@@ -202,7 +212,7 @@
   },
   "privacy": {
     "h1": "Confidentialité",
-    "updated": "Dernière mise à jour le 3 novembre 2026.",
+    "updated": "Dernière mise à jour le 6 novembre 2026.",
     "sections": [
       {
         "h": "En bref",
@@ -214,7 +224,7 @@
       },
       {
         "h": "Ce que l'app conserve",
-        "p": "La liste des photos importées (nom de fichier, date et taille), pour les ignorer la fois suivante, ainsi que vos réglages. Les deux restent sur votre ordinateur. Une clé API Immich est stockée dans le trousseau du système."
+        "p": "La liste des photos importées (nom de fichier, date et taille), pour les ignorer la fois suivante, ainsi que vos réglages. Les deux restent sur votre ordinateur. Une clé API Immich est stockée dans le trousseau sur Mac, et dans les réglages de l'app sur cet ordinateur sous Windows et Linux."
       },
       {
         "h": "Autorisations",

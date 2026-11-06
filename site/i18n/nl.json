@@ -122,10 +122,14 @@
     "windows": "Windows",
     "windows_req": "Windows 10 en 11.",
     "windows_msi": "Installatieprogramma downloaden",
+    "windows_note": "Windows kan zeggen dat het je pc heeft beschermd: kies Meer informatie en dan Toch uitvoeren. Een ondertekend installatieprogramma komt eraan.",
     "linux": "Linux",
     "linux_req": "De meeste 64-bit (x86-64) distributies.",
     "linux_appimage": "AppImage",
     "linux_deb": ".deb-pakket",
+    "signature": "Handtekening",
+    "fingerprint": "Ondertekend met sleutel",
+    "verify": "Zo controleer je het",
     "cli": "Opdrachtregel",
     "cli_req": "Voor servers, scripts en een Raspberry Pi: ferryctl voor macOS, Linux en Windows.",
     "cli_link": "Lees de instructies"
@@ -135,7 +139,7 @@
     "items": [
       {
         "q": "Werkt {name} met mijn camera?",
-        "a": "Als je camera wifi heeft en van Canon, Fujifilm, GoPro, Olympus / OM System, Ricoh, Sony of Panasonic is, waarschijnlijk wel: {name} praat ermee zoals de telefoon-app dat doet. Hoe goed elk model getest is, verschilt, dus kijk in de lijst met camera's. Camera's die eerst via Bluetooth moeten koppelen, zoals de nieuwste Fujifilm-modellen, worden nog niet ondersteund."
+        "a": "Als je camera wifi heeft en van Canon, Fujifilm, GoPro, Olympus / OM System, Ricoh, Sony of Panasonic is, waarschijnlijk wel: {name} praat ermee zoals de telefoon-app dat doet. Hoe goed elk model getest is, verschilt, dus kijk in de lijst met camera's. Koppelen via Bluetooth, nodig voor de nieuwste Fujifilm-modellen, zit in de Mac-app maar is nog niet getest op een echte camera."
       },
       {
         "q": "Kan het RAW-bestanden importeren?",
@@ -167,7 +171,7 @@
       },
       {
         "q": "En andere cameramerken?",
-        "a": "Canon, Olympus en OM System, Ricoh GR en oudere Sony- en Panasonic-camera's worden experimenteel ondersteund. Als je er een probeert, laat dan weten of het gelukt is."
+        "a": "Canon, Olympus en OM System, Ricoh GR, Sony Alpha-camera's met Send to Smartphone en Panasonic Lumix-camera's met delen via wifi worden experimenteel ondersteund. Als je er een probeert, laat dan weten of het gelukt is."
       }
     ]
   },
@@ -183,16 +187,22 @@
     "th_model": "Model",
     "th_status": "Status",
     "th_notes": "Opmerkingen",
+    "models": {
+      "canon_other": "Andere EOS-modellen met wifi",
+      "sony_alpha": "Sony Alpha met Send to Smartphone in het afspeelmenu",
+      "panasonic_lumix": "Panasonic Lumix met delen via wifi"
+    },
     "notes": {
       "jpeg_only": "JPEG via wifi.",
       "camera_remote": "Hetzelfde wifiprotocol als de geteste modellen.",
-      "bluetooth": "Deze koppelen eerst via Bluetooth. Ondersteuning is gepland.",
+      "bluetooth": "Deze koppelen eerst via Bluetooth. De Mac-app kan dat, nog niet getest op een echte camera.",
       "ptpip": "Standaard PTP/IP via de wifi van de camera.",
       "oishare": "Gebruikt de OI.Share-wifi-interface.",
       "ricoh": "Gebruikt de wifi-interface van de GR.",
       "dlna": "Camera's die foto's delen als mediaserver via wifi.",
       "nikon": "Vraagt onderzoek met een echte camera.",
-      "gopro": "Gebruikt de Open GoPro-wifi-interface. JPEG, GPR (RAW) en video."
+      "gopro": "Gebruikt de Open GoPro-wifi-interface. JPEG, GPR (RAW) en video.",
+      "canon_pairing": "Modellen die om koppeling met Camera Connect vragen, werken misschien nog niet."
     },
     "emulator_note": "\"Werkt in de emulator\" betekent dat {name} zijn tests doorstaat met vcam, een open-source emulator van het protocol van die camera. Echte camera's gedragen zich soms anders.",
     "report_h2": "Met je camera geprobeerd?",
@@ -202,7 +212,7 @@
   },
   "privacy": {
     "h1": "Privacy",
-    "updated": "Laatst bijgewerkt op 3 november 2026.",
+    "updated": "Laatst bijgewerkt op 6 november 2026.",
     "sections": [
       {
         "h": "De korte versie",
@@ -214,7 +224,7 @@
       },
       {
         "h": "Wat de app opslaat",
-        "p": "Een lijst van de geïmporteerde foto's (bestandsnaam, datum en grootte), zodat ze de volgende keer overgeslagen worden, en je instellingen. Beide blijven op je computer. Een Immich-API-sleutel wordt bewaard in de sleutelhanger van het systeem."
+        "p": "Een lijst van de geïmporteerde foto's (bestandsnaam, datum en grootte), zodat ze de volgende keer overgeslagen worden, en je instellingen. Beide blijven op je computer. Een Immich-API-sleutel wordt op een Mac bewaard in de sleutelhanger, op Windows en Linux in de instellingen van de app op deze computer."
       },
       {
         "h": "Toestemmingen",

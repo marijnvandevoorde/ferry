@@ -105,25 +105,31 @@ def downloads(t):
     d = CONFIG["downloads"]
     soon = set(CONFIG.get("placeholders", []))
 
-    def link(key, label):
-        return {"href": d[key], "label": label, "soon": key in soon}
+    def link(key, label, signed=False):
+        # Signed files have a detached GPG signature next to them on the release.
+        return {"href": d[key], "label": label, "soon": key in soon,
+                "sig": d[key] + ".asc" if signed and key not in soon else ""}
 
-    return [
+    return [{"note": "", "fingerprint": "", **item} for item in [
         {"os": t["download"]["mac"], "slug": "mac", "req": t["download"]["mac_req"],
          "links": [link("mac_app_store", t["download"]["mac_store"]), link("mac_dmg", t["download"]["mac_dmg"])]},
         {"os": t["download"]["windows"], "slug": "windows", "req": t["download"]["windows_req"],
-         "links": [link("windows_msi", t["download"]["windows_msi"])]},
+         "links": [link("windows_msi", t["download"]["windows_msi"])], "note": t["download"]["windows_note"]},
         {"os": t["download"]["linux"], "slug": "linux", "req": t["download"]["linux_req"],
-         "links": [link("linux_appimage", t["download"]["linux_appimage"]), link("linux_deb", t["download"]["linux_deb"])]},
-    ]
+         "links": [link("linux_appimage", t["download"]["linux_appimage"], True),
+                   link("linux_deb", t["download"]["linux_deb"], True)],
+         "fingerprint": CONFIG["signing_key_fingerprint"]},
+    ]]
 
 
 def camera_tables(t):
-    return [{
-        "brand": b["brand"], "slug": b["slug"],
-        "models": [{"model": m, "status": s, "status_label": t["cameras"]["status"][s],
-                    "note": t["cameras"]["notes"].get(n, "") if n else ""} for m, s, n in b["models"]],
-    } for b in CAMERAS["brands"]]
+    def model(m, s, n, issue=None):
+        return {"model": t["cameras"]["models"].get(m, m), "status": s, "status_label": t["cameras"]["status"][s],
+                "note": t["cameras"]["notes"].get(n, "") if n else "",
+                "issue": issue or "", "issue_url": f"{CONFIG['repo']}/issues/{issue}" if issue else ""}
+
+    return [{"brand": b["brand"], "slug": b["slug"], "models": [model(*m) for m in b["models"]]}
+            for b in CAMERAS["brands"]]
 
 
 def jsonld(lang, page, t, page_path):
@@ -210,10 +216,14 @@ def llms(strings, full=False):
     for key, label in [("mac_app_store", "Mac App Store"), ("mac_dmg", "Mac (.dmg)"), ("windows_msi", "Windows installer"),
                        ("linux_appimage", "Linux AppImage"), ("linux_deb", "Linux .deb"), ("cli", "Command line")]:
         lines.append(f"- {label}: {'not released yet' if key in soon else d[key]}")
-    lines += ["", "## Supported cameras", ""]
+        if key.startswith("linux_") and key not in soon:
+            lines.append(f"  Signature: {d[key]}.asc")
+    lines += [f"- The Linux files are signed with GPG key {CONFIG['signing_key_fingerprint']}: {CONFIG['repo']}#windows-and-linux",
+              "", "## Supported cameras", ""]
     for b in camera_tables(t):
         for m in b["models"]:
-            lines.append(f"- {b['brand']} {m['model']}: {m['status_label']}." + (f" {m['note']}" if m["note"] else ""))
+            lines.append(f"- {b['brand']} {m['model']}: {m['status_label']}." + (f" {m['note']}" if m["note"] else "")
+                         + (f" ({m['issue_url']})" if m["issue"] else ""))
     if full:
         lines += ["", "## How it works", ""]
         lines += [f"{i}. {s['t']}: {s['d']}" for i, s in enumerate(t["how"]["steps"], 1)]

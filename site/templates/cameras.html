@@ -18,7 +18,7 @@
       <table>
         <thead><tr><th scope="col">{{cameras.th_model}}</th><th scope="col">{{cameras.th_status}}</th><th scope="col">{{cameras.th_notes}}</th></tr></thead>
         <tbody>
-          {{#each2 .models}}<tr><th scope="row">{{.model}}</th><td><span class="status status-{{.status}}">{{.status_label}}</span></td><td>{{.note}}</td></tr>{{/each2}}
+          {{#each2 .models}}<tr><th scope="row">{{.model}}</th><td><span class="status status-{{.status}}">{{.status_label}}</span></td><td>{{.note}}{{#if3 .issue}} <a href="{{.issue_url}}">#{{.issue}}</a>{{/if3}}</td></tr>{{/each2}}
         </tbody>
       </table>
     </div>
