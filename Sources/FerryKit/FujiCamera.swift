@@ -111,6 +111,12 @@ public final class FujiCamera: @unchecked Sendable {
                                 remoteVersion: try propU32(PTP.FujiProp.remoteVersion))
         log("Camera profile: \(profile.summary), state \(hex(cameraState))")
         if let battery = try propU32(PTP.FujiProp.batteryLevel) { log("Battery level (raw): \(battery)") }
+        // Fujifilm's own battery properties (BatteryLevel, BatteryInfo1, BatteryInfo2 in libgphoto2), logged to find
+        // out which ones a camera answers in this mode before Ferry shows anything for them.
+        for code: UInt16 in [0xD242, 0xD36A, 0xD36B] {
+            let value = try prop(code).map { $0.map { String(format: "%02x", $0) }.joined(separator: " ") }
+            log("Property \(hex(UInt32(code))): \(value ?? "not supported")")
+        }
 
         // libfuji: after a Bluetooth hand-off, cameras before remote version 0x20007 still speak Camera Remote.
         usesXAppGallery = afterBluetoothHandoff && profile.generation == .remoteNew
