@@ -9,6 +9,9 @@ See [compatibility](#compatibility) and the [roadmap](ROADMAP.md).
 
 ## Using it
 
+Download the DMG from [the website](https://ferry.small-victories.co), or install it with Homebrew:
+`brew install --cask marijnvandevoorde/ferry/ferry`.
+
 1. On the camera, turn on Wi-Fi the way you would for its phone app.
 2. On the Mac, join the camera's Wi-Fi network. Your Mac will be offline while connected.
 3. Open Ferry. It finds the camera automatically; press **OK** on the camera if it asks.

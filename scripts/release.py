@@ -36,6 +36,7 @@ VERSION_FILES = {
 PACKAGE_FILES = {
     "site/site.json": r'"version": "([^"]+)"',
     "packaging/homebrew/ferryctl.rb": r'archive/refs/tags/v([^/"]+)\.tar\.gz',
+    "packaging/homebrew/ferry.rb": r'^  version "([^"]+)"',
     "packaging/flathub/io.github.marijnvandevoorde.Ferry.yml": r'releases/download/v([^/]+)/',
 }
 # What the release build must attach.
@@ -154,7 +155,7 @@ def check_assets(version):
 
 
 def update_packages(version):
-    step("Updating the site, Homebrew formula and Flathub manifest")
+    step("Updating the site, Homebrew formula and cask, and Flathub manifest")
     download = f"https://github.com/{REPO}/releases/download/v{version}"
 
     site = ROOT / "site/site.json"
@@ -164,6 +165,11 @@ def update_packages(version):
     replace("packaging/homebrew/ferryctl.rb", PACKAGE_FILES["packaging/homebrew/ferryctl.rb"], version)
     tarball = sha256(f"https://github.com/{REPO}/archive/refs/tags/v{version}.tar.gz")
     formula.write_text(re.sub(r'sha256 "[0-9a-f]+"', f'sha256 "{tarball}"', formula.read_text(), count=1))
+
+    cask = ROOT / "packaging/homebrew/ferry.rb"
+    replace("packaging/homebrew/ferry.rb", PACKAGE_FILES["packaging/homebrew/ferry.rb"], version)
+    dmg = sha256(f"{download}/Ferry-{version}.dmg")
+    cask.write_text(re.sub(r'sha256 "[0-9a-f]+"', f'sha256 "{dmg}"', cask.read_text(), count=1))
 
     manifest = ROOT / "packaging/flathub/io.github.marijnvandevoorde.Ferry.yml"
     deb = sha256(f"{download}/Ferry_{version}_amd64.deb")
@@ -199,8 +205,11 @@ def update_tap(version):
         tap = pathlib.Path(tmp) / "tap"
         run("gh", "repo", "clone", TAP, str(tap), "--", "-q")
         (tap / "Formula/ferryctl.rb").write_text((ROOT / "packaging/homebrew/ferryctl.rb").read_text())
+        (tap / "Casks").mkdir(exist_ok=True)
+        (tap / "Casks/ferry.rb").write_text((ROOT / "packaging/homebrew/ferry.rb").read_text())
         if run("git", "status", "--porcelain", cwd=tap):
-            run("git", "commit", "-q", "-am", f"ferryctl {version}", cwd=tap)
+            run("git", "add", "-A", cwd=tap)
+            run("git", "commit", "-q", "-m", f"ferryctl and Ferry {version}", cwd=tap)
             run("git", "push", "-q", cwd=tap)
         else:
             print("already up to date")
