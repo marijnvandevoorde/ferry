@@ -2,17 +2,21 @@
 import XCTest
 
 final class LocalizationTests: XCTestCase {
-    func testEveryLanguageTranslatesEveryError() throws {
-        let english = try XCTUnwrap(Bundle.module.path(forResource: "en", ofType: "lproj").flatMap(Bundle.init(path:)))
-        let keys = try XCTUnwrap(NSDictionary(contentsOfFile: english.path(forResource: "Localizable", ofType: "strings")!) as? [String: String]).keys
-        for lang in ["fr", "es", "it", "de", "nl"] {
-            let bundle = try XCTUnwrap(Bundle.module.path(forResource: lang, ofType: "lproj").flatMap(Bundle.init(path:)), lang)
-            for key in keys {
-                let value = bundle.localizedString(forKey: key, value: "MISSING", table: nil)
-                XCTAssertNotEqual(value, "MISSING", "\(lang): \(key)")
-                XCTAssertEqual(value.components(separatedBy: "%@").count, key.components(separatedBy: "%@").count, "\(lang): \(key)")
+    func testEveryLanguageTranslatesEveryError() {
+        for (key, values) in translations {
+            for lang in ["fr", "es", "it", "de", "nl"] {
+                let value = values[lang]
+                XCTAssertNotNil(value, "\(lang): \(key)")
+                XCTAssertEqual(value?.components(separatedBy: "%@").count, key.components(separatedBy: "%@").count, "\(lang): \(key)")
             }
         }
-        XCTAssertEqual(localized("Could not connect: %@", "x"), "Could not connect: x")
+    }
+
+    func testPicksTheFirstSupportedLanguage() {
+        XCTAssertEqual(translation("Cancelled", languages: ["nl-BE", "fr"]), "Geannuleerd")
+        XCTAssertEqual(translation("Cancelled", languages: ["ja", "de_DE"]), "Abgebrochen")
+        XCTAssertNil(translation("Cancelled", languages: ["en-GB", "nl"]))
+        XCTAssertNil(translation("Cancelled", languages: ["ja"]))
+        XCTAssertEqual(localized("Could not connect: %@", "x").contains("x"), true)
     }
 }

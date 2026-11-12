@@ -13,9 +13,7 @@ class Ferryctl < Formula
 
   def install
     system "swift", "build", "--disable-sandbox", "-c", "release", "--product", "ferryctl"
-    # FerryKit's translations live in a resource bundle that has to sit next to the binary.
-    libexec.install ".build/release/ferryctl", ".build/release/FerryKit_FerryKit.bundle"
-    bin.install_symlink libexec/"ferryctl"
+    bin.install ".build/release/ferryctl"
   end
 
   test do

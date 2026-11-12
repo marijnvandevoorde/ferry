@@ -10,7 +10,7 @@ let package = Package(
         .executable(name: "ferryctl", targets: ["ferryctl"]),
     ],
     targets: [
-        .target(name: "FerryKit", resources: [.process("Resources")]),
+        .target(name: "FerryKit"),
         .executableTarget(name: "ferryctl", dependencies: ["FerryKit"]),
         .testTarget(name: "FerryKitTests", dependencies: ["FerryKit"]),
     ]

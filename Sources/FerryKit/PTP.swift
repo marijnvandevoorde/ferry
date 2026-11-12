@@ -37,24 +37,20 @@ public enum FujiError: Error, LocalizedError, Equatable {
     }
 }
 
-/// Looks up `key` in FerryKit's translations and fills in `%@` arguments; English when they aren't shipped.
+/// Looks up `key` in FerryKit's translations for the user's language and fills in `%@` arguments; English otherwise.
 func localized(_ key: String, _ args: String...) -> String {
-    let format = translations.map { NSLocalizedString(key, bundle: $0, comment: "") } ?? key
+    let format = translation(key, languages: Locale.preferredLanguages) ?? key
     return String(format: format, arguments: args)
 }
 
-/// FerryKit's resource bundle. Not `Bundle.module`: that crashes when the bundle wasn't shipped next to the binary,
-/// as with the desktop app's single-file ferryctl sidecar.
-private let translations: Bundle? = {
-    let names = ["FerryKit_FerryKit.bundle", "FerryKit_FerryKit.resources"]
-    let places = [Bundle.main.resourceURL, Bundle.main.bundleURL, Bundle.main.executableURL?.deletingLastPathComponent()]
-    for place in places.compactMap({ $0 }) {
-        for name in names {
-            if let bundle = Bundle(url: place.appendingPathComponent(name)) { return bundle }
-        }
+func translation(_ key: String, languages: [String]) -> String? {
+    for language in languages {
+        let code = String(language.prefix { $0 != "-" && $0 != "_" })
+        if code == "en" { return nil }
+        if let value = translations[key]?[code] { return value }
     }
     return nil
-}()
+}
 
 /// PTP codes used by this client. Fuji-specific values come from libfuji (MIT, github.com/petabyt/libfuji).
 enum PTP {
