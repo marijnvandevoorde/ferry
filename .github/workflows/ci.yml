@@ -1,12 +1,18 @@
 name: CI
 
+# Pull requests run the Linux jobs. The macOS and Windows jobs only run by hand
+# (Actions -> CI -> Run workflow); scripts/release.py starts one before tagging.
 on:
-  push:
-    branches: [main]
   pull_request:
+  workflow_dispatch:
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
   macos:
+    if: github.event_name == 'workflow_dispatch'
     runs-on: macos-15
     steps:
       - uses: actions/checkout@v4
@@ -29,6 +35,7 @@ jobs:
         run: swift test
 
   windows:
+    if: github.event_name == 'workflow_dispatch'
     runs-on: windows-2022
     steps:
       - uses: compnerd/gha-setup-swift@main
@@ -60,7 +67,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [ubuntu-24.04, windows-2022]
+        os: ${{ fromJSON(github.event_name == 'workflow_dispatch' && '["ubuntu-24.04", "windows-2022"]' || '["ubuntu-24.04"]') }}
     runs-on: ${{ matrix.os }}
     defaults:
       run:

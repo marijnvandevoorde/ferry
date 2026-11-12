@@ -2,8 +2,6 @@ name: Flatpak
 
 # Builds the Flathub manifest in packaging/flathub, as Flathub would.
 on:
-  push:
-    paths: ["packaging/flathub/**", ".github/workflows/flatpak.yml"]
   workflow_dispatch:
 
 jobs:

@@ -1,10 +1,9 @@
 name: Release
 
-# Push a tag like v0.2.0. Needs the secrets and variables described in docs/releasing.md.
-# Run it by hand for a dry run: everything is signed and notarized, but nothing is published.
+# Run it on a tag like v0.2.0 (scripts/release.py does: gh workflow run release.yml --ref v0.2.0).
+# Needs the secrets and variables described in docs/releasing.md.
+# Run it on a branch for a dry run: everything is signed and notarized, but nothing is published.
 on:
-  push:
-    tags: ["v*"]
   workflow_dispatch:
 
 jobs:

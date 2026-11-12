@@ -1,0 +1,54 @@
+# Weekly. Minor + patch updates are grouped per ecosystem and merged by
+# .github/workflows/dependabot-auto-merge.yml once CI passes; majors get their own PR.
+# Package.swift has no dependencies, so Swift isn't tracked.
+# The Tauri npm packages and Rust crates must stay on the same minor: CI's desktop build fails when they don't.
+version: 2
+updates:
+  - package-ecosystem: "npm"
+    directory: "/apps/desktop"
+    schedule:
+      interval: "weekly"
+    open-pull-requests-limit: 10
+    groups:
+      npm-minor-patch:
+        patterns: ["*"]
+        update-types: ["minor", "patch"]
+    cooldown:
+      default-days: 3
+
+  - package-ecosystem: "cargo"
+    directory: "/apps/desktop/src-tauri"
+    schedule:
+      interval: "weekly"
+    open-pull-requests-limit: 10
+    groups:
+      cargo-minor-patch:
+        patterns: ["*"]
+        update-types: ["minor", "patch"]
+    cooldown:
+      default-days: 3
+
+  # Camera emulators used by CI (scripts/vcam-autosave builds on top of scripts/vcam).
+  - package-ecosystem: "docker"
+    directories: ["/scripts/vcam", "/scripts/vcam-autosave"]
+    schedule:
+      interval: "weekly"
+    open-pull-requests-limit: 10
+    groups:
+      docker-minor-patch:
+        patterns: ["*"]
+        update-types: ["minor", "patch"]
+    cooldown:
+      default-days: 3
+
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    open-pull-requests-limit: 10
+    groups:
+      actions-minor-patch:
+        patterns: ["*"]
+        update-types: ["minor", "patch"]
+    cooldown:
+      default-days: 3
