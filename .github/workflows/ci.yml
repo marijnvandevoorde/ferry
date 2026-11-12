@@ -15,7 +15,7 @@ jobs:
     if: github.event_name == 'workflow_dispatch'
     runs-on: macos-15
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - name: Unit tests
         run: swift test
       - name: Install XcodeGen
@@ -30,7 +30,7 @@ jobs:
     runs-on: ubuntu-24.04
     container: swift:6.0-noble
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - name: Unit tests
         run: swift test
 
@@ -42,7 +42,7 @@ jobs:
         with:
           branch: swift-6.2-release
           tag: 6.2-RELEASE
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - name: Build
         run: swift build
       - name: Unit tests
@@ -51,7 +51,7 @@ jobs:
   emulator:
     runs-on: ubuntu-24.04
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - name: Every file names the same version
         run: scripts/release.py --check
       - name: Build vcam
@@ -73,7 +73,7 @@ jobs:
       run:
         working-directory: apps/desktop
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - if: runner.os == 'Windows'
         uses: compnerd/gha-setup-swift@main
         with:

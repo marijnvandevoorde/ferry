@@ -34,7 +34,7 @@ jobs:
       ASC_ISSUER_ID: ${{ secrets.ASC_ISSUER_ID }}
       VERSION: ${{ github.ref_type == 'tag' && github.ref_name || 'v0.0.0-dryrun' }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
       - name: Prepare
         run: |
@@ -158,7 +158,7 @@ jobs:
       run:
         working-directory: apps/desktop
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - if: runner.os == 'Windows'
         uses: compnerd/gha-setup-swift@main
         with:
