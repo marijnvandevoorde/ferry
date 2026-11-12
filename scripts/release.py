@@ -221,7 +221,10 @@ def update_tap(version):
 def check_site(version, commit):
     step("Checking the live site")
     wait_for("site.yml", commit)
-    with urllib.request.urlopen(json.loads((ROOT / "site/site.json").read_text())["origin"]) as response:
+    # Cloudflare answers Python's default User-Agent with 403.
+    origin = json.loads((ROOT / "site/site.json").read_text())["origin"]
+    request = urllib.request.Request(origin, headers={"User-Agent": "ferry-release-check"})
+    with urllib.request.urlopen(request) as response:
         page = response.read().decode()
     if f"Ferry_{version}_" not in page:
         sys.exit("the live site doesn't link the new downloads yet")
