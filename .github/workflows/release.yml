@@ -116,7 +116,7 @@ jobs:
 
       - name: Keep the DMG (dry run)
         if: github.ref_type != 'tag' && env.DEVELOPER_ID_P12 != ''
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: dmg
           path: ${{ env.DMG }}
@@ -195,7 +195,7 @@ jobs:
       # Windows code signing (issue #42) is still to do.
       - name: Keep installers (dry run)
         if: github.ref_type != 'tag'
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: desktop-${{ runner.os }}
           path: |
