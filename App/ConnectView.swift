@@ -6,8 +6,12 @@ struct ConnectView: View {
     @AppStorage(Prefs.autoSave) private var autoSave = false
     @State private var showBluetooth = false
 
-    /// The camera report form on GitHub.
-    static let reportURL = URL(string: "https://github.com/marijnvandevoorde/ferry/issues/new?template=camera-report.yml")!
+    /// The report section of the site's cameras page, in the app's language; it links to the report form.
+    static var reportURL: URL {
+        let language = Bundle.main.preferredLocalizations.first ?? "en"
+        let prefix = ["nl", "fr", "de", "es", "it"].contains(language) ? "/\(language)" : ""
+        return URL(string: "https://ferry.small-victories.co\(prefix)/cameras/#report")!
+    }
 
     var body: some View {
         VStack(spacing: 28) {
@@ -111,6 +115,7 @@ struct ConnectView: View {
                 case nil:
                     EmptyView()
                 }
+                Link("Send a camera report…", destination: Self.reportURL)
             }
             .font(.callout)
         }

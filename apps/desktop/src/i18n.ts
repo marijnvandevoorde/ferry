@@ -176,6 +176,7 @@ const strings: Record<string, Record<Lang, string>> = {
   "Order": { fr: "Ordre", es: "Orden", it: "Ordine", de: "Reihenfolge", nl: "Volgorde" },
   "Thumbnail size": { fr: "Taille des vignettes", es: "Tamaño de las miniaturas", it: "Dimensione miniature", de: "Miniaturgröße", nl: "Miniatuurgrootte" },
   "Open log folder": { fr: "Ouvrir le dossier des journaux", es: "Abrir carpeta de registros", it: "Apri cartella dei registri", de: "Protokollordner öffnen", nl: "Logmap openen" },
+  "Send a camera report…": { fr: "Envoyer un rapport sur l'appareil…", es: "Enviar un informe de la cámara…", it: "Invia un resoconto sulla fotocamera…", de: "Kamerabericht senden…", nl: "Camerarapport sturen…" },
   "Open folder": { fr: "Ouvrir le dossier", es: "Abrir carpeta", it: "Apri cartella", de: "Ordner öffnen", nl: "Map openen" },
   "{speed}/s · {left} left": { fr: "{speed}/s · encore {left}", es: "{speed}/s · quedan {left}", it: "{speed}/s · mancano {left}", de: "{speed}/s · noch {left}", nl: "{speed}/s · nog {left}" },
   "Settings": { fr: "Réglages", es: "Ajustes", it: "Impostazioni", de: "Einstellungen", nl: "Instellingen" },
@@ -350,7 +351,7 @@ const strings: Record<string, Record<Lang, string>> = {
   "Joining the network automatically isn't supported on this system.": { fr: "Rejoindre le réseau automatiquement n'est pas pris en charge sur ce système.", es: "Conectarse a la red automáticamente no es compatible con este sistema.", it: "Il collegamento automatico alla rete non è supportato su questo sistema.", de: "Automatisches Verbinden mit dem Netzwerk wird auf diesem System nicht unterstützt.", nl: "Automatisch verbinden met het netwerk wordt op dit systeem niet ondersteund." },
 };
 
-const lang = (navigator.language || "en").slice(0, 2) as Lang;
+export const lang = (navigator.language || "en").slice(0, 2) as Lang;
 
 /** Translates `english`, filling {placeholders}. With a `count`, picks the singular ("#1") form when count is 1. */
 export function t(english: string, vars: Record<string, string | number> = {}, count?: number): string {

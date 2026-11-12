@@ -17,6 +17,9 @@ struct FerryApp: App {
             CommandGroup(after: .windowArrangement) {
                 OpenLogButton()
             }
+            CommandGroup(replacing: .help) {
+                Link("Send a camera report…", destination: ConnectView.reportURL)
+            }
             CommandMenu("Import") {
                 Button("Import New") { model.importNew() }
                     .keyboardShortcut("i")

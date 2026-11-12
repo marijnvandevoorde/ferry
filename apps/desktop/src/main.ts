@@ -4,7 +4,7 @@ import { listen } from "@tauri-apps/api/event";
 import { disable as disableAutostart, enable as enableAutostart, isEnabled as autostartEnabled } from "@tauri-apps/plugin-autostart";
 import { open } from "@tauri-apps/plugin-dialog";
 import { open as openPath } from "@tauri-apps/plugin-shell";
-import { t, translatePage } from "./i18n";
+import { lang, t, translatePage } from "./i18n";
 import { isPermissionGranted, requestPermission, sendNotification } from "@tauri-apps/plugin-notification";
 
 // Events from `ferryctl serve` (see Sources/ferryctl/Serve.swift).
@@ -176,7 +176,18 @@ function showError(message: string) {
   el.textContent = message;
   el.hidden = !message;
   if (message && state.phase === "connected") $("status").textContent = message;
+  showReportLink();
 }
+
+/** After an import or a failure: a link to the site's cameras page, whose report section links to the form. */
+function showReportLink() {
+  $("report-line").hidden = !state.lastError && !(state.phase === "searching" && state.done);
+}
+
+$("report-link").onclick = () => {
+  const prefix = ["nl", "fr", "de", "es", "it"].includes(lang) ? `/${lang}` : "";
+  openPath(`https://ferry.small-victories.co${prefix}/cameras/#report`);
+};
 
 // MARK: - Events
 
@@ -461,6 +472,7 @@ function renderConnect() {
     done && (state.paused || done.autoSave) ? t("You can turn the camera off now.") :
     t("Join the camera's Wi-Fi network and Ferry connects by itself.");
   $("done-actions").hidden = !done || done.imported === 0 || !settings.folder;
+  showReportLink();
   $("autosave-waiting").hidden = !settings.autoSave;
   // After an import the steps are folded away: the camera was found, it didn't get lost.
   const stepsHidden = !!done && !state.stepsShown;
