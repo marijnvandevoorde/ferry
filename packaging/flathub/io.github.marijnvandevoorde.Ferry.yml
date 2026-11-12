@@ -22,8 +22,8 @@ modules:
     buildsystem: simple
     sources:
       - type: file
-        url: https://github.com/marijnvandevoorde/ferry/releases/download/v0.2.1/Ferry_0.2.1_amd64.deb
-        sha256: 311b5fb6e0c2156bc0a53c55df5219cd5f84ffe3c8369c886a9dcb692e942222
+        url: https://github.com/marijnvandevoorde/ferry/releases/download/v0.2.2/Ferry_0.2.2_amd64.deb
+        sha256: 63402630d35f6269f0032fdeeeb85e06da8b4a29ecf329763583182a133ba43e
         dest-filename: ferry.deb
         only-arches: [x86_64]
       - type: file
