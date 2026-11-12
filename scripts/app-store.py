@@ -4,7 +4,8 @@
     scripts/app-store.py setup          everything below in order, asking before each step
     scripts/app-store.py status         what the listing still needs before review
     scripts/app-store.py contact        set the App Review contact (asks for name, phone, email)
-    scripts/app-store.py screenshots    take the screenshots against the camera emulator and upload them
+    scripts/app-store.py screenshots [folder]   take the screenshots against the camera emulator, its card filled
+                                               with the JPEGs in folder, and upload them
     scripts/app-store.py developer-id   create the Developer ID certificate and store it as GitHub secrets
     scripts/app-store.py upload-build   turn on App Store uploads and rerun the Mac job of the latest release
     scripts/app-store.py submit         attach the newest build to the version and submit it for review
@@ -19,6 +20,7 @@ import os
 import pathlib
 import re
 import secrets
+import shutil
 import subprocess
 import sys
 import tempfile
@@ -141,7 +143,25 @@ def defaults(*args):
     return subprocess.run(["defaults", *args], capture_output=True, text=True).stdout.strip()
 
 
-def screenshots():
+def start_emulator(photos, out):
+    """Starts the Fujifilm emulator (scripts/vcam) with a fresh card holding the JPEGs in `photos`."""
+    jpegs = sorted(f for f in pathlib.Path(photos).expanduser().iterdir() if f.suffix.lower() in (".jpg", ".jpeg"))[:30]
+    if not jpegs:
+        sys.exit(f"no JPEGs in {photos}")
+    card = out / "card/DCIM/100_FUJI"
+    card.mkdir(parents=True)
+    for number, jpeg in enumerate(jpegs, 1):
+        shutil.copy(jpeg, card / f"DSCF{number:04}.JPG")
+    subprocess.run(["docker", "rm", "-f", "fujikit-vcam"], capture_output=True)
+    subprocess.run(["docker", "run", "-d", "--name", "fujikit-vcam", "-p", "55740-55742:55740-55742",
+                    "-v", f"{out / 'card'}:/card", os.environ.get("VCAM_IMAGE", "vcam-fuji"),
+                    "stdbuf", "-oL", "build/vcam", "fuji_x_t20", "tcp", "--local-ip", "--fs", "/card"],
+                   capture_output=True, check=True)
+    print(f"the emulated X-T20 has {len(jpegs)} photos from {photos}")
+
+
+def screenshots(photos=None):
+    photos = photos or ask("Folder with the JPEGs to show on the emulated camera")
     out = pathlib.Path(tempfile.mkdtemp(prefix="ferry-screenshots-"))
     host, frame_key = defaults("read", str(PREFS), "cameraHost"), "NSWindow Frame main-AppWindow-1"
     frame = defaults("read", str(PREFS), frame_key)
@@ -149,7 +169,7 @@ def screenshots():
     print("Building Ferry and starting the camera emulator…")
     subprocess.run(["xcodebuild", "-quiet", "-project", "Ferry.xcodeproj", "-scheme", "Ferry", "-configuration", "Debug",
                     "-derivedDataPath", ".build/xcode", "build"], cwd=ROOT, check=True)
-    subprocess.run(["docker", "start", "fujikit-vcam"], capture_output=True)
+    start_emulator(photos, out)
     subprocess.run(["osascript", "-e", 'quit app "Ferry"'], capture_output=True)
     defaults("write", str(PREFS), "cameraHost", "127.0.0.1")
     defaults("write", str(PREFS), frame_key, "100 100 1280 800 0 0 1800 1130 ")
@@ -173,8 +193,8 @@ def screenshots():
             defaults("write", str(PREFS), frame_key, frame)
         if history is not None:
             HISTORY.write_bytes(history)
-        subprocess.run(["docker", "stop", "fujikit-vcam"], capture_output=True)
-        print(f"\nRestored Ferry's settings and import history, stopped the emulator. Screenshots: {out}")
+        subprocess.run(["docker", "rm", "-f", "fujikit-vcam"], capture_output=True)
+        print(f"\nRestored Ferry's settings and import history, removed the emulator. Screenshots: {out}")
     if files and ask("Upload them to App Store Connect, replacing the current ones? [y/N]").lower() == "y":
         upload(files)
 
@@ -305,7 +325,7 @@ COMMANDS = {"setup": setup, "status": status, "contact": contact, "screenshots":
             "upload-build": upload_build, "submit": submit}
 
 if __name__ == "__main__":
-    if len(sys.argv) != 2 or sys.argv[1] not in COMMANDS:
+    if len(sys.argv) < 2 or sys.argv[1] not in COMMANDS or len(sys.argv) > (3 if sys.argv[1] == "screenshots" else 2):
         sys.exit(__doc__)
     os.chdir(ROOT)
-    COMMANDS[sys.argv[1]]()
+    COMMANDS[sys.argv[1]](*sys.argv[2:])
