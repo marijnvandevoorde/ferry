@@ -100,9 +100,18 @@ def status():
     info = api(f"apps/{app_id()}/appInfos?include=appInfoLocalizations")
     privacy = next(i for i in info["included"] if i["type"] == "appInfoLocalizations")["attributes"]["privacyPolicyUrl"]
     builds = api(f"builds?filter[app]={app_id()}&filter[preReleaseVersion.version]={attrs['versionString']}&limit=1")
+    no_build = "none uploaded yet: run upload-build"
+    if not builds["data"]:
+        # An upload Apple rejected never becomes a build; its reason is only on the upload.
+        uploads = api(f"apps/{app_id()}/buildUploads", fail=False).get("data", [])
+        failed = [u for u in uploads if u["attributes"]["cfBundleShortVersionString"] == attrs["versionString"]
+                  and u["attributes"]["state"]["state"] == "FAILED"]
+        if failed:
+            errors = failed[0]["attributes"]["state"]["errors"]
+            no_build = "upload rejected: " + "; ".join(f"{e['code']} {e['description']}" for e in errors)
     checks = [
         ("Build attached", bool(version["relationships"]["build"]["data"]),
-         "uploaded, run submit" if builds["data"] else "none uploaded yet: run upload-build"),
+         "uploaded, run submit" if builds["data"] else no_build),
         ("Screenshots", shots > 0, "run screenshots"),
         ("App Review contact", bool(review and review["attributes"]["contactEmail"]), "run contact"),
         ("Description", bool(locale["attributes"]["description"]), "fill in App Store Connect"),
