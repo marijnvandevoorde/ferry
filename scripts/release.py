@@ -102,11 +102,14 @@ def preflight(version):
     current = versions(VERSION_FILES)["project.yml"]
     if tuple(map(int, version.split("."))) <= tuple(map(int, current.split("."))):
         sys.exit(f"{version} isn't newer than {current}")
+    # Pull requests only run the Linux jobs; the macOS and Windows jobs run when CI is started by hand.
     head = run("git", "rev-parse", "HEAD")
     ci = json.loads(run("gh", "run", "list", "-R", REPO, "--workflow", "ci.yml", "--commit", head,
-                        "--json", "status,conclusion"))
+                        "--event", "workflow_dispatch", "--json", "databaseId,conclusion"))
     if not ci or ci[0]["conclusion"] != "success":
-        sys.exit("CI hasn't passed on this commit yet")
+        step("Running CI on macOS, Windows and Linux")
+        dispatch("ci.yml", "main")
+        wait_for("ci.yml", head, after=ci[0]["databaseId"] if ci else 0)
 
 
 def bump_and_tag(version):
@@ -119,13 +122,18 @@ def bump_and_tag(version):
     step(f"Tagging v{version}")
     run("git", "tag", f"v{version}")
     run("git", "push", "-q", "origin", f"v{version}")
+    dispatch("release.yml", f"v{version}")
 
 
-def wait_for(workflow, commit):
+def dispatch(workflow, ref):
+    run("gh", "workflow", "run", workflow, "-R", REPO, "--ref", ref)
+
+
+def wait_for(workflow, commit, after=0):
     for _ in range(30):
         runs = json.loads(run("gh", "run", "list", "-R", REPO, "--workflow", workflow, "--commit", commit,
                               "--limit", "1", "--json", "databaseId"))
-        if runs:
+        if runs and runs[0]["databaseId"] > after:
             break
         time.sleep(10)
     else:
@@ -180,7 +188,8 @@ def update_packages(version):
     run("python3", "site/tools/build.py")
     run("git", "commit", "-q", "-m", f"Site and packages: {version}", *files)
     run("git", "push", "-q", "origin", "main")
-    print("pushed: this deploys the site")
+    dispatch("site.yml", "main")
+    print("pushed and started the site deploy")
     return run("git", "rev-parse", "HEAD")
 
 

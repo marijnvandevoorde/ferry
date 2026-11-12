@@ -1,12 +1,14 @@
 # Releasing
 
-Release with `scripts/release.py 0.2.2` from an up-to-date, clean `main` on which CI passed. It sets the version
-everywhere, tags it, waits for the release build and checks its downloads, then updates the site, the Homebrew
+Release with `scripts/release.py 0.2.2` from an up-to-date, clean `main`. It runs CI on macOS, Windows and Linux
+for that commit unless a manual CI run already passed there (pull requests only run the Linux jobs), sets the
+version everywhere, tags it, starts the release build on the tag and waits for it, checks its downloads, then
+updates the site (and deploys it with `.github/workflows/site.yml`, which also only runs by hand), the Homebrew
 formula and tap, and the Flathub manifest, and lists what's left to do by hand (App Store review, Flathub,
 Microsoft Store). If it stops after tagging, rerun it with `--after` to do the rest. CI runs
 `scripts/release.py --check`, which fails when the files name different versions.
 
-The tag runs `.github/workflows/release.yml`, which:
+`.github/workflows/release.yml` only runs by hand (the script starts it on the tag), and:
 
 1. creates the GitHub release,
 2. archives the Mac app, signed with Xcode cloud signing,
