@@ -12,16 +12,27 @@ import XCTest
 final class AutoSaveTests: XCTestCase {
     var ports = AutoSaveListener.Ports()
 
-    override func setUp() {
-        let base = UInt16.random(in: 40000...60000)
-        ports.notify = base
-        ports.register = base + 1
-        ports.connect = base + 2
+    /// Starts a listener on random ports, below Windows' dynamic range (49152 and up), where Windows reserves
+    /// blocks of ports for itself. Tries other ports when these are taken anyway.
+    func startListener(clientName: String) throws -> AutoSaveListener {
+        for attempt in 1...5 {
+            let base = UInt16.random(in: 20000...45000)
+            ports.notify = base
+            ports.register = base + 1
+            ports.connect = base + 2
+            let listener = AutoSaveListener(clientName: clientName, ports: ports)
+            do {
+                try listener.start()
+                return listener
+            } catch where attempt < 5 {
+                listener.stop()
+            }
+        }
+        fatalError("unreachable")
     }
 
     func testRegister() throws {
-        let listener = AutoSaveListener(clientName: "Marijn’s MacBook Pro", ports: ports)
-        try listener.start()
+        let listener = try startListener(clientName: "Marijn’s MacBook Pro")
         let camera = fakeCamera(discoverPort: ports.register, target: "*",
                                 request: "REGISTER * HTTP/1.1\r\nHOST:127.0.0.1:\(ports.register)\r\nDSCNAME:FUJIFILM-X-H1-CA2A\r\nDSCMODEL:X-H1\r\n")
         let event = try listener.waitForCamera(timeout: 5)
@@ -32,8 +43,7 @@ final class AutoSaveTests: XCTestCase {
     }
 
     func testImportRequest() throws {
-        let listener = AutoSaveListener(clientName: "Mac", ports: ports)
-        try listener.start()
+        let listener = try startListener(clientName: "Mac")
         let camera = fakeCamera(discoverPort: ports.connect, target: "desktop",
                                 request: "IMPORT /guest HTTP/1.1\r\nHOST:127.0.0.1:\(ports.connect)\r\nDSCNAME:VCAM\r\nDSCPORT:$\r\n")
         let event = try listener.waitForCamera(timeout: 5)
