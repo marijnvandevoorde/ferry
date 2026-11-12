@@ -52,6 +52,6 @@ targets:
         ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME: AccentColor
         SWIFT_EMIT_LOC_STRINGS: YES
         LOCALIZATION_PREFERS_STRING_CATALOGS: YES
-        MARKETING_VERSION: "0.2.1"
+        MARKETING_VERSION: "0.2.2"
         # CI sets the build number from the run number.
         CURRENT_PROJECT_VERSION: "1"
