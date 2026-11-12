@@ -117,6 +117,8 @@ def bump_and_tag(version):
     step(f"Setting the version to {version}")
     for path, pattern in VERSION_FILES.items():
         replace(path, pattern, version)
+    # Download what Cargo.lock names (Dependabot may have moved it on), so the offline update only renames Ferry.
+    run("cargo", "fetch", "-q", "--locked", cwd=ROOT / "apps/desktop/src-tauri")
     run("cargo", "update", "-q", "-p", "ferry", "--offline", cwd=ROOT / "apps/desktop/src-tauri")
     run("git", "commit", "-q", "-m", f"Release {version}", *VERSION_FILES, "apps/desktop/src-tauri/Cargo.lock")
     run("git", "push", "-q", "origin", "main")
