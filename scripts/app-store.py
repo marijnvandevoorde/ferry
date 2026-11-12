@@ -17,6 +17,7 @@ import hashlib
 import json
 import os
 import pathlib
+import re
 import secrets
 import subprocess
 import sys
@@ -253,9 +254,20 @@ def upload_build():
           "Apple then processes it for 10 to 30 minutes")
 
 
+def match_project_version(version):
+    """Renames the unsubmitted App Store version to the app's version in project.yml (the newest release)."""
+    number = re.search(r'MARKETING_VERSION: "([^"]+)"', (ROOT / "project.yml").read_text()).group(1)
+    if version["attributes"]["versionString"] != number:
+        api(f"appStoreVersions/{version['id']}", "PATCH",
+            {"data": {"type": "appStoreVersions", "id": version["id"], "attributes": {"versionString": number}}})
+        print(f"renamed App Store version {version['attributes']['versionString']} to {number}")
+        version["attributes"]["versionString"] = number
+    return number
+
+
 def submit():
     version, _ = editable_version()
-    number = version["attributes"]["versionString"]
+    number = match_project_version(version)
     builds = api(f"builds?filter[app]={app_id()}&filter[preReleaseVersion.version]={number}"
                  "&filter[processingState]=VALID&sort=-uploadedDate&limit=1")["data"]
     if not builds:
