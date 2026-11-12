@@ -192,7 +192,7 @@ jobs:
           for f in src-tauri/target/release/bundle/appimage/*.AppImage src-tauri/target/release/bundle/deb/*.deb; do
             gpg --batch --yes --pinentry-mode loopback --passphrase "$LINUX_GPG_PASSPHRASE" --armor --detach-sign "$f"
           done
-      # Windows code signing (issue #42) and the Flathub submission (#43) are still to do.
+      # Windows code signing (issue #42) is still to do.
       - name: Keep installers (dry run)
         if: github.ref_type != 'tag'
         uses: actions/upload-artifact@v4

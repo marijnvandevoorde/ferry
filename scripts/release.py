@@ -8,7 +8,6 @@
 Needs git and gh, signed in with push access to the repository and the Homebrew tap. See docs/releasing.md.
 """
 import argparse
-import datetime
 import hashlib
 import json
 import pathlib
@@ -22,7 +21,6 @@ import urllib.request
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 REPO = "marijnvandevoorde/ferry"
 TAP = "marijnvandevoorde/homebrew-ferry"
-FLATHUB_REPO = "flathub/io.github.marijnvandevoorde.Ferry"
 
 # Every file that names the app version, with the pattern whose group 1 is the version.
 VERSION_FILES = {
@@ -37,7 +35,6 @@ PACKAGE_FILES = {
     "site/site.json": r'"version": "([^"]+)"',
     "packaging/homebrew/ferryctl.rb": r'archive/refs/tags/v([^/"]+)\.tar\.gz',
     "packaging/homebrew/ferry.rb": r'^  version "([^"]+)"',
-    "packaging/flathub/io.github.marijnvandevoorde.Ferry.yml": r'releases/download/v([^/]+)/',
 }
 # What the release build must attach.
 ASSETS = ["Ferry-{v}.dmg", "Ferry_{v}_x64-setup.exe", "Ferry_{v}_x64_en-US.msi", "Ferry_{v}_amd64.AppImage",
@@ -158,7 +155,7 @@ def check_assets(version):
 
 
 def update_packages(version):
-    step("Updating the site, Homebrew formula and cask, and Flathub manifest")
+    step("Updating the site and the Homebrew formula and cask")
     download = f"https://github.com/{REPO}/releases/download/v{version}"
 
     site = ROOT / "site/site.json"
@@ -174,23 +171,8 @@ def update_packages(version):
     dmg = sha256(f"{download}/Ferry-{version}.dmg")
     cask.write_text(re.sub(r'sha256 "[0-9a-f]+"', f'sha256 "{dmg}"', cask.read_text(), count=1))
 
-    manifest = ROOT / "packaging/flathub/io.github.marijnvandevoorde.Ferry.yml"
-    deb = sha256(f"{download}/Ferry_{version}_amd64.deb")
-    text = re.sub(r"releases/download/v[^/]+/Ferry_[^_]+_amd64\.deb", f"releases/download/v{version}/Ferry_{version}_amd64.deb",
-                  manifest.read_text())
-    manifest.write_text(re.sub(r"(Ferry_[^_]+_amd64\.deb\n\s+sha256: )[0-9a-f]+", rf"\g<1>{deb}", text))
-
-    metainfo = ROOT / "packaging/flathub/io.github.marijnvandevoorde.Ferry.metainfo.xml"
-    text = metainfo.read_text()
-    if f'release version="{version}"' not in text:
-        today = datetime.date.today().isoformat()
-        entry = (f'    <release version="{version}" date="{today}">\n'
-                 f'      <url type="details">https://github.com/{REPO}/releases/tag/v{version}</url>\n'
-                 f'    </release>\n')
-        metainfo.write_text(text.replace("  <releases>\n", "  <releases>\n" + entry, 1))
-
     check()
-    files = [*PACKAGE_FILES, "packaging/flathub/io.github.marijnvandevoorde.Ferry.metainfo.xml"]
+    files = list(PACKAGE_FILES)
     if not run("git", "status", "--porcelain", *files):
         print("already up to date")
         return None
@@ -240,10 +222,6 @@ def by_hand(version):
                     "and submit it for review.")
     else:
         todo.append("Mac App Store: nothing uploaded, APP_STORE_UPLOAD isn't true.")
-    if subprocess.run(["gh", "repo", "view", FLATHUB_REPO], capture_output=True).returncode == 0:
-        todo.append(f"Flathub: open a PR on {FLATHUB_REPO} with the files in packaging/flathub.")
-    else:
-        todo.append("Flathub: the app isn't on Flathub yet (submission pending), nothing to update.")
     todo.append("Microsoft Store: not set up yet.")
     for line in todo:
         print(f"- {line}")

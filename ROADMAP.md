@@ -59,7 +59,7 @@ Fuji's *PC AutoSave* lets the camera join your home network and send photos to t
 - Destinations: Pictures folder (Windows Photos), Lightroom Classic, Photoshop Elements watched folders,
   digiKam, darktable, Shotwell, Immich
 - Tray icon, start at login
-- Signed packages: MSIX/MSI on winget and the Microsoft Store, Flathub, signed AppImage
+- Signed packages: MSIX/MSI on winget and the Microsoft Store, signed AppImage and .deb
 
 ## Later: newer Fuji cameras
 
@@ -79,7 +79,7 @@ Brands whose Wi-Fi transfer only works with a phone app.
 ## Signing and stores
 
 Every release is signed: Developer ID plus notarization and the App Store on macOS, a code-signing
-certificate and the Microsoft Store on Windows, Flathub on Linux. Signing keys live in GitHub secrets,
+certificate and the Microsoft Store on Windows, GPG-signed AppImage and .deb on Linux. Signing keys live in GitHub secrets,
 never in the repository.
 
 ## Out of scope
