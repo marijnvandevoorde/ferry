@@ -29,6 +29,10 @@ public final class DLNACamera: HTTPCamera {
     }
 
     public func connect(onWaitingForApproval: () -> Void = {}) throws {
+        try connecting("dlna") { try connectSteps() }
+    }
+
+    private func connectSteps() throws {
         log("Looking for a DLNA media server at \(host)")
         let candidates = host.hasPrefix("http") ? [host]
             : SSDP.search(target: "urn:schemas-upnp-org:service:ContentDirectory:1", timeout: 1).filter { $0.contains("//\(host)") }
@@ -123,7 +127,7 @@ public final class DLNACamera: HTTPCamera {
 
     public func thumbnail(_ handle: UInt32) throws -> Data? {
         guard let url = thumbnails[try entry(handle).path], let (data, status) = try? fetch(url) else { return nil }
-        return status == 200 && data.count >= 100 ? data : nil
+        return gotThumbnail(status == 200 && data.count >= 100 ? data : nil)
     }
 
     @discardableResult

@@ -19,7 +19,7 @@ public class HTTPCamera: @unchecked Sendable {
 
     init(host: String, port: Int?, log: @escaping (String) -> Void) {
         self.host = host
-        self.log = log
+        self.log = { Trace.shared.note($0); log($0) }
         base = URL(string: "http://\(host)\(port.map { ":\($0)" } ?? "")")!
     }
 
@@ -31,7 +31,24 @@ public class HTTPCamera: @unchecked Sendable {
     }
 
     public func objectInfo(_ handle: UInt32) throws -> ObjectInfo {
-        try entry(handle).info
+        let info = try entry(handle).info
+        Trace.shared.stage(.listed)
+        return info
+    }
+
+    /// Runs a subclass's connect steps, recorded in the diagnostics trace as protocol `name`.
+    func connecting(_ name: String, _ steps: () throws -> Void) throws {
+        try Trace.shared.connecting(name, host: host, port: base.port) {
+            try steps()
+            Trace.shared.identified(camera: cameraName, protocolName: name)
+            Trace.shared.stage(.approved, "\(files.count) files")
+        }
+    }
+
+    /// Records a thumbnail that arrived.
+    func gotThumbnail(_ data: Data?) -> Data? {
+        if data != nil { Trace.shared.stage(.thumbnail) }
+        return data
     }
 
     func entry(_ handle: UInt32) throws -> (path: String, info: ObjectInfo) {
@@ -55,15 +72,27 @@ public class HTTPCamera: @unchecked Sendable {
         headers.forEach { request.setValue($1, forHTTPHeaderField: $0) }
         let semaphore = DispatchSemaphore(value: 0)
         nonisolated(unsafe) var result: Result<(Data, Int), Error>!
+        nonisolated(unsafe) var contentType: String?
+        let started = Date()
         URLSession.shared.dataTask(with: request) { data, response, error in
             if let error {
                 result = .failure(FujiError.connectionFailed("\(url.absoluteString): \(error.localizedDescription)"))
             } else {
+                contentType = (response as? HTTPURLResponse)?.value(forHTTPHeaderField: "Content-Type")
                 result = .success((data ?? Data(), (response as? HTTPURLResponse)?.statusCode ?? 0))
             }
             semaphore.signal()
         }.resume()
         semaphore.wait()
+        let ms = Int(Date().timeIntervalSince(started) * 1000)
+        switch result! {
+        case .success(let (data, status)):
+            Trace.shared.http(method: request.httpMethod ?? "GET", url: url, requestBody: request.httpBody, status: status,
+                              contentType: contentType, body: data, ms: ms)
+        case .failure(let error):
+            Trace.shared.http(method: request.httpMethod ?? "GET", url: url, requestBody: request.httpBody, status: nil,
+                              contentType: nil, body: nil, ms: ms, error: error)
+        }
         return try result.get()
     }
 
@@ -103,6 +132,7 @@ public class HTTPCamera: @unchecked Sendable {
             transferLock.unlock()
         }
         task.resume()
+        let started = Date()
         var reported: Int64 = 0
         while true {
             delegate.wake.wait()
@@ -111,7 +141,21 @@ public class HTTPCamera: @unchecked Sendable {
                 reported = done
                 progress(done, total > 0 ? total : expected)
             }
-            if let result { return try result.get() }
+            if let result {
+                let ms = Int(Date().timeIntervalSince(started) * 1000)
+                do {
+                    try result.get()
+                    Trace.shared.http(method: "GET", url: url, requestBody: nil, status: 200, contentType: nil, body: nil,
+                                      bytes: Int(done), ms: ms)
+                    Trace.shared.stage(.downloaded, url.lastPathComponent)
+                } catch {
+                    Trace.shared.http(method: "GET", url: url, requestBody: nil, status: nil, contentType: nil, body: nil,
+                                      bytes: Int(done), ms: ms, error: error)
+                    if !(error is CancellationError) { Trace.shared.failed(error, during: "download") }
+                    throw error
+                }
+                return
+            }
         }
     }
 
@@ -137,6 +181,10 @@ public final class OlympusCamera: HTTPCamera {
     override var headers: [String: String] { ["User-Agent": "OlympusCameraKit", "Host": "192.168.0.10"] }
 
     public func connect(onWaitingForApproval: () -> Void = {}) throws {
+        try connecting("olympus") { try connectSteps() }
+    }
+
+    private func connectSteps() throws {
         log("Connecting to \(host) (Olympus)")
         let (data, status) = try get("/get_caminfo.cgi", timeout: 5)
         let xml = String(decoding: data, as: UTF8.self)
@@ -205,7 +253,7 @@ public final class OlympusCamera: HTTPCamera {
 
     public func thumbnail(_ handle: UInt32) throws -> Data? {
         let (data, status) = try get("/get_thumbnail.cgi?DIR=\(try entry(handle).path)")
-        return status == 200 && data.count >= 100 ? data : nil
+        return gotThumbnail(status == 200 && data.count >= 100 ? data : nil)
     }
 
     @discardableResult
@@ -236,6 +284,10 @@ public final class RicohCamera: HTTPCamera {
     }
 
     public func connect(onWaitingForApproval: () -> Void = {}) throws {
+        try connecting("ricoh") { try connectSteps() }
+    }
+
+    private func connectSteps() throws {
         log("Connecting to \(host) (Ricoh)")
         let (data, status) = try get("/v1/props", timeout: 5)
         guard status == 200, let props = try? JSONSerialization.jsonObject(with: data) as? [String: Any],
@@ -276,7 +328,7 @@ public final class RicohCamera: HTTPCamera {
 
     public func thumbnail(_ handle: UInt32) throws -> Data? {
         let (data, status) = try get("\(try entry(handle).path)?size=thumb")
-        return status == 200 && data.count >= 100 ? data : nil
+        return gotThumbnail(status == 200 && data.count >= 100 ? data : nil)
     }
 
     @discardableResult
@@ -314,6 +366,10 @@ public final class GoProCamera: HTTPCamera {
     }
 
     public func connect(onWaitingForApproval: () -> Void = {}) throws {
+        try connecting("gopro") { try connectSteps() }
+    }
+
+    private func connectSteps() throws {
         log("Connecting to \(host) (GoPro)")
         if let (data, status) = try? get("/gopro/camera/info", timeout: 5), status == 200,
            let info = try? JSONSerialization.jsonObject(with: data) as? [String: Any] {
@@ -393,7 +449,7 @@ public final class GoProCamera: HTTPCamera {
     public func thumbnail(_ handle: UInt32) throws -> Data? {
         let path = try entry(handle).path.replacingOccurrences(of: "/videos/DCIM/", with: "")
         let (data, status) = try get("/gopro/media/thumbnail?path=\(path)")
-        return status == 200 && data.count >= 100 ? data : nil
+        return gotThumbnail(status == 200 && data.count >= 100 ? data : nil)
     }
 
     @discardableResult

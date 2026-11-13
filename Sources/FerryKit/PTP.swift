@@ -59,6 +59,7 @@ enum PTP {
     }
 
     enum Op {
+        static let getDeviceInfo: UInt16 = 0x1001
         static let openSession: UInt16 = 0x1002
         static let closeSession: UInt16 = 0x1003
         static let getObjectHandles: UInt16 = 0x1007

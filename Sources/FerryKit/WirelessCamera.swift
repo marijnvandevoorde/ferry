@@ -139,6 +139,7 @@ public enum CameraProtocol: String, Sendable, CaseIterable {
     public static func connect(host: String, interface: String?, clientName: String, afterBluetoothHandoff: Bool = false,
                                log: @escaping (String) -> Void, onWaitingForApproval: () -> Void = {}) throws -> WirelessCamera {
         var lastError: Error = FujiError.connectionFailed("no camera at \(host)")
+        Trace.shared.begin(host: host, interface: interface)
         for proto in allCases {
             let camera = proto.camera(host: host, interface: interface, clientName: clientName,
                                       afterBluetoothHandoff: afterBluetoothHandoff, log: log)

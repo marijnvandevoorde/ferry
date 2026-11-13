@@ -19,6 +19,7 @@ import Foundation
 ///                                               TCP connect to its port) or the next "connect"
 ///   {"cmd": "mark", "ids": [...], "imported": bool}
 ///                                               record items as imported, or not, without copying anything
+///   {"cmd": "diagnostics", "path": "..."}       save the diagnostics trace (see FerryKit's Trace) to that file
 ///   {"cmd": "quit"}
 ///
 /// Events, one JSON object per line on stdout:
@@ -35,6 +36,7 @@ import Foundation
 ///   {"event": "autosave", "status": "off|listening|registered|error", "camera"?, "message"?}
 ///   {"event": "status", ..., "autoSave": true}  connected because the camera came over the home network
 ///   {"event": "battery", "percent"}             the camera's charge, when it reports it
+///   {"event": "diagnostics", "path", "summary"} the diagnostics file was saved; or "error" when it couldn't be
 ///   {"event": "error", "message"}
 ///   {"event": "log", "line"}
 final class Server: @unchecked Sendable {
@@ -79,6 +81,7 @@ final class Server: @unchecked Sendable {
     }
 
     func run() -> Never {
+        Trace.shared.app = "desktop app"
         emit(["event": "status", "phase": "searching"])
         scheduleTick()
         while let line = readLine() {
@@ -125,6 +128,18 @@ final class Server: @unchecked Sendable {
             case "autosave":
                 let enabled = command["enabled"] as? Bool ?? false
                 queue.async { self.setAutoSave(enabled) }
+            case "diagnostics":
+                let path = (command["path"] as? String).map { ($0 as NSString).expandingTildeInPath }
+                guard let path else {
+                    emit(["event": "error", "message": "diagnostics needs a path"])
+                    continue
+                }
+                do {
+                    try Trace.shared.export(to: URL(fileURLWithPath: path))
+                    emit(["event": "diagnostics", "path": path, "summary": Trace.shared.summary()])
+                } catch {
+                    emit(["event": "diagnostics", "path": path, "error": error.localizedDescription])
+                }
             case "import":
                 lock.withLock { cancelRequested = false }
                 queue.async { self.runImport(command) }
@@ -454,6 +469,7 @@ final class Server: @unchecked Sendable {
             } catch is CancellationError {
                 break
             } catch {
+                Trace.shared.failed(error, during: "import")
                 failed.append(info.filename)
                 emit(["event": "log", "line": "Failed to import \(info.filename): \(error.localizedDescription)"])
             }

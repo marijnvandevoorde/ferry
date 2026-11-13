@@ -39,7 +39,7 @@ public final class FujiCamera: @unchecked Sendable {
         self.interface = interface
         self.clientName = clientName
         self.afterBluetoothHandoff = afterBluetoothHandoff
-        self.log = log
+        self.log = { Trace.shared.note($0); log($0) }
     }
 
     /// Runs `body` on the camera's serial queue.
@@ -56,9 +56,16 @@ public final class FujiCamera: @unchecked Sendable {
     /// Connects and configures the camera for browsing and downloading.
     /// `onWaitingForApproval` is called if the user has to press OK on the camera.
     public func connect(onWaitingForApproval: () -> Void = {}) throws {
+        try Trace.shared.connecting("fuji", host: host, port: Int(PTP.commandPort)) {
+            try connectSteps(onWaitingForApproval: onWaitingForApproval)
+        }
+    }
+
+    private func connectSteps(onWaitingForApproval: () -> Void) throws {
         log("Connecting to \(host):\(PTP.commandPort)" + (interface.map { " via \($0)" } ?? ""))
         let socket = try TCPSocket(host: host, port: PTP.commandPort, interface: interface, connectTimeout: 5)
         cmd = socket
+        Trace.shared.stage(.reached)
 
         do {
             try handshake()
@@ -69,6 +76,7 @@ public final class FujiCamera: @unchecked Sendable {
             try handshake()
         }
         log("Connected to \(cameraName)")
+        Trace.shared.identified(camera: cameraName, protocolName: "fuji")
 
         // Fuji cameras need at least 50ms before OpenSession.
         Thread.sleep(forTimeInterval: 0.05)
@@ -80,6 +88,7 @@ public final class FujiCamera: @unchecked Sendable {
             throw FujiError.response(op: PTP.Op.openSession, code: open.code)
         }
         isConnected = true
+        Trace.shared.stage(.session)
 
         try pollEvents()
         // State events may only be sent on the first connection after the camera's Wi-Fi starts,
@@ -111,6 +120,7 @@ public final class FujiCamera: @unchecked Sendable {
                                 imageGetVersion: try propU32(PTP.FujiProp.imageGetVersion),
                                 remoteVersion: try propU32(PTP.FujiProp.remoteVersion))
         log("Camera profile: \(profile.summary), state \(hex(cameraState))")
+        Trace.shared.detail("profile", profile.summary)
         if let battery = try propU32(PTP.FujiProp.batteryLevel) { log("Battery level (raw): \(battery)") }
         // Fujifilm's own battery properties (BatteryLevel, BatteryInfo1, BatteryInfo2 in libgphoto2), logged to find
         // out which ones a camera answers in this mode before Ferry shows anything for them.
@@ -126,12 +136,14 @@ public final class FujiCamera: @unchecked Sendable {
             log("Configuring the XApp gallery")
             try configureXAppGallery()
             log("Ready: \(objectCount) objects on the card")
+            Trace.shared.stage(.approved, "\(objectCount) objects")
             return
         }
 
         if isSendingSelection {
             // libfuji skips the rest of the setup in this mode.
             log("Ready: the camera is sending images selected on the camera")
+            Trace.shared.stage(.approved, "sending images selected on the camera")
             return
         }
 
@@ -159,6 +171,7 @@ public final class FujiCamera: @unchecked Sendable {
         }
 
         log("Ready: \(objectCount) objects on the card")
+        Trace.shared.stage(.approved, "\(objectCount) objects")
     }
 
     public func disconnect() {
@@ -219,7 +232,9 @@ public final class FujiCamera: @unchecked Sendable {
 
     public func objectInfo(_ handle: UInt32) throws -> ObjectInfo {
         let r = try transact(PTP.Op.getObjectInfo, [handle])
-        return try ObjectInfo.parse(handle: handle, payload: r.data)
+        let info = try ObjectInfo.parse(handle: handle, payload: r.data)
+        Trace.shared.stage(.listed)
+        return info
     }
 
     /// Returns the embedded JPEG thumbnail, or nil if the camera has none for this object.
@@ -230,6 +245,7 @@ public final class FujiCamera: @unchecked Sendable {
         }
         let r = try transact(PTP.Op.getThumb, [handle], allowFailure: true)
         guard r.code == PTP.Response.ok, r.data.count >= 100 else { return nil }
+        Trace.shared.stage(.thumbnail)
         return r.data
     }
 
@@ -266,8 +282,10 @@ public final class FujiCamera: @unchecked Sendable {
                 progress(Int64(offset), Int64(total))
             }
             try verifySize(destination, expected: total)
+            Trace.shared.stage(.downloaded, info.filename)
             result = .success(info)
         } catch {
+            Trace.shared.failed(error, during: "download")
             result = .failure(error)
         }
 
@@ -416,6 +434,7 @@ public final class FujiCamera: @unchecked Sendable {
         if type == 5 { throw FujiError.handshakeRejected }
         guard type == 2 else { throw FujiError.protocolError("unexpected init response type \(type)") }
 
+        Trace.shared.raw("fuji", channel: "init", received: lengthData + rest)
         // Camera name: UTF-16LE starting at offset 28 of the packet
         var units: [UInt16] = []
         var nr = DataReader(lengthData + rest, offset: 28)
@@ -461,8 +480,27 @@ public final class FujiCamera: @unchecked Sendable {
         var data: Data
     }
 
+    /// One transaction, recorded in the diagnostics trace.
     @discardableResult
     func transact(_ op: UInt16, _ params: [UInt32], dataOut: Data? = nil, timeout: TimeInterval = 10, allowFailure: Bool = false) throws -> Reply {
+        let started = Date()
+        let reply: Reply
+        do {
+            reply = try exchange(op, params, dataOut: dataOut, timeout: timeout)
+        } catch {
+            Trace.shared.ptp("fuji", op: op, params: params, dataOut: dataOut, code: nil, dataIn: nil,
+                             ms: Int(Date().timeIntervalSince(started) * 1000), error: error)
+            throw error
+        }
+        Trace.shared.ptp("fuji", op: op, params: params, dataOut: dataOut, code: reply.code, dataIn: reply.data,
+                         ms: Int(Date().timeIntervalSince(started) * 1000))
+        if reply.code != PTP.Response.ok && !allowFailure {
+            throw FujiError.response(op: op, code: reply.code)
+        }
+        return reply
+    }
+
+    private func exchange(_ op: UInt16, _ params: [UInt32], dataOut: Data?, timeout: TimeInterval) throws -> Reply {
         guard let cmd else { throw FujiError.disconnected }
         cmd.readTimeout = timeout
         let tid = transaction
@@ -488,9 +526,6 @@ public final class FujiCamera: @unchecked Sendable {
             if container.code == 0xFFFF {
                 // Fuji's nonstandard 'goodbye' response
                 throw FujiError.disconnected
-            }
-            if container.code != PTP.Response.ok && !allowFailure {
-                throw FujiError.response(op: op, code: container.code)
             }
             return Reply(code: container.code, data: data)
         } catch let error as FujiError {

@@ -32,6 +32,8 @@ options:
   --immich-album NAME  add Immich uploads to this album
   --history FILE       import history file (default: \(ImportHistory.defaultURL.path))
   --quiet              no protocol log on stderr
+  --trace FILE         save a diagnostics file: every step and exchange with the camera (no photo contents),
+                       what went wrong and how far it got. A mock camera can replay it (scripts/mock-cameras/replay.py)
   --help, --version
 """
 
@@ -75,6 +77,7 @@ let skipVideos = flag("--skip-videos")
 let watchAutoSave = flag("--autosave")
 let afterBluetoothHandoff = flag("--bluetooth")
 let verbose = !flag("--quiet")
+let traceFile = option("--trace")
 guard let command = args.first, commands.contains(command) else {
     if let unknown = args.first { FileHandle.standardError.write(Data("ferryctl: unknown command \(unknown)\n".utf8)) }
     print(usage)
@@ -93,13 +96,41 @@ func logLine(_ msg: String) {
 
 func fail(_ message: String) -> Never {
     print("Error: \(message)")
+    saveTrace()
     exit(1)
+}
+
+/// Writes the diagnostics file asked for with --trace, and prints its summary.
+func saveTrace() {
+    guard let traceFile else { return }
+    do {
+        try Trace.shared.export(to: URL(fileURLWithPath: traceFile))
+        FileHandle.standardError.write(Data("\n\(Trace.shared.summary())\n\nDiagnostics saved to \(traceFile)\n".utf8))
+    } catch {
+        FileHandle.standardError.write(Data("Could not save diagnostics to \(traceFile): \(error.localizedDescription)\n".utf8))
+    }
 }
 
 #if os(macOS)
 let clientName = Host.current().localizedName ?? "ferryctl"
 #else
 let clientName = ProcessInfo.processInfo.hostName
+#endif
+
+Trace.shared.app = "ferryctl"
+Trace.shared.appVersion = version
+Trace.shared.redact(clientName)
+#if !os(Windows)
+// `watch` and `autosave` run until interrupted: save the diagnostics file then.
+let interrupt = DispatchSource.makeSignalSource(signal: SIGINT, queue: .global())
+if traceFile != nil {
+    signal(SIGINT, SIG_IGN)
+    interrupt.setEventHandler {
+        saveTrace()
+        exit(130)
+    }
+    interrupt.resume()
+}
 #endif
 
 func argument(_ index: Int) -> String {
@@ -327,6 +358,8 @@ do {
             exit(2)
         }
     }
+    saveTrace()
 } catch {
+    if !(error is FujiError) { Trace.shared.failed(error, during: command) }
     fail(error.localizedDescription)
 }

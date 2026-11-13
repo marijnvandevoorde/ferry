@@ -37,7 +37,7 @@ public final class PTPIPCamera: @unchecked Sendable {
         self.host = host
         self.interface = interface
         self.clientName = clientName
-        self.log = log
+        self.log = { Trace.shared.note($0); log($0) }
     }
 
     // MARK: - Connection
@@ -50,9 +50,16 @@ public final class PTPIPCamera: @unchecked Sendable {
     /// asking the user whether to allow this computer. Throws `FujiError.cancelled` when the calling task is
     /// cancelled while waiting, and `FujiError.initRejected` when the camera refuses the connection.
     public func connect(onWaitingForApproval: () -> Void = {}) throws {
+        try Trace.shared.connecting("ptpip", host: host, port: Int(Self.port)) {
+            try connectSteps(onWaitingForApproval: onWaitingForApproval)
+        }
+    }
+
+    private func connectSteps(onWaitingForApproval: () -> Void) throws {
         log("Connecting to \(host):\(Self.port) (PTP/IP)" + (interface.map { " via \($0)" } ?? ""))
         let cmd = try TCPSocket(host: host, port: Self.port, interface: interface, connectTimeout: 5)
         self.cmd = cmd
+        Trace.shared.stage(.reached)
 
         // Init command request: GUID, friendly name (UTF-16LE, NUL-terminated), protocol version 1.0.
         var w = DataWriter()
@@ -64,6 +71,7 @@ public final class PTPIPCamera: @unchecked Sendable {
         try waitForInitAnswer(on: cmd, onWaitingForApproval: onWaitingForApproval)
         cmd.readTimeout = 10
         let (type, ack) = try readPacket(from: cmd)
+        Trace.shared.raw("ptpip", channel: type == .initFail ? "initFail" : "initCommandAck", received: ack)
         if type == .initFail {
             var r = DataReader(ack)
             let reason = (try? r.u32()).map { String(format: "0x%08X", $0) } ?? "none"
@@ -78,6 +86,7 @@ public final class PTPIPCamera: @unchecked Sendable {
         while r.remaining >= 2, let u = try? r.u16(), u != 0 { units.append(u) }
         cameraName = String(decoding: units, as: UTF16.self)
         log("Connected to \(cameraName)")
+        Trace.shared.identified(camera: cameraName, protocolName: "ptpip")
 
         // The event channel: a second connection announcing the same connection number.
         let events = try TCPSocket(host: host, port: Self.port, interface: interface, connectTimeout: 5)
@@ -95,8 +104,12 @@ public final class PTPIPCamera: @unchecked Sendable {
             throw FujiError.response(op: PTP.Op.openSession, code: open.code)
         }
         isConnected = true
+        Trace.shared.stage(.session)
+        // What the camera is and which operations it supports, for diagnostics. Every PTP camera must answer this.
+        _ = try transact(PTP.Op.getDeviceInfo, [], allowFailure: true)
         try loadHandles()
         log("Ready: \(objectHandles.count) objects")
+        Trace.shared.stage(.approved, "\(objectHandles.count) objects")
     }
 
     /// Waits for the answer to the init request in short steps, so a cancelled task stops waiting. Reports
@@ -143,17 +156,31 @@ public final class PTPIPCamera: @unchecked Sendable {
     // MARK: - Objects
 
     public func objectInfo(_ handle: UInt32) throws -> ObjectInfo {
-        try ObjectInfo.parse(handle: handle, payload: try transact(PTP.Op.getObjectInfo, [handle]).data)
+        let info = try ObjectInfo.parse(handle: handle, payload: try transact(PTP.Op.getObjectInfo, [handle]).data)
+        Trace.shared.stage(.listed)
+        return info
     }
 
     public func thumbnail(_ handle: UInt32) throws -> Data? {
         let r = try transact(PTP.Op.getThumb, [handle], allowFailure: true)
         guard r.code == PTP.Response.ok, r.data.count >= 100 else { return nil }
+        Trace.shared.stage(.thumbnail)
         return r.data
     }
 
     @discardableResult
     public func download(_ handle: UInt32, to destination: URL, progress: (Int64, Int64) -> Void = { _, _ in }) throws -> ObjectInfo {
+        do {
+            let info = try downloadSteps(handle, to: destination, progress: progress)
+            Trace.shared.stage(.downloaded, info.filename)
+            return info
+        } catch {
+            Trace.shared.failed(error, during: "download")
+            throw error
+        }
+    }
+
+    private func downloadSteps(_ handle: UInt32, to destination: URL, progress: (Int64, Int64) -> Void) throws -> ObjectInfo {
         let info = try objectInfo(handle)
         log("Downloading \(info.filename) (\(info.compressedSize) bytes)")
         FileManager.default.createFile(atPath: destination.path, contents: nil)
@@ -194,8 +221,25 @@ public final class PTPIPCamera: @unchecked Sendable {
         var data: Data
     }
 
+    /// One transaction, recorded in the diagnostics trace.
     @discardableResult
     func transact(_ op: UInt16, _ params: [UInt32], timeout: TimeInterval = 10, allowFailure: Bool = false) throws -> Reply {
+        let started = Date()
+        let reply: Reply
+        do {
+            reply = try exchange(op, params, timeout: timeout)
+        } catch {
+            Trace.shared.ptp("ptpip", op: op, params: params, code: nil, dataIn: nil,
+                             ms: Int(Date().timeIntervalSince(started) * 1000), error: error)
+            throw error
+        }
+        Trace.shared.ptp("ptpip", op: op, params: params, code: reply.code, dataIn: reply.data,
+                         ms: Int(Date().timeIntervalSince(started) * 1000))
+        if reply.code != PTP.Response.ok && !allowFailure { throw FujiError.response(op: op, code: reply.code) }
+        return reply
+    }
+
+    private func exchange(_ op: UInt16, _ params: [UInt32], timeout: TimeInterval) throws -> Reply {
         guard let cmd else { throw FujiError.disconnected }
         cmd.readTimeout = timeout
         let tid = transaction
@@ -219,9 +263,7 @@ public final class PTPIPCamera: @unchecked Sendable {
                     _ = try r.u32() // transaction id
                     data.append(payload.dropFirst(4))
                 case .operationResponse:
-                    let code = try r.u16()
-                    if code != PTP.Response.ok && !allowFailure { throw FujiError.response(op: op, code: code) }
-                    return Reply(code: code, data: data)
+                    return Reply(code: try r.u16(), data: data)
                 default:
                     throw FujiError.protocolError("unexpected PTP/IP packet \(type)")
                 }
