@@ -295,7 +295,14 @@ public final class Trace: @unchecked Sendable {
         }
         var redacted = text
         for secret in lock.withLock({ redactions }) {
-            redacted = redacted.replacingOccurrences(of: secret, with: secret == NSHomeDirectory() ? "~" : "<computer>")
+            let replacement = secret == NSHomeDirectory() ? "~" : "<computer>"
+            // As it appears inside JSON strings too: Windows paths have their backslashes escaped there.
+            var forms = [secret]
+            if let quoted = try? JSONSerialization.data(withJSONObject: [secret], options: .withoutEscapingSlashes),
+               let json = String(data: quoted, encoding: .utf8) {
+                forms.append(String(json.dropFirst(2).dropLast(2)))
+            }
+            for form in Set(forms) { redacted = redacted.replacingOccurrences(of: form, with: replacement) }
         }
         return Data(redacted.utf8)
     }

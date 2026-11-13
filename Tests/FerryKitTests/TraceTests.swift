@@ -68,11 +68,14 @@ final class TraceTests: XCTestCase {
         trace.redact("Marijn's MacBook")
         trace.note("Registered as Marijn's MacBook")
         trace.note("Could not write \(NSHomeDirectory())/Pictures/x.jpg")
+        trace.redact(#"C:\Users\Marijn"#)
+        trace.note(#"Could not write C:\Users\Marijn\Pictures"#)
         let text = String(decoding: trace.export(), as: UTF8.self)
         XCTAssertFalse(text.contains("Marijn's MacBook"))
         XCTAssertTrue(text.contains("Registered as <computer>"))
         XCTAssertFalse(text.contains(NSHomeDirectory()))
         XCTAssertTrue(text.contains("~/Pictures/x.jpg"))
+        XCTAssertFalse(text.contains("Marijn\\\\Pictures"), text)
     }
 
     func testDeviceInfoIsParsedAndTheSerialNumberBlanked() throws {
