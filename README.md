@@ -19,7 +19,8 @@ Download the DMG from [the website](https://ferry.small-victories.co), or instal
 
 Photos go into your Photos library, in a *Ferry* album by default. Ferry remembers what it imported,
 so next time only new photos are offered. Settings (⌘,) has the camera address, auto-connect, auto-import and album options.
-If something goes wrong, **Window → Connection Log** shows what the camera said.
+If something goes wrong, **Window → Connection Log** shows what the camera said, and **Help → Save Diagnostics…**
+saves a file for a camera report: how far Ferry got, what went wrong, and every exchange with the camera (no photos).
 
 Ferry imports whatever the camera offers over Wi-Fi. Fujifilm cameras only offer JPEGs (no RAF files).
 Fujifilm cameras can also join your home Wi-Fi and send photos from there (PC AutoSave), so the Mac stays online.
@@ -109,6 +110,20 @@ defaults write ~/Library/Containers/io.github.fujiimport.FujiImport/Data/Library
 vcam only supports one connection per run; restart it between sessions.
 `scripts/test-vcam.sh` runs the download test against every emulated Fuji model, and
 `scripts/test-vcam-autosave.sh` tests PC AutoSave. CI runs both on Linux.
+
+### Replaying a camera from a diagnostics file
+
+A diagnostics file (**Save Diagnostics…** in the apps, or `ferryctl --trace FILE <command>`) records every request
+to the camera and its answer, without photo contents. `scripts/mock-cameras/replay.py FILE` turns it into a mock
+camera that answers the same way, failures included, so a camera you don't own can be tried locally:
+
+```sh
+python3 scripts/mock-cameras/replay.py ferry-diagnostics-2026-11-13-1042.json
+swift run ferryctl --host 127.0.0.1 list    # it prints the exact command for the recorded camera
+```
+
+Downloads and thumbnails get a grey JPEG of the recorded size. `scripts/test-replay.sh` records and replays every
+emulated camera and checks the imports match.
 
 ## Website
 

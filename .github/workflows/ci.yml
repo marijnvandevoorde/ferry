@@ -62,6 +62,8 @@ jobs:
         run: scripts/test-vcam-autosave.sh
       - name: Olympus, Ricoh, GoPro and DLNA (mock cameras)
         run: scripts/test-mock-cameras.sh
+      - name: Diagnostics files replay as mock cameras
+        run: scripts/test-replay.sh
 
   desktop:
     strategy:
