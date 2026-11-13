@@ -206,7 +206,7 @@
     },
     "emulator_note": "«Funziona nell'emulatore» significa che {name} supera i suoi test con vcam, un emulatore open source del protocollo di quella fotocamera. Le fotocamere reali a volte si comportano in modo diverso.",
     "report_h2": "L'hai provato con la tua fotocamera?",
-    "report_p": "Dicci se ha funzionato, anche se non è andata. Ogni segnalazione fa salire una fotocamera in questo elenco.",
+    "report_p": "Dicci se ha funzionato, anche se non è andata, e allega il file di Salva diagnostica… dell'app: mostra esattamente dove si è inceppato. Ogni segnalazione fa salire una fotocamera in questo elenco.",
     "report_link": "Invia una segnalazione",
     "report_github": "Oppure apri una issue su GitHub"
   },

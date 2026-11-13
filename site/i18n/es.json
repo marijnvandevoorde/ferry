@@ -206,7 +206,7 @@
     },
     "emulator_note": "\"Funciona en el emulador\" significa que {name} pasa sus pruebas con vcam, un emulador de código abierto del protocolo de esa cámara. Las cámaras reales a veces se comportan de otra forma.",
     "report_h2": "¿La has probado con tu cámara?",
-    "report_p": "Cuéntanos si funcionó, aunque no lo haya hecho. Cada informe sube una cámara en esta lista.",
+    "report_p": "Cuéntanos si funcionó, aunque no lo haya hecho, y adjunta el archivo de Guardar diagnóstico… de la app: muestra exactamente dónde falló. Cada informe sube una cámara en esta lista.",
     "report_link": "Enviar un informe de cámara",
     "report_github": "O abre una incidencia en GitHub"
   },

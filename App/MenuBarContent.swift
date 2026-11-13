@@ -65,6 +65,7 @@ enum Notifier {
 final class AppDelegate: NSObject, NSApplicationDelegate {
     func applicationDidFinishLaunching(_ notification: Notification) {
         Self.applyDockIconPreference()
+        Diagnostics.setUp()
     }
 
     static func applyDockIconPreference() {

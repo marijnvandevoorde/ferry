@@ -695,6 +695,7 @@ final class CameraModel {
                     connectionLost(error)
                     return
                 } catch {
+                    Trace.shared.failed(error, during: "import")
                     appendLog("Failed to import \(item.info.filename): \(error.localizedDescription)")
                     if attempt == 2 {
                         failed.append(item.info.filename)

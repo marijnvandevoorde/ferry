@@ -30,10 +30,17 @@ body:
       label: What happened?
       description: Which camera menu you used, what worked, what didn't.
   - type: textarea
+    id: diagnostics
+    attributes:
+      label: Diagnostics file
+      description: >-
+        In the app, choose Save Diagnostics… (next to "Send a camera report", or in the Help menu on a Mac) and drag
+        the file here. It shows how far Ferry got and what went wrong, and contains no photos.
+  - type: textarea
     id: log
     attributes:
       label: Connection log
-      description: In the app, Window → Connection Log → Copy Log, then paste here.
+      description: Only if you can't attach a diagnostics file. In the Mac app, Window → Connection Log → Copy Log, then paste here.
       render: text
   - type: input
     id: app

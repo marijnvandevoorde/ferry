@@ -206,7 +206,7 @@
     },
     "emulator_note": "\"Works in the emulator\" means {name} passes its tests against vcam, an open-source emulator of that camera's protocol. Real cameras sometimes behave differently.",
     "report_h2": "Tried it with your camera?",
-    "report_p": "Tell us whether it worked, even if it didn't. Each report moves a camera up this list.",
+    "report_p": "Tell us whether it worked, even if it didn't, and attach the file from Save Diagnostics… in the app: it shows exactly where things went wrong. Each report moves a camera up this list.",
     "report_link": "Send a camera report",
     "report_github": "Or open an issue on GitHub"
   },

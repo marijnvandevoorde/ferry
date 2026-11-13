@@ -7212,6 +7212,74 @@
     },
     "{yyyy-MM-dd}_{original}": {
       "shouldTranslate": false
+    },
+    "Save Diagnostics…": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Enregistrer le diagnostic…"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Guardar diagnóstico…"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Salva diagnostica…"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Diagnose sichern…"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Diagnose bewaren…"
+          }
+        }
+      }
+    },
+    "Attach this file to your camera report. It holds what Ferry and the camera said to each other, but no photos.": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Joignez ce fichier à votre rapport. Il contient les échanges entre Ferry et l'appareil, mais aucune photo."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Adjunta este archivo a tu informe. Contiene lo que Ferry y la cámara se dijeron, pero ninguna foto."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Allega questo file al tuo resoconto. Contiene ciò che Ferry e la fotocamera si sono detti, ma nessuna foto."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hänge diese Datei an deinen Kamerabericht an. Sie enthält, was Ferry und die Kamera einander gesendet haben, aber keine Fotos."
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Voeg dit bestand toe aan je camerarapport. Het bevat wat Ferry en de camera elkaar stuurden, maar geen foto's."
+          }
+        }
+      }
     }
   },
   "version": "1.0"

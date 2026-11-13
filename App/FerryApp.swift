@@ -19,6 +19,7 @@ struct FerryApp: App {
             }
             CommandGroup(replacing: .help) {
                 Link("Send a camera report…", destination: ConnectView.reportURL)
+                SaveDiagnosticsButton()
             }
             CommandMenu("Import") {
                 Button("Import New") { model.importNew() }

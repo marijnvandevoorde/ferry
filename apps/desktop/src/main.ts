@@ -1,8 +1,8 @@
 import { convertFileSrc, invoke } from "@tauri-apps/api/core";
-import { join, pictureDir } from "@tauri-apps/api/path";
+import { dirname, downloadDir, join, pictureDir } from "@tauri-apps/api/path";
 import { listen } from "@tauri-apps/api/event";
 import { disable as disableAutostart, enable as enableAutostart, isEnabled as autostartEnabled } from "@tauri-apps/plugin-autostart";
-import { open } from "@tauri-apps/plugin-dialog";
+import { open, save } from "@tauri-apps/plugin-dialog";
 import { open as openPath } from "@tauri-apps/plugin-shell";
 import { lang, t, translatePage } from "./i18n";
 import { isPermissionGranted, requestPermission, sendNotification } from "@tauri-apps/plugin-notification";
@@ -19,6 +19,7 @@ type ServeEvent =
   | { event: "imported"; id: string; path: string }
   | { event: "done"; imported: number; failed: string[]; cancelled: boolean }
   | { event: "battery"; percent: number }
+  | { event: "diagnostics"; path: string; summary?: string; error?: string }
   | { event: "error"; message: string }
   | { event: "log"; line: string };
 
@@ -189,6 +190,17 @@ $("report-link").onclick = () => {
   openPath(`https://ferry.small-victories.co${prefix}/cameras/#report`);
 };
 
+/** Saves what Ferry and the camera said to each other (no photos), to attach to a camera report. */
+$("save-diagnostics").onclick = async () => {
+  const stamp = new Date().toISOString().slice(0, 16).replace("T", "-").replace(":", "");
+  const path = await save({
+    title: t("Attach this file to your camera report. It holds what Ferry and the camera said to each other, but no photos."),
+    defaultPath: await join(await downloadDir(), `ferry-diagnostics-${stamp}.json`),
+    filters: [{ name: "JSON", extensions: ["json"] }],
+  }).catch(() => null);
+  if (path) send({ cmd: "diagnostics", path });
+};
+
 // MARK: - Events
 
 listen<ServeEvent>("ferryctl", ({ payload: e }) => {
@@ -334,6 +346,10 @@ listen<ServeEvent>("ferryctl", ({ payload: e }) => {
       notify(t("Import finished"), summary);
       return;
     }
+    case "diagnostics":
+      if (e.error) showError(t("Could not save the diagnostics: {message}", { message: e.error }));
+      else dirname(e.path).then((dir) => openPath(dir)).catch(() => {});
+      return;
     case "error":
       state.importing = false;
       showError(e.message);

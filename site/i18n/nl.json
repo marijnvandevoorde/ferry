@@ -206,7 +206,7 @@
     },
     "emulator_note": "\"Werkt in de emulator\" betekent dat {name} zijn tests doorstaat met vcam, een open-source emulator van het protocol van die camera. Echte camera's gedragen zich soms anders.",
     "report_h2": "Met je camera geprobeerd?",
-    "report_p": "Laat weten of het werkte, ook als het niet werkte. Elk rapport brengt een camera hoger in deze lijst.",
+    "report_p": "Laat weten of het werkte, ook als het niet werkte, en voeg het bestand van Diagnose bewaren… in de app toe: daarin staat precies waar het misliep. Elk rapport brengt een camera hoger in deze lijst.",
     "report_link": "Camerarapport sturen",
     "report_github": "Of open een issue op GitHub"
   },

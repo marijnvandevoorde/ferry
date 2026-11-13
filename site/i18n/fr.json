@@ -206,7 +206,7 @@
     },
     "emulator_note": "« Fonctionne dans l'émulateur » signifie que {name} réussit ses tests face à vcam, un émulateur open source du protocole de cet appareil. Les vrais appareils se comportent parfois différemment.",
     "report_h2": "Vous l'avez essayé avec votre appareil ?",
-    "report_p": "Dites-nous si cela a fonctionné, même si ce n'est pas le cas. Chaque retour fait avancer un appareil dans cette liste.",
+    "report_p": "Dites-nous si cela a fonctionné, même si ce n'est pas le cas, et joignez le fichier d'Enregistrer le diagnostic… dans l'app : il montre exactement où ça a coincé. Chaque retour fait avancer un appareil dans cette liste.",
     "report_link": "Envoyer un retour sur un appareil",
     "report_github": "Ou ouvrez une issue sur GitHub"
   },

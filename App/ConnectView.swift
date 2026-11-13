@@ -70,7 +70,10 @@ struct ConnectView: View {
                     Label(error, systemImage: "exclamationmark.triangle.fill")
                         .foregroundStyle(.orange)
                         .multilineTextAlignment(.center)
-                    Link("Send a camera report…", destination: Self.reportURL)
+                    HStack(spacing: 16) {
+                        Link("Send a camera report…", destination: Self.reportURL)
+                        SaveDiagnosticsButton().buttonStyle(.link)
+                    }
                 }
                 .font(.callout)
                 .frame(maxWidth: 460)
@@ -115,7 +118,10 @@ struct ConnectView: View {
                 case nil:
                     EmptyView()
                 }
-                Link("Send a camera report…", destination: Self.reportURL)
+                HStack(spacing: 16) {
+                    Link("Send a camera report…", destination: Self.reportURL)
+                    SaveDiagnosticsButton().buttonStyle(.link)
+                }
             }
             .font(.callout)
         }
