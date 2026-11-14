@@ -17,6 +17,7 @@ jobs:
       - uses: actions/checkout@v7
       - run: python3 site/tools/build.py
       - run: python3 site/tools/check.py
+      # wrangler is pinned by hand (Dependabot does not see npx); keep it at a release at least 3 days old.
       - name: Deploy to Cloudflare Pages
         if: github.ref == 'refs/heads/main' && github.event_name == 'workflow_dispatch' && env.CLOUDFLARE_API_TOKEN != ''
-        run: npx --yes wrangler@3 pages deploy site/dist --project-name "$(python3 -c 'import json; print(json.load(open("site/site.json"))["cloudflare_project"])')" --branch main
+        run: npx --yes wrangler@4.160.0 pages deploy site/dist --project-name "$(python3 -c 'import json; print(json.load(open("site/site.json"))["cloudflare_project"])')" --branch main
