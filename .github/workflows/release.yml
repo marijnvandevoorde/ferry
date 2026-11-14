@@ -23,7 +23,7 @@ jobs:
 
   mac:
     needs: release
-    runs-on: macos-15
+    runs-on: macos-26
     permissions:
       contents: write
     env:
@@ -34,7 +34,7 @@ jobs:
       ASC_ISSUER_ID: ${{ secrets.ASC_ISSUER_ID }}
       VERSION: ${{ github.ref_type == 'tag' && github.ref_name || 'v0.0.0-dryrun' }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
       - name: Prepare
         run: |
@@ -116,7 +116,7 @@ jobs:
 
       - name: Keep the DMG (dry run)
         if: github.ref_type != 'tag' && env.DEVELOPER_ID_P12 != ''
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: dmg
           path: ${{ env.DMG }}
@@ -150,7 +150,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [ubuntu-22.04, windows-2022]
+        os: [ubuntu-22.04, windows-2025]
     runs-on: ${{ matrix.os }}
     permissions:
       contents: write
@@ -158,20 +158,20 @@ jobs:
       run:
         working-directory: apps/desktop
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - if: runner.os == 'Windows'
         uses: compnerd/gha-setup-swift@main
         with:
-          branch: swift-6.2-release
-          tag: 6.2-RELEASE
+          swift-version: swift-6.4.2-release
+          swift-build: 6.4.2-RELEASE
       - if: runner.os == 'Linux'
         run: sudo apt-get update && sudo apt-get install -y libwebkit2gtk-4.1-dev libayatana-appindicator3-dev librsvg2-dev patchelf libcurl4-openssl-dev libdbus-1-dev pkg-config
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v7
         with:
-          node-version: 22
-      - uses: pnpm/action-setup@v4
+          node-version: 26
+      - uses: pnpm/action-setup@v6
         with:
-          version: 10
+          version: 12
       - run: pnpm install
       - run: pnpm run sidecar
       - name: Build installers
@@ -195,7 +195,7 @@ jobs:
       # Windows code signing (issue #42) is still to do.
       - name: Keep installers (dry run)
         if: github.ref_type != 'tag'
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: desktop-${{ runner.os }}
           path: |
