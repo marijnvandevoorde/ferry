@@ -8,6 +8,7 @@
                                                with the JPEGs in folder, and upload them
     scripts/app-store.py developer-id   create the Developer ID certificate and store it as GitHub secrets
     scripts/app-store.py upload-build   turn on App Store uploads and rerun the Mac job of the latest release
+    scripts/app-store.py notes          set the App Review notes from docs/app-review-notes.txt (submit does this too)
     scripts/app-store.py submit         attach the newest build to the version and submit it for review
 
 Reads the API key from ~/.appstoreconnect/config.json ({"keyId", "issuerId", "privateKey": path to the .p8}),
@@ -126,17 +127,25 @@ def status():
 
 
 def contact():
+    review_detail({"contactFirstName": ask("First name"), "contactLastName": ask("Last name"),
+                   "contactPhone": ask("Phone, with country code (+32 ...)"), "contactEmail": ask("Email")})
+    print("App Review contact set")
+
+
+def review_detail(attrs):
     version, included = editable_version()
     review = next((i for i in included if i["type"] == "appStoreReviewDetails"), None)
-    attrs = {"contactFirstName": ask("First name"), "contactLastName": ask("Last name"),
-             "contactPhone": ask("Phone, with country code (+32 ...)"), "contactEmail": ask("Email")}
     if review:
         api(f"appStoreReviewDetails/{review['id']}", "PATCH",
             {"data": {"type": "appStoreReviewDetails", "id": review["id"], "attributes": attrs}})
     else:
         api("appStoreReviewDetails", "POST", {"data": {"type": "appStoreReviewDetails", "attributes": attrs, "relationships": {
             "appStoreVersion": {"data": {"type": "appStoreVersions", "id": version["id"]}}}}})
-    print("App Review contact set")
+
+
+def notes():
+    review_detail({"notes": (ROOT / "docs/app-review-notes.txt").read_text().strip()})
+    print("App Review notes set from docs/app-review-notes.txt")
 
 
 def defaults(*args):
@@ -295,6 +304,7 @@ def submit():
     build = builds[0]
     api(f"appStoreVersions/{version['id']}/relationships/build", "PATCH", {"data": {"type": "builds", "id": build["id"]}})
     print(f"attached build {build['attributes']['version']} to {number}")
+    notes()
     status()
     if ask(f"Submit Ferry {number} for App Review? [y/N]").lower() != "y":
         return
@@ -322,7 +332,7 @@ def setup():
 
 
 COMMANDS = {"setup": setup, "status": status, "contact": contact, "screenshots": screenshots, "developer-id": developer_id,
-            "upload-build": upload_build, "submit": submit}
+            "upload-build": upload_build, "notes": notes, "submit": submit}
 
 if __name__ == "__main__":
     if len(sys.argv) < 2 or sys.argv[1] not in COMMANDS or len(sys.argv) > (3 if sys.argv[1] == "screenshots" else 2):

@@ -1,0 +1,7 @@
+Ferry copies photos from a camera to the Mac over Wi-Fi. No account or login is needed.
+
+com.apple.security.network.server: Ferry supports Fujifilm's "PC AutoSave", where the camera sends photos to the computer over the home network. For this the camera is the one that reaches out: it broadcasts a discovery message over UDP to ports 51541 and 51542, which Ferry listens on, and the camera then connects back to a TCP port Ferry listens on (51541 or 51542) to start the transfer. Without the server entitlement the sandbox blocks these incoming connections and PC AutoSave cannot work. It is the "Receive photos over the home network" switch under PC AutoSave in Settings; the code is in Sources/FerryKit/AutoSave.swift of the open-source project (github.com/marijnvandevoorde/ferry).
+
+com.apple.security.network.client: Ferry connects to the camera on the camera's own Wi-Fi network (Fujifilm, Canon, Olympus/OM System, Ricoh, GoPro, Sony, Panasonic).
+
+Testing without a camera: the project includes a camera emulator (scripts/vcam) and mock cameras (scripts/mock-cameras); the App Store screenshots were taken against it.
