@@ -82,7 +82,7 @@ def app_id():
 
 def editable_version():
     versions = api(f"apps/{app_id()}/appStoreVersions?filter[platform]=MAC_OS"
-                   "&filter[appStoreState]=PREPARE_FOR_SUBMISSION,DEVELOPER_REJECTED,REJECTED,METADATA_REJECTED"
+                   "&filter[appStoreState]=PREPARE_FOR_SUBMISSION,DEVELOPER_REJECTED,REJECTED,METADATA_REJECTED,READY_FOR_REVIEW"
                    "&include=appStoreReviewDetail,build,appStoreVersionLocalizations")
     if not versions["data"]:
         sys.exit("no version to edit: create one in App Store Connect")
@@ -308,11 +308,16 @@ def submit():
     status()
     if ask(f"Submit Ferry {number} for App Review? [y/N]").lower() != "y":
         return
-    submission = api("reviewSubmissions", "POST", {"data": {"type": "reviewSubmissions", "attributes": {"platform": "MAC_OS"},
-                     "relationships": {"app": {"data": {"type": "apps", "id": app_id()}}}}})["data"]
-    api("reviewSubmissionItems", "POST", {"data": {"type": "reviewSubmissionItems", "relationships": {
-        "reviewSubmission": {"data": {"type": "reviewSubmissions", "id": submission["id"]}},
-        "appStoreVersion": {"data": {"type": "appStoreVersions", "id": version["id"]}}}}})
+    # After a rejection the version stays in the old submission ("Unresolved issues"); resubmit that one.
+    unresolved = api(f"apps/{app_id()}/reviewSubmissions?filter[platform]=MAC_OS&filter[state]=UNRESOLVED_ISSUES")["data"]
+    if unresolved:
+        submission = unresolved[0]
+    else:
+        submission = api("reviewSubmissions", "POST", {"data": {"type": "reviewSubmissions", "attributes": {"platform": "MAC_OS"},
+                         "relationships": {"app": {"data": {"type": "apps", "id": app_id()}}}}})["data"]
+        api("reviewSubmissionItems", "POST", {"data": {"type": "reviewSubmissionItems", "relationships": {
+            "reviewSubmission": {"data": {"type": "reviewSubmissions", "id": submission["id"]}},
+            "appStoreVersion": {"data": {"type": "appStoreVersions", "id": version["id"]}}}}})
     api(f"reviewSubmissions/{submission['id']}", "PATCH", {"data": {"type": "reviewSubmissions", "id": submission["id"],
                                                                      "attributes": {"submitted": True}}})
     print("submitted for review")
