@@ -1,0 +1,2 @@
+# Hub policy: never install a version released less than 3 days ago (minutes).
+minimumReleaseAge: 4320
