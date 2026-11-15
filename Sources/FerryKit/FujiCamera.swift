@@ -273,6 +273,7 @@ public final class FujiCamera: @unchecked Sendable {
 
             var offset: UInt32 = 0
             let total = info.compressedSize
+            let started = Date()
             while offset < total {
                 let chunk = min(total - offset, PTP.maxPartialObject)
                 let r = try transact(PTP.Op.getPartialObject, [handle, offset, chunk], timeout: 30)
@@ -282,6 +283,9 @@ public final class FujiCamera: @unchecked Sendable {
                 progress(Int64(offset), Int64(total))
             }
             try verifySize(destination, expected: total)
+            let seconds = Date().timeIntervalSince(started)
+            log(String(format: "Downloaded %@ in %.1f s (%.2f MB/s)",
+                       info.filename, seconds, Double(total) / 1_000_000 / max(seconds, 0.001)))
             Trace.shared.stage(.downloaded, info.filename)
             result = .success(info)
         } catch {
@@ -296,7 +300,8 @@ public final class FujiCamera: @unchecked Sendable {
             }
         } catch {
             // The file is complete; in selection mode the camera may hang up right after the last one.
-            guard case .success = result else { throw error }
+            // If the download itself failed, that error says more than this one.
+            guard case .success = result else { return try result.get() }
             log("After download: \(error.localizedDescription)")
         }
         return try result.get()
@@ -531,6 +536,8 @@ public final class FujiCamera: @unchecked Sendable {
         } catch let error as FujiError {
             switch error {
             case .disconnected, .timeout, .io:
+                // Whatever the camera still sends belongs to this transaction; reading on would take it for the next one.
+                cmd.close()
                 isConnected = false
             default:
                 break
