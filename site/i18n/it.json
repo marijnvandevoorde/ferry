@@ -150,6 +150,10 @@
         "a": "In genere no. Per una scheda piena di file RAW un lettore di schede è molto più veloce del Wi-Fi. {name} serve nei giorni in cui non ne hai uno con te, e per inviare a un portatile qualche foto scelta dalla fotocamera durante un evento."
       },
       {
+        "q": "Quanto è veloce?",
+        "a": "Dipende soprattutto dal Wi-Fi della fotocamera. Le fotocamere più vecchie a 2,4 GHz, come la Fujifilm X-T20, arrivano a circa 1 MB al secondo: da 10 a 15 secondi per JPEG. Se le impostazioni di rete della fotocamera offrono i 5 GHz, sceglili: può essere varie volte più veloce."
+      },
+      {
         "q": "È davvero gratis?",
         "a": "Sì. {name} è open source con licenza MIT. Niente pubblicità, abbonamenti o acquisti in-app."
       },

@@ -150,6 +150,10 @@
         "a": "En general, no. Para una tarjeta llena de archivos RAW, un lector de tarjetas es mucho más rápido que el wifi. {name} es para los días en que no llevas uno, y para enviar unas cuantas fotos elegidas de la cámara a un portátil durante un evento."
       },
       {
+        "q": "¿Qué velocidad tiene?",
+        "a": "Depende sobre todo del wifi de la cámara. Las cámaras más antiguas de 2,4 GHz, como la Fujifilm X-T20, rondan 1 MB por segundo: de 10 a 15 segundos por JPEG. Si los ajustes de red de tu cámara ofrecen 5 GHz, elígelo; puede ser varias veces más rápido."
+      },
+      {
         "q": "¿De verdad es gratis?",
         "a": "Sí. {name} es de código abierto con licencia MIT. No hay anuncios, suscripciones ni compras dentro de la app."
       },

@@ -150,6 +150,10 @@
         "a": "Eher nicht. Für eine volle Karte mit RAW-Dateien ist ein Kartenleser viel schneller als WLAN. {name} ist für die Tage, an denen du keinen dabeihast, und um auf einer Veranstaltung ein paar ausgewählte Fotos von der Kamera an einen Laptop zu senden."
       },
       {
+        "q": "Wie schnell ist es?",
+        "a": "Das hängt vor allem vom WLAN der Kamera ab. Ältere Kameras mit 2,4 GHz wie die Fujifilm X-T20 schaffen etwa 1 MB pro Sekunde: 10 bis 15 Sekunden pro JPEG. Bietet deine Kamera in den Netzwerkeinstellungen 5 GHz an, wähle das; das kann um ein Vielfaches schneller sein."
+      },
+      {
         "q": "Ist es wirklich kostenlos?",
         "a": "Ja. {name} ist Open Source unter der MIT-Lizenz. Es gibt keine Werbung, keine Abos und keine In-App-Käufe."
       },

@@ -150,6 +150,10 @@
         "a": "Mostly not. For a full card of RAW files, a card reader is much faster than Wi-Fi. {name} is for the days you don't have one with you, and for sending a few selected photos from the camera to a laptop at an event."
       },
       {
+        "q": "How fast is it?",
+        "a": "That depends mostly on the camera's Wi-Fi. Older cameras on 2.4 GHz, like the Fujifilm X-T20, manage about 1 MB per second: 10 to 15 seconds per JPEG. If your camera's network settings offer 5 GHz, choose it; that can be several times faster."
+      },
+      {
         "q": "Is it really free?",
         "a": "Yes. {name} is open source under the MIT license. There are no ads, subscriptions or in-app purchases."
       },

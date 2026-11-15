@@ -150,6 +150,10 @@
         "a": "Pas vraiment. Pour une carte pleine de fichiers RAW, un lecteur de cartes est bien plus rapide que le Wi-Fi. {name} sert les jours où vous n'en avez pas sous la main, et pour envoyer quelques photos choisies de l'appareil vers un portable pendant un événement."
       },
       {
+        "q": "Est-ce rapide ?",
+        "a": "Cela dépend surtout du Wi-Fi de l'appareil. Les appareils plus anciens en 2,4 GHz, comme le Fujifilm X-T20, atteignent environ 1 Mo par seconde : 10 à 15 secondes par JPEG. Si les réglages réseau de votre appareil proposent le 5 GHz, choisissez-le ; cela peut être plusieurs fois plus rapide."
+      },
+      {
         "q": "Est-ce vraiment gratuit ?",
         "a": "Oui. {name} est open source sous licence MIT. Il n'y a ni publicité, ni abonnement, ni achat intégré."
       },

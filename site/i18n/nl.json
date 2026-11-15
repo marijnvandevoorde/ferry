@@ -150,6 +150,10 @@
         "a": "Meestal niet. Voor een volle kaart met RAW-bestanden is een kaartlezer veel sneller dan wifi. {name} is voor de dagen dat je er geen bij je hebt, en om op een evenement een paar gekozen foto's van de camera naar een laptop te sturen."
       },
       {
+        "q": "Hoe snel is het?",
+        "a": "Dat hangt vooral af van de wifi van je camera. Oudere camera's op 2,4 GHz, zoals de Fujifilm X-T20, halen ongeveer 1 MB per seconde: 10 tot 15 seconden per JPEG. Biedt je camera in de netwerkinstellingen 5 GHz aan, kies dat dan; dat kan meerdere keren sneller zijn."
+      },
+      {
         "q": "Is het echt gratis?",
         "a": "Ja. {name} is open source onder de MIT-licentie. Er zijn geen advertenties, abonnementen of aankopen in de app."
       },
