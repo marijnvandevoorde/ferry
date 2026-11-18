@@ -1,4 +1,4 @@
-# Weekly. Minor + patch updates are grouped per ecosystem and merged by
+# Monthly. Minor + patch updates are grouped per ecosystem and merged by
 # .github/workflows/dependabot-auto-merge.yml once CI passes; majors get their own PR.
 # Package.swift has no dependencies, so Swift isn't tracked.
 # The Tauri npm packages and Rust crates must stay on the same minor: CI's desktop build fails when they don't.
@@ -7,7 +7,7 @@ updates:
   - package-ecosystem: "npm"
     directory: "/apps/desktop"
     schedule:
-      interval: "weekly"
+      interval: "monthly"
     open-pull-requests-limit: 10
     groups:
       npm-minor-patch:
@@ -19,7 +19,7 @@ updates:
   - package-ecosystem: "cargo"
     directory: "/apps/desktop/src-tauri"
     schedule:
-      interval: "weekly"
+      interval: "monthly"
     open-pull-requests-limit: 10
     groups:
       cargo-minor-patch:
@@ -32,7 +32,7 @@ updates:
   - package-ecosystem: "docker"
     directories: ["/scripts/vcam", "/scripts/vcam-autosave"]
     schedule:
-      interval: "weekly"
+      interval: "monthly"
     open-pull-requests-limit: 10
     groups:
       docker-minor-patch:
@@ -44,7 +44,7 @@ updates:
   - package-ecosystem: "github-actions"
     directory: "/"
     schedule:
-      interval: "weekly"
+      interval: "monthly"
     open-pull-requests-limit: 10
     groups:
       actions-minor-patch:

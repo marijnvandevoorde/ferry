@@ -4,6 +4,9 @@ name: CI
 # (Actions -> CI -> Run workflow); scripts/release.py starts one before tagging.
 on:
   pull_request:
+    paths-ignore:
+      - '**/*.md'
+      - 'docs/**'
   workflow_dispatch:
 
 concurrency:
