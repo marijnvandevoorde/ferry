@@ -145,6 +145,8 @@ final class CameraModel {
     private(set) var cameraAddress = ""
     /// The camera sent reduced-size JPEGs ("Resize image for smartphone" is on).
     private(set) var showResizeNotice = false
+    /// Connected to a camera Ferry supports experimentally (every brand but Fujifilm), until dismissed.
+    private(set) var showExperimentalNotice = false
     private var lastSearchFailure: String?
     /// The Bluetooth link to a newer camera whose Wi-Fi was started over Bluetooth. Kept open while connected,
     /// because the camera may turn its Wi-Fi off when it drops; cleared on disconnect.
@@ -318,6 +320,7 @@ final class CameraModel {
         connectTask = nil
         self.camera = camera
         reportsProtection = camera.camera is FujiCamera || camera.camera is PTPIPCamera
+        showExperimentalNotice = !(camera.camera is FujiCamera)
         lastSearchFailure = nil
         cameraName = camera.camera.cameraName
         batteryPercent = camera.camera.batteryPercent
@@ -820,6 +823,10 @@ final class CameraModel {
         if imported { history.insert(contentsOf: ids) } else { history.remove(contentsOf: ids) }
         for i in items.indices where ids.contains(items[i].id) { items[i].imported = imported }
         if imported { selection.subtract(ids) }
+    }
+
+    func dismissExperimentalNotice() {
+        showExperimentalNotice = false
     }
 
     func dismissResizeNotice(forever: Bool) {

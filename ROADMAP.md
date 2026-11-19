@@ -75,6 +75,8 @@ Brands whose Wi-Fi transfer only works with a phone app.
 
 - Camera driver abstraction
 - Olympus / OM System, Ricoh GR, Sony (older "Send to Smartphone"), Panasonic Lumix, Canon and Nikon (PTP/IP), GoPro (Open GoPro)
+- Canon and Nikon over PTP/IP: built and tested against an emulator, marked experimental in the app; needs testers
+  with a real camera (#52). Not covered: Canon's EOS Utility pairing, Nikon SnapBridge (Bluetooth) pairing
 
 ## Signing and stores
 

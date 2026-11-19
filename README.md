@@ -3,7 +3,7 @@
 An open-source app that imports photos from your camera over Wi-Fi, no cable or card reader. On the Mac
 it imports straight into Apple Photos or a folder; on Windows and Linux into a folder, optionally also to Immich.
 
-It works with Wi-Fi cameras from Canon, Fujifilm, GoPro, Olympus / OM System, Ricoh, Sony and Panasonic, by talking to
+It works with Wi-Fi cameras from Canon, Fujifilm, GoPro, Nikon, Olympus / OM System, Ricoh, Sony and Panasonic, by talking to
 them the way their phone apps do. How well each one is tested differs.
 See [compatibility](#compatibility) and the [roadmap](ROADMAP.md).
 
@@ -33,11 +33,15 @@ Fujifilm cameras can also join your home Wi-Fi and send photos from there (PC Au
 | Fujifilm X-A2, X30, X-F10, X-T2, X-T4, X-T30, X-S10, X-H1, GFX100 II | not yet | ✅ |
 | Fujifilm X-T5, X-S20, X100VI and others that pair over Bluetooth (Mac app) | not yet | |
 | Canon EOS R, 90D, 5D Mark III, Rebel SL2, Rebel T6, PowerShot G7 X III (standard PTP/IP) | not yet | ✅ |
+| Other Canon EOS and PowerShot models with Wi-Fi (PTP/IP, experimental) | not yet | PTP/IP emulator |
+| Nikon with Wi-Fi without SnapBridge pairing, and WU-1a / WU-1b adapters (PTP/IP, experimental) | not yet | PTP/IP emulator |
 | Olympus / OM System (OI.Share), Ricoh GR II / III | not yet | mock API only |
 | GoPro HERO9 Black and later (Open GoPro) | not yet | mock API only |
 | Sony Alpha with Send to Smartphone, Panasonic Lumix with Wi-Fi sharing (DLNA) | not yet | mock API only |
 
 "Emulator" means the protocol works against [vcam](https://github.com/petabyt/vcam)'s model of that camera.
+"PTP/IP emulator" is Ferry's own test camera (`Tests/FerryKitTests/PTPIPEmulator.swift`), written from the PTP/IP
+specification (CIPA DC-X005), with the Canon EOS and Nikon behaviour other projects describe.
 Tried it with your camera? Please [file a camera report](https://github.com/marijnvandevoorde/ferry/issues/new?template=camera-report.yml),
 whether it worked or not.
 

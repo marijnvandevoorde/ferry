@@ -80,6 +80,7 @@ struct GalleryView: View {
         .quickLookPreview($previewURL)
         .safeAreaInset(edge: .top, spacing: 0) {
             VStack(spacing: 0) {
+                if model.showExperimentalNotice { ExperimentalNotice() }
                 if model.showBacklogNotice { BacklogNotice() }
                 if model.showResizeNotice { ResizeNotice() }
             }
@@ -257,6 +258,40 @@ private struct BacklogNotice: View {
             }
             Button {
                 model.dismissBacklogNotice()
+            } label: {
+                Image(systemName: "xmark")
+            }
+            .buttonStyle(.borderless)
+            .help("Dismiss")
+        }
+        .padding(12)
+        .background(.bar)
+        .overlay(alignment: .bottom) { Divider() }
+    }
+}
+
+/// Every brand but Fujifilm is built from specifications and tested in emulators only.
+private struct ExperimentalNotice: View {
+    @Environment(CameraModel.self) private var model
+
+    var body: some View {
+        HStack(alignment: .top, spacing: 12) {
+            Image(systemName: "flask")
+                .font(.title2)
+                .foregroundStyle(.orange)
+            VStack(alignment: .leading, spacing: 4) {
+                Text("Support for this camera is experimental")
+                    .font(.headline)
+                Text("Ferry hasn't been tested on this brand of camera yet. If something doesn't work, a camera report helps fix it.")
+                    .font(.callout)
+                    .foregroundStyle(.secondary)
+                    .fixedSize(horizontal: false, vertical: true)
+                Link("Send a camera report…", destination: ConnectView.reportURL)
+                    .font(.callout)
+            }
+            Spacer()
+            Button {
+                model.dismissExperimentalNotice()
             } label: {
                 Image(systemName: "xmark")
             }
