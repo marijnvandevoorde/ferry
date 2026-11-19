@@ -13,7 +13,7 @@ The order below is the order of work.
 - Mac app: auto-detect, gallery, import new or selected photos to Apple Photos, remember what was imported
 - Works with a VPN on (binds to the Wi-Fi interface)
 
-## v0.2: All Fuji Wi-Fi cameras
+## ✅ v0.2: All Fuji Wi-Fi cameras
 
 Fuji cameras from roughly 2014 to 2021 that work with *Camera Remote* over Wi-Fi.
 
@@ -26,7 +26,9 @@ Fuji cameras from roughly 2014 to 2021 that work with *Camera Remote* over Wi-Fi
 - Compatibility table and a camera test report template
 - CI: build and unit tests
 
-## v0.3: Mac app polish
+## ✅ v0.3: Mac app polish
+
+Done except the Mac App Store listing (#23, in review).
 
 - Destinations: Apple Photos, or a folder with a date template
 - Hand-off to Lightroom Classic (auto-import folder) and Capture One (hot folder)
@@ -38,7 +40,7 @@ Fuji cameras from roughly 2014 to 2021 that work with *Camera Remote* over Wi-Fi
 - Sandboxed, so it can ship in the Mac App Store
 - Signed and notarized DMG, Mac App Store submission, Homebrew cask
 
-## v0.4: Import over home Wi-Fi
+## ✅ v0.4: Import over home Wi-Fi
 
 Fuji's *PC AutoSave* lets the camera join your home network and send photos to the computer. The Mac stays online.
 
@@ -46,7 +48,7 @@ Fuji's *PC AutoSave* lets the camera join your home network and send photos to t
 - Receive photos when the camera connects
 - Pairing UI in the app
 
-## v0.5: Portable core
+## ✅ v0.5: Portable core
 
 - FerryKit builds on Linux and Windows
 - `ferryctl import` and `ferryctl watch`: import new photos into a folder from the command line, or automatically when the camera appears
@@ -54,8 +56,8 @@ Fuji's *PC AutoSave* lets the camera join your home network and send photos to t
 
 ## v1.0: Windows and Linux app
 
-- Decide the GUI technology (architecture decision record)
-- Windows and Linux app: connect, gallery, import
+- ✅ Decide the GUI technology: Tauri with `ferryctl serve` as a sidecar ([ADR 0001](docs/adr/0001-windows-linux-app.md))
+- Windows and Linux app: connect, gallery, import (built in `apps/desktop`; waiting for a run on real Windows and Linux machines, #36, #37, #41)
 - Destinations: Pictures folder (Windows Photos), Lightroom Classic, Photoshop Elements watched folders,
   digiKam, darktable, Shotwell, Immich
 - Tray icon, start at login
