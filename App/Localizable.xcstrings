@@ -7280,6 +7280,74 @@
           }
         }
       }
+    },
+    "Support for this camera is experimental": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "La prise en charge de cet appareil est expérimentale"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "La compatibilidad con esta cámara es experimental"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Il supporto per questa fotocamera è sperimentale"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Die Unterstützung für diese Kamera ist experimentell"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ondersteuning voor deze camera is experimenteel"
+          }
+        }
+      }
+    },
+    "Ferry hasn't been tested on this brand of camera yet. If something doesn't work, a camera report helps fix it.": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ferry n'a pas encore été testé avec un appareil de cette marque. Si quelque chose ne fonctionne pas, un rapport sur l'appareil aide à le corriger."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ferry aún no se ha probado con cámaras de esta marca. Si algo no funciona, un informe de la cámara ayuda a solucionarlo."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ferry non è ancora stato provato con fotocamere di questa marca. Se qualcosa non funziona, un resoconto sulla fotocamera aiuta a risolverlo."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ferry wurde mit Kameras dieser Marke noch nicht getestet. Wenn etwas nicht funktioniert, hilft ein Kamerabericht bei der Behebung."
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ferry is nog niet getest met een camera van dit merk. Werkt er iets niet, dan helpt een camerarapport om het op te lossen."
+          }
+        }
+      }
     }
   },
   "version": "1.0"

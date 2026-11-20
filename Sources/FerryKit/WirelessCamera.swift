@@ -106,7 +106,7 @@ extension WirelessCamera {
         case let camera as FujiCamera:
             return CameraAddress(host: camera.host, port: PTP.commandPort, interface: camera.interface)
         case let camera as PTPIPCamera:
-            return CameraAddress(host: camera.host, port: PTPIPCamera.port, interface: camera.interface)
+            return CameraAddress(host: camera.host, port: camera.port, interface: camera.interface)
         case let camera as DLNACamera:
             guard let url = camera.controlURL, let host = url.host else { return nil }
             return CameraAddress(host: host, port: UInt16(url.port ?? 80))

@@ -477,6 +477,7 @@ enum PTPNames {
         0x1016: "SetDevicePropValue", 0x1018: "TerminateOpenCapture", 0x101B: "GetPartialObject",
         0x101C: "InitiateOpenCapture", 0x9050: "Fuji GetImageImportFolders", 0x9053: "Fuji GetImageImportDates",
         0x9054: "Fuji GetExtensionObjectInfo", 0x9055: "Fuji GetExtensionThumb",
+        0x9114: "Canon EOS SetRemoteMode", 0x9115: "Canon EOS SetEventMode", 0x9116: "Canon EOS GetEvent",
     ]
 
     static let responses: [UInt16: String] = [
