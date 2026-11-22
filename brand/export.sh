@@ -1,55 +1,43 @@
 #!/bin/bash
-# Renders the brand SVGs into the app and site icon sets. Needs macOS (sips), Google Chrome and Node with
+# Renders the brand assets into the app and site icon sets. Needs macOS, ImageMagick (magick) and Node with
 # apps/desktop's dependencies installed.
 #
 #   brand/export.sh
 set -euo pipefail
 cd "$(dirname "$0")/.."
-ROOT=$PWD
-CHROME=${CHROME:-"/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"}
 WORK=$(mktemp -d)
 trap 'rm -rf "$WORK"' EXIT
 
-# render svg size-inside-1024 background out: draws the SVG centred on a 1024 px canvas.
-render() {
-    cat > "$WORK/page.html" <<EOF
-<!doctype html><body style="margin:0;background:transparent">
-<div style="width:1024px;height:1024px;display:grid;place-items:center;background:$3">
-<img src="file://$ROOT/$1" style="width:$2px;height:$2px"></div>
-EOF
-    "$CHROME" --headless --hide-scrollbars --force-device-scale-factor=1 --default-background-color=00000000 \
-        --allow-file-access-from-files --window-size=1024,1024 --screenshot="$4" "file://$WORK/page.html" >/dev/null 2>&1
-}
+# The scenic icon is a raster crop from the reference board, with the board's off-white paper in its corners
+# and along its bottom edge. Trim 10 px all round and cut it to a clean rounded square on transparency.
+magick brand/reference/ferry-app-icon-master-1024.png -alpha off -shave 10x10 -resize 1024x1024! \
+    \( -size 1024x1024 xc:none -fill white -draw "roundrectangle 0,0 1023,1023 240,240" \) \
+    -compose CopyOpacity -composite brand/icons/ferry-app-icon.png
+FULL=brand/icons/ferry-app-icon.png
 
 # The macOS icon grid: the rounded square is 824 of 1024 px.
-render brand/icons/ferry-app-icon-scenic.svg 824 transparent "$WORK/mac.png"
-render brand/derived/app-icon-small.svg 824 transparent "$WORK/mac-small.png"
-# Windows, Linux and the web: the full canvas.
-render brand/icons/ferry-app-icon-scenic.svg 1024 transparent "$WORK/full.png"
-# Apple touch icon: square and opaque, iOS rounds the corners.
-render brand/icons/ferry-app-icon-scenic.svg 1024 "#1B2440" "$WORK/touch.png"
+magick "$FULL" -resize 824x824 -background none -gravity center -extent 1024x1024 "$WORK/mac.png"
+# Apple touch icon: square and opaque, iOS rounds the corners itself.
+magick "$FULL" -background "#1b2440" -alpha remove -alpha off "$WORK/touch.png"
 
-# Mac app. 16 and 32 px use the simplified ship.
+size() { magick "$1" -filter Lanczos -resize "$2x$2" "$3"; }
+
+# Mac app.
 MAC=App/Assets.xcassets/AppIcon.appiconset
-for spec in 16:1:small 16:2:small 32:1:small 32:2:mac 128:1:mac 128:2:mac 256:1:mac 256:2:mac 512:1:mac 512:2:mac; do
-    IFS=: read -r size scale source <<<"$spec"
-    [ "$source" = small ] && src=$WORK/mac-small.png || src=$WORK/mac.png
-    sips -z $((size * scale)) $((size * scale)) "$src" --out "$MAC/icon_${size}x${size}@${scale}x.png" >/dev/null
+for spec in 16:1 16:2 32:1 32:2 128:1 128:2 256:1 256:2 512:1 512:2; do
+    IFS=: read -r px scale <<<"$spec"
+    size "$WORK/mac.png" $((px * scale)) "$MAC/icon_${px}x${px}@${scale}x.png"
 done
-
-# Mac app images that stay vector: the menu bar glyph and the mark on the connect screen.
-cp brand/derived/menubar.svg App/Assets.xcassets/MenuBarIcon.imageset/menubar.svg
-# The marks' canvas is mostly margin; crop it to the ship so the connect screen can size it.
-crop() { sed 's/width="384" height="220" viewBox="0 0 384 220"/width="244" height="182" viewBox="74 3 244 182"/' "$1" > "$2"; }
-crop brand/logos/ferry-mark-color.svg App/Assets.xcassets/FerryMark.imageset/mark-light.svg
-crop brand/derived/mark-color-dark.svg App/Assets.xcassets/FerryMark.imageset/mark-dark.svg
+# The icon on the connect screen (72 pt) and the menu bar template glyph.
+size "$FULL" 144 App/Assets.xcassets/FerryMark.imageset/mark@1x.png
+size "$FULL" 288 App/Assets.xcassets/FerryMark.imageset/mark@2x.png
+cp brand/derived/glyph.svg App/Assets.xcassets/MenuBarIcon.imageset/menubar.svg
 
 # Windows and Linux app.
-(cd apps/desktop && npx tauri icon "$WORK/full.png" -o src-tauri/icons >/dev/null && rm -rf src-tauri/icons/android src-tauri/icons/ios)
+(cd apps/desktop && npx tauri icon "../../$FULL" -o src-tauri/icons >/dev/null && rm -rf src-tauri/icons/android src-tauri/icons/ios)
 
 # Site.
-cp brand/derived/favicon.svg site/img/favicon.svg
-for size in 32 64 192 512; do sips -z $size $size "$WORK/full.png" --out "site/img/icon-$size.png" >/dev/null; done
-sips -z 180 180 "$WORK/touch.png" --out site/img/icon-180.png >/dev/null
+for px in 32 64 192 512; do size "$FULL" $px "site/img/icon-$px.png"; done
+size "$WORK/touch.png" 180 site/img/icon-180.png
 
 echo "exported icons"

@@ -6,10 +6,10 @@ Use this brief alongside `README.md`.
 Implement the Ferry identity consistently across the marketing website and desktop app (macOS, Windows, Linux).
 
 ## Required assets
-- Website header: use `logos/ferry-lockup-light.svg` on light surfaces and `logos/ferry-lockup-dark.svg` on dark surfaces.
-- Website favicon: `derived/favicon.svg`.
-- App icon: start from `icons/ferry-app-icon-scenic.svg`; generate the required native platform formats and validate at small sizes.
-- macOS menu bar: use `derived/menubar.svg` as the monochrome source; export as a template image with transparency.
+- Website header: the glyph (`derived/glyph.svg`) in the text colour next to the name in Newsreader.
+- Website favicon: the scenic icon (`icons/ferry-app-icon.png`).
+- App icon: start from `icons/ferry-app-icon.png`; generate the required native platform formats and validate at small sizes.
+- macOS menu bar: use `derived/glyph.svg` as the monochrome source; export as a template image with transparency.
 
 ## Theme behaviour
 - Light: Warm Paper background, Ink text, Signal Vermilion primary action.
@@ -18,9 +18,9 @@ Implement the Ferry identity consistently across the marketing website and deskt
 - Preserve semantic contrast; do not assume palette pairs automatically meet accessibility requirements.
 
 ## Brand behaviour
-- Keep the ship confident; the side-on passenger ferry is the central brand symbol.
+- The scenic three-quarter ferry is the hero; do not swap it for a generic side-on pictogram.
 - Do not introduce camera, shutter, Wi-Fi, cloud, lightning or circuit motifs.
-- Do not add gradients or effects to the core logo.
+- Gradients belong to the scenic artwork only; do not add effects to the glyph.
 - Keep product copy local-first and reassuring. Ferry imports to Apple Photos, a folder or Lightroom; it is not a cloud service.
 - Describe the import memory plainly: Ferry remembers previously imported photos and brings across new ones.
 
