@@ -1,8 +1,9 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="1024" height="1024" viewBox="0 0 256 256">
-<!-- icons/ferry-app-icon-dark.svg for 16 and 32 px: the favicon's simplified ship, no water lines. -->
-<rect width="256" height="256" rx="58" fill="#1B2440"/>
-<g transform="translate(8 45.5) scale(3)">
-<path d="M18 31 L25 21 L34 18 L37 8 L42 8 L44 18 L54 20 L62 28 L54 26 L45 24 L34 24 L25 28 Z" fill="#FBFAF7"/>
-<path d="M8 38 L24 32 L42 30 L58 32 L72 29 L65 42 Q62 47 54 47 L20 47 Q13 45 8 38Z" fill="#F4A26B"/>
+<svg xmlns="http://www.w3.org/2000/svg" width="1024" height="1024" viewBox="0 0 1024 1024">
+<!-- icons/ferry-app-icon-scenic.svg for 16 and 32 px: the favicon's ship, large, without water. -->
+<defs><mask id="win"><rect x="0" y="0" width="400" height="200" fill="#fff"/><path d="M143 88 H158 M170 88 H185 M197 88 H212 M224 88 H239 M251 88 H264" stroke="#000" stroke-width="9" stroke-linecap="round"/></mask></defs>
+<rect width="1024" height="1024" rx="220" fill="#1b2440"/>
+<g transform="translate(-154.4 223) scale(3.4)">
+<g fill="#fbfaf7" mask="url(#win)"><path d="M118 104 L132 78 Q136 70 148 70 H251 Q262 70 268 80 L281 104 Z"/><path d="M143 70 L153 48 Q157 41 167 41 H229 Q239 41 244 50 L255 70 Z"/><path d="M171 41 L179 25 H218 L226 41 Z"/></g>
+<path d="M83 112 H307 L297 133 Q294 138 284 138 H101 Q91 138 88 131 Z" fill="#c9472b"/>
 </g>
 </svg>

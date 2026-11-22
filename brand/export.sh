@@ -22,12 +22,12 @@ EOF
 }
 
 # The macOS icon grid: the rounded square is 824 of 1024 px.
-render brand/icons/ferry-app-icon-dark.svg 824 transparent "$WORK/mac.png"
+render brand/icons/ferry-app-icon-scenic.svg 824 transparent "$WORK/mac.png"
 render brand/derived/app-icon-small.svg 824 transparent "$WORK/mac-small.png"
 # Windows, Linux and the web: the full canvas.
-render brand/icons/ferry-app-icon-dark.svg 1024 transparent "$WORK/full.png"
+render brand/icons/ferry-app-icon-scenic.svg 1024 transparent "$WORK/full.png"
 # Apple touch icon: square and opaque, iOS rounds the corners.
-render brand/icons/ferry-app-icon-dark.svg 1024 "#1B2440" "$WORK/touch.png"
+render brand/icons/ferry-app-icon-scenic.svg 1024 "#1B2440" "$WORK/touch.png"
 
 # Mac app. 16 and 32 px use the simplified ship.
 MAC=App/Assets.xcassets/AppIcon.appiconset
@@ -39,8 +39,10 @@ done
 
 # Mac app images that stay vector: the menu bar glyph and the mark on the connect screen.
 cp brand/derived/menubar.svg App/Assets.xcassets/MenuBarIcon.imageset/menubar.svg
-cp brand/logos/ferry-mark-color.svg App/Assets.xcassets/FerryMark.imageset/mark-light.svg
-cp brand/derived/mark-color-dark.svg App/Assets.xcassets/FerryMark.imageset/mark-dark.svg
+# The marks' canvas is mostly margin; crop it to the ship so the connect screen can size it.
+crop() { sed 's/width="384" height="220" viewBox="0 0 384 220"/width="244" height="182" viewBox="74 3 244 182"/' "$1" > "$2"; }
+crop brand/logos/ferry-mark-color.svg App/Assets.xcassets/FerryMark.imageset/mark-light.svg
+crop brand/derived/mark-color-dark.svg App/Assets.xcassets/FerryMark.imageset/mark-dark.svg
 
 # Windows and Linux app.
 (cd apps/desktop && npx tauri icon "$WORK/full.png" -o src-tauri/icons >/dev/null && rm -rf src-tauri/icons/android src-tauri/icons/ios)

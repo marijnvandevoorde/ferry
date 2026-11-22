@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="384" height="220" viewBox="0 0 384 220">
+
+<g id="ferry-mark" stroke-linejoin="round" stroke-linecap="round">
+  <!-- upper decks -->
+  <path d="M118 104 L132 78 Q136 70 148 70 H251 Q262 70 268 80 L281 104 Z" fill="#1b2440"/>
+  <path d="M143 70 L153 48 Q157 41 167 41 H229 Q239 41 244 50 L255 70 Z" fill="#1b2440"/>
+  <path d="M171 41 L179 25 H218 L226 41 Z" fill="#1b2440"/>
+  <!-- windows -->
+  <path d="M143 88 H158 M170 88 H185 M197 88 H212 M224 88 H239 M251 88 H264" stroke="#1b2440" stroke-width="7"/>
+  <path d="M163 58 H177 M188 58 H202 M213 58 H228" stroke="#1b2440" stroke-width="5"/>
+  <!-- mast -->
+  <path d="M198 25 V7 M189 15 H207" stroke="#1b2440" stroke-width="5"/>
+  <!-- deck line and hull -->
+  <path d="M78 105 Q91 102 111 103 H286 Q300 103 314 109 L300 137 Q296 145 283 145 H99 Q86 145 82 135 Z" fill="#1b2440"/>
+  <path d="M83 112 H307 L297 133 Q294 138 284 138 H101 Q91 138 88 131 Z" fill="#1b2440"/>
+  <path d="M93 147 Q189 153 291 147" fill="none" stroke="#1b2440" stroke-width="6"/>
+  <!-- wake -->
+  <path d="M114 166 Q155 157 194 166 T273 166" fill="none" stroke="#1b2440" stroke-width="7"/>
+  <path d="M142 179 Q184 171 224 179 T278 179" fill="none" stroke="#1b2440" stroke-width="5"/>
+</g>
+
+</svg>

@@ -1,16 +1,15 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="120" height="96" viewBox="0 0 120 96" role="img" aria-labelledby="title">
-<title id="title">Ferry symbol for dark surfaces</title>
-
-  <g id="ferry-mark" stroke="none" stroke-linejoin="round">
-    <!-- upper deck / cabin -->
-    <path d="M42 37 L48 25 L58 22 L62 10 L68 10 L70 22 L83 24 L91 31 L96 37 L88 35 L80 32 L63 31 L52 34 Z" fill="#FBFAF7"/>
-    <path d="M56 39 L64 32 L82 33 L91 38 L100 44 L89 45 L68 43 Z" fill="#FBFAF7"/>
-    <!-- hull -->
-    <path d="M15 51 L34 46 L59 43 L82 45 L108 42 L98 56 Q94 62 83 62 L31 62 Q22 60 15 51 Z" fill="#C9472B"/>
-    <!-- water lines -->
-    <path d="M23 69 Q58 73 96 68" fill="none" stroke="#FBFAF7" stroke-width="3.2" stroke-linecap="round"/>
-    <path d="M35 77 Q59 80 82 76" fill="none" stroke="#FBFAF7" stroke-width="2.6" stroke-linecap="round"/>
-    <path d="M47 84 Q60 86 72 83" fill="none" stroke="#FBFAF7" stroke-width="2.2" stroke-linecap="round"/>
-  </g>
-
+<svg xmlns="http://www.w3.org/2000/svg" width="244" height="182" viewBox="74 3 244 182">
+<!-- logos/ferry-mark-color.svg for dark surfaces: paper decks and mast, as in logos/ferry-lockup-dark.svg. -->
+<g id="ferry-mark" stroke-linejoin="round" stroke-linecap="round">
+  <path d="M118 104 L132 78 Q136 70 148 70 H251 Q262 70 268 80 L281 104 Z" fill="#fbfaf7"/>
+  <path d="M143 70 L153 48 Q157 41 167 41 H229 Q239 41 244 50 L255 70 Z" fill="#fbfaf7"/>
+  <path d="M171 41 L179 25 H218 L226 41 Z" fill="#fbfaf7"/>
+  <path d="M143 88 H158 M170 88 H185 M197 88 H212 M224 88 H239 M251 88 H264" stroke="#1b2440" stroke-width="7"/>
+  <path d="M163 58 H177 M188 58 H202 M213 58 H228" stroke="#1b2440" stroke-width="5"/>
+  <path d="M198 25 V7 M189 15 H207" stroke="#fbfaf7" stroke-width="5"/>
+  <path d="M78 105 Q91 102 111 103 H286 Q300 103 314 109 L300 137 Q296 145 283 145 H99 Q86 145 82 135 Z" fill="#fbfaf7"/>
+  <path d="M83 112 H307 L297 133 Q294 138 284 138 H101 Q91 138 88 131 Z" fill="#c9472b"/>
+  <path d="M114 166 Q155 157 194 166 T273 166" fill="none" stroke="#f4a26b" stroke-width="7" opacity=".9"/>
+  <path d="M142 179 Q184 171 224 179 T278 179" fill="none" stroke="#fbfaf7" stroke-width="5" opacity=".5"/>
+</g>
 </svg>

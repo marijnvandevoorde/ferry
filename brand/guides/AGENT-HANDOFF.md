@@ -6,10 +6,10 @@ Use this brief alongside `README.md`.
 Implement the Ferry identity consistently across the marketing website and desktop app (macOS, Windows, Linux).
 
 ## Required assets
-- Website header: use `logos/ferry-wordmark-light.svg` on light surfaces and `logos/ferry-wordmark-dark.svg` on dark surfaces.
-- Website favicon: `icons/favicon.svg`.
-- App icon: start from `icons/ferry-app-icon-dark.svg`; generate the required native platform formats and validate at small sizes.
-- macOS menu bar: use `icons/ferry-menubar-template.svg` as the monochrome source; export as a template image with transparency.
+- Website header: use `logos/ferry-lockup-light.svg` on light surfaces and `logos/ferry-lockup-dark.svg` on dark surfaces.
+- Website favicon: `derived/favicon.svg`.
+- App icon: start from `icons/ferry-app-icon-scenic.svg`; generate the required native platform formats and validate at small sizes.
+- macOS menu bar: use `derived/menubar.svg` as the monochrome source; export as a template image with transparency.
 
 ## Theme behaviour
 - Light: Warm Paper background, Ink text, Signal Vermilion primary action.
@@ -18,7 +18,7 @@ Implement the Ferry identity consistently across the marketing website and deskt
 - Preserve semantic contrast; do not assume palette pairs automatically meet accessibility requirements.
 
 ## Brand behaviour
-- Keep the ship small and confident.
+- Keep the ship confident; the side-on passenger ferry is the central brand symbol.
 - Do not introduce camera, shutter, Wi-Fi, cloud, lightning or circuit motifs.
 - Do not add gradients or effects to the core logo.
 - Keep product copy local-first and reassuring. Ferry imports to Apple Photos, a folder or Lightroom; it is not a cloud service.

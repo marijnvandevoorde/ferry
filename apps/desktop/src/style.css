@@ -25,7 +25,7 @@ body { margin: 0; height: 100vh; display: flex; flex-direction: column; backgrou
 header { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 12px 20px; border-bottom: 1px solid var(--border); background: var(--surface); }
 h1 { font-size: 17px; margin: 0; }
 .brand { display: flex; align-items: center; gap: 10px; }
-.mark { width: 40px; height: 23px; flex: none; }
+.mark { width: 40px; height: 21px; flex: none; }
 h2 { font-size: 22px; margin: 0 0 6px; }
 nav { display: flex; gap: 8px; align-items: center; }
 main { flex: 1; overflow: auto; }
