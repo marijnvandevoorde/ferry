@@ -1,38 +1,20 @@
 <!doctype html>
-<!-- The social sharing card (1200×630): brand/illustrations/ferry-social-preview.svg with the site's fonts. -->
+<!-- The social sharing card (1200×630): the scenic app icon (brand/icons/ferry-app-icon.png), the name and the tagline. -->
 <html><head><meta charset="utf-8"><style>
   @font-face { font-family: "Newsreader"; font-weight: 200 800; src: url(../../fonts/newsreader.woff2) format("woff2-variations"); }
   @font-face { font-family: "Inter"; font-weight: 100 900; src: url(../../fonts/inter.woff2) format("woff2-variations"); }
   html, body { margin: 0; width: 1200px; height: 630px; overflow: hidden; }
-  svg { display: block; }
+  body { display: flex; align-items: center; gap: 72px; padding: 0 96px; box-sizing: border-box; color: #fbfaf7;
+         background: linear-gradient(180deg, #1b2440 0%, #3b3a6b 55%, #7a4766 88%, #c9775f 100%);
+         font-family: "Inter", sans-serif; }
+  .copy { flex: 1; }
+  h1 { font-family: "Newsreader", Georgia, serif; font-weight: 600; font-size: 150px; line-height: 1; margin: 0 0 24px; letter-spacing: -4px; }
+  p { font-size: 34px; margin: 0; color: rgb(251 250 247 / 88%); }
+  img { width: 340px; height: 340px; filter: drop-shadow(0 24px 40px rgb(10 12 30 / 45%)); }
 </style></head><body>
-<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
-<defs><linearGradient id="sky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#1b2440"/><stop offset="1" stop-color="#f4a26b"/></linearGradient></defs>
-<rect width="1200" height="630" fill="url(#sky)"/>
-<path d="M0 360 Q150 320 300 355 T600 350 T900 355 T1200 340 V430 H0Z" fill="#3b3a6b"/>
-<path d="M0 430 H1200 V630 H0Z" fill="#1b2440"/>
-<path d="M0 470 Q200 440 400 470 T800 465 T1200 470" fill="none" stroke="#f4a26b" stroke-width="14"/>
-<g transform="translate(680 260) scale(1.45)">
-<g id="ferry-mark" stroke-linejoin="round" stroke-linecap="round">
-  <!-- upper decks -->
-  <path d="M118 104 L132 78 Q136 70 148 70 H251 Q262 70 268 80 L281 104 Z" fill="#fbfaf7"/>
-  <path d="M143 70 L153 48 Q157 41 167 41 H229 Q239 41 244 50 L255 70 Z" fill="#1b2440"/>
-  <path d="M171 41 L179 25 H218 L226 41 Z" fill="#fbfaf7"/>
-  <!-- windows -->
-  <path d="M143 88 H158 M170 88 H185 M197 88 H212 M224 88 H239 M251 88 H264" stroke="#1b2440" stroke-width="7"/>
-  <path d="M163 58 H177 M188 58 H202 M213 58 H228" stroke="#fbfaf7" stroke-width="5"/>
-  <!-- mast -->
-  <path d="M198 25 V7 M189 15 H207" stroke="#1b2440" stroke-width="5"/>
-  <!-- deck line and hull -->
-  <path d="M78 105 Q91 102 111 103 H286 Q300 103 314 109 L300 137 Q296 145 283 145 H99 Q86 145 82 135 Z" fill="#1b2440"/>
-  <path d="M83 112 H307 L297 133 Q294 138 284 138 H101 Q91 138 88 131 Z" fill="#c9472b"/>
-  <path d="M93 147 Q189 153 291 147" fill="none" stroke="#1b2440" stroke-width="6"/>
-  <!-- wake -->
-  <path d="M114 166 Q155 157 194 166 T273 166" fill="none" stroke="#3b3a6b" stroke-width="7"/>
-  <path d="M142 179 Q184 171 224 179 T278 179" fill="none" stroke="#1b2440" stroke-width="5"/>
-</g>
-</g>
-<text x="90" y="245" fill="#fbfaf7" font-family="Newsreader" font-weight="600" font-size="124" letter-spacing="-3">Ferry</text>
-<text x="98" y="320" fill="#fbfaf7" font-family="Inter" font-size="32">Your photos, carried safely home.</text>
-</svg>
+  <div class="copy">
+    <h1>Ferry</h1>
+    <p>Your photos, carried safely home.</p>
+  </div>
+  <img src="../../../brand/icons/ferry-app-icon.png" alt="">
 </body></html>

@@ -1,5 +1,0 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="31.2" height="16" viewBox="81 23 228 117">
-<!-- Menu bar template glyph: the favicon's ship in one colour. -->
-<defs><mask id="win"><rect x="0" y="0" width="400" height="200" fill="#fff"/><path d="M143 88 H158 M170 88 H185 M197 88 H212 M224 88 H239 M251 88 H264" stroke="#000" stroke-width="9" stroke-linecap="round"/></mask></defs>
-<g fill="#000000"><g mask="url(#win)"><path d="M118 104 L132 78 Q136 70 148 70 H251 Q262 70 268 80 L281 104 Z"/><path d="M143 70 L153 48 Q157 41 167 41 H229 Q239 41 244 50 L255 70 Z"/><path d="M171 41 L179 25 H218 L226 41 Z"/></g><path d="M83 112 H307 L297 133 Q294 138 284 138 H101 Q91 138 88 131 Z"/></g>
-</svg>
