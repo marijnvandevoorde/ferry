@@ -1,43 +1,44 @@
 # Ferry — Brand package
 
-Version 1.0 · 3 November 2026
+Version 2 · 22 November 2026 (v1: 3 November 2026)
 
 This package is the handoff reference for the Ferry website and desktop-app implementation.
 It contains editable SVG source assets, colour tokens, usage guidance and implementation notes.
-
-## Brand idea
-
-**Your photos, carried safely home.**
-
-Ferry is a calm, crafted desktop utility that brings photographs from a camera to a computer over Wi-Fi.
-The identity should communicate care, continuity and safe arrival — not speed, cloud storage or gadgetry.
+The designer's guide is `guides/Ferry-Brand-Guidelines-v2.pdf`.
 
 ## Identity direction
 
-- A modest passenger-ferry silhouette, not a yacht or cruise ship.
-- A restrained serif wordmark paired with a simple geometric vessel mark.
-- Night blue and warm paper are the principal surfaces.
-- The orange hull is the distinctive identifying detail.
-- Water lines are secondary and should disappear in the smallest-size glyphs.
+- A side-on passenger ferry: navy superstructure, warm orange hull stripe, understated wake.
+- The scenic app icon (ship on layered water) is the expressive application mark; the flat ship is for small
+  and one-colour uses.
+- A restrained serif wordmark (Newsreader) next to the ship.
+- Night blue and warm paper are the principal surfaces. The orange hull is the distinctive detail.
 - Tone: calm, warm, quietly confident, independent and carefully made.
 
 ## Package contents
 
 ### `logos/`
-- `ferry-wordmark-light.svg` — dark ink mark and wordmark on warm-paper background.
-- `ferry-wordmark-dark.svg` — warm-paper wordmark and orange hull on night-blue background.
-- `ferry-mark-color.svg` — standalone full-colour transparent symbol.
-- `ferry-mark-mono-dark.svg` — one-colour dark symbol.
-- `ferry-mark-mono-light.svg` — one-colour light symbol.
+- `ferry-mark-color.svg` — full-colour ship for light surfaces (its paper decks blend into the paper).
+- `ferry-mark-mono-navy.svg`, `ferry-mark-mono-light.svg` — one-colour ship.
+- `ferry-lockup-light.svg`, `ferry-lockup-dark.svg` — ship, wordmark and tagline (Georgia fallback text).
 
 ### `icons/`
-- `ferry-app-icon-dark.svg` — dark macOS-style rounded-square icon.
-- `ferry-app-icon-light.svg` — light alternative.
-- `favicon.svg` — compact, simplified browser icon.
-- `ferry-menubar-template.svg` — monochrome template glyph source.
+- `ferry-app-icon-scenic.svg` — the app icon. The package's version let the water run past the rounded
+  corners; this copy clips it to the rounded square.
+- `ferry-app-icon-dark.svg`, `-light.svg`, `-mono.svg` — alternative icons with a small ship; not used.
+
+### `illustrations/`
+- `ferry-social-preview.svg` — the social card. `site/tools/mockups/og.html` renders it with Newsreader and Inter.
+
+### `derived/` (made here from the ship, not part of the designer's package)
+- `mark-color-dark.svg` — the ship for dark surfaces: paper decks and mast, as in the dark lockup.
+- `favicon.svg`, `app-icon-small.svg`, `menubar.svg` — the ship simplified for 16–32 px: decks with the window
+  row cut out, a gap, then the hull. No mast or wake.
 
 ### `web/`
-- `ferry-tokens.css` — CSS custom properties for the brand palette and typography.
+- `ferry-tokens.css` — CSS custom properties for the brand palette and typography (unchanged in v2).
+
+`export.sh` renders all of this into the Mac app, the Windows/Linux app and the site icons.
 
 ## Colour tokens
 
