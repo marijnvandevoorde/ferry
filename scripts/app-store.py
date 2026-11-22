@@ -10,6 +10,8 @@
     scripts/app-store.py upload-build   turn on App Store uploads and rerun the Mac job of the latest release
     scripts/app-store.py notes          set the App Review notes from docs/app-review-notes.txt (submit does this too)
     scripts/app-store.py submit         attach the newest build to the version and submit it for review
+    scripts/app-store.py revoke-dev-certs SERIAL...   revoke the Apple Development certificates with these serial
+                                               numbers (the release job's, made by automatic signing on each run)
 
 Reads the API key from ~/.appstoreconnect/config.json ({"keyId", "issuerId", "privateKey": path to the .p8}),
 or from ASC_CONFIG. Needs Python's cryptography package; developer-id and upload-build also need gh.
@@ -323,6 +325,17 @@ def submit():
     print("submitted for review")
 
 
+def revoke_dev_certs(*serials):
+    """Revokes Apple Development certificates by serial number. Automatic signing makes one on every CI run, and
+    Apple caps how many an account may have; the runner's key dies with it, so the release job revokes its own."""
+    wanted = {serial.upper().lstrip("0") for serial in serials}
+    certificates = api("certificates?limit=200&filter[certificateType]=DEVELOPMENT&fields[certificates]=serialNumber")["data"]
+    for certificate in certificates:
+        if certificate["attributes"]["serialNumber"].upper().lstrip("0") in wanted:
+            api(f"certificates/{certificate['id']}", "DELETE")
+            print(f"revoked development certificate {certificate['id']}")
+
+
 def setup():
     for name, step in [("Create the Developer ID certificate", developer_id), ("Upload the build", upload_build),
                        ("Set the App Review contact", contact), ("Take and upload the screenshots", screenshots)]:
@@ -337,10 +350,11 @@ def setup():
 
 
 COMMANDS = {"setup": setup, "status": status, "contact": contact, "screenshots": screenshots, "developer-id": developer_id,
-            "upload-build": upload_build, "notes": notes, "submit": submit}
+            "upload-build": upload_build, "notes": notes, "submit": submit, "revoke-dev-certs": revoke_dev_certs}
 
 if __name__ == "__main__":
-    if len(sys.argv) < 2 or sys.argv[1] not in COMMANDS or len(sys.argv) > (3 if sys.argv[1] == "screenshots" else 2):
+    variadic = len(sys.argv) > 1 and sys.argv[1] == "revoke-dev-certs"
+    if len(sys.argv) < 2 or sys.argv[1] not in COMMANDS or (not variadic and len(sys.argv) > (3 if sys.argv[1] == "screenshots" else 2)):
         sys.exit(__doc__)
     os.chdir(ROOT)
     COMMANDS[sys.argv[1]](*sys.argv[2:])

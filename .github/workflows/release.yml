@@ -145,6 +145,19 @@ jobs:
             -exportOptionsPlist build/app-store.plist -allowProvisioningUpdates \
             -authenticationKeyPath "$KEY_PATH" -authenticationKeyID "$ASC_KEY_ID" -authenticationKeyIssuerID "$ASC_ISSUER_ID"
 
+      # Automatic signing makes a new Apple Development certificate on every run, its key only on this runner,
+      # and Apple caps how many an account may have. Revoke the ones in this runner's keychain.
+      - name: Revoke this run's development certificate
+        if: always() && env.KEY_PATH != ''
+        run: |
+          serials=$(security find-certificate -a -c "Apple Development" -p | awk '
+            /BEGIN CERTIFICATE/ { pem = "" } { pem = pem $0 "\n" }
+            /END CERTIFICATE/ { cmd = "openssl x509 -noout -serial"; printf "%s", pem | cmd; close(cmd) }' | cut -d= -f2)
+          if [ -z "$serials" ]; then echo "no development certificate on this runner"; exit 0; fi
+          python3 -m venv $RUNNER_TEMP/asc && $RUNNER_TEMP/asc/bin/pip install -q cryptography
+          printf '{"keyId": "%s", "issuerId": "%s", "privateKey": "%s"}' "$ASC_KEY_ID" "$ASC_ISSUER_ID" "$KEY_PATH" > $RUNNER_TEMP/asc.json
+          ASC_CONFIG=$RUNNER_TEMP/asc.json $RUNNER_TEMP/asc/bin/python scripts/app-store.py revoke-dev-certs $serials
+
   desktop:
     needs: release
     strategy:

@@ -16,7 +16,9 @@ Microsoft Store). If it stops after tagging, rerun it with `--after` to do the r
    `DEVELOPER_ID_P12` isn't set),
 4. uploads the same archive to App Store Connect when `APP_STORE_UPLOAD` is `true`,
 5. builds the Windows (MSI, setup .exe) and Linux (AppImage, .deb, signed when `LINUX_GPG_KEY` is set)
-   installers and attaches them.
+   installers and attaches them,
+6. revokes the Apple Development certificate that automatic signing made for this run. Without that they pile
+   up until Apple's limit stops the archive ("Your account has reached the maximum number of certificates").
 
 A new file that names the version goes in `VERSION_FILES` or `PACKAGE_FILES` in `scripts/release.py`, and a new
 platform's download in `ASSETS`.
