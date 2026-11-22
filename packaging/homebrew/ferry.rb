@@ -1,8 +1,8 @@
 # Homebrew cask for the Mac app, from the notarized DMG. Published as Casks/ferry.rb in
 # github.com/marijnvandevoorde/homebrew-ferry: `brew install --cask marijnvandevoorde/ferry/ferry`.
 cask "ferry" do
-  version "0.3.1"
-  sha256 "0600870e3df377489e58a42411fa41dad081c9ba2e3ef483497efa7346cf6f0c"
+  version "0.3.2"
+  sha256 "a05a052ff6f41dfe10e3930267cb9c43bdf6cc1d21b8da61871b97aa1d2a9661"
 
   url "https://github.com/marijnvandevoorde/ferry/releases/download/v#{version}/Ferry-#{version}.dmg"
   name "Ferry"
