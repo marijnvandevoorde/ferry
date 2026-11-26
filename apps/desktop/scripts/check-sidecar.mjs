@@ -1,4 +1,5 @@
-// Windows: checks that the ferryctl sidecar starts with only what ships with Ferry, as on a PC without Swift.
+// Windows: checks that the ferryctl sidecar starts, and `serve` answers, with only what ships with Ferry,
+// as on a PC without Swift.
 //   node scripts/check-sidecar.mjs <folder with ferryctl.exe | Ferry .msi>
 // An .msi is unpacked first (an administrative install, which changes nothing on the machine).
 import { spawnSync } from "node:child_process";
@@ -30,6 +31,14 @@ if (run.status !== 0) {
   process.exit(1);
 }
 console.log(`${exe} starts without Swift: ${run.stdout.trim()}`);
+
+// What the app runs: `serve` reports its first status, then quits when asked.
+const serve = spawnSync(exe, ["serve"], { env, encoding: "utf8", input: '{"cmd": "quit"}\n', timeout: 30000 });
+if (serve.status !== 0 || !serve.stdout.includes("searching")) {
+  console.error(`ferryctl serve failed (exit status ${serve.status}):\n${serve.stdout ?? ""}${serve.stderr ?? ""}`);
+  process.exit(1);
+}
+console.log(`ferryctl serve: ${serve.stdout.trim().split("\n")[0]}`);
 
 function find(folder, file) {
   for (const entry of readdirSync(folder, { withFileTypes: true })) {
