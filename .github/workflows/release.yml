@@ -192,6 +192,10 @@ jobs:
         run: |
           if [ "$RUNNER_OS" = "Linux" ]; then BUNDLES=appimage,deb; else BUNDLES=msi,nsis; fi
           pnpm tauri build --bundles "$BUNDLES"
+      - name: The installed sidecar starts without Swift
+        if: runner.os == 'Windows'
+        shell: bash
+        run: node scripts/check-sidecar.mjs src-tauri/target/release/bundle/msi/*.msi
       # Only this step gets the key: a multi-line value in the job's environment breaks the Windows Swift setup.
       - name: Sign the Linux packages
         if: runner.os == 'Linux'
