@@ -11,7 +11,7 @@ and all of them allow selling. What they ask is that the license texts travel wi
 | libfuji (protocol, ported) | MIT | everything | Keep its notice: `licenses/protocol.txt`. |
 | furble (libfuji's Bluetooth code is derived from it) | MIT | Bluetooth pairing | Same file. |
 | Swift packages | none used | | |
-| Swift runtime and Foundation (Windows, Linux `ferryctl`) | Apache-2.0 with the Runtime Library Exception; Foundation bundles ICU (Unicode-3.0), libcurl (curl) and libxml2 (MIT) | desktop | The exception covers the runtime; include the others' notices if they're bundled. |
+| Swift runtime and Foundation (Windows, Linux `ferryctl`) | Apache-2.0 with the Runtime Library Exception; Foundation bundles ICU (Unicode-3.0), libcurl (curl) and libxml2 (MIT) | desktop: DLLs next to `ferryctl.exe` on Windows, linked in statically on Linux | The exception covers the runtime; the others' notices are in `licenses/swift-runtime.txt`, which goes into the bundle's notices. |
 | Rust crates (~490, via Tauri) | MIT/Apache-2.0 and similar | desktop | License texts: `scripts/third_party_notices.py` writes them all to one file for the bundle. |
 | 5 of those crates: cssparser, cssparser-macros, dtoa-short, option-ext, selectors | MPL-2.0 | desktop | File-level copyleft: fine to sell; if those files are changed, publish the changed files. We don't change them. |
 | npm runtime: @tauri-apps/api and plugins | MIT or Apache-2.0 | desktop | Covered by the same notices. |
