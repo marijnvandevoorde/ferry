@@ -275,8 +275,13 @@ def developer_id():
 
 def upload_build():
     subprocess.run(["gh", "variable", "set", "APP_STORE_UPLOAD", "-R", REPO, "--body", "true"], check=True)
-    run = json.loads(subprocess.run(["gh", "run", "list", "-R", REPO, "--workflow", "release.yml", "--event", "push",
-                                     "--limit", "1", "--json", "databaseId,headBranch"], capture_output=True, text=True, check=True).stdout)[0]
+    # release.py starts the release on its tag by hand; runs on a branch are dry runs, which upload nothing.
+    runs = json.loads(subprocess.run(["gh", "run", "list", "-R", REPO, "--workflow", "release.yml", "--event",
+                                      "workflow_dispatch", "--limit", "50", "--json", "databaseId,headBranch"],
+                                     capture_output=True, text=True, check=True).stdout)
+    run = next((r for r in runs if re.fullmatch(r"v\d+\.\d+\.\d+", r["headBranch"])), None)
+    if not run:
+        sys.exit("no release run on a tag: release with scripts/release.py first")
     jobs = json.loads(subprocess.run(["gh", "run", "view", str(run["databaseId"]), "-R", REPO, "--json", "jobs"],
                                      capture_output=True, text=True, check=True).stdout)["jobs"]
     mac = next(job for job in jobs if job["name"] == "mac")
