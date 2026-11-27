@@ -29,6 +29,7 @@ Fuji cameras from roughly 2014 to 2021 that work with *Camera Remote* over Wi-Fi
 ## ✅ v0.3: Mac app polish
 
 Done except the Mac App Store listing (#23): 0.3.1 (build 8) has been waiting for review since 2026-11-14.
+0.3.4 (build 12) is uploaded, to submit once 0.3.1 is through.
 
 - Destinations: Apple Photos, or a folder with a date template
 - Hand-off to Lightroom Classic (auto-import folder) and Capture One (hot folder)
@@ -58,7 +59,8 @@ Fuji's *PC AutoSave* lets the camera join your home network and send photos to t
 
 - ✅ Decide the GUI technology: Tauri with `ferryctl serve` as a sidecar ([ADR 0001](docs/adr/0001-windows-linux-app.md))
 - Windows and Linux app: connect, gallery, import (built in `apps/desktop`; waiting for a run on real Windows and Linux machines, #36, #37, #41).
-  Up to 0.3.3 the Windows installers' `ferryctl` couldn't start and the .deb missed `libcurl4` (fixes: #84, #83)
+  Up to 0.3.3 the Windows installers' `ferryctl` couldn't start and the .deb missed `libcurl4`; fixed in 0.3.4 (#84, #83),
+  checked in CI and the release build, not yet on a real machine
 - ✅ Destinations: Pictures folder (Windows Photos), Lightroom Classic, Photoshop Elements watched folders,
   digiKam, darktable, Shotwell, Immich
 - Tray icon, start at login
