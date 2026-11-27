@@ -98,3 +98,6 @@ jobs:
         run: pnpm run sidecar
       - name: Build app
         run: pnpm tauri build --debug --no-bundle
+      - name: The sidecar starts without Swift
+        if: runner.os == 'Windows'
+        run: node scripts/check-sidecar.mjs src-tauri/target/debug

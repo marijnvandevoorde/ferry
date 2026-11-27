@@ -37,8 +37,13 @@ options:
   --help, --version
 """
 
-// Line-buffered, so `watch` output shows up promptly in logs (systemd, launchd).
+// Line-buffered, so `watch` output shows up promptly in logs (systemd, launchd). Windows has no line buffering
+// (_IOLBF is full buffering there) and stops the process on a zero buffer size, so it writes unbuffered.
+#if os(Windows)
+setvbuf(stdout, nil, _IONBF, 0)
+#else
 setvbuf(stdout, nil, _IOLBF, 0)
+#endif
 
 var args = Array(CommandLine.arguments.dropFirst())
 
